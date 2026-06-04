@@ -79,6 +79,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 54: WS2812B Addressable RGB LED Strip (Bit-Banged Assembly Timings)](./Day_54_WS2812B_Bitbang)
 - [x] [Day 55: Parallel HD44780 LCD (Direct 8-Bit GPIO Interface)](./Day_55_Parallel_LCD)
 - [x] [Day 56: Ultrasonic 2D Spatial Positioning Scanner (Trilateration Math)](./Day_56_Spatial_Positioner)
+- [x] [Day 57: FFT Audio Spectrum Analyzer (ADC Interrupted DSP)](./Day_57_FFT_Spectrum)
       _(More days will be linked here as they are completed)_
 
 ---
