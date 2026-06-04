@@ -65,6 +65,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 40: nRF24L01+ 2.4GHz Transceiver (SPI Packet RF)](./Day_40_nRF24L01_Wireless)
 - [x] [Day 41: MPU6050 6-Axis IMU (I2C Gyro/Accelerometer)](./Day_41_MPU6050_IMU)
 - [x] [Day 42: IMU Sensor Fusion via Complementary Filter](./Day_42_Complementary_Filter)
+- [x] [Day 43: Autonomous Obstacle-Avoidance Robot](./Day_43_Obstacle_Avoidance_Robot)
       _(More days will be linked here as they are completed)_
 
 ---
