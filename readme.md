@@ -38,6 +38,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 13: Joystick Module Value Mapper](./Day_13_Joystick_Mapper)
 - [x] [Day 14: Membrane Keypad Interfacing (4x4)](./Day_14_Keypad_Interfacing)
 - [x] [Day 15: Password Door Lock Logic (Keypad + Servo)](./Day_15_Password_Door_Lock)
+- [x] [Day 16: Relay Module Control (High Power switching)](./Day_16_Relay_Control)
       _(More days will be linked here as they are completed)_
 
 ---
