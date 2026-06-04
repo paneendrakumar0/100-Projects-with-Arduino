@@ -118,6 +118,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 93: Sim Racing Pedals/Shifter Interface logic (Deadzones & Auto-Calibration)](./Day_93_Sim_Racing_Pedals)
 - [x] [Day 94: Parsing Serial Telemetry from a PC (FSM Packet Framing & Checksum Validation)](./Day_94_Serial_Parser)
 - [x] [Day 95: 3-DOF Robotic Arm Inverse Kinematics (Trigonometric & Geometric Solver)](./Day_95_Robotic_Arm_IK)
+- [x] [Day 96: Differential Drive Robot Odometry (Forward Kinematics from Wheel Encoders)](./Day_96_Differential_Drive_Odometry)
       _(More days will be linked here as they are completed)_
 
 ---
