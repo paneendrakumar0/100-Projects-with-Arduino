@@ -2,7 +2,7 @@
 
 Welcome to the **100 Days of Arduino** challenge!
 
-I'm Paneendra, an engineering student and robotics lead with a heavy focus on autonomy, mechatronics, and control systems. I created this repository as a massive, open-source masterclass. Whether you are a beginner looking to understand basic electronics or an advanced builder working towards ROS integration and kinematic models, this repository maps out that journey day by day.
+I'm Paneendra, an engineering student and robotics enthusiast with a heavy focus on autonomy, mechatronics, and control systems. I created this repository as a massive, open-source masterclass. Whether you are a beginner looking to understand basic electronics or an advanced builder working towards ROS integration and kinematic models, this repository maps out that journey day by day.
 
 ## 🎯 The Goal
 
