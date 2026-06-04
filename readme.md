@@ -1,0 +1,33 @@
+# 🚀 100 Days of Arduino: From Basics to Autonomous Systems
+
+Welcome to the **100 Days of Arduino** challenge!
+
+I'm Paneendra, an engineering student and robotics lead with a heavy focus on autonomy, mechatronics, and control systems. I created this repository as a massive, open-source masterclass. Whether you are a beginner looking to understand basic electronics or an advanced builder working towards ROS integration and kinematic models, this repository maps out that journey day by day.
+
+## 🎯 The Goal
+
+To build a highly structured, easily cloneable, and scalable foundation of embedded systems knowledge. We move past basic `delay()` functions very quickly and dive into non-blocking code, state machines, sensor fusion, and hardware interrupts.
+
+## 📁 Repository Structure
+
+Every day has its own dedicated folder containing:
+
+- The `.ino` source code file.
+- A `README.md` explaining the core concepts, logic, and exact wiring diagrams.
+
+## 🛠️ Hardware Requirements
+
+To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a standard sensor kit (ultrasonic, IR, PIR, DHT11, MPU6050), various displays (LCD, OLED), motor drivers (L298N, A4988), and communication modules (NRF24L01, Bluetooth).
+
+## 📅 The Journey Log
+
+### Phase 1: The Fundamentals
+
+- [x] [Day 1: The Non-Blocking Blink (Using `millis()`)](./Day_01_Millis_Blink)
+- [ ] Day 2: SOS Morse Code Generator
+- [ ] Day 3: Pushbutton State Toggle (Debouncing)
+      _(More days will be linked here as they are completed)_
+
+---
+
+_Feel free to star ⭐ this repository if you find it helpful, fork it to track your own progress, or submit PRs if you find optimizations!_
