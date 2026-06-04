@@ -115,6 +115,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 90: Arduino as an HID (Keyboard/Mouse) using Leonardo/Micro (Native USB HID)](./Day_90_HID_Leonardo)
 - [x] [Day 91: Custom PC Volume Knob (Rotary Encoder + USB HID Media Controller)](./Day_91_HID_Volume_Knob)
 - [x] [Day 92: Macro Pad with Cherry MX Switches (Diode Matrix Scanning & USB HID Macros)](./Day_92_HID_Macro_Pad)
+- [x] [Day 93: Sim Racing Pedals/Shifter Interface logic (Deadzones & Auto-Calibration)](./Day_93_Sim_Racing_Pedals)
       _(More days will be linked here as they are completed)_
 
 ---
