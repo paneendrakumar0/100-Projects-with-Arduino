@@ -27,6 +27,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 2: SOS Morse Code Generator](./Day_02_SOS_Morse)
 - [x] [Day 3: Pushbutton State Toggle (Debouncing)](./Day_03_Pushbutton_Toggle)
 - [x] [Day 4: Potentiometer to LED Fade (Analog In/Out)](./Day_04_Potentiometer_Fade)
+- [x] [Day 5: RGB LED Color Mixer](./Day_05_RGB_Mixer)
       _(More days will be linked here as they are completed)_
 
 ---
