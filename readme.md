@@ -40,6 +40,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 15: Password Door Lock Logic (Keypad + Servo)](./Day_15_Password_Door_Lock)
 - [x] [Day 16: Relay Module Control (High Power switching)](./Day_16_Relay_Control)
 - [x] [Day 17: Sound Sensor Clap Switch](./Day_17_Sound_Clap_Switch)
+- [x] [Day 18: Water Level Detection](./Day_18_Water_Level)
       _(More days will be linked here as they are completed)_
 
 ---
