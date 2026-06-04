@@ -97,6 +97,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 72: CSV Datalogger (Sensors to SD)](./Day_72_CSV_Datalogger)
 - [x] [Day 73: MPU6050 Accelerometer Raw Data (Direct I2C Register Programming)](./Day_73_MPU6050_Raw)
 - [x] [Day 74: MPU6050 Gyroscope Angles (Direct I2C Registers)](./Day_74_MPU6050_Gyro)
+- [x] [Day 75: MPU6050 Pitch/Roll Calculation (Sensor Fusion via Complementary Filter)](./Day_75_MPU6050_Pitch_Roll)
       _(More days will be linked here as they are completed)_
 
 ---
