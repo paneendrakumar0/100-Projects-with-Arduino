@@ -34,6 +34,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 9: Temperature & Humidity Logger (DHT11)](./Day_09_DHT11_Logger)
 - [x] [Day 10: Active Buzzer Melody Player](./Day_10_Buzzer_Melody)
 - [x] [Day 11: Servo Motor Sweep](./Day_11_Servo_Sweep)
+- [x] [Day 12: Potentiometer-Controlled Servo](./Day_12_Pot_Servo)
       _(More days will be linked here as they are completed)_
 
 ---
