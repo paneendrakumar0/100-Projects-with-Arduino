@@ -54,6 +54,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 29: DS3231 Real-Time Clock (RTC)](./Day_29_RTC_Clock)
 - [x] [Day 30: EEPROM Data Logger (Wear-Leveling)](./Day_30_EEPROM_Logger)
 - [x] [Day 31: MFRC522 RFID Card Reader (SPI)](./Day_31_RFID_Reader)
+- [x] [Day 32: Quadrature Rotary Encoder (KY-040)](./Day_32_Rotary_Encoder)
       _(More days will be linked here as they are completed)_
 
 ---
