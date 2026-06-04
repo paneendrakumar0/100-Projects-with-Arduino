@@ -31,6 +31,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 6: Photoresistor (LDR) Automatic Night Light](./Day_06_LDR_Night_Light)
 - [x] [Day 7: Ultrasonic Sensor Distance Measurer](./Day_07_Ultrasonic_Distance)
 - [x] [Day 8: PIR Motion Sensor Alarm](./Day_08_PIR_Alarm)
+- [x] [Day 9: Temperature & Humidity Logger (DHT11)](./Day_09_DHT11_Logger)
       _(More days will be linked here as they are completed)_
 
 ---
