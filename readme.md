@@ -109,6 +109,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 84: Deep Sleep and Power Saving Modes (AVR Sleep Manager)](./Day_84_Deep_Sleep)
 - [x] [Day 85: EEPROM Memory Reading/Writing (Persistent Configuration Manager)](./Day_85_EEPROM_ReadWrite)
 - [x] [Day 86: Persistent Sensor Calibration Manager (MPU6050 Boot-trigger Calibration & EEPROM Storage)](./Day_86_Calibration_EEPROM)
+- [x] [Day 87: Creating a Custom Arduino Library (Exponential Moving Average Filter)](./Day_87_Custom_Library)
       _(More days will be linked here as they are completed)_
 
 ---
