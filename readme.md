@@ -108,6 +108,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 83: Watchdog Timer Implementation (System Recovery & MCUSR Diagnostics)](./Day_83_Watchdog_Timer)
 - [x] [Day 84: Deep Sleep and Power Saving Modes (AVR Sleep Manager)](./Day_84_Deep_Sleep)
 - [x] [Day 85: EEPROM Memory Reading/Writing (Persistent Configuration Manager)](./Day_85_EEPROM_ReadWrite)
+- [x] [Day 86: Persistent Sensor Calibration Manager (MPU6050 Boot-trigger Calibration & EEPROM Storage)](./Day_86_Calibration_EEPROM)
       _(More days will be linked here as they are completed)_
 
 ---
