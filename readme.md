@@ -80,6 +80,11 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 55: Parallel HD44780 LCD (Direct 8-Bit GPIO Interface)](./Day_55_Parallel_LCD)
 - [x] [Day 56: Ultrasonic 2D Spatial Positioning Scanner (Trilateration Math)](./Day_56_Spatial_Positioner)
 - [x] [Day 57: FFT Audio Spectrum Analyzer (ADC Interrupted DSP)](./Day_57_FFT_Spectrum)
+- [x] [Day 58: Hardware Timer1 PWM Generator (Direct AVR Register Config)](./Day_58_Timer1_PWM)
+- [x] [Day 59: Precision Voltage & Current Monitor (INA219 + ADC Resistor Divider)](./Day_59_Voltage_Monitor)
+- [x] [Day 60: OLED Oscilloscope (Real-Time Waveform on SSD1306 128×64)](./Day_60_OLED_Oscilloscope)
+- [x] [Day 61: Robotic Arm Inverse Kinematics (2-DOF Geometric IK Solver)](./Day_61_Inverse_Kinematics)
+- [x] [Day 62: Cooperative Task Scheduler (Round-Robin Kernel from Scratch)](./Day_62_Task_Scheduler)
       _(More days will be linked here as they are completed)_
 
 ---
