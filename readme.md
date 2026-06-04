@@ -95,6 +95,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 70: RFID Access Control Logging (MFRC522 + EEPROM Wear-Leveling Log + DS3231 RTC)](./Day_70_RFID_Logging)
 - [x] [Day 71: SD Card Module File Writing (SPI Datalogger Basics)](./Day_71_SD_Card_Writing)
 - [x] [Day 72: CSV Datalogger (Sensors to SD)](./Day_72_CSV_Datalogger)
+- [x] [Day 73: MPU6050 Accelerometer Raw Data (Direct I2C Register Programming)](./Day_73_MPU6050_Raw)
       _(More days will be linked here as they are completed)_
 
 ---
