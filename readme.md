@@ -31,3 +31,4 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 ---
 
 _Feel free to star ⭐ this repository if you find it helpful, fork it to track your own progress, or submit PRs if you find optimizations!_
+"# 100-Projects-with-Arduino" 
