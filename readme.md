@@ -62,6 +62,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 37: Closed-Loop PID Speed Control](./Day_37_PID_Speed_Control)
 - [x] [Day 38: Ultrasonic Radar Sweep (Servo + Range Finder)](./Day_38_Ultrasonic_Radar)
 - [x] [Day 39: HC-05 Bluetooth Module (UART Control)](./Day_39_Bluetooth_Control)
+- [x] [Day 40: nRF24L01+ 2.4GHz Transceiver (SPI Packet RF)](./Day_40_nRF24L01_Wireless)
       _(More days will be linked here as they are completed)_
 
 ---
