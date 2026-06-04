@@ -39,6 +39,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 14: Membrane Keypad Interfacing (4x4)](./Day_14_Keypad_Interfacing)
 - [x] [Day 15: Password Door Lock Logic (Keypad + Servo)](./Day_15_Password_Door_Lock)
 - [x] [Day 16: Relay Module Control (High Power switching)](./Day_16_Relay_Control)
+- [x] [Day 17: Sound Sensor Clap Switch](./Day_17_Sound_Clap_Switch)
       _(More days will be linked here as they are completed)_
 
 ---
