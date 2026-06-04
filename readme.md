@@ -60,6 +60,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 35: Bipolar Stepper Driver (A4988 / NEMA 17)](./Day_35_Stepper_A4988)
 - [x] [Day 36: DC Motor Encoder Feedback (RPM Calc)](./Day_36_Motor_Encoder)
 - [x] [Day 37: Closed-Loop PID Speed Control](./Day_37_PID_Speed_Control)
+- [x] [Day 38: Ultrasonic Radar Sweep (Servo + Range Finder)](./Day_38_Ultrasonic_Radar)
       _(More days will be linked here as they are completed)_
 
 ---
