@@ -121,6 +121,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 96: Differential Drive Robot Odometry (Forward Kinematics from Wheel Encoders)](./Day_96_Differential_Drive_Odometry)
 - [x] [Day 97: Stepper Motor S-Curve Speed Profile (Jerk Minimization & LUT Ramping)](./Day_97_Stepper_S_Curve)
 - [x] [Day 98: Kalman Filter (1D Sensor Fusion & Bias Estimation)](./Day_98_Kalman_Filter)
+- [x] [Day 99: Autonomous Path Tracking: Pure Pursuit (Differential Kinematics & Path Tracking)](./Day_99_Pure_Pursuit_Path_Tracking)
       _(More days will be linked here as they are completed)_
 
 ---
