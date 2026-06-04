@@ -90,6 +90,9 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 65: EEPROM Servo Motion Recorder & Playback (Non-Volatile Motion Capture)](./Day_65_EEPROM_Motion_Recorder)
 - [x] [Day 66: MAX7219 8×8 LED Matrix Driver (SPI Register Control)](./Day_66_MAX7219_LED_Matrix)
 - [x] [Day 67: Hall Effect RPM Tachometer (Timer1 Input Capture Unit)](./Day_67_Hall_RPM_Tachometer)
+- [x] [Day 68: Stepper Motor Microstepping (A4988 Driver — All Step Resolutions)](./Day_68_Stepper_Microstepping)
+- [x] [Day 69: DHT22 Humidity & Temperature Sensor (Custom Single-Wire Bit-Bang Parser)](./Day_69_DHT22_Custom_Protocol)
+- [x] [Day 70: RFID Access Control Logging (MFRC522 + EEPROM Wear-Leveling Log + DS3231 RTC)](./Day_70_RFID_Logging)
       _(More days will be linked here as they are completed)_
 
 ---
