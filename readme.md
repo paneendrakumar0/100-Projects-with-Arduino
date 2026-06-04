@@ -51,6 +51,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 26: OLED Display (SSD1306) Graphics](./Day_26_OLED_Graphics)
 - [x] [Day 27: OLED Bouncing Ball Animation](./Day_27_OLED_Animation)
 - [x] [Day 28: Infrared (IR) Remote Decoder](./Day_28_IR_Decoder)
+- [x] [Day 29: DS3231 Real-Time Clock (RTC)](./Day_29_RTC_Clock)
       _(More days will be linked here as they are completed)_
 
 ---
