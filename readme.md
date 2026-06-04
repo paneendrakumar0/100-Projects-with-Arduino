@@ -46,6 +46,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 21: 16x2 LCD Hello World (I2C)](./Day_21_LCD_HelloWorld)
 - [x] [Day 22: LCD Stopwatch](./Day_22_LCD_Stopwatch)
 - [x] [Day 23: Scrolling Text Marquee on LCD](./Day_23_LCD_Marquee)
+- [x] [Day 24: 7-Segment Display Counter](./Day_24_7Seg_Counter)
       _(More days will be linked here as they are completed)_
 
 ---
