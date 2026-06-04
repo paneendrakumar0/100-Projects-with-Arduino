@@ -93,6 +93,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 68: Stepper Motor Microstepping (A4988 Driver — All Step Resolutions)](./Day_68_Stepper_Microstepping)
 - [x] [Day 69: DHT22 Humidity & Temperature Sensor (Custom Single-Wire Bit-Bang Parser)](./Day_69_DHT22_Custom_Protocol)
 - [x] [Day 70: RFID Access Control Logging (MFRC522 + EEPROM Wear-Leveling Log + DS3231 RTC)](./Day_70_RFID_Logging)
+- [x] [Day 71: SD Card Module File Writing (SPI Datalogger Basics)](./Day_71_SD_Card_Writing)
       _(More days will be linked here as they are completed)_
 
 ---
