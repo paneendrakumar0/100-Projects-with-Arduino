@@ -57,6 +57,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 32: Quadrature Rotary Encoder (KY-040)](./Day_32_Rotary_Encoder)
 - [x] [Day 33: DC Motor Speed & Direction Control (L298N H-Bridge)](./Day_33_DC_Motor_L298N)
 - [x] [Day 34: Stepper Motor Control (ULN2003 / 28BYJ-48)](./Day_34_Stepper_ULN2003)
+- [x] [Day 35: Bipolar Stepper Driver (A4988 / NEMA 17)](./Day_35_Stepper_A4988)
       _(More days will be linked here as they are completed)_
 
 ---
