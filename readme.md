@@ -35,6 +35,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 10: Active Buzzer Melody Player](./Day_10_Buzzer_Melody)
 - [x] [Day 11: Servo Motor Sweep](./Day_11_Servo_Sweep)
 - [x] [Day 12: Potentiometer-Controlled Servo](./Day_12_Pot_Servo)
+- [x] [Day 13: Joystick Module Value Mapper](./Day_13_Joystick_Mapper)
       _(More days will be linked here as they are completed)_
 
 ---
