@@ -105,6 +105,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 80: I2C Multi-Master/Slave Network (Wire Callback Architecture)](./Day_80_I2C_Network)
 - [x] [Day 81: FreeRTOS Blink (Multitasking on Arduino)](./Day_81_FreeRTOS_Blink)
 - [x] [Day 82: FreeRTOS Sensor Reading vs Display Updates (Task Synchronization)](./Day_82_FreeRTOS_Sensor)
+- [x] [Day 83: Watchdog Timer Implementation (System Recovery & MCUSR Diagnostics)](./Day_83_Watchdog_Timer)
       _(More days will be linked here as they are completed)_
 
 ---
