@@ -120,6 +120,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 95: 3-DOF Robotic Arm Inverse Kinematics (Trigonometric & Geometric Solver)](./Day_95_Robotic_Arm_IK)
 - [x] [Day 96: Differential Drive Robot Odometry (Forward Kinematics from Wheel Encoders)](./Day_96_Differential_Drive_Odometry)
 - [x] [Day 97: Stepper Motor S-Curve Speed Profile (Jerk Minimization & LUT Ramping)](./Day_97_Stepper_S_Curve)
+- [x] [Day 98: Kalman Filter (1D Sensor Fusion & Bias Estimation)](./Day_98_Kalman_Filter)
       _(More days will be linked here as they are completed)_
 
 ---
