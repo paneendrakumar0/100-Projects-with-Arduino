@@ -85,6 +85,11 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 60: OLED Oscilloscope (Real-Time Waveform on SSD1306 128×64)](./Day_60_OLED_Oscilloscope)
 - [x] [Day 61: Robotic Arm Inverse Kinematics (2-DOF Geometric IK Solver)](./Day_61_Inverse_Kinematics)
 - [x] [Day 62: Cooperative Task Scheduler (Round-Robin Kernel from Scratch)](./Day_62_Task_Scheduler)
+- [x] [Day 63: DS18B20 1-Wire Temperature Sensor (1-Wire Protocol from Scratch)](./Day_63_DS18B20_1Wire)
+- [x] [Day 64: Capacitive Touch Sensor (RC Charge-Time Measurement)](./Day_64_Capacitive_Touch)
+- [x] [Day 65: EEPROM Servo Motion Recorder & Playback (Non-Volatile Motion Capture)](./Day_65_EEPROM_Motion_Recorder)
+- [x] [Day 66: MAX7219 8×8 LED Matrix Driver (SPI Register Control)](./Day_66_MAX7219_LED_Matrix)
+- [x] [Day 67: Hall Effect RPM Tachometer (Timer1 Input Capture Unit)](./Day_67_Hall_RPM_Tachometer)
       _(More days will be linked here as they are completed)_
 
 ---
