@@ -43,6 +43,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 18: Water Level Detection](./Day_18_Water_Level)
 - [x] [Day 19: Soil Moisture Monitor](./Day_19_Soil_Moisture)
 - [x] [Day 20: Flame Sensor Fire Alarm System](./Day_20_Flame_Sensor)
+- [x] [Day 21: 16x2 LCD Hello World (I2C)](./Day_21_LCD_HelloWorld)
       _(More days will be linked here as they are completed)_
 
 ---
