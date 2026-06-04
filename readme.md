@@ -76,6 +76,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 51: Industrial Modbus RTU Slave Node (RS485 Communication)](./Day_51_Modbus_RS485)
 - [x] [Day 52: CAN Bus Controller (MCP2515 SPI Node)](./Day_52_CAN_Bus)
 - [x] [Day 53: SPI Flash Memory Logger (Winbond W25QXX Direct Registers)](./Day_53_SPI_Flash_Logger)
+- [x] [Day 54: WS2812B Addressable RGB LED Strip (Bit-Banged Assembly Timings)](./Day_54_WS2812B_Bitbang)
       _(More days will be linked here as they are completed)_
 
 ---
