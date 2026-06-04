@@ -111,6 +111,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 86: Persistent Sensor Calibration Manager (MPU6050 Boot-trigger Calibration & EEPROM Storage)](./Day_86_Calibration_EEPROM)
 - [x] [Day 87: Creating a Custom Arduino Library (Exponential Moving Average Filter)](./Day_87_Custom_Library)
 - [x] [Day 88: Hardware Interrupts for critical triggers (Software Debouncing & Pin Loopback)](./Day_88_Hardware_Interrupts)
+- [x] [Day 89: Timer Interrupts for precise sampling (AVR Timer1 CTC & Datalogging)](./Day_89_Timer_Interrupts)
       _(More days will be linked here as they are completed)_
 
 ---
