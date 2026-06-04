@@ -100,6 +100,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 75: MPU6050 Pitch/Roll Calculation (Sensor Fusion via Complementary Filter)](./Day_75_MPU6050_Pitch_Roll)
 - [x] [Day 76: Fall Detection System (MPU6050 FSM Delineation)](./Day_76_Fall_Detection)
 - [x] [Day 77: Self-Balancing Robot Logic (Stabilization Loop & PID Tuning)](./Day_77_Self_Balancing)
+- [x] [Day 78: GPS Module (NEO-6M) Parsing (Raw NMEA Parser)](./Day_78_GPS_Parser)
       _(More days will be linked here as they are completed)_
 
 ---
