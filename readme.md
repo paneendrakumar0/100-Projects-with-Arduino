@@ -74,6 +74,7 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 - [x] [Day 49: GPS Telemetry Decoder (Raw NMEA Parser)](./Day_49_GPS_Decoder)
 - [x] [Day 50: Digital Compass Heading Lock (HMC5883L / QMC5883L I2C)](./Day_50_Compass_Heading_Lock)
 - [x] [Day 51: Industrial Modbus RTU Slave Node (RS485 Communication)](./Day_51_Modbus_RS485)
+- [x] [Day 52: CAN Bus Controller (MCP2515 SPI Node)](./Day_52_CAN_Bus)
       _(More days will be linked here as they are completed)_
 
 ---
