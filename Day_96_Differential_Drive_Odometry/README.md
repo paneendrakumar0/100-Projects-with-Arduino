@@ -122,3 +122,32 @@ $$Y_k = Y_{k-1} + d_C \cdot \sin\left(\theta_{k-1} + \frac{d\theta}{2}\right)$$
 | Ticks are not counting on physical robot | Missing pullup or wrong interrupt pins | Ensure encoder signal outputs are wired strictly to **Pin 2** (left) and **Pin 3** (right). Ensure you use `INPUT_PULLUP` if the encoders use open-collector outputs. |
 | Robot moves forward, but $X$ decreases in code | Swapped encoder wiring | Swap the encoder interrupts in the code or swap the physical pins. |
 | Float math slows execution | Trigonometric overhead | The odometry calculation runs at 20 Hz (every 50ms) which takes less than 1ms. If you need higher speeds, you can look up fast lookup tables or approximate equations. |
+
+## 🧠 Code Explanation
+
+Let's break down how a robot tracks its exact coordinates without GPS:
+
+### 1. Reading Quadrature Ticks
+```cpp
+float dL = (float)deltaL * DISTANCE_PER_TICK;
+float dR = (float)deltaR * DISTANCE_PER_TICK;
+```
+- As the wheels spin, hardware interrupts count encoder ticks. We multiply those ticks by the physical circumference of the wheel. 
+- If the left wheel rolled 5.2 cm (`dL`) and the right wheel rolled 5.8 cm (`dR`), the robot has moved in an arc.
+
+### 2. Linear and Angular Displacement
+```cpp
+float dC = (dL + dR) / 2.0f;
+float dTheta = (dR - dL) / WHEEL_TRACK;
+```
+- The robot's center point moved the exact average of both wheels (`dC`).
+- The robot's heading (rotation) changed based on the difference between the wheels divided by the physical width of the robot (`WHEEL_TRACK`). If the right wheel moves more than the left, the robot is curving left!
+
+### 3. Runge-Kutta Midpoint Integration
+```cpp
+float midTheta = robotTheta + (dTheta / 2.0f);
+robotX += dC * cos(midTheta);
+robotY += dC * sin(midTheta);
+```
+- To update our 2D global coordinates (X, Y), we use basic trigonometry (SOH CAH TOA).
+- We use the **Midpoint Method**: instead of projecting our movement using our old heading, or our new heading, we calculate the exact middle heading of the arc. This massively reduces integration errors and keeps our X, Y coordinates highly accurate over long distances!

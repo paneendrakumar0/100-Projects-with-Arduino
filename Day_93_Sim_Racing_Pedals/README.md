@@ -127,3 +127,28 @@ Output Value:  0 ──────────┼──────────
 | Pedals do not reach 100% (1023) or 0% in-game | Uncalibrated sensor limits | Run calibration mode (`c` in CLI) and press each pedal through its complete range of motion. |
 | Inverted pedal axis (e.g. 100% output when released) | Potentiometer wired backwards | Swap the VCC and GND wires on that specific pedal's potentiometer, or modify the mapping calculation in the code: `1023 - processPedalValue()`. |
 | Shift buttons do not register | Floating digital pin | The code uses `INPUT_PULLUP`. Ensure the switch connects the pin to **GND** when pressed. |
+
+## 🧠 Code Explanation
+
+Let's break down how we write robust drivers for analog human-interface devices:
+
+### 1. The Necessity of Deadzones
+```cpp
+if (val <= lowerThreshold) return 0;
+if (val >= upperThreshold) return 1023;
+```
+- **Inner Deadzone:** Humans cannot hold their feet perfectly still. Resting your foot on the brake pedal might cause the sensor to read 2% pressure, causing your sim racing car to drag its brakes constantly. The inner deadzone ignores all inputs below a certain threshold (e.g., 8%).
+- **Outer Deadzone:** Metal springs compress, potentiometers drift, and rubber bumpers wear down. If physical wear prevents the sensor from hitting 100%, you will never reach full throttle. The outer deadzone artificially guarantees 100% output at, say, 95% physical pedal travel.
+
+### 2. Dynamic Auto-Calibration
+```cpp
+if (rawT > throttleCal.maxRaw) throttleCal.maxRaw = rawT;
+```
+- Potentiometers differ wildly from factory to factory. We don't want to hardcode analog limits (`0` to `1023`) because a pedal might physically only sweep between `200` and `800`.
+- In Calibration Mode, the code aggressively tracks the absolute minimum and maximum voltages it has ever seen. The driver pushes the pedal to the floor, the Arduino saves that max voltage, and sets it as the new 100% ceiling dynamically!
+
+### 3. Linear Scaling (Interpolation)
+```cpp
+map(val, lowerThreshold, upperThreshold, 0, 1023);
+```
+- Once we know the true physical lower and upper limits of the sensor, we use the `map()` function to stretch that active analog span across the high-resolution 10-bit range (`0` to `1023`) expected by the USB Game Controller API.

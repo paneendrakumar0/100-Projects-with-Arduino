@@ -148,3 +148,33 @@ Where:
 | Servos twitch, jitter, or Arduino resets | Insufficient servo power | Ensure the servos are powered by an external 5V supply (minimum 2A) and that you have connected the external ground to the Arduino GND. |
 | Arm moves to incorrect positions | Incorrect link length values or incorrect servo mounting offsets | Verify L1 and L2 match your arm's physical hinge-to-hinge lengths. If servos were mounted offset, adjust the offset degree constants in `solveInverseKinematics()`. |
 | Target is reachable but solver errors | Angle exceeds servo limit | Standard hobby servos can only rotate 180 degrees. If the target coordinates require a joint to bend past its mechanical limit, the solver returns false to prevent binding. |
+
+## 🧠 Code Explanation
+
+Let's break down how the Geometric Inverse Kinematics solver works:
+
+### 1. Base Yaw (XY Plane Projection)
+```cpp
+float theta1_rad = atan2(y, x);
+```
+- The first degree of freedom is the base rotating left and right. This is easily solved using `atan2()` to find the angle to the target coordinate on the 2D floor plane.
+
+### 2. 2D Slice and Distance Calculation
+```cpp
+float r = sqrt(x*x + y*y);
+float S = sqrt(r*r + z_prime*z_prime);
+```
+- We collapse the 3D problem into a 2D vertical slice. `r` is the horizontal distance from the base, and `z_prime` is the vertical height. 
+- `S` calculates the direct diagonal distance from the shoulder joint to the target end-effector location using the Pythagorean theorem.
+
+### 3. The Law of Cosines (Elbow & Shoulder)
+```cpp
+float cosBeta = (L1*L1 + L2*L2 - S*S) / (2 * L1 * L2);
+float beta = acos(cosBeta);
+```
+- We now have a triangle formed by the upper arm (L1), the forearm (L2), and the diagonal distance (S).
+- We apply the **Law of Cosines**, a fundamental trigonometric principle, to solve for the interior angles of this triangle!
+- The angle `beta` directly dictates how far the elbow servo needs to bend to connect L1 to L2 at the exact target distance!
+
+### 4. Workspace Singularities
+- The solver checks if `S > (L1 + L2)`. If the target is physically further away than the two arm links stretched out straight, the code rejects the command. This prevents the mathematical `acos()` function from returning `NaN` (Not a Number) and crashing the robot!

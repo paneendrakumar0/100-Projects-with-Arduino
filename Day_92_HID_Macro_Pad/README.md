@@ -126,3 +126,26 @@ Row 1 (Pin 6) ───[Cathode Diode 4 Anode]───[Switch 4]─── Col 0
 | A key doesn't register at all | Bad solder joint or broken switch | Check continuity using a multimeter. Ensure row and column pins are mapped correctly in the sketch. |
 | Keys trigger twice on a single press | Switch debounce delay too short | The code has a 10ms debounce check, which is standard for Cherry MX switches. If using cheap tactile switches, increase the debounce delay in `scanKeyboardMatrix()` to `20ms`. |
 | Compiles with USB errors | Compiling for Uno/Mega without using the auto-detection | Select the correct board in Arduino IDE (Tools > Board) or let the code use its fallback serial mode. |
+
+## 🧠 Code Explanation
+
+Let's break down the industrial technique used inside every mechanical keyboard:
+
+### 1. Matrix Scanning (Saving I/O Pins)
+- A 104-key mechanical keyboard doesn't use 104 pins on a microcontroller. 
+- Switches are wired into a grid of Rows and Columns. For our 6-key macro pad, a 2x3 matrix means we only need 5 microcontroller pins!
+- The Arduino sets all columns to `INPUT_PULLUP`. It then pulls Row 0 `LOW`. It reads the 3 columns. If Col 2 reads `LOW`, we instantly know the key at Matrix(0, 2) is pressed! It then pulls Row 1 `LOW` and repeats. This happens thousands of times a second.
+
+### 2. The Ghosting Problem and Signal Diodes
+- **Ghosting** happens when 3 keys sharing rows/columns are pressed simultaneously. Current flows backwards through the closed switches, creating a "sneak path" that tricks the microcontroller into thinking a 4th key is pressed.
+- By placing a tiny signal diode (like a 1N4148) on one leg of every single switch, we force the electricity to act as a one-way valve. The sneak path is blocked, granting the keyboard **N-Key Rollover (NKRO)**—the ability to press every key at once perfectly!
+
+### 3. Firing Complex System Hotkeys
+```cpp
+Keyboard.press(KEY_LEFT_CTRL);
+Keyboard.press('c');
+delay(20);
+Keyboard.releaseAll();
+```
+- A macro is just a rapid sequence of keypresses. We instruct the USB HID controller to hold down the modifier (`CTRL`), tap the payload key (`C`), and critically, we call `releaseAll()`. 
+- If you forget `releaseAll()`, the computer thinks you are permanently holding down the `CTRL` key, which makes using the PC impossible until you reboot!

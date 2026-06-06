@@ -122,3 +122,32 @@ No external hardware is needed! Connect your Arduino Uno to your PC using a stan
 | Sending `l` or `m` does nothing | Serial Monitor line endings enabled | Ensure the dropdown in the Serial Monitor is set to **No Line Ending**. Carriage returns (`\r`) or line feeds (`\n`) can interfere with command parsing if sent at the wrong time. |
 | Parser gets stuck in `STATE_READ_DATA` | Packet length mismatch | If the length byte is larger than the actual bytes sent, the FSM will wait indefinitely. Always make sure your packet generation code on the PC writes the exact number of bytes declared in the length field. |
 | Noise corruption causes frequent discarded packets | Poor electrical grounding | Ensure the PC and Arduino share a common ground. Add a shielding sheath around the serial cables when running near high-power DC motors. |
+
+## 🧠 Code Explanation
+
+Let's break down how a Finite State Machine guarantees perfect data transmission:
+
+### 1. The Problem with String Parsing
+- Using `Serial.parseInt()` or `Serial.readStringUntil('\n')` is incredibly slow and CPU intensive. Worse, if a single byte is lost due to electrical noise, the entire string shifts, causing catastrophic robotic failure.
+
+### 2. Binary Framing Protocol
+- We construct a highly rigid data packet:
+  `[Start Byte (0x02)] [Length] [Command ID] [Payload Data] [Checksum] [End Byte (0x03)]`
+- The `0x02` tells the Arduino to wake up and expect a packet. The `Length` tells it exactly how many payload bytes to read.
+
+### 3. The Finite State Machine (FSM)
+```cpp
+switch (currentState) {
+  case STATE_WAIT_SOF:
+    if (val == 0x02) currentState = STATE_READ_LEN;
+    break;
+```
+- The FSM evaluates one single byte at a time in a completely non-blocking loop. 
+- If the Arduino is in the `STATE_WAIT_SOF` state, it ignores all incoming bytes until it sees `0x02`. Then it cleanly transitions to the next state.
+
+### 4. Checksum Data Validation
+```cpp
+calculatedChecksum ^= val; // Cumulative XOR
+```
+- To ensure no payload bytes were corrupted over the wire, the sender XORs all the data bytes together and attaches the result as a "Checksum" byte at the end of the packet.
+- The Arduino recalculates the XOR sum as it receives the bytes. If the Arduino's sum does not perfectly match the sender's Checksum byte, it means electrical noise flipped a bit in transit. The packet is instantly discarded to prevent the robot from executing a corrupted, dangerous command!

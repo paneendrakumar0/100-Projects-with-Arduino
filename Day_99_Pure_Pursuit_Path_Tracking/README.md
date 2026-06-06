@@ -118,3 +118,35 @@ To run on physical hardware:
 | The robot steers away from the path | Incorrect lateral coordinate sign | Check the global-to-local transformation math. If $y_l$ calculation has the wrong sign, the robot will steer in the opposite direction of the path. |
 | The robot cuts corners too heavily | Look-ahead distance $L_d$ is too large | Decrease $L_d$ (using `d` in the CLI) to make the robot track the segments more closely. |
 | The robot oscillates violently left and right | Look-ahead distance $L_d$ is too small | Increase $L_d$ (using `l` in the CLI) to damp out the steering response. |
+
+## 🧠 Code Explanation
+
+Let's break down the industry standard path-tracking algorithm used by AGVs and self-driving cars:
+
+### 1. Global to Local Frame Transformation
+```cpp
+float lx =  dx * cos(robotTheta) + dy * sin(robotTheta);
+float ly = -dx * sin(robotTheta) + dy * cos(robotTheta);
+```
+- GPS or Odometry gives us the target waypoint in Global coordinates (e.g., X: 40, Y: 25).
+- The robot doesn't know what to do with that. We use matrix rotation mathematics to transform the target into the Robot's *Local Coordinate Frame*. 
+- `lx` is now "how far forward the target is", and `ly` is "how far to the left the target is" relative to the robot's hood!
+
+### 2. The Look-Ahead Distance (Ld)
+- A human driving a car doesn't stare at the bumper; they look 20 meters down the road.
+- The algorithm searches the path array for the first waypoint that is further away than our designated "Look-Ahead Distance" (e.g., 12cm) and aims for that.
+
+### 3. Calculating Steering Curvature (Gamma)
+```cpp
+float gamma = (2.0f * ly) / (Ld * Ld);
+```
+- The core of Pure Pursuit: we want to draw a perfect circular arc connecting the robot's rear axle to the Look-Ahead target.
+- Using basic geometry, the curvature of that arc (`gamma`) is mathematically derived directly from the lateral offset (`ly`) and the look-ahead distance (`Ld`). 
+
+### 4. Differential Drive Motor Mapping
+```cpp
+float vL = vTarget * (1.0f - (gamma * WHEEL_TRACK / 2.0f));
+float vR = vTarget * (1.0f + (gamma * WHEEL_TRACK / 2.0f));
+```
+- Once we know the required curvature, we map it to the physical wheels.
+- If the curve goes left (positive `gamma`), the math automatically slows down the left wheel (`vL`) and speeds up the right wheel (`vR`) perfectly, forcing the robot onto the circular arc intersecting the target!

@@ -109,3 +109,31 @@ No external components required! The sketch contains an integrated ROS PC master
 | `[BRIDGE ERROR] Checksum mismatch` | Serial bit flips or noise | If running close to high-power DC motors, shield the USB cables. Check the FSM checksum generation on the host PC side. |
 | Memory usage is too high on compile | Excessive string literals | All debugging string prints in this project are wrapped in the `F()` macro (e.g. `F("...")`) which stores them in flash memory, saving RAM for the FSM buffers. |
 | Publisher does not start | Publisher paused | Send `s` in the Serial Monitor input bar to resume the 10 Hz automatic timer loop. |
+
+## 🧠 Code Explanation
+
+Let's break down the capstone architecture that allows Arduinos to run under the Robot Operating System (ROS):
+
+### 1. Robust Serial Protocol Framing
+```cpp
+uint8_t packet[9] = { SOF, len, msgType, val1, val2, val3, val4, CS, EOF };
+```
+- ROS cannot tolerate corrupted Serial strings. We use a binary protocol utilizing a Start of Frame (`0x02`), an End of Frame (`0x03`), and a mathematical XOR Checksum byte. 
+- If a single bit flips due to electrical noise, the checksum fails, and the Arduino safely drops the packet instead of causing a robotic collision.
+
+### 2. The Subscriber: `/cmd_vel`
+```cpp
+int16_t rawLinearX  = (rxBuffer[1] << 8) | rxBuffer[2];
+float linearX  = (float)rawLinearX / 1000.0f;
+```
+- When the ROS PC wants the robot to move, it sends a `Twist` message over the `/cmd_vel` topic.
+- Because sending raw 32-bit floating point numbers over Serial is messy, the PC multiplies the float by 1000 and sends it as a 16-bit integer. The Arduino shifts the bytes together, divides by 1000, and perfectly reconstructs the `linearX` (m/s) and `angularZ` (rad/s) velocities!
+- The Arduino then runs differential kinematics to convert `linearX/angularZ` into target RPMs for the left and right wheel PID controllers.
+
+### 3. The Publisher: `/odom`
+```cpp
+int16_t scaleX = (int16_t)(odomX * 100.0f);
+```
+- For ROS to navigate (SLAM), it needs to know exactly where the robot is.
+- At 10 Hz, the Arduino runs dead-reckoning kinematics to track its `X`, `Y`, and `Theta` heading. It scales these floats into 16-bit integers, packs them into a binary frame with a `0x20` message type, and blasts it up the USB cable to the PC!
+- The PC ROS Node decodes this binary packet, converts it into an `nav_msgs/Odometry` message, and publishes it to the global ROS network, closing the autonomous loop!

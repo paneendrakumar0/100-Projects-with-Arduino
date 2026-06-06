@@ -115,3 +115,33 @@ Consumer.write(MEDIA_VOLUME_MUTE); // Toggles mute state
 | Volume goes down when turning clockwise | Channel A and Channel B are swapped | Swap the wires on pins **D5** (CLK) and **D6** (DT), or swap their assignments in the sketch code. |
 | Button doesn't trigger mute | Loose wire on SW pin | Verify the SW pin goes to **D7** and the GND pin of the encoder goes to Arduino GND. |
 | Compiles with error: `HID-Project.h: No such file or directory` | Missing library dependency | Open the Library Manager in the Arduino IDE, search for **HID-Project**, and click install. If you don't have it, the code will automatically fall back to keyboard shortcuts (`Ctrl+Up` / `Ctrl+Down`). |
+
+## 🧠 Code Explanation
+
+Let's break down how we decode a physical dial into perfect digital signals:
+
+### 1. The Physics of Quadrature Encoders
+- Unlike a standard potentiometer that gives an absolute analog voltage, a Rotary Encoder gives relative digital steps. 
+- Inside the dial are two physical metal contact switches, mechanically offset from one another. 
+- As you turn the dial, they generate two square waves (Channel A and Channel B) that are exactly 90 degrees out of phase.
+
+### 2. State-Machine Decoding
+```cpp
+if (currentStateCLK != lastStateCLK && currentStateCLK == LOW) {
+  if (digitalRead(ENCODER_PIN_B) != currentStateCLK) {
+    volumeUp();
+  } else {
+    volumeDown();
+  }
+}
+```
+- By monitoring Channel A (CLK) for a falling edge, we know the dial just clicked one physical "detent".
+- In that exact microsecond, we look at the state of Channel B (DT). If Channel A transitioned *before* Channel B, the dial is turning Clockwise. If Channel B transitioned *before* Channel A, it's turning Counter-Clockwise. It's a mathematically flawless way to detect infinite rotation!
+
+### 3. Native USB HID Consumer Control
+```cpp
+Consumer.write(MEDIA_VOLUME_UP);
+```
+- The ATmega32U4 chip (Leonardo/Micro) features a hardware USB transceiver. 
+- Instead of relying on buggy PC-side software to read Serial strings, the Arduino physically enumerates to the operating system as a native USB Multimedia Keyboard. 
+- Sending the `MEDIA_VOLUME_UP` hex code triggers the operating system's built-in volume control directly, bypassing all custom drivers!

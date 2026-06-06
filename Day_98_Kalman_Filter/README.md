@@ -129,3 +129,35 @@ If testing on a physical MPU6050 IMU:
 | Kalman filter output lags behind the real movement | Process noise $Q_{\text{angle}}$ is too small | Increase $Q_{\text{angle}}$ (using `3` in the CLI) or decrease $R_{\text{measure}}$ (using `2` in the CLI) to tell the filter to trust measurements more. |
 | Kalman filter output is too noisy | Measurement noise $R_{\text{measure}}$ is too small | Increase $R_{\text{measure}}$ (using `1` in the CLI) to tell the filter to ignore accelerometer fluctuations. |
 | Memory usage warnings on compile | float multiplication overhead | The math has been optimized to bypass matrix multiplication libraries by calculating the algebraic updates directly. It runs under 100 microseconds, well within the 10,000 microsecond limit of 100 Hz. |
+
+## 🧠 Code Explanation
+
+Let's break down the legendary algorithm used in the Apollo moon landings:
+
+### 1. The Sensor Problem
+- **Accelerometers** measure gravity. They give a mathematically perfect absolute tilt angle, but they are incredibly noisy. Any tiny vibration or bump makes the reading spike violently.
+- **Gyroscopes** measure rotational speed. They are incredibly smooth and immune to vibration, but their physical zero-point slowly drifts over time. If you integrate gyro data, your angle will slowly drift until it's completely wrong.
+
+### 2. Step 1: Predict (Trusting the Gyro)
+```cpp
+kalmanAngle += dt * (newRate - gyroBias);
+P[0][0] += dt * (dt * P[1][1] - P[0][1] - P[1][0] + Q_angle);
+```
+- The Kalman Filter first calculates where it *thinks* the robot is, by integrating the smooth Gyroscope data minus the estimated bias drift.
+- It also updates its Error Covariance Matrix (`P`), which tracks how "uncertain" or "unconfident" the algorithm is about its current prediction.
+
+### 3. Step 2: Update (Trusting the Accelerometer)
+```cpp
+float S = P[0][0] + R_measure;
+float K0 = P[0][0] / S; // Kalman Gain
+```
+- The filter compares its prediction to the noisy Accelerometer reading.
+- It calculates the **Kalman Gain**. This is the magic ratio! 
+  - If the Accelerometer noise (`R_measure`) is high, the Kalman Gain drops near 0, meaning it ignores the accelerometer and trusts the smooth gyro.
+  - If the Gyro uncertainty (`P`) grows too large over time due to drift, the Kalman Gain increases toward 1, meaning it snaps the angle back to the absolute accelerometer reading!
+
+### 4. Optimal Bias Estimation
+```cpp
+gyroBias += K[1] * y;
+```
+- The true brilliance of the Kalman filter: it doesn't just estimate the angle. It continuously tracks the error mathematically to reverse-engineer and estimate the exact bias drift of the gyroscope in real-time, subtracting it out dynamically!

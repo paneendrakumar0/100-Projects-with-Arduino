@@ -123,3 +123,33 @@ By calculating this array in `setup()`, the execution loop only needs to read a 
 | Motor stutters at the very beginning of the motion | Starting velocity is too high | Decrease `vStart` in the code to `50.0f` or `100.0f` to allow the motor to begin turning from a lower torque threshold. |
 | Motor rotates in the wrong direction | Coil phases wired backwards | Power down the system, and swap the wires of one coil (e.g. swap A1 and A2) or toggle `DIR_PIN` logic in the sketch. |
 | Serial Plotter output is garbled | Baud rate mismatch | Ensure the Serial Monitor / Serial Plotter baud rate is set to **9600**. |
+
+## 🧠 Code Explanation
+
+Let's break down how S-Curve mathematics prevent stepper motors from stalling:
+
+### 1. The Problem with Instant Acceleration
+- Stepper motors move a heavy physical rotor using magnetic fields. If you command a stepper to jump instantly from 0 to 1000 RPM, the magnetic field spins too fast for the rotor's inertia to catch up. The magnetic lock breaks, the motor squeals horribly, and misses steps.
+
+### 2. Raised Cosine (S-Curve) Math
+```cpp
+float sCurveFraction = (1.0f - cos(PI * fraction)) / 2.0f;
+float sCurveVel = vStart + (vMax - vStart) * sCurveFraction;
+```
+- While a linear (Trapezoidal) ramp increases speed at a constant rate, an S-Curve ramp uses a cosine wave.
+- It starts accelerating very gently, ramps up aggressively in the middle, and then smoothly tapers off as it reaches peak velocity. 
+- Because the rate of change of acceleration (Jerk) is minimized, the motor doesn't resonate, allowing it to reach much higher top speeds without stalling!
+
+### 3. Precomputed Lookup Tables
+```cpp
+sCurveIntervals[i] = (uint16_t)(1000000.0f / sCurveVel);
+```
+- Calculating floating-point trigonometry (`cos()`) is very slow on an 8-bit Arduino.
+- To ensure we can fire stepper pulses at microsecond accuracy without lag, we pre-calculate the delay interval for all 100 steps of the ramp during `setup()`, and store them in an array in memory.
+
+### 4. Non-Blocking Step Execution
+```cpp
+if (currentMicros - lastStepMicros >= currentIntervalUs) {
+    digitalWrite(STEP_PIN, HIGH);
+```
+- Instead of using `delayMicroseconds()`, which freezes the entire CPU, we use a `micros()` tracking system. The CPU is free to parse Serial commands or run calculations, and fires the physical STEP pulse the exact microsecond the precomputed interval expires!
