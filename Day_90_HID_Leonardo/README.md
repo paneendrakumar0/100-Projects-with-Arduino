@@ -105,3 +105,30 @@ If you write a loop that constantly presses `Enter` or sends keystrokes, you wil
 | Sketch compiles with error: `Keyboard.h: No such file or directory` | Compiling for Uno/Nano without simulation wrapper | Our sketch includes a wrapper to prevent this, but make sure you select **Arduino Leonardo** or **Micro** in Tools > Board. |
 | Button triggers continuously | Missing pull-up resistor | The code uses `INPUT_PULLUP` to set the pin HIGH by default. Make sure the button is wired to connect the pin to **GND** when pressed. |
 | Roguish keystrokes locking out the PC | Infinite loop in HID transmission | Unplug the USB cable immediately. Hold down the physical **Reset Button** on the Arduino, plug the USB cable back in, click "Upload" in the IDE, and release the Reset button only when the IDE status changes to "Uploading...". |
+
+## 🧠 Code Explanation
+
+Let's break down how we emulate Human Interface Devices (HID):
+
+### 1. Hardware Requirements (ATmega32U4)
+```cpp
+#if defined(USBCON)
+  #include <Keyboard.h>
+```
+- Standard Arduino Unos (ATmega328P) cannot do this natively because they use a separate USB-to-Serial chip. 
+- Boards like the Leonardo, Micro, or Pro Micro use the **ATmega32U4**, which has a direct hardware USB transceiver. When plugged into a PC, it doesn't just show up as a COM port; it can enumerate as a physical USB Keyboard and Mouse, completely bypassing OS security!
+
+### 2. Mouse Jiggling
+```cpp
+Mouse.move(5, 0, 0); // Move X +5 pixels
+```
+- Emulating a mouse is as simple as sending relative X and Y coordinate changes. Our script sends a +5 pixel move, waits 100ms, and sends a -5 pixel move back. The PC registers physical mouse activity, preventing sleep modes or screen locks!
+
+### 3. Keyboard Shortcuts and Macros
+```cpp
+Keyboard.press(KEY_LEFT_ALT);
+Keyboard.press(KEY_TAB);
+Keyboard.releaseAll();
+```
+- The `Keyboard` library allows us to spoof key presses. We can type whole strings automatically (`Keyboard.print()`) or send complex modifier shortcuts.
+- **Safety Warning:** If you write a loop that hits `ENTER` repeatedly with no delay, you will lock yourself out of your computer and be unable to upload new code! Always use `releaseAll()` and implement physical safety buttons.

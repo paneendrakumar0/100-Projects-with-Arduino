@@ -109,3 +109,26 @@ Before loading the offsets, the Arduino recalculates the checksum of the bytes i
 | `[WARNING] No valid calibration data found` | First run or checksum mismatch | Trigger a manual calibration sequence using the Serial CLI (`c`) or boot-button pin. |
 | Accelerometer Z-axis is calibrated near $-16384$ instead of $0$ | IMU was not held flat during calibration | Lay the IMU perfectly flat on a table so the Z-axis aligns with the gravity vector. |
 | Calibration triggers constantly on boot | Button wire is loose or floating | Ensure Pin 2 is connected correctly to the button, and the other button terminal goes to GND. |
+
+## 🧠 Code Explanation
+
+Let's break down how an industrial IMU Calibration Manager works:
+
+### 1. The Need for Calibration
+- Due to manufacturing tolerances and thermal stress, MEMS gyroscopes and accelerometers have a tiny physical bias. Even sitting perfectly still on a desk, a gyro might read $+0.5^\circ/	ext{s}$ rotation. Over time, that error adds up and causes robotic drift.
+- Calibration fixes this by measuring the sensor 500 times while perfectly still, averaging the results, and saving that exact "offset" value.
+
+### 2. Persistent Storage with Magic Bytes
+```cpp
+calData.magicByte = 0xC4;
+EEPROM.put(0, calData);
+```
+- Doing a 2-second calibration on every boot is annoying and assumes the robot isn't moving when you turn it on (impossible for drones in the air).
+- We run calibration *once* (triggered by a button press) and save the offsets to the EEPROM.
+- To ensure we don't load garbage memory, we write a "Magic Byte" (`0xC4`) to the EEPROM. On boot, if the EEPROM doesn't contain `0xC4`, the system knows the sensor has never been calibrated!
+
+### 3. Applying the Offsets
+```cpp
+float gxCal = (gx - calData.gyroOffsetX) / GYRO_SCALE_FACTOR;
+```
+- During real-time operation, we read the raw hardware integer (`gx`), subtract the stored bias offset (`calData.gyroOffsetX`), and *then* divide by the scale factor to get a perfectly true $0.0^\circ/	ext{s}$ reading!

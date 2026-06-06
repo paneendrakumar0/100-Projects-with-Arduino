@@ -125,3 +125,29 @@ If no sensor is connected:
 | Output reads garbage characters | Baud rate mismatch | Change the Serial Monitor/Plotter baud rate to **115200**. |
 | Analog input value is flat | Potentiometer connected incorrectly | Verify wiring: Pin 1 to GND, Pin 2 (wiper) to A0, Pin 3 to 5V. |
 | `millis()` or `delay()` stops working | Timer0 registers modified | Avoid modifying Timer0 configuration (`TCCR0A`/`TCCR0B`) as it drives `millis()`. Use Timer1 or Timer2 instead. |
+
+## 🧠 Code Explanation
+
+Let's break down how to guarantee mathematically perfect sampling rates using Timers:
+
+### 1. The Problem with millis()
+- If you poll a sensor using `if (millis() - lastTime > 10)`, the actual timing might be 10ms, 11ms, or 15ms depending on what `Serial.print()` or other code is doing. This timing "jitter" ruins advanced math like Fast Fourier Transforms (FFT) or PID Controllers.
+
+### 2. Configuring Timer1 for CTC Mode
+```cpp
+OCR1A = 19999;
+TCCR1B |= (1 << WGM12) | (1 << CS11);
+```
+- The ATmega328P has a 16-bit hardware counter (Timer1) driven by the 16 MHz crystal.
+- We set a Prescaler of 8, slowing the timer to 2 MHz. We then set the Compare Match Register (`OCR1A`) to 19,999.
+- In **Clear Timer on Compare Match (CTC)** mode, the timer counts up to 19,999, instantly resets to 0, and triggers an interrupt. 
+- $2,000,000 / 20,000 = 100	ext{ Hz}$. We have achieved mathematically flawless 10.000 millisecond ticks!
+
+### 3. The Timer ISR
+```cpp
+ISR(TIMER1_COMPA_vect) {
+  sampledValue = analogRead(A0);
+  newSampleAvailable = true;
+}
+```
+- Every 10ms, no matter what `loop()` is doing, the CPU halts and executes this ISR. It samples the ADC precisely on time, raises a boolean flag, and returns. `loop()` handles the slow serial printing only when the flag is true.

@@ -123,3 +123,27 @@ Because interrupts halt the rest of the program, they must follow strict rules:
 | Physical button triggers twice when pressed | Debounce lockout window is too small | Increase `DEBOUNCE_DELAY_MS` in the code to `200` or `250` ms. |
 | System hangs when E-Stop is triggered | Intended behavior | This is a safety lock. Send `r` in the serial input to clear the error. |
 | Shared variables read corrupt values in main loop | Missing atomic block | Ensure you use `noInterrupts()` and `interrupts()` when copying volatile variables in `loop()`. |
+
+## 🧠 Code Explanation
+
+Let's break down how Hardware Interrupts respond instantly to physical events:
+
+### 1. Bypassing the Main Loop
+```cpp
+attachInterrupt(digitalPinToInterrupt(2), buttonISR, FALLING);
+```
+- If you use `digitalRead()` inside `loop()`, you might miss a button press if the Arduino is busy doing math or executing a `delay()`.
+- An Interrupt connects directly to the CPU core. When Pin 2 drops from HIGH to LOW (`FALLING`), the CPU literally freezes whatever it was doing in `loop()`, jumps instantly to the `buttonISR()` function, executes it, and goes right back to where it left off. This is mandatory for Emergency Stop (E-Stop) buttons!
+
+### 2. The Mechanical Bounce Problem
+- When two pieces of metal touch inside a physical button, they act like a tiny diving board, bouncing on a microscopic level. The logic pin goes `HIGH-LOW-HIGH-LOW` in a span of 2 milliseconds.
+- Because hardware interrupts are so fast, the Arduino will register 1 physical press as 5 to 10 separate triggers!
+
+### 3. Software Debouncing inside the ISR
+```cpp
+if (currentTime - lastInterruptTime > DEBOUNCE_DELAY_MS) {
+    debouncedTriggerCount++;
+    lastInterruptTime = currentTime;
+}
+```
+- Inside the ISR, we compare the current timestamp to the last time we processed a trigger. If it's been less than 150ms, we mathematically ignore the trigger because we know it's a physical metal bounce. We only register "true" presses!

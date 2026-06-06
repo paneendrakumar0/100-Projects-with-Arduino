@@ -115,3 +115,23 @@ No external wiring is required.
 | Boot count resets to 0 | `resetToFactoryDefaults()` triggered | If you clear the EEPROM manually or power fluctuates, the checksum check fails, and the system reloads defaults. |
 | Char array (System Name) prints garbage characters | Missing null terminator | Ensure string copies leave room for the null terminator (`\0`). Our buffer is 16 bytes, limiting the string to 15 characters. |
 | Float values lose decimal accuracy | Single-precision limits | Float variables on AVR are limited to 32-bits (6-7 decimal places of precision). |
+
+## 🧠 Code Explanation
+
+Let's break down how we store complex configurations directly to non-volatile memory:
+
+### 1. Writing Full Structs to EEPROM
+```cpp
+EEPROM.put(EEPROM_START_ADDR, activeConfig);
+```
+- Instead of manually writing variables byte-by-byte (and tracking memory addresses by hand), we pack our variables into a C++ `struct`.
+- The `EEPROM.put()` method uses pointers and `sizeof()` to serialize the entire struct into a contiguous block of bytes and writes it to EEPROM. It uses "write gating" internally, meaning it checks the memory first and only writes bytes that have actually changed, saving the silicon from wear-and-tear!
+
+### 2. Data Integrity and Checksums
+```cpp
+uint16_t calculatedCheck = calculateChecksum(activeConfig);
+if (activeConfig.checksum == calculatedCheck) { ... }
+```
+- EEPROM memory can become corrupted due to power-loss during a write, or you might read from a brand-new chip that holds random garbage data (`0xFF`).
+- Before saving, we add up the raw byte values of our struct to create a "checksum". 
+- When we load the data on boot, we re-calculate the checksum. If it doesn't match the stored checksum, we know the memory is corrupted, and we automatically wipe it and load safe Factory Defaults!

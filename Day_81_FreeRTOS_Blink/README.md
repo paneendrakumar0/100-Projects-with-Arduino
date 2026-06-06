@@ -99,3 +99,23 @@ The ATmega328P has only **$2\,\text{KB}$ of SRAM**.
 | Diagnostic output prints corrupted characters | Serial buffer collision | String calculations inside tasks can exceed stack limits. Increase the stack size of `TaskDiagnostics` to 128 words, or reduce string complexity. |
 | LEDs flash at wrong frequencies | Tick rate mismatch | FreeRTOS configuration on AVR typically sets the tick rate to 15.6ms or 16ms by default if using watchdog timers, or 1ms if using Timer1. Ensure `portTICK_PERIOD_MS` is used to scale delays. |
 | `loop()` code does not run | RTOS overrides loop() | Once the scheduler starts (`vTaskStartScheduler()` which is called implicitly by the library after `setup()`), `loop()` is bypassed. Put all active code inside task functions. |
+
+## 🧠 Code Explanation
+
+Let's break down how a Real-Time Operating System manages parallel execution on a single core:
+
+### 1. Task Creation and Prioritization
+```cpp
+xTaskCreate(TaskBlink1, "Blink1", 100, NULL, 1, NULL);
+```
+- Standard Arduino programs execute sequentially in `loop()`. If one function takes too long or uses `delay()`, everything else freezes.
+- Here, we create discrete Tasks. We assign them a memory stack size (100 words = 200 bytes) and a priority.
+- If a low-priority task is running, and a high-priority task needs to run, FreeRTOS instantly pauses the low-priority task mid-execution, runs the critical task, and then resumes the original task perfectly!
+
+### 2. Time Slicing via the Scheduler
+```cpp
+vTaskDelay(500 / portTICK_PERIOD_MS);
+```
+- In standard Arduino, `delay(500)` forces the CPU to burn cycles in a busy-wait loop doing absolutely nothing.
+- In FreeRTOS, `vTaskDelay()` tells the RTOS Scheduler: "I don't need the CPU for 500ms."
+- The Scheduler immediately marks this task as "Blocked" and hands the CPU to the next available task. The CPU is never idle, allowing true cooperative multitasking!

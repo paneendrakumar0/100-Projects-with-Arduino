@@ -116,3 +116,28 @@ Note that while the ATmega328P chip draws $<1\,\mu\text{A}$ in deep sleep, a sta
 | Current draw in sleep is still high (e.g. 15mA) | Board-level power consumption | This is due to the Arduino Uno's onboard USB chip and linear regulator. To measure true micro-ampere sleep current, measure the current on a bare ATmega328P or an Arduino Pro Mini with LEDs removed. |
 | Serial Monitor prints garbage after waking | Clock synchronization lag | After sleep, the internal clock takes a few microseconds to stabilize. The sketch disables interrupts and serial operations during transition to prevent garbage characters. |
 | Edge interrupt (`RISING`/`FALLING`) fails to wake | Clock halted | Edge interrupts require the I/O clock to sample the transition. You must use `LOW` level interrupt mode for wake-ups in Power-down sleep. |
+
+## 🧠 Code Explanation
+
+Let's break down how we drastically reduce power consumption for battery operations:
+
+### 1. Putting the CPU to Sleep
+```cpp
+set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+sleep_cpu();
+```
+- A standard `delay(1000)` doesn't save power; the CPU is still running at 16 MHz executing empty math loops, burning ~15mA.
+- `sleep_cpu()` physically halts the 16 MHz crystal oscillator! The CPU completely freezes on that line of code. By using `SLEEP_MODE_PWR_DOWN`, the chip's current draw drops from 15,000 µA down to less than 1 µA!
+
+### 2. Disabling Power-Hungry Peripherals
+```cpp
+ADCSRA &= ~(1 << ADEN); // Turn off ADC
+```
+- Even if the CPU clock is halted, the Analog-to-Digital Converter uses active silicon comparators that burn ~250 µA in the background. We manipulate the `ADCSRA` register to physically disconnect power to the ADC before sleeping.
+
+### 3. Waking Up via Hardware Interrupts
+```cpp
+attachInterrupt(digitalPinToInterrupt(WAKE_BUTTON_PIN), wakeUpISR, LOW);
+```
+- Because the CPU is frozen, it cannot check `digitalRead()`.
+- We map an external button to a hardware interrupt (INT0). When the voltage drops LOW, it triggers an asynchronous logic gate deep in the silicon that instantly restarts the main 16 MHz clock, executes the ISR, and resumes our code right after `sleep_cpu()`!

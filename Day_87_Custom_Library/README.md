@@ -100,3 +100,23 @@ For real-world sensor testing (Optional):
 | `fatal error: EMAFilter.h: No such file or directory` | Library files are not in the same directory | Ensure `EMAFilter.h` and `EMAFilter.cpp` are inside the folder `Day_87_Custom_Library`. |
 | Serial Monitor prints garbage characters | Baud rate mismatch | Change the Serial Monitor/Plotter baud rate setting to **115200**. |
 | Filter output starts at 0.0 and lags heavily on startup | Filter memory initialized to zero | In the library constructor or `reset()`, we check if it is the first sample (`_isInitialized == false`) and seed the memory with the raw input value to eliminate startup lag. |
+
+## 🧠 Code Explanation
+
+Let's break down how we implement and package an Exponential Moving Average (EMA) filter:
+
+### 1. EMA Filter Math vs. Simple Averages
+- A Simple Moving Average requires a large array (e.g., 50 variables) to store past data, burning through the Arduino's tiny SRAM.
+- The **Exponential Moving Average** ($y[n] = lpha \cdot x[n] + (1 - lpha) \cdot y[n-1]$) requires only *one* variable of memory: the previous result!
+
+### 2. The Alpha Coefficient (Smoothing vs. Lag)
+```cpp
+float filteredSignal = myFilter.filter(rawSignal);
+```
+- The `alpha` value (between 0.0 and 1.0) controls the filter's aggression.
+- **Low Alpha (e.g., 0.1):** We only trust 10% of the new raw sensor reading, and rely 90% on our historical smoothed data. This destroys high-frequency noise but creates a delayed response (lag).
+- **High Alpha (e.g., 0.8):** We trust 80% of the new reading. This tracks fast movements perfectly but lets a lot of noise pass through.
+
+### 3. Encapsulation into a C++ Class
+- We abstracted the math into `EMAFilter.h` and `EMAFilter.cpp`. 
+- By using a C++ Class, we encapsulate the memory state (`_lastOutput`). This means we can instantiate ten different `EMAFilter` objects for ten different sensors without their math or memory overlapping!

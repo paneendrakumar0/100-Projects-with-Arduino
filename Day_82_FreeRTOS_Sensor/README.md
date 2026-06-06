@@ -97,3 +97,24 @@ FreeRTOS tasks can be in one of four states: **Running, Ready, Blocked, or Suspe
 | `[PRODUCER ERROR] Queue is full! Data dropped.` | Consumer task is too slow or locked | Ensure `TaskSerialDisplay` does not contain blocking loops (`delay()`). If the console cannot keep up, increase the queue size during `xQueueCreate()`. |
 | Program freezes on boot | Out of SRAM (Heap exhaustion) | The kernel allocates queue buffers and task stacks from the heap. On the Uno, keep task stacks under 100 words and queue lengths under 5 slots. |
 | Diagnostic logs show corrupted numbers | Shared resource violation | If you access the analog pin or Serial port from multiple tasks simultaneously, conflict occurs. Ensure only one task writes to the serial port, or protect it with a Mutex semaphore. |
+
+## 🧠 Code Explanation
+
+Let's break down how we securely transfer data between parallel threads:
+
+### 1. The Danger of Shared Variables
+- If Task A (Producer) and Task B (Consumer) both read/write to a standard global `int` at the exact same microsecond, the data gets corrupted. This is called a "Race Condition."
+
+### 2. Thread-Safe FreeRTOS Queues
+```cpp
+sensorQueue = xQueueCreate(5, sizeof(int));
+```
+- A Queue is a protected chunk of memory (a First-In-First-Out buffer). FreeRTOS guarantees that only one Task can push or pull from it at a time.
+- If the Producer pushes 5 integers and the Queue fills up, `xQueueSend` fails gracefully instead of overwriting memory.
+
+### 3. Blocking on Data
+```cpp
+xQueueReceive(sensorQueue, &receivedValue, portMAX_DELAY);
+```
+- The Consumer task calls `xQueueReceive()`. If there is no data in the Queue, it doesn't spin in a loop checking again and again. 
+- By passing `portMAX_DELAY`, the RTOS Scheduler instantly puts the Consumer task to sleep! It won't wake up until the Producer pushes new data, saving massive amounts of CPU processing power.

@@ -100,3 +100,27 @@ No external wiring is required.
 | Arduino gets stuck in an infinite reset loop | WDT not disabled immediately on boot | Ensure `wdt_disable()` is called at the beginning of `setup()`. Some older Arduino Uno bootloaders do not clear the WDT flag on reset, causing an infinite boot loop. Flash the Optiboot bootloader to resolve this, or increase the WDT timeout range. |
 | Watchdog resets during normal operation | Main loop taking longer than 2.0 seconds | Ensure no slow blocking operations (like `delay()` or long `while` loops waiting for sensors) exist in your code. Sprinkle `wdt_reset()` in slow functions, or increase the WDT window (e.g., `WDTO_4S`). |
 | MCUSR reads `0x00` on boot | Register cleared by bootloader | Some bootloaders read and clear `MCUSR` before jumping to the main sketch. Optiboot preserves this register, whereas older stock bootloaders might clear it. |
+
+## 🧠 Code Explanation
+
+Let's break down how we build self-recovering, crash-proof firmware:
+
+### 1. Hardware Watchdog Overview
+- Deep inside the silicon of the ATmega328P is a totally independent countdown timer running on its own dedicated 128 kHz oscillator. Even if the main CPU crystal breaks or the software freezes completely, this timer keeps ticking.
+
+### 2. Arming and "Feeding the Dog"
+```cpp
+wdt_enable(WDTO_2S);
+// Inside loop:
+wdt_reset();
+```
+- We arm the Watchdog with a 2-second timeout.
+- Inside our `loop()`, we call `wdt_reset()`. This "feeds the dog" by pushing the countdown back to 2 seconds.
+- If our code gets stuck in an infinite loop (which we simulate by pressing 'k'), `wdt_reset()` is never called. The countdown hits zero, and the Watchdog physically pulls the CPU reset pin, instantly rebooting the crashed system!
+
+### 3. Forensic Crash Diagnostics
+```cpp
+byte resetSource = MCUSR;
+```
+- How do we know *why* the robot rebooted? Did someone unplug it, or did it crash?
+- The MCU Status Register (`MCUSR`) sets a specific bit in hardware based on what triggered the reboot. We read this on boot to detect if a Watchdog Timeout (`WDRF`), Power-Outage (`PORF`), or external reset button (`EXTRF`) caused the restart.
