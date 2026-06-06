@@ -21,6 +21,10 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 
 ## 📅 The Journey Log
 
+### 📖 Pre-requisite: Learn Arduino (Zero to Hero Guide)
+If you are completely new to Arduino, electronics, or C++ programming, **start here before Day 1.**
+[**Go to the "Learn Arduino" Guide ➔**](./Learn_Arduino/README.md)
+
 ### Phase 1: The Fundamentals
 
 - [x] [Day 1: The Non-Blocking Blink (Using `millis()`)](./Day_01_Millis_Blink)
