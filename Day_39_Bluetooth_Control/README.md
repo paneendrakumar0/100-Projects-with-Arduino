@@ -142,3 +142,29 @@ Ensure the RX/TX lines cross correctly:
 * **The Bluetooth module is not visible in the phone's search list:**
   * Ensure VCC is connected to 5V and GND to Ground. Check if the red LED on the HC-05 board is glowing.
   * Apple iPhones do not support standard Bluetooth Classic (SPP) profile. If using an iOS device, you must use a Bluetooth Low Energy (BLE) module (like the HM-10) instead of the HC-05.
+
+## 🧠 Code Explanation
+
+Let's break down how we parse Bluetooth commands safely using a Buffer:
+
+### 1. Software Serial
+```cpp
+#include <SoftwareSerial.h>
+SoftwareSerial bluetoothSerial(10, 11);
+```
+- The Arduino Uno only has one hardware Serial port (Pins 0/1). If we wire the Bluetooth module to Pins 0/1, we can't upload code to the Arduino anymore!
+- `SoftwareSerial` uses bit-banging magic to create a *virtual* serial port on Pins 10 and 11, allowing us to talk to the HC-05 while keeping the USB port free for PC debugging.
+
+### 2. The Command Parser
+```cpp
+if (c == ';') {
+    packetBuffer.toUpperCase();
+    executeRobotCommand(packetBuffer);
+    packetBuffer = ""; 
+} else {
+    packetBuffer += c;
+}
+```
+- Serial data doesn't arrive all at once. The word "FORWARD" arrives one letter at a time, milliseconds apart.
+- If we try to process instantly, we only see "F".
+- Instead, we add characters to a `packetBuffer` string. We only trigger the motors when we see the `;` terminator character. This ensures our command packet is 100% complete and uncorrupted before the robot acts!

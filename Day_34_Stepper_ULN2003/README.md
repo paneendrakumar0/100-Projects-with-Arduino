@@ -128,3 +128,30 @@ When selecting rotary actuators:
   * Verify that the `releaseCoils()` function is executing when the motor enters the pause state. If any coil remains continuously energized, it will draw current and heat up.
 * **The motor skips steps or stalls at higher speeds:**
   * Stepper motors lose torque at higher speeds because the coils cannot charge/discharge fast enough. Try increasing the `stepInterval` variable in the code (e.g., from `1200` to `2000` microseconds) to reduce the maximum speed.
+
+## 🧠 Code Explanation
+
+Let's break down how we built a custom stepper driver from scratch using Bit-Masking:
+
+### 1. The Half-Step Sequence Table
+```cpp
+const byte halfStepSequence[8] = {
+  0b1000, // Coil A
+  0b1100, // Coil A + B
+  0b0100, // Coil B
+  // ...
+};
+```
+- A unipolar stepper motor has 4 electromagnets. To turn the shaft, we have to magnetize them in a very specific order to pull the internal magnets around in a circle.
+- We use a "Half-Step" sequence. By alternating between turning 1 coil on and 2 coils on simultaneously, we double the motor's resolution (64 steps per revolution instead of 32) making it incredibly smooth!
+
+### 2. Bit-Mask Execution
+```cpp
+void writeCoils(byte pinMask) {
+  digitalWrite(IN1_PIN, (pinMask & 0b1000) ? HIGH : LOW);
+  digitalWrite(IN2_PIN, (pinMask & 0b0100) ? HIGH : LOW);
+  // ...
+}
+```
+- Instead of messy `if` statements, we pass our 4-bit binary sequence directly into `writeCoils()`.
+- We use the Bitwise AND operator (`&`). `pinMask & 0b1000` checks if the 4th bit (Coil A) is a `1` or a `0`. We use the ternary operator `? HIGH : LOW` to instantly convert that bit into a physical output voltage on the pin!

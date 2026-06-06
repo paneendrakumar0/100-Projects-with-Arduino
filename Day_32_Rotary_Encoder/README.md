@@ -130,3 +130,26 @@ When selecting input devices for control menus:
 * **Pressing the button does nothing:**
   * Make sure the SW pin is connected to Pin 3.
   * Verify the button contact by measuring continuity between SW and GND pins while pressing the shaft down.
+
+## 🧠 Code Explanation
+
+Let's break down how to capture lightning-fast encoder movements using Hardware Interrupts:
+
+### 1. Hardware Interrupts
+```cpp
+attachInterrupt(digitalPinToInterrupt(CLK_PIN), handleEncoderISR, FALLING);
+```
+- If we check the encoder pin inside `loop()`, we might miss a click if the Arduino is busy doing something else (like printing to the screen).
+- `attachInterrupt()` wires Pin 2 directly to the core CPU. When the encoder pin transitions from HIGH to LOW (`FALLING`), the Arduino instantly freezes whatever it is doing, runs `handleEncoderISR()`, and then returns to normal. We never miss a click!
+
+### 2. Software Lockout Debouncing
+```cpp
+if (currentTime - lastISRTime > 2000) {
+    if (digitalRead(DT_PIN) == HIGH) { encoderPosition++; }
+    else { encoderPosition--; }
+    lastISRTime = currentTime;
+}
+```
+- Inside the ISR, we check the current time in microseconds (`micros()`).
+- Mechanical switches bounce and spark when turned, causing hundreds of false triggers. Our `> 2000` check creates a 2-millisecond "lockout window". Any bounce spikes that happen immediately after the first click are completely ignored!
+- We then check the `DT_PIN` to determine Quadrature Direction (Clockwise vs Counter-Clockwise).

@@ -132,3 +132,26 @@ If your motor speed oscillates wildly or fails to reach the setpoint, you must t
 3. Cut $K_p$ in half to stabilize the system.
 4. Increase $K_i$ slowly (increments of 0.2) to eliminate the steady-state offset (so the speed reaches the target, rather than stalling slightly below it).
 5. If the system overshoots during step changes, increase $K_d$ slowly (increments of 0.01) to add damping.
+
+## 🧠 Code Explanation
+
+Let's break down the math of a Closed-Loop PID Controller:
+
+### 1. Proportional, Integral, and Derivative Math
+```cpp
+double pTerm = Kp * error;
+integralAccumulator += error * dt;
+double iTerm = Ki * integralAccumulator;
+double dTerm = Kd * ((error - lastError) / dt);
+```
+- **Proportional (`Kp`):** If our RPM is 100 below target, we push the gas hard. If it's 5 below target, we push lightly. It responds linearly to the *current* error.
+- **Integral (`Ki`):** If a heavy robot is stuck on a hill, the Proportional term might not be strong enough to push it. The Integral term *sums up* the error over time. The longer the robot is stuck, the larger the accumulator grows, eventually overpowering the hill!
+- **Derivative (`Kd`):** Looks at the *slope* of the error. If the error is dropping very fast (we are approaching the target rapidly), the Derivative term goes negative, pulling the brakes to prevent us from overshooting the target!
+
+### 2. Integral Anti-Windup
+```cpp
+integralAccumulator = constrain(integralAccumulator, -integralMaxLimit, integralMaxLimit);
+```
+- If someone physically grabs the motor shaft so it cannot spin, the Integral error will sum up to infinity (Windup).
+- When they let go, the massive accumulated error will cause the motor to blast forward wildly out of control.
+- `constrain()` clamps the accumulator to a safe maximum limit, ensuring the robot behaves safely when unstuck.

@@ -130,3 +130,25 @@ Make sure your servo connections match:
   * Ensure the sensor is clear of the desk. If aimed at the floor, it will register the floor or return no echo.
 * **The servo stops sweeping at the ends ($15^{\circ}$ or $165^{\circ}$) and hums loudly:**
   * SG90 servos occasionally have physical end-stops that differ from the nominal $0^{\circ}-180^{\circ}$ range. If it hits a mechanical limit, it will draw high currents and hum. Modify the code constants `MIN_ANGLE` to `20` and `MAX_ANGLE` to `160` to narrow the sweep limits.
+
+## 🧠 Code Explanation
+
+Let's break down how we use acoustic Time-of-Flight to measure distance:
+
+### 1. The Trigger Pulse
+```cpp
+digitalWrite(TRIG_PIN, HIGH);
+delayMicroseconds(10);
+digitalWrite(TRIG_PIN, LOW);
+```
+- We fire a 10-microsecond 5V pulse into the HC-SR04's Trigger Pin. 
+- This wakes up the chip, which then blasts an invisible 8-cycle ultrasonic sound wave (40 kHz) out of the left speaker cone.
+
+### 2. Range-Gated Time of Flight
+```cpp
+unsigned long pulseDuration = pulseIn(ECHO_PIN, HIGH, 20000);
+float distCm = (float)pulseDuration * 0.0343 / 2.0;
+```
+- `pulseIn()` listens to the Echo pin and times exactly how many microseconds it stays HIGH.
+- **The Timeout (20000):** By default, `pulseIn` waits 1000ms (1 full second). If there are no obstacles, our robot will completely freeze for a second! We set a 20ms timeout. In 20ms, sound travels 3.4 meters. If we hear nothing by then, we abort and assume the path is clear.
+- **The Math:** We multiply the microseconds by the speed of sound (`0.0343 cm/µs`). We then divide by `2` because the sound had to travel to the wall *and* back!

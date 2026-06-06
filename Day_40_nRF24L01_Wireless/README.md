@@ -129,3 +129,30 @@ When selecting wireless transceivers:
   * **Close Proximity Saturation:** If the two nodes are closer than $30\text{ cm}$, the high-sensitivity receiver saturates, dropping packets. Move them $1\text{m}$ apart.
 * **The receiver prints packet telemetry, but the sensor values are constant:**
   * In the Transmitter node, Pin A0 is floating. This is normal. Hook up a potentiometer to Pin A0 on the Transmitter node to send changing analog values.
+
+## 🧠 Code Explanation
+
+Let's break down how we send structured binary data over a 2.4GHz Radio link:
+
+### 1. Dual-Role Firmware Setup
+```cpp
+if (digitalRead(ROLE_PIN) == LOW) {
+    isTransmitter = true;
+}
+```
+- Writing separate "Transmitter" and "Receiver" sketches is annoying to maintain.
+- We put *both* codes into one file! If we connect Pin 8 to Ground with a jumper wire, the Arduino boots as a remote control. If we leave Pin 8 unplugged, it boots as the receiver. One code rules them all!
+
+### 2. Transmitting Structured Payloads (Structs)
+```cpp
+struct TelemetryPacket {
+  uint32_t packetID;   
+  int sensorValue;     
+  float uptimeSeconds; 
+};
+
+radio.write(&packet, sizeof(TelemetryPacket));
+```
+- We don't want to send messy, easily corrupted Text strings (like `"ID:1,Val:500"`). It wastes bandwidth and is slow to parse.
+- Instead, we pack our variables tightly into a C++ `struct`. This block is exactly 10 bytes long in memory.
+- `radio.write` takes the memory address (`&packet`) and just blasts those raw 10 bytes of binary over the airwaves at 1 Megabit per second. The receiver grabs the 10 bytes, drops them directly into its own matching struct, and instantly has access to the floats and ints with zero parsing required!

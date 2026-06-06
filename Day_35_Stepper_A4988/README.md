@@ -145,3 +145,27 @@ When selecting stepper motor drivers:
   * The coil pairs are wired incorrectly. Identify the coil pairs using a multimeter (continuity mode: coils A and B will beep across their respective lead pairs). Swap leads to ensure Coil A is on 1A/1B and Coil B is on 2A/2B.
 * **The A4988 driver board gets extremely hot and shuts down intermittently:**
   * The current limit is set too high. Check your $V_{\text{ref}}$ calculations and adjust the trimpot down. Make sure the aluminum heatsink is installed on the A4988 chip.
+
+## 🧠 Code Explanation
+
+Let's break down how we execute Trapezoidal Velocity Ramping for CNC control:
+
+### 1. The Physics of Ramping
+```cpp
+case STATE_ACCEL:
+    currentSpeedSPS += ACCELERATION_SPS2 * dt;
+```
+- In robotics, you cannot tell a stepper motor to instantly jump to 1000 RPM. The rotor has physical mass (inertia). If the magnetic field jumps instantly, the motor will screech and stall ("slip poles").
+- We must mathematically ramp the speed up linearly. Every 5 milliseconds (`dt`), we add a small chunk of acceleration to our `currentSpeedSPS` (Steps Per Second).
+
+### 2. Microsecond Step Gating
+```cpp
+if (currentMicros - lastStepMicros >= stepPeriodUs) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(2);
+    digitalWrite(STEP_PIN, LOW);
+}
+```
+- The A4988 driver requires just a 2-microsecond `HIGH` pulse on the STEP pin to turn the motor.
+- How do we control the speed? By changing the delay *between* the pulses! (`stepPeriodUs`). 
+- As our `currentSpeedSPS` ramps up, we calculate a smaller and smaller `stepPeriodUs`, which fires the pulses faster, smoothly accelerating the heavy motor without skipping!

@@ -125,3 +125,31 @@ When selecting authentication systems for mechatronic setups:
   * Verify that you are using 13.56 MHz RFID tags. 125 kHz tags (commonly used in legacy building entry cards) are electromagnetically incompatible and will not be detected.
 * **The MFRC522 module feels extremely hot to the touch:**
   * Immediately unplug the USB cable. You have wired the module's power input to 5V instead of 3.3V. Re-verify wiring. The chip may have sustained permanent damage.
+
+## 🧠 Code Explanation
+
+Let's break down how we read an RFID card securely:
+
+### 1. Polling for Cards Non-Blockingly
+```cpp
+if (!mfrc522.PICC_IsNewCardPresent()) {
+    return; // Fast escape if no card is present
+}
+if (!mfrc522.PICC_ReadCardSerial()) {
+    return; // Exit if read failed
+}
+```
+- We don't want the Arduino to freeze and wait forever for a card.
+- `PICC_IsNewCardPresent()` quickly checks if a magnetic tag has entered the 13.56 MHz field. If not, the `return` statement instantly kicks us back to the top of `loop()`, allowing other robot tasks to run smoothly.
+- If a card *is* there, `PICC_ReadCardSerial()` attempts to download its Unique ID.
+
+### 2. Matching the Master Key
+```cpp
+if (mfrc522.uid.uidByte[i] != AUTHORIZED_UID[i]) {
+    isAuthorized = false;
+    break; 
+}
+```
+- We loop through the 4 bytes of the scanned card's UID array.
+- We compare each byte to our hardcoded `AUTHORIZED_UID` array.
+- The `break` command is an optimization: if even the very first byte doesn't match, we instantly exit the `for` loop and deny access, rather than wasting CPU cycles checking the rest!

@@ -139,3 +139,28 @@ When selecting motor drivers for mobile robots:
 * **The L298N power LED is ON, but the motor does not spin and nothing happens:**
   * Make sure you have connected the negative (-) terminal of the external battery to the Arduino's **GND** pin.
   * Check if the ENA jumper on the L298N board was removed; you must plug your jumper wire from Pin 9 directly into the pin marked "ENA" (remove the default black plastic shunt).
+
+## 🧠 Code Explanation
+
+Let's break down how to control DC motor speed and direction:
+
+### 1. H-Bridge Direction Control
+```cpp
+void setDirectionForward() {
+  digitalWrite(IN1_PIN, HIGH);
+  digitalWrite(IN2_PIN, LOW);
+}
+```
+- The L298N has 4 internal transistors arranged in an "H" shape.
+- Driving `IN1` HIGH and `IN2` LOW turns on the diagonal transistors, pushing current from left to right through the motor, spinning it forward.
+- Swapping them (`IN1` LOW, `IN2` HIGH) pushes current from right to left, spinning the motor in reverse!
+- Setting *both* LOW turns the motor off. Setting *both* HIGH creates a dead-short across the coils, forcefully applying an Electronic Brake!
+
+### 2. PWM Speed Ramping
+```cpp
+motorSpeedPWM = (int)(progress * 255.0);
+analogWrite(ENA_PIN, motorSpeedPWM);
+```
+- A DC motor goes full speed if we give it 5V. If we want 50% speed, we can't easily give it 2.5V.
+- Instead, we use **Pulse Width Modulation (PWM)** via `analogWrite()`.
+- The Arduino turns the 5V power on and off hundreds of times a second. By controlling the "Duty Cycle" (0 to 255), we control the *average* voltage the motor feels, allowing us to ramp the speed up and down smoothly!

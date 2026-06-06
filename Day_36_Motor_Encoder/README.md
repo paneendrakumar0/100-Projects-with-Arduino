@@ -114,3 +114,27 @@ When measuring rotational feedback:
   * Ensure your sensor cable is away from high-current motor power cables to avoid electromagnetic noise coupling (crosstalk) on the interrupt line.
 * **The Arduino resets as soon as the motor attempts to spin:**
   * You connected the motor's power pins directly to the Arduino's 5V pin. Always use an external battery and driver module.
+
+## 🧠 Code Explanation
+
+Let's break down how we calculate Real-Time motor RPM using Odometry:
+
+### 1. Atomic Register Access (Interrupt Safety)
+```cpp
+noInterrupts();
+long pulsesCaptured = encoderPulseCount;
+encoderPulseCount = 0; 
+interrupts();
+```
+- `encoderPulseCount` is a 4-byte `long` variable. Because the Arduino is an 8-bit chip, it takes 4 separate clock cycles to read this variable.
+- What happens if the hardware interrupt fires *exactly* while we are reading byte 2? The variable changes mid-read, resulting in massive, corrupted RPM spikes!
+- **The Fix:** We call `noInterrupts()` to temporarily block the interrupt for exactly 1 microsecond while we safely copy and reset the count, then instantly turn `interrupts()` back on.
+
+### 2. RPM Math
+```cpp
+calculatedRPM = (float)(pulsesCaptured * 60000.0) / (ENCODER_PPR * timeElapsed);
+```
+- Our slotted wheel has 20 holes (`ENCODER_PPR`).
+- To calculate RPM: We divide the pulses we captured by 20 to get the number of Revolutions.
+- We then divide the Revolutions by the Time Elapsed (in milliseconds).
+- Finally, we multiply by 60,000 to convert milliseconds into Minutes, giving us Revolutions Per Minute!
