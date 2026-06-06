@@ -17,6 +17,8 @@ The Uno is the board you will use for 90% of your initial learning. Almost all t
 ## 2. Arduino Nano (The Small Fry)
 **Best for:** Permanent installations, putting inside small enclosures, breadboard-friendly prototyping.
 
+![Arduino Nano](./images/Arduino_Nano.jpg)
+
 The Nano is essentially an Arduino Uno shrunk down to the size of your thumb. It has almost the exact same specifications as the Uno, but instead of female headers, it usually comes with male pins so you can plug it directly into a breadboard or solder it to a custom PCB.
 
 - **Microcontroller:** ATmega328P

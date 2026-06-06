@@ -25,7 +25,7 @@ If you have a 5V supply, and you want to lower the current (I), you must increas
 
 When we build circuits, we don't want to permanently solder everything together right away. We use a **Breadboard** to quickly plug and unplug components.
 
-![Breadboard wiring](https://upload.wikimedia.org/wikipedia/commons/b/b3/Breadboard_scheme.svg)
+![Breadboard wiring](./images/Breadboard.png)
 *(Image Credit: Wikimedia Commons)*
 
 Look at the image above. The holes in a breadboard are connected underneath by metal strips:
@@ -44,10 +44,12 @@ These are just wires with pins on the end. The color doesn't matter electrically
 - Yellow/Green/Blue = Signal wires
 
 ### 2. Resistors
+![Resistor](./images/Resistor.png)
 Resistors restrict the flow of current. They are not polarized, meaning you can plug them in backwards and they work the same.
 You can tell the value of a resistor by looking at the colored bands painted on it. For beginners, a simple multimeter is much easier than memorizing the color codes!
 
 ### 3. LEDs (Light Emitting Diodes)
+![LED](./images/LED.jpg)
 LEDs turn electricity into light. 
 - **They are Polarized!** Electricity can only flow through an LED in one direction. 
 - The long leg is the **Anode (+)**.
