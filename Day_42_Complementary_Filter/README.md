@@ -111,3 +111,23 @@ When selecting sensor fusion algorithms for mechatronic navigation:
     Change `fusedRoll = ALPHA * (fusedRoll + gx * dt) ...` to `fusedRoll = ALPHA * (fusedRoll - gx * dt) ...`
 * **The system is sluggish when responding to fast tilts:**
   * Try lowering the value of `ALPHA` (e.g. from `0.98` to `0.95` or `0.90`). This tells the filter to place more trust in the accelerometer's absolute reading, speeding up recovery at the cost of allowing slightly more vibration noise to pass.
+
+## 🧠 Code Explanation
+
+Let's break down the magic of Sensor Fusion math:
+
+### 1. Gyroscope Integration (Short-Term Accuracy)
+```cpp
+gyroIntegratedRoll += gx * dt;
+```
+- A gyroscope measures *speed* of rotation (Degrees per Second), not angle.
+- To find the angle, we have to integrate (multiply speed by time). If we are spinning at 10 deg/sec for 0.02 seconds (`dt`), we have moved 0.2 degrees. We add this to our total angle.
+- **The Problem:** Gyroscopes have microscopic static biases. Over time, that 0.02 degree error adds up into a massive, unstoppable drift.
+
+### 2. The Complementary Filter (Sensor Fusion)
+```cpp
+fusedRoll = ALPHA * (fusedRoll + gx * dt) + (1.0 - ALPHA) * rollAccel;
+```
+- We calculate the absolute tilt angle using Accelerometer gravity vectors (`rollAccel`). Accelerometers never drift, but they are incredibly noisy when the robot moves or vibrates.
+- **The Filter:** We take 98% (`ALPHA = 0.98`) of our smooth, fast Gyroscope angle, and mix in just 2% (`1.0 - ALPHA`) of our noisy, but absolutely-anchored Accelerometer gravity angle!
+- This completely cancels out the gyro drift, while perfectly smoothing out the accelerometer vibrations!

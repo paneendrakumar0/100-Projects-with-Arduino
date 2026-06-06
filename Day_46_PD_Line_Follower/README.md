@@ -140,3 +140,23 @@ $$V_{\text{right}} = V_{\text{cruise}} - u(t)$$
     `const float SENSOR_COORDINATES[5] = {2.0, 1.0, 0.0, -1.0, -2.0};`
 * **The robot stops on curves**:
   * If the line is lost completely, the safety fail-safe triggers, halting the motors. Increase the track width or reduce the speed so the sensor array doesn't fly off the track before correcting.
+
+## 🧠 Code Explanation
+
+Let's break down the steering math of our high-speed PD Controller:
+
+### 1. The Proportional Term (P)
+```cpp
+double pTerm = Kp * error;
+```
+- `error` is our Line Centroid (how far off center we are, from -2.0 to +2.0).
+- If we multiply that error by a huge number (`Kp`), we get an aggressive steering correction. If the error is small, the correction is small. This smoothly proportionally steers the robot back to the center!
+
+### 2. The Derivative Term (D)
+```cpp
+double dTerm = Kd * ((error - lastError) / dt);
+lastError = error;
+```
+- If we only use `P`, the robot will steer back toward the line so fast that it overshoots the center, wobbling back and forth violently!
+- `(error - lastError) / dt` calculates the *slope* of our movement. It answers the question: "How fast are we approaching the line?"
+- If we are approaching the line extremely fast, the Derivative term becomes a massive negative number. It fights against the Proportional term, actively pulling the brakes before we cross the center, eliminating all wobbles!

@@ -128,3 +128,24 @@ When selecting line-tracking sensors:
 * **The robot steers in the wrong direction (turning away from the line):**
   * The motor pins or sensor coordinates are reversed. Swapping the OUT1 and OUT5 sensor pins or inverting the coordinates in code will correct this:
     `const float SENSOR_COORDINATES[5] = {2.0, 1.0, 0.0, -1.0, -2.0};`
+
+## 🧠 Code Explanation
+
+Let's break down how to find the exact Center of Mass of a line:
+
+### 1. Min-Max Auto-Normalization
+```cpp
+int normVal = map(rawVal, sensorMinValues[i], sensorMaxValues[i], 0, 1000);
+```
+- Every sensor is slightly different due to manufacturing, LED brightness, or distance from the floor. Sensor 1 might read 800 on black, while Sensor 3 reads 950.
+- Our boot calibration recorded the absolute minimums and maximums for *each individual sensor*.
+- We use `map()` to stretch those unique ranges into a perfect, uniform 0 to 1000 scale. Now all 5 sensors behave absolutely identically!
+
+### 2. Weighted Centroid Math
+```cpp
+coordinateSum += ((float)normVal * SENSOR_COORDINATES[i]);
+lineCentroid = coordinateSum / weightSum;
+```
+- We assign physical X-coordinates to our sensors (-2.0, -1.0, 0, 1.0, 2.0).
+- We multiply each sensor's normalized "weight" (0-1000) by its coordinate, and divide the total by the sum of all weights.
+- This outputs a continuous decimal float! If the line is slightly off-center, we get `+0.35`, rather than a hard digital "RIGHT" or "LEFT". We can feed this float directly into our motors for buttery-smooth steering!

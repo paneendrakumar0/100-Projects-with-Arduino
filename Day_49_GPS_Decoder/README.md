@@ -137,3 +137,32 @@ $$\text{Decimal Degrees} = \text{Degrees} + \frac{\text{Minutes}}{60}$$
 * **Warning outputs like "Checksum mismatch! Corrupted sentence discarded"**:
   * Occasional checksum warnings are normal due to electrical noise on breadboards.
   * If warnings occur continuously, the logic levels are unstable. Check that your GND connection is shared and solid, and ensure your voltage divider resistors are placed correctly.
+
+## 🧠 Code Explanation
+
+Let's break down how to decode raw satellite telemetry without libraries:
+
+### 1. The Byte-Level State Machine
+```cpp
+if (c == '$') {
+    isCapturing = true;
+} else if (isCapturing) {
+    if (c == '\n') { processCompleteSentence(); }
+    else { sentenceBuffer[bufferIndex++] = c; }
+}
+```
+- The GPS module screams raw text at the Arduino continuously at 9600 baud.
+- A standard NMEA sentence looks like: `$GPRMC,225446,A,4916.45,N,12311.12,W...*68`
+- Our parser ignores all garbage characters until it sees the Start Marker (`$`).
+- It then saves every character into a buffer array until it hits the End Marker (`\n` Newline). It then instantly fires off the processing function!
+
+### 2. Checksum Verification
+```cpp
+long calculatedChecksum = 0;
+for (int i = 0; i < asteriskIndex; i++) {
+    calculatedChecksum ^= sentenceBuffer[i];
+}
+```
+- Radio waves get corrupted by atmospheric noise. If a coordinate digit gets flipped, our robot might think it's in the ocean!
+- The GPS module calculates an XOR Hash of all the characters in the sentence and attaches it to the end (e.g., `*68`).
+- Our code manually performs an XOR (`^=`) on all the characters we received. If our calculated hash doesn't perfectly match the hash attached to the sentence, we throw the corrupted data in the trash!

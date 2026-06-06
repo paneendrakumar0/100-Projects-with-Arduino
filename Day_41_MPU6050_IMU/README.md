@@ -118,3 +118,30 @@ When selecting IMUs for autonomous projects:
 * **The Z-axis acceleration does not read $1.00g$ at rest:**
   * Ensure the sensor is lying flat on a level surface. If it is tilted, gravity is distributed across multiple axes.
   * MEMS sensors have manufacturing offset errors. You can calibrate the accelerometer by recording the Z-axis offset and subtracting it.
+
+## 🧠 Code Explanation
+
+Let's break down how we read an IMU sensor directly via I2C Registers:
+
+### 1. Waking up the Sensor
+```cpp
+Wire.beginTransmission(MPU_ADDRESS);
+Wire.write(REG_PWR_MGMT_1);
+Wire.write(0x00); 
+Wire.endTransmission();
+```
+- By default, the MPU6050 boots up in "Sleep Mode" to save battery.
+- We must manually write a `0x00` (All Zeros) to the Power Management 1 Register (`0x6B`) to flip the sleep bit OFF and turn the internal clock ON.
+
+### 2. Multi-byte Burst Reads
+```cpp
+Wire.write(REG_ACCEL_XOUT_H); 
+Wire.requestFrom(MPU_ADDRESS, 6);
+
+*ax = (Wire.read() << 8) | Wire.read();
+*ay = (Wire.read() << 8) | Wire.read();
+*az = (Wire.read() << 8) | Wire.read();
+```
+- The Acceleration data is stored across 6 registers (High and Low bytes for X, Y, and Z).
+- We point the sensor to the start register (`0x3B`), and then `requestFrom` 6 bytes in one giant gulp! This ensures that all 3 axes are from the exact same moment in time.
+- **Bitwise Math:** We take the first 8 bits (High Byte), shift them 8 spaces to the left (`<< 8`), and merge them (`|`) with the next 8 bits (Low Byte) to magically reconstruct the 16-bit integer!

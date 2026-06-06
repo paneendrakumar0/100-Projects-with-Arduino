@@ -134,3 +134,25 @@ When selecting line tracking sensors for autonomous mobile robots:
 * **The robot completely ignores the black line and drives straight off the track:**
   * The sensor height is too high or the ambient sunlight is washing out the receivers. Mount the sensors closer to the ground and block strong overhead lighting.
   * Check the raw values printed to the Serial Monitor. If the black line reads less than `500`, lower the `LINE_THRESHOLD` constant in code (e.g. to `400`).
+
+## 🧠 Code Explanation
+
+Let's break down how to program analog hysteresis logic for line tracking:
+
+### 1. Analog Hysteresis Gating
+```cpp
+int rawLeft = analogRead(LEFT_SENSOR_PIN);
+bool leftOnLine = (rawLeft > LINE_THRESHOLD);
+```
+- Many cheap IR sensors have a little blue potentiometer you turn with a screwdriver to adjust sensitivity. Vibrations often knock these out of calibration.
+- By using `analogRead()` (0-1023), we bring the raw voltage directly into the code.
+- We set a software `LINE_THRESHOLD` (e.g. 500). Anything above is converted to a simple `True` (Black Line) or `False` (White Floor). This makes the robot infinitely more reliable!
+
+### 2. Differential Drive Steer Logic
+```cpp
+else if (leftOnLine && !rightOnLine) {
+    steerLeft(TURN_SPEED);
+} 
+```
+- If the left sensor suddenly sees black, it means the robot has drifted too far to the right!
+- `steerLeft()` corrects this by cutting power to the left wheel and running the right wheel forward. This creates a pivot point on the left wheel, swinging the front of the robot back over the center of the line.

@@ -148,3 +148,31 @@ When selecting obstacle avoidance architectures for mobile robots:
   * The motor leads on OUT1/OUT2 or OUT3/OUT4 are wired with reversed polarity. Swap the wires of the incorrect motor at the L298N screw terminals.
 * **The robot stops to scan, but the Arduino resets as soon as the servo starts to rotate:**
   * Servos draw a high initial current spike, creating voltage drops on the Arduino's 5V line. Place a $100\ \mu\text{F}$ capacitor across the breadboard's 5V and GND pins, or use a separate $5\text{V}$ regulator to power the servo.
+
+## 🧠 Code Explanation
+
+Let's break down how we built a Non-Blocking Robotic State Machine:
+
+### 1. The Switch-Case State Router
+```cpp
+enum DriveState { STATE_DRIVE_FORWARD, STATE_STOP_ROBOT, STATE_SCAN_RIGHT ... };
+
+switch (currentDriveState) {
+    case STATE_DRIVE_FORWARD:
+        driveForward(180);
+        if (frontDist < CRITICAL_DIST_CM) currentDriveState = STATE_STOP_ROBOT;
+        break;
+}
+```
+- Beginners often use `delay()` to run sequences. E.g., `Scan Right -> Delay(500) -> Ping -> Scan Left`. But `delay()` freezes the Arduino, meaning you can't read a stop button or update a screen while waiting!
+- We use a State Machine. The code instantly checks the current "State", executes a tiny piece of logic, and loops back around thousands of times a second.
+- When an obstacle is detected, we simply change the `currentDriveState` variable, and the next time the loop comes around, it instantly begins executing the next behavior!
+
+### 2. Servo Settle Timing
+```cpp
+if (currentMillis - stateTimerStart >= 300) {
+    sensorServo.write(SERVO_RIGHT);
+    // ...
+}
+```
+- Because we aren't using `delay()`, we use `millis()` math. We record the time we commanded the servo to move, and keep bypassing the `if` statement until 300ms have passed. This gives the physical servo motor time to physically rotate and stop vibrating before we trigger the acoustic sonar ping!

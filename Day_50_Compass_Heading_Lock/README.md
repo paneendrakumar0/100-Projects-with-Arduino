@@ -136,3 +136,26 @@ $$\text{If Error} < -180^\circ \Rightarrow \text{Error} = \text{Error} + 360^\ci
 * **The serial monitor prints "QMC5883L communication failed!"**:
   * Double check your I2C connections on pins A4/A5. Ensure you have the correct pull-up resistors if your module does not have them built-in.
   * Check if your sensor chip is actually a QMC5883L (common on modern GY-271 boards) or an original HMC5883L (different register maps and I2C address `0x1E`).
+
+## 🧠 Code Explanation
+
+Let's break down how we use a digital compass to hold an absolute magnetic heading:
+
+### 1. Hard-Iron Bias Calibration
+```cpp
+xOffset = (float)(xMax + xMin) / 2.0;
+float calX = (float)rawX - xOffset;
+```
+- Motors, batteries, and the chassis itself contain iron that warps the Earth's magnetic field, severely distorting the magnetometer's readings (Hard-Iron Distortion).
+- During boot, we spin the robot in a circle and record the max and min magnetic flux seen on the X and Y axes.
+- The true center of the magnetic field should be zero. By calculating the midpoint between our max and min readings, we find exactly how much the robot's metal chassis has shifted the center (the Offset). We subtract this offset from all future readings to completely eliminate the distortion!
+
+### 2. Shortest-Path Error Normalization
+```cpp
+double error = targetHeading - currentHeading;
+if (error > 180.0) error -= 360.0;
+else if (error < -180.0) error += 360.0;
+```
+- Compasses wrap around at 360 degrees.
+- If our Target is 10° and our Current Heading is 350°, `10 - 350 = -340°` of error. If we feed `-340` into our PID controller, the robot will violently spin left in a massive circle almost all the way around!
+- By injecting our normalizer logic, we force the error to take the shortest path across the 0/360 boundary. The `-340` error instantly transforms into `+20°`, and the robot simply makes a tiny, gentle turn to the right!

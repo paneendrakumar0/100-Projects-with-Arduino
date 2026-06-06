@@ -139,3 +139,28 @@ Tuning a self-balancing robot requires patience. Follow this structured process:
   * Increase `MIN_MOTOR_PWM` in the code. Geared DC motors need a higher initial PWM threshold to break static friction under load.
 * **The robot is twitching or vibrating violently**:
   * Reduce $K_p$ or $K_d$. Check if the IMU is loose. If the IMU is vibrating independently of the chassis, it creates a feedback resonance loop that causes violent motor jitter.
+
+## 🧠 Code Explanation
+
+Let's break down how we keep an inverted pendulum from falling over:
+
+### 1. PID Angle Correction
+```cpp
+double error = fusedPitch - targetPitch;
+double pTerm = Kp * error;
+errorSum += error * dt;
+double iTerm = Ki * errorSum;
+double dTerm = Kd * ((error - lastError) / dt);
+double pidOutput = pTerm + iTerm + dTerm;
+```
+- Our Complementary Filter (Day 42) gives us a lightning-fast `fusedPitch` angle.
+- We feed this into a PID controller. If the robot falls forward (positive error), the PID output becomes a large positive number.
+- We map this output directly to Motor PWM, causing the wheels to drive forward underneath the falling chassis, catching the center of gravity!
+
+### 2. The Motor Deadband
+```cpp
+motorPWM = map(motorPWM, 0, 255, MIN_MOTOR_PWM, 255);
+```
+- DC motors have static friction. If you give a motor a PWM of 20, it just whines and doesn't move. It might need a minimum PWM of 45 just to start spinning.
+- If we don't account for this, the PID will output tiny corrections (e.g., PWM 15) when the robot is nearly perfectly balanced, but the motors won't move! The robot will fall over before the PID ramps up high enough to overcome friction.
+- We use `map()` to instantly bump any output greater than 0 up past the friction threshold (`MIN_MOTOR_PWM`), making the robot incredibly responsive to micro-balance adjustments!

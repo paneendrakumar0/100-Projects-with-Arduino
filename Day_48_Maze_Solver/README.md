@@ -152,3 +152,30 @@ We preserve the **exact wiring layout** of Day 46 to make this a drop-in softwar
   * During a turn, the robot ignores the center sensor for `180ms` (line-blind period) to let the chassis rotate off the old line. If your robot pivots too slowly, increase this blind period or increase `TURN_SPEED`.
 * **The path optimization does not execute**:
   * The solid black endpoint target was not recognized. Ensure that when the robot stops on the block, all 5 sensors are read as fully black (normalization maps them to $>700$). Adjust the sensor height if needed.
+
+## 🧠 Code Explanation
+
+Let's break down the logic of solving mazes automatically:
+
+### 1. The Left-Hand Rule Priority
+```cpp
+if (pathLeft) {
+    logDecision('L');
+    drivePivot(TURN_LEFT);
+} else if (pathAhead) {
+    logDecision('S');
+} else if (pathRight) {
+    // ...
+```
+- The "Left-Hand-On-Wall" algorithm states that if you put your left hand on the wall of a maze and never take it off, you will eventually find the exit.
+- In code, this translates to an `if / else-if` priority hierarchy: ALWAYS take a Left turn if it exists. Only go Straight if you can't go Left. Only go Right if you can't go Left or Straight!
+- Every time we make a decision, we push a character (`'L'`, `'S'`, `'R'`, `'U'`) into our `pathLog` array memory.
+
+### 2. Path Optimization
+```cpp
+if (prev == 'L' && next == 'L') replacement = 'S';
+else if (prev == 'L' && next == 'S') replacement = 'R';
+```
+- Once we reach the end, our memory array is full of dead-end U-turns (e.g. `['L', 'L', 'U', 'S', 'R']`).
+- If you turn Left, hit a dead-end, U-Turn, and then go Straight back past the intersection, that entire detour was completely equivalent to just turning Right in the first place! (`L U S` -> `R`).
+- Our algorithm loops through the array, finding any `U`, looking at the turns before and after it, and replacing all three letters with the simplified shortcut!
