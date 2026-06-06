@@ -28,8 +28,7 @@ The most common Arduino board, the **Arduino Uno**, uses a microcontroller chip 
 
 The Arduino Uno is the quintessential beginner board. Let's look at its different parts so you know what you are holding.
 
-![Arduino Uno Anatomy](https://docs.arduino.cc/static/40ee42878ce6c8eafdb62c906de6940f/31e13/Uno-A000066-features.jpg)
-*(Image Credit: Arduino.cc)*
+![Arduino Uno Anatomy](./images/Arduino_Uno.jpg)
 
 Here is what all those components do:
 

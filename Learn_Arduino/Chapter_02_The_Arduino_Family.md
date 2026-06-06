@@ -39,6 +39,8 @@ If you run out of pins on your Uno, you upgrade to the Mega. It is significantly
 ## 4. Arduino Micro / Leonardo (The Keyboard Mimic)
 **Best for:** Custom game controllers, macro pads, simulating a mouse or keyboard.
 
+![Arduino Leonardo](./images/Arduino_Leonardo.jpg)
+
 These boards use a different chip (the ATmega32U4). The special feature of this chip is that it has built-in USB communication. This means your computer can recognize it as a standard USB Keyboard or Mouse! We use the Leonardo in Day 90-92 of the 100 Days of Arduino to build custom HID devices.
 
 - **Microcontroller:** ATmega32U4

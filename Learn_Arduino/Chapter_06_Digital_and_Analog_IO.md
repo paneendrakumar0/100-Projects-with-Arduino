@@ -77,6 +77,8 @@ When you read these pins, they have a 10-bit resolution. This means instead of `
 1023 = 5 Volts.
 512 = ~2.5 Volts.
 
+![Potentiometer](./images/Potentiometer.jpg)
+
 ```cpp
 void setup() {
   // Analog pins do not technically need pinMode declared, but it's good practice.
