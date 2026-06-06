@@ -4,6 +4,16 @@ Welcome to Day 81! Today we enter the world of **Real-Time Operating Systems (RT
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Standard Arduino programs run on a single thread inside the `loop()` function.

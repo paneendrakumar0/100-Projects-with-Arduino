@@ -6,6 +6,16 @@ You will master the converse piezoelectric effect, learn how pitch and rhythm ar
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 Today's Learning Goals
 1. Differentiate between Active and Passive buzzers at an electronic level.
 2. Master the physics of the converse piezoelectric effect.

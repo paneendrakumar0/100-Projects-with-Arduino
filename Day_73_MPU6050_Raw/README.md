@@ -4,6 +4,17 @@ Welcome to Day 73! Today we interface the high-performance **MPU6050 6-Axis Iner
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 An **Inertial Measurement Unit (IMU)** is the sensory organ of movement. In robotics, self-balancing systems, and drones, an IMU provides state estimation:

@@ -4,6 +4,17 @@ Welcome to Day 40 of the 100-Day Arduino Masterclass! Today, we study advanced m
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Point-to-point wireless serial bridges (like Bluetooth on Day 39) are limited by range ($10\text{m}$) and require pairing overhead, which prevents multi-device meshes.

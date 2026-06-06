@@ -4,6 +4,16 @@ Welcome to Day 88! Today we dive into the core execution architecture of microco
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 In standard microcontroller code, we use the `loop()` function to check the status of pins. This is called **polling**. While simple, polling has a fatal flaw: if your loop is doing heavy calculations, waiting for a sensor read, or communicating over I2C, it might take 10ms, 50ms, or even 1 second to complete a single iteration.

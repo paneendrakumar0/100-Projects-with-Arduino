@@ -4,6 +4,17 @@ Welcome to Day 56 of the 100-Day Arduino Masterclass! Today, we dive into **loca
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Single distance sensors only tell you how far away an object is along a straight line of sight.

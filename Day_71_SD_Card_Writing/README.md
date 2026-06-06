@@ -4,6 +4,17 @@ Welcome to Day 71! Today we interface a standard **SPI SD Card Module** with our
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Robots and telemetry systems generate vast amounts of data (sensor streams, navigation coordinates, error codes). While internal EEPROM is useful for small configurations, it is far too small (typically 1 KB on Uno) to store long-term logs.

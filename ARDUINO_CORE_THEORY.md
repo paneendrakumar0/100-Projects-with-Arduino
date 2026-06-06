@@ -6,6 +6,19 @@ While the 100 projects in this repository will teach you *how* to wire component
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
 ## 1. Microcontroller Architecture (The Silicon Level)
 
 An Arduino is not a computer like your laptop; it is a **Microcontroller Unit (MCU)**. Your laptop has a separate CPU, RAM chip, and Hard Drive. A microcontroller crams the CPU, memory, and storage onto a single, microscopic piece of silicon.

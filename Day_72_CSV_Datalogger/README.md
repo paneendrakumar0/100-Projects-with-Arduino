@@ -4,6 +4,18 @@ Welcome to Day 72! Today we build a high-reliability **CSV (Comma-Separated Valu
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 A raw text logger is fine for basic debugging, but for engineering applications, data needs to be structured.

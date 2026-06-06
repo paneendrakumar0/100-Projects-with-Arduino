@@ -6,6 +6,14 @@ If you're here, you are probably getting ready to tackle the massive **100 Days 
 
 This guide is designed to take you by the hand and explain **everything** you need to know about Arduino, starting from absolute zero. 
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 📖 Table of Contents
 
 1. [Chapter 1: What is Arduino?](./Chapter_01_What_Is_Arduino.md) - The history, philosophy, and anatomy of the board.

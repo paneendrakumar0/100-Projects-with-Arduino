@@ -4,6 +4,18 @@ Welcome to Day 87! Today we learn how to decouple our code and write a professio
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 In large embedded systems, keeping all code in a single `.ino` file leads to unmanageable code (spaghetti code) that is difficult to test, debug, and reuse across projects. 

@@ -4,6 +4,15 @@ Welcome to Day 94! Today we master the art of **Robotic Serial Communication** b
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 When a PC (e.g. running ROS, Python, or MATLAB) communicates with an Arduino to control motors or read sensors:

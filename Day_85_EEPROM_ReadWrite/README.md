@@ -4,6 +4,14 @@ Welcome to Day 85! Today we master **non-volatile parameter serialization**. We 
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Microcontrollers wipe their SRAM memory clean every time they lose power.

@@ -4,6 +4,16 @@ Welcome to Day 63! Today we implement the complete **Dallas/Maxim 1-Wire protoco
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 * **1-Wire Protocol** was invented by Dallas Semiconductor (now Maxim/Analog Devices) to allow multiple sensors to share a single wire — every DS18B20 has a unique 64-bit ROM address burned at the factory.

@@ -4,6 +4,17 @@ Welcome to Day 78! Today we interface the popular **NEO-6M GPS Module** using **
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/GPS_Module.jpg" alt="GPS Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Global Positioning System (GPS) receivers are critical in long-range autonomous robotics:
@@ -135,7 +146,8 @@ Let's break down how we parse raw satellite data from the cosmos:
 ```cpp
 if (c == '$') {
   isRecording = true;
-} else if (isRecording && (c == '' || c == '
+} else if (isRecording && (c == '
+' || c == '
 ')) {
   // Parse complete sentence
 }

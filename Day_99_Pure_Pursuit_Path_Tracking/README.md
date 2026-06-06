@@ -4,6 +4,16 @@ Welcome to Day 99! Today we dive into the core steering logic of self-driving ca
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Differential_Drive.jpg" alt="Differential Drive" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 If you command a robot to simply "Go to coordinate (X, Y)", it will turn towards the point, drive straight, and stop. However, in real-world navigation, robots must follow complex, curved paths (trajectories) to avoid obstacles, stay inside lanes, or sweep a room efficiently.

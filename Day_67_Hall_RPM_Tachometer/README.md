@@ -4,6 +4,16 @@ Welcome to Day 67! Today we build a **precision RPM tachometer** using the ATmeg
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 * **Software interrupts** (using `attachInterrupt`) have latency jitter of 2–10 µs depending on what code is running. At 10,000 RPM, a pulse arrives every 6 ms — 10 µs jitter is already 0.17% error.

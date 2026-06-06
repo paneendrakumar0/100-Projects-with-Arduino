@@ -4,6 +4,15 @@ Welcome to Day 64! Today we build a **capacitive touch sensor from scratch** —
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 * **Why not a mechanical button?** Capacitive touch has no moving parts (no wear), works through glass/plastic, can sense proximity, and enables gesture detection.

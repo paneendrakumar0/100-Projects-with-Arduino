@@ -4,6 +4,18 @@ Welcome to Day 27 of the 100-Day Arduino Masterclass! Today, we progress from st
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/OLED_Display.jpg" alt="OLED Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 In robotics and mechatronics, rendering animations or real-time simulation displays is crucial for human-machine interfaces (HMIs). For example, autonomous mobile robots (AMRs) might display scanning lasers (LiDAR sweeps), robotic arms might show live kinematic trajectories, and industrial controllers might display state machines.

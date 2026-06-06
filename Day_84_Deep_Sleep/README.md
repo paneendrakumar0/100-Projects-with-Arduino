@@ -4,6 +4,15 @@ Welcome to Day 84! Today we explore **low-power embedded systems engineering**. 
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 For battery-powered robots, remote sensor stations, and wearable electronics, power is the primary constraint.

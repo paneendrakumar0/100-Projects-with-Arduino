@@ -4,6 +4,18 @@ Welcome to Day 75! Today we master **Sensor Fusion**, one of the most critical c
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 If you try to control a self-balancing robot or stabilizer gimbal using only an accelerometer, it will jitter uncontrollably whenever the motor moves because the sensor cannot distinguish between gravitational acceleration and linear kinetic acceleration.

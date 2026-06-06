@@ -6,6 +6,18 @@ You will master the concept of Persistence of Vision (POV) digit multiplexing, s
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/7-Segment_Display.jpg" alt="7-Segment Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 Today's Learning Goals
 1. Understand Persistence of Vision (POV) digit multiplexing.
 2. Master the synchronous 2-wire serial protocol of the TM1637 driver chip.

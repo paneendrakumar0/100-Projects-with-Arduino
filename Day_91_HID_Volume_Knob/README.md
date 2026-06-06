@@ -4,6 +4,18 @@ Welcome to Day 91! Today we combine physical mechatronics with native USB interf
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 User interfaces (UI) benefit heavily from dedicated physical inputs. In mechatronics, tactile feedback is superior to graphical controls: turning a physical aluminum volume dial is much faster and more satisfying than clicking a mouse slider on a screen.

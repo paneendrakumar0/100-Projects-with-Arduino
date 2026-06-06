@@ -4,6 +4,15 @@ Welcome to Day 66! Today we drive an 8×8 LED matrix (64 individual LEDs) using 
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 * **Why MAX7219?** Driving 64 LEDs from an Arduino directly would require 8 shift registers or 64 GPIO pins. The MAX7219 handles all row/column multiplexing internally, freeing the MCU to simply write one byte per row over SPI.

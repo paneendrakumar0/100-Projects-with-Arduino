@@ -4,6 +4,14 @@ Welcome to Day 100! Today we build the **Grand Capstone Project** of our 100-day
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 In professional robotics (such as self-driving cars, industrial manipulators, or autonomous drones), we do not run path planning, computer vision, or mapping directly on an Arduino. 8-bit microcontrollers lack the processing power and RAM for these tasks. 

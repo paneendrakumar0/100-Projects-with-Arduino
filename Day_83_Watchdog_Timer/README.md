@@ -4,6 +4,14 @@ Welcome to Day 83! Today we study **firmware fault tolerance** and **system reco
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 In real-world mechatronics, microcontrollers are deployed in harsh environments.

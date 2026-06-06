@@ -4,6 +4,17 @@ Welcome to Day 79! Today we tackle **geographical vector navigation**. Using sph
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/GPS_Module.jpg" alt="GPS Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 GPS coordinates (Latitude and Longitude) represent angular coordinates on a sphere. They cannot be treated as standard Cartesian $(x,y)$ values on a flat grid because:

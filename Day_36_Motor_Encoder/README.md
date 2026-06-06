@@ -4,6 +4,16 @@ Welcome to Day 36 of the 100-Day Arduino Masterclass! Today, we study sensor fee
 
 ---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
 ## 🎯 The "Why" and "What"
 
 Open-loop systems (like Days 33 and 34) send commands to actuators but have no way of verifying if the motor actually moved. If a robot wheel gets stuck in sand, or carrying a heavy payload uphill, open-loop PWM duty cycles will fail to maintain speed.
