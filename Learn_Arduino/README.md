@@ -19,6 +19,8 @@ This guide is designed to take you by the hand and explain **everything** you ne
 9. [Chapter 9: Libraries and Sensors](./Chapter_09_Libraries_and_Sensors.md) - Expanding your capabilities without reinventing the wheel.
 10. [Chapter 10: Best Practices](./Chapter_10_Best_Practices.md) - How to write clean, non-blocking code to prepare for the 100 Days of Arduino.
 11. [Chapter 11: Component Visual Glossary](./Chapter_11_Component_Glossary.md) - A massive visual encyclopedia of every module, sensor, and motor you will encounter.
+12. [Chapter 12: Troubleshooting & Common Errors](./Chapter_12_Troubleshooting.md) - How to fix `programmer is not responding` and other headaches.
+13. [Chapter 13: Powering Your Projects](./Chapter_13_Powering_Your_Projects.md) - How to prevent your Arduino from going up in smoke when using motors.
 
 ## 🛠️ How to use this guide
 
