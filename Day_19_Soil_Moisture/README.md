@@ -148,3 +148,31 @@ Follow these steps to upload your code, test, and calibrate your monitor:
   - In your mapping function, check the order of values. We use `map(sensorValue, 1023, 0, 0, 100)`. Because dry soil reads high ADC (1023) and wet reads low (0), we reverse the mapping to make 1023 correspond to 0% and 0 correspond to 100%.
 * **The sensor fails to read and outputs 1023 continuously:**
   - Make sure the sensor's VCC is connected to **Pin 7** (and Pin 7 is configured as an `OUTPUT` in `setup()`).
+
+## 🧠 Code Explanation
+
+Let's break down the logic for measuring soil saturation:
+
+### 1. Inverted Analog Logic
+```cpp
+const int VAL_DRY = 750;
+const int VAL_WET = 350;
+
+if (sensorValue > VAL_DRY) {
+    soilStatus = "DRY (Needs Watering!)";
+} else if (sensorValue < VAL_WET) {
+    soilStatus = "WET (Saturated)";
+}
+```
+- Resistive soil probes work inversely to what you might expect.
+- When the soil is bone dry, it acts like an insulator. Resistance goes up, voltage stays high, and the ADC reports a huge number (e.g., `800+`).
+- When the soil is soaked, the water acts as a conductor. Resistance drops, pulling the signal down to GND, and the ADC reports a tiny number (e.g., `250`).
+
+### 2. Safe Mathematical Constraining
+```cpp
+float moisturePercent = map(sensorValue, 1023, 0, 0, 100);
+moisturePercent = constrain(moisturePercent, 0.0, 100.0);
+```
+- We use the `map()` function to convert the `1023-0` scale into a `0%-100%` scale. 
+- However, if the sensor reads higher than 1023 or lower than 0 (which can happen due to noise or varying calibrations), the map function will output weird values like `-5%` or `110%`.
+- The `constrain(value, min, max)` function is a professional safety net. It strictly forces the variable to stay within the `0` to `100` boundary, preventing UI bugs down the road!

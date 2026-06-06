@@ -164,3 +164,31 @@ Follow these steps to upload, calibrate, and verify the joystick readings:
   - Swap your wiring connections at the Arduino: connect the VRx pin to A1 and the VRy pin to A0, or change the pin constants in code.
 * **The button prints "Pressed" and "Released" dozens of times per click:**
   - Your button switch wiring is loose, or the debounce timer is failing. Check that Pin 2 is firmly plugged in.
+
+## 🧠 Code Explanation
+
+Let's break down how to read a joystick and map its coordinates:
+
+### 1. Boot Auto-Calibration
+```cpp
+long sumX = 0;
+long sumY = 0;
+for (int i = 0; i < 10; i++) {
+    sumX += analogRead(JOY_X_PIN);
+    sumY += analogRead(JOY_Y_PIN);
+}
+centerX = sumX / 10;
+```
+- In a perfect world, a resting joystick outputs exactly `512`. In reality, cheap potentiometers usually rest around `490` or `530`. 
+- When the Arduino boots, we take 10 rapid measurements and average them to find the true "center". We subtract this offset from all future readings.
+
+### 2. Custom Dual-Zone Mapping
+```cpp
+if (calX < 0) {
+    mappedX = map(rawX, 0, centerX, -100, 0);
+} else if (calX > 0) {
+    mappedX = map(rawX, centerX, 1023, 0, 100);
+}
+```
+- To make a useful controller (like for a drone or robot car), we want values from `-100` (full reverse) to `100` (full forward), with exactly `0` in the center.
+- We map the left half `[0 to centerX]` to `[-100 to 0]`, and the right half `[centerX to 1023]` to `[0 to 100]`.

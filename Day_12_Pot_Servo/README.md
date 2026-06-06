@@ -145,3 +145,27 @@ Follow these steps to run, verify, and tune your steering system:
   - Cheap SG90 servos often have physical ranges restricted to $160^{\circ}$ or $170^{\circ}$ due to internal mechanical endstops. If the servo grinds at the extremes, reduce the mapping output range in code, e.g., change `map(potValue, 0, 1023, 10, 170)`.
 * **The servo movement direction is backward relative to my hand:**
   - To reverse the mapping direction, swap the two outer wires on the potentiometer, or change the map function in code to `map(potValue, 0, 1023, 180, 0)`.
+
+## 🧠 Code Explanation
+
+Let's look at the professional way to link an analog input to a servo output:
+
+### 1. The Deadband Noise Filter
+```cpp
+const int DEADBAND = 4;
+int potValue = analogRead(POT_PIN);
+
+if (abs(potValue - lastPotValue) > DEADBAND) {
+    // Process the new value
+}
+```
+- Potentiometers are noisy. Even when you aren't touching it, the ADC reading might bounce between `511`, `512`, and `513`.
+- If we sent every single bounce to the servo, it would hum, grind its internal gears, overheat, and draw massive current spikes from your power supply.
+- We calculate the absolute difference `abs(current - last)`. If the change is smaller than our `DEADBAND` (4 units), we ignore it! The servo remains completely silent until you intentionally turn the knob.
+
+### 2. Mapping the Angle
+```cpp
+int targetAngle = map(potValue, 0, 1023, 0, 180);
+myServo.write(targetAngle);
+```
+- The ADC gives us `0` to `1023`. The Servo needs `0` to `180`. The `map()` function mathematically squishes the larger range into the smaller range instantly.

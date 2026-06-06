@@ -157,3 +157,36 @@ Follow these steps to upload, run, and verify the relay controller:
 * **The relay triggers backward (ON when code says OFF):**
   - Your relay is Active-High, but the code is configured for Active-Low.
   - **The Fix:** Go to line 41 in the code and change `#define RELAY_ACTIVE_STATE LOW` to `HIGH`.
+
+## 🧠 Code Explanation
+
+Let's break down how we control high-voltage appliances safely using a Relay:
+
+### 1. Active-Low vs Active-High
+```cpp
+#define RELAY_ACTIVE_STATE LOW
+
+const int RELAY_ON = RELAY_ACTIVE_STATE;
+const int RELAY_OFF = (RELAY_ACTIVE_STATE == LOW) ? HIGH : LOW;
+```
+- Most Arduino relay modules use an optical isolator (an LED inside a chip) for safety. To turn on this LED, we actually have to pull the Arduino pin `LOW` (GND), creating a path for the current to flow *into* the Arduino.
+- Because `LOW = ON` is very confusing to read in code, we use macros and logic to define `RELAY_ON` and `RELAY_OFF`. This makes the main loop incredibly easy to read.
+
+### 2. Boot Safety
+```cpp
+digitalWrite(RELAY_PIN, RELAY_OFF);
+```
+- We write the `OFF` state to the pin immediately in `setup()`. If we didn't do this, a high-power motor or heater might briefly jerk to life the moment the Arduino turns on, which is extremely dangerous!
+
+### 3. Non-Blocking Switching
+```cpp
+if (currentTime - lastSwitchTime >= switchInterval) {
+    relayArmedState = !relayArmedState;
+    if (relayArmedState) {
+        digitalWrite(RELAY_PIN, RELAY_ON);
+    } else {
+        digitalWrite(RELAY_PIN, RELAY_OFF);
+    }
+}
+```
+- Just like our LED blink from Day 1, we toggle the `relayArmedState` every 5 seconds. The Arduino is free to check sensors or buttons during those 5 seconds because we aren't using `delay(5000)`!

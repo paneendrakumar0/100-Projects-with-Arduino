@@ -137,3 +137,44 @@ Follow these steps to test the adaptive logging and alarm outputs:
   - The threshold potentiometer on the sensor module driver is adjusted incorrectly. Rotate the brass screw until the DO indicator LED only lights up when a flame is visible.
 * **The buzzer clicking or buzzing instead of chirping:**
   - Ensure you are using the correct digital pin (Pin 12) and that the series resistor is wired.
+
+## 🧠 Code Explanation
+
+Let's look at how we built a highly responsive, non-blocking fire alarm:
+
+### 1. Dual-Path Reading
+```cpp
+int rawAnalog = analogRead(FLAME_ANALOG_PIN);
+int digitalTrigger = digitalRead(FLAME_DIGITAL_PIN); 
+
+if (rawAnalog < FLAME_THRESHOLD || digitalTrigger == LOW) {
+    isAlarmActive = true;
+}
+```
+- We read both the raw Analog intensity of the infrared light AND the instantaneous Digital trigger from the sensor's onboard amplifier.
+- We use the `||` (Logical OR) operator. If *either* the analog drops past our custom threshold OR the digital pin snaps LOW, we instantly arm the alarm. This guarantees we don't miss a flash fire!
+
+### 2. Adaptive Telemetry Logging
+```cpp
+unsigned long currentInterval = isAlarmActive ? alertLogInterval : idleLogInterval;
+
+if (currentTime - lastLogTime >= currentInterval) {
+    // print logs
+}
+```
+- This is a clever use of the Ternary Operator (`Condition ? True : False`). 
+- If the alarm is active, the `currentInterval` becomes `100ms` so we can rapidly monitor the fire's growth. 
+- If the room is safe, it defaults back to `500ms` so we don't spam the Serial Monitor with useless "Safe" messages.
+
+### 3. Non-Blocking Siren
+```cpp
+if (isAlarmActive) {
+    if (currentTime - lastPulseTime >= alarmPulseDelay) {
+        alarmPulseState = !alarmPulseState;
+        if (alarmPulseState) tone(ALARM_BUZZER_PIN, 2500);
+        else noTone(ALARM_BUZZER_PIN);
+    }
+}
+```
+- While the alarm is active, we use our `millis()` stopwatch to toggle the Buzzer and LED on and off every `150ms`. 
+- Because we didn't use `delay(150)`, the Arduino is still instantly checking the flame sensor thousands of times a second in the background. The second the fire goes out, the siren immediately stops!

@@ -152,3 +152,29 @@ Follow these steps to run, calibrate, and verify your water sensor:
   - Dissolved salts change conductivity. If using distilled water (pure water), the sensor will not read correctly. Add a pinch of salt to the water to simulate tap water.
 * **The sensor traces are turning green or black:**
   - You did not implement power gating and left the sensor connected to the continuous 5V pin. The green deposit is copper oxide/carbonate corrosion. Dry the sensor, clean with a toothbrush, and rewire it to Pin 7.
+
+## 🧠 Code Explanation
+
+Let's look at the professional technique used to prevent our sensor from rusting away:
+
+### 1. Power Gating
+```cpp
+const int SENSOR_POWER_PIN = 7; 
+digitalWrite(SENSOR_POWER_PIN, HIGH);
+delay(10); 
+int sensorValue = analogRead(SENSOR_SIGNAL_PIN);
+digitalWrite(SENSOR_POWER_PIN, LOW);
+```
+- In beginner tutorials, the sensor's VCC pin is plugged directly into the Arduino's 5V pin. This means electricity flows through the water 24/7. This causes **Galvanic Electrolysis**, literally ripping the copper off the sensor until it dissolves into green mush in just a few days.
+- **The Fix:** We plug VCC into Digital Pin 7. We only turn Pin 7 `HIGH` right before we take a reading. 
+- We wait `10ms` for the electricity to stabilize, grab our `analogRead`, and immediately turn Pin 7 `LOW`. 
+- Electricity is now flowing through the water for only 10 milliseconds out of every 1000 milliseconds. The sensor will now last years instead of days!
+
+### 2. String Translation
+```cpp
+String statusString = "";
+if (sensorValue < THRESHOLD_DRY) {
+    statusString = "DRY (Empty)";
+}
+```
+- Raw ADC numbers (like `304`) mean nothing to a user. We use an `if/else` ladder against our calibrated thresholds to convert those numbers into highly descriptive English text for our telemetry logs.

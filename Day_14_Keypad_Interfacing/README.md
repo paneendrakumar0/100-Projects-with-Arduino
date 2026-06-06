@@ -149,3 +149,38 @@ Follow these steps to upload the firmware, scan keys, and troubleshoot:
 * **No keys work at all:**
   - Verify that the `rowPins` and `colPins` arrays in your code match your physical wiring.
   - Verify the ground connections are solid.
+
+## 🧠 Code Explanation
+
+Let's break down how the Matrix Keypad library saves us massive headaches:
+
+### 1. The Keypad Layout Map
+```cpp
+char hexaKeys[ROWS][COLS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+```
+- We create a 2D array that visually matches our physical keypad. This tells the library exactly what character to return when a specific Row and Column intersect.
+
+### 2. The Library Instantiation
+```cpp
+byte rowPins[ROWS] = {9, 8, 7, 6}; 
+byte colPins[COLS] = {5, 4, 3, 2}; 
+
+Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
+```
+- We map the 8 physical wires to our Arduino pins.
+- The `Keypad()` function binds our layout (`hexaKeys`) to our physical pins (`rowPins`, `colPins`).
+
+### 3. Reading the Key
+```cpp
+char customKey = customKeypad.getKey();
+
+if (customKey) {
+    // A key was pressed!
+}
+```
+- `getKey()` handles all the complex row/column multiplexing and button debouncing in the background. It returns `0` (null) if nothing is pressed, or the `char` (like 'A' or '5') if a button was cleanly pushed.

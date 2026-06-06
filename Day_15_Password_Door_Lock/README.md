@@ -164,3 +164,48 @@ Follow these steps to run, calibrate, and verify your lock system:
   - Check the row-column pin numbers in the code. If pins 2-9 are offset, the scan mapping will be scrambled.
 * **The buzzer doesn't sound or is too quiet:**
   - Verify you connected the buzzer positive to Pin **A0** (analog pin). Analog pins are fully capable of acting as digital output pins in Arduino.
+
+## 🧠 Code Explanation
+
+Let's break down the professional **Finite State Machine (FSM)** pattern used for this door lock:
+
+### 1. Defining the States
+```cpp
+enum LockState {
+  STATE_LOCKED,
+  STATE_ENTERING,
+  STATE_UNLOCKED,
+  STATE_DENIED
+};
+LockState currentLockState = STATE_LOCKED;
+```
+- An `enum` (enumeration) creates custom named variables. Instead of remembering that "1 means locked" and "3 means denied", we give them clear human-readable names.
+
+### 2. The Switch-Case Core
+```cpp
+switch (currentLockState) {
+    case STATE_LOCKED:
+        // Wait for a keypress...
+        break;
+    case STATE_UNLOCKED:
+        if (millis() - stateTransitionTime >= 5000) {
+            transitionToState(STATE_LOCKED);
+        }
+        break;
+}
+```
+- A `switch` statement is like a giant `if/else` block. Every time the `loop()` runs, it checks our current state and *only* executes the code for that specific state. 
+- When we are `STATE_UNLOCKED`, it just watches the `millis()` timer. Once 5 seconds pass, it switches the state back to `STATE_LOCKED`, locking the door automatically.
+
+### 3. Password Buffer & Verification
+```cpp
+char inputBuffer[5]; // Stores "1234" + null terminator
+
+if (strcmp(inputBuffer, CORRECT_PIN) == 0) {
+    transitionToState(STATE_UNLOCKED);
+} else {
+    transitionToState(STATE_DENIED);
+}
+```
+- As you type, the characters are added to `inputBuffer`. 
+- When you press `#`, we use the C++ `strcmp()` (string compare) function. If it returns `0`, the strings are a perfect match, and we unlock the door!

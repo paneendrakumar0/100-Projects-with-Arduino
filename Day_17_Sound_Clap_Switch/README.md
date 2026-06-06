@@ -162,3 +162,25 @@ Follow these steps to upload your code and calibrate the comparator threshold:
 * **The LED doesn't toggle but the monitor prints nothing:**
   - Make sure the sensor output is connected to **Pin 3** (not Pin 2 or A0).
   - Check that the ground wire is fully inserted.
+
+## 🧠 Code Explanation
+
+Let's break down how we solved the "Echo" problem using a software lockout:
+
+### 1. The Raw Input
+```cpp
+int soundReading = digitalRead(SOUND_PIN);
+```
+- A clap generates a massive spike in air pressure. The sound sensor's onboard amplifier detects this spike and pulls its output pin `LOW`.
+- However, the sound wave bounces off your walls, creating echoes. The sensor might pull the pin `LOW` 15 times in the span of a single second!
+
+### 2. The Lockout Filter (Anti-Echo)
+```cpp
+if (soundReading == LOW && (currentTime - lastClapTime >= lockoutDuration)) {
+    lastClapTime = currentTime;
+    ledState = !ledState;
+}
+```
+- We check two things: "Did I hear a sound?" AND "Has it been at least 250 milliseconds since the LAST time I acted on a sound?"
+- If we hear a clap, we immediately log the `lastClapTime`. 
+- Over the next `250ms`, the echoes trigger the `soundReading == LOW` condition, but they completely fail the second condition. The echoes are ignored, and the LED toggles perfectly just once!

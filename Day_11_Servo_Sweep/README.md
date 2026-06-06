@@ -151,3 +151,33 @@ Follow these steps to upload and verify the non-blocking sweep:
 * **The servo sweeps but is very slow or jerky:**
   - Make sure the wire colors are correct. If you swap GND and Signal, the motor will not function.
   - Check that the `stepDelay` in the code is set to `15`. If it's too high, the sweep will feel stepped rather than smooth.
+
+## 🧠 Code Explanation
+
+Let's break down how we sweep a servo without blocking the Arduino:
+
+### 1. The Servo Library
+```cpp
+#include <Servo.h>
+Servo myServo;
+myServo.attach(SERVO_PIN);
+```
+- A servo motor needs a very specific 50Hz pulsing signal (PPM). Instead of calculating these exact microsecond pulses ourselves, the `<Servo.h>` library does all the heavy lifting in the background using hardware timers.
+
+### 2. The Non-Blocking Sweep
+```cpp
+if (currentTime - lastStepTime >= stepDelay) {
+    currentAngle += sweepDirection;
+    
+    if (currentAngle >= 180) {
+        sweepDirection = -1; // Reverse direction
+    } else if (currentAngle <= 0) {
+        sweepDirection = 1; // Reverse direction
+    }
+    
+    myServo.write(currentAngle);
+}
+```
+- Standard tutorials use `for` loops and `delay()`. The problem is that while the `for` loop runs, the Arduino is frozen.
+- Instead, every `15ms`, we simply increment the `currentAngle` by `sweepDirection` (+1 or -1) and write it to the servo. 
+- When it hits `180` or `0`, we multiply the direction by `-1` to reverse the sweep!
