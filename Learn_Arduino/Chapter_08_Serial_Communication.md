@@ -35,6 +35,8 @@ If you upload this code, nothing happens on the board itself. You need to open t
 
 In the top right corner of your Arduino IDE, click the icon that looks like a magnifying glass (or go to `Tools > Serial Monitor`).
 
+![Serial Monitor](https://docs.arduino.cc/static/23e9c5665c5898d9cc9bb531fbca8ff9/serial-monitor-icon.png)
+
 A window will open at the bottom of the screen. 
 Make sure the dropdown menu in the corner of the Serial Monitor says **"9600 baud"**. If it says something else, you will just see random garbage characters like `⸮⸮$!` because the PC is listening at the wrong speed!
 

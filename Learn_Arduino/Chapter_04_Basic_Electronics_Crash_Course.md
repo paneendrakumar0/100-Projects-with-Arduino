@@ -38,6 +38,7 @@ Look at the image above. The holes in a breadboard are connected underneath by m
 ## Basic Components
 
 ### 1. Jumper Wires
+![Jumper Wires](https://upload.wikimedia.org/wikipedia/commons/b/ba/Jumper_Wires.jpg)
 These are just wires with pins on the end. The color doesn't matter electrically, but for your own sanity, try to establish a color code!
 - Red = Power (5V)
 - Black/Brown = Ground (GND)

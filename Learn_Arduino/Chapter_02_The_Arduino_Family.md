@@ -29,6 +29,8 @@ The Nano is essentially an Arduino Uno shrunk down to the size of your thumb. It
 ## 3. Arduino Mega 2560 (The Heavy Lifter)
 **Best for:** 3D Printers, robotics, projects requiring lots of sensors and outputs.
 
+![Arduino Mega](https://upload.wikimedia.org/wikipedia/commons/a/ae/Arduino_Mega2560_v3.0.jpg)
+
 If you run out of pins on your Uno, you upgrade to the Mega. It is significantly larger and is packed with I/O pins and memory. It is heavily used in complex DIY robotics and custom CNC machines.
 
 - **Microcontroller:** ATmega2560
@@ -48,6 +50,8 @@ These boards use a different chip (the ATmega32U4). The special feature of this 
 
 ## 5. The Advanced Alternatives: ESP8266 & ESP32
 **Best for:** IoT (Internet of Things), Wi-Fi and Bluetooth projects, processing-heavy tasks.
+
+![ESP32](./images/ESP32.jpg)
 
 While technically not official "Arduino" boards, these microcontrollers by Espressif can be programmed using the Arduino IDE. They are incredibly cheap, massively more powerful than an Arduino Uno, and feature built-in Wi-Fi (and Bluetooth for the ESP32). Once you master the basics on an Uno, the ESP32 is usually the next logical step for a modern maker.
 

@@ -6,6 +6,8 @@ For this, we use the **Arduino IDE** (Integrated Development Environment).
 
 ## Step 1: Download the Arduino IDE
 
+![Arduino IDE](https://upload.wikimedia.org/wikipedia/commons/6/60/Arduino_IDE_2.0.0.png)
+
 1. Go to the official Arduino Software page: [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software)
 2. Download the **Arduino IDE 2.x** for your operating system (Windows, Mac, or Linux). 
 3. Run the installer and follow the default prompts.

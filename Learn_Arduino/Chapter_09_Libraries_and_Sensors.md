@@ -26,6 +26,9 @@ The Arduino IDE has a built-in "app store" for libraries called the **Library Ma
 
 Once installed, you must tell your sketch to use it. You do this at the very top of your file using the `#include` directive.
 
+![DHT11 Sensor](./images/DHT11.jpg)
+*(Placeholder image for DHT11)*
+
 ```cpp
 #include <DHT.h> // We are telling the Arduino to load the DHT code
 
@@ -53,6 +56,9 @@ After installing a library, go to **File > Examples**. Scroll down to the sectio
 Find the folder for your new library and open the "Basic" or "Hello World" example. 
 
 This is the absolute best way to learn how to use a new sensor. Read their example code, see how they set it up, and then copy/paste the parts you need into your own project.
+
+![Ultrasonic Sensor](./images/Ultrasonic.jpg)
+*(Placeholder image for Ultrasonic Sensor)*
 
 ---
 
