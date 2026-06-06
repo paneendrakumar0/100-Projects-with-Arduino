@@ -112,3 +112,30 @@ Instead, the Atmega328P has dedicated **I2C hardware registers** that monitor th
 | Transmission hangs/freezes | Missing pull-up resistors | Long wires increase bus capacitance. Add external 4.7kΩ resistors on SCL and SDA lines to 5V. |
 | Decoded data values are corrupted | Atomic access violation in Slave | When reading a multi-byte variable (16-bit integer) in the loop that is written by an ISR, you must temporarily disable interrupts (`noInterrupts()`) during the copy to prevent partial write updates. |
 | Master prints `0` sensor value but is connected | Slave A0 pin is floating | Ensure the Slave potentiometer center pin is connected securely to A0. |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a Master/Slave hardware network using I2C:
+
+### 1. The Master's Role: Orchestration
+```cpp
+Wire.requestFrom(SLAVE_I2C_ADDR, 2);
+byte high = Wire.read();
+byte low  = Wire.read();
+uint16_t val = (high << 8) | low;
+```
+- In an I2C network, the Slave is completely passive. The Master (Mode 1) dictates the rhythm of the entire bus.
+- Every 1 second, the Master asserts the SCL clock line and requests exactly 2 bytes of data from address `0x08`. It blocks, waits for the Slave to push the bytes across the SDA wire, and then mathematically reassembles the 16-bit sensor data!
+
+### 2. The Slave's Role: Interrupt-Driven Callbacks
+```cpp
+Wire.onRequest(handleMasterRequest);
+// ...
+void handleMasterRequest() {
+  Wire.write(highByte);
+  Wire.write(lowByte);
+}
+```
+- The Slave (Mode 0) runs its own code in `loop()`, reading sensors. It does not pause to poll for network traffic.
+- When the Master initiates communication, the hardware I2C peripheral inside the Slave's ATmega328P instantly halts the CPU and triggers an Interrupt Service Routine (ISR).
+- The `handleMasterRequest` function executes instantaneously, blasting the data onto the bus, and then the Slave seamlessly returns to its `loop()` as if nothing happened!

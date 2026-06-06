@@ -111,3 +111,24 @@ To solve this, we calibrate the sensor during `setup()` by sampling the gyroscop
 | Calculated angles drift rapidly (e.g. 10 deg/sec) | Calibration failed or offset values corrupted | Reset the Arduino to run the calibration cycle again. |
 | Angles jump wildly in raw console | Integration time calculation overflow | Ensure `dt` divides by `1000000.0f` to convert microsecond deltas correctly to seconds. |
 | SDA/SCL wire noise causes freeze | Missing I2C pull-up resistors | GY-521 modules usually have 4.7kΩ pull-up resistors built-in. If using long wires, add external 4.7kΩ pull-up resistors between SDA-5V and SCL-5V. |
+
+## 🧠 Code Explanation
+
+Let's break down how we calculate rotational angles using Integral Calculus:
+
+### 1. Calibration and Bias Removal
+```cpp
+float gx = (rawX - gyroOffsetX) / GYRO_SCALE_FACTOR;
+```
+- A gyroscope doesn't measure angles; it measures the *speed of rotation* (°/second).
+- Because of microscopic manufacturing imperfections and temperature, the sensor will report a tiny rotation speed (e.g., 2 °/s) even when sitting perfectly still on a desk! This is the "Zero-Rate Offset".
+- On boot, we take 200 samples while perfectly still and average them to find this offset. By subtracting this offset from all future readings, we virtually eliminate false rotation!
+
+### 2. Numerical Integration (Area Under the Curve)
+```cpp
+float dt = (currentMicros - lastLoopTime) / 1000000.0f;
+angleX += gx * dt;
+```
+- To find the angle, we must multiply the speed of rotation by the time elapsed ($Distance = Speed 	imes Time$).
+- We use `micros()` to find exactly how much time (`dt`) has passed since the last loop.
+- We multiply our current rotation speed (`gx`) by `dt` to find how many degrees we moved in that tiny fraction of a second, and add (`+=`) it to our running total. This mathematical process is called Numerical Integration!

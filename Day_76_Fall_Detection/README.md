@@ -107,3 +107,25 @@ A true fall is characterized by three sequential physical events:
 | Alarm fails to trigger after a valid drop | Subject recovery reset the timer | Ensure the sensor is kept completely still after the drop. Any shake during inactivity check will reset the 2.0s timer. |
 | Inactivity check times out without alarm | Sensor landed upright | The tilt threshold requires orientation tilt $>45^\circ$. If the sensor lands flat standing upright ($Z \approx 1g$), it is not flagged as a fall. |
 | Buzzer click is quiet | Output current limit | The Arduino pin provides max 40mA. If using a high-draw buzzer, drive it using an NPN transistor (like 2N2222) with collector to 5V. |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a life-saving Fall Detection algorithm:
+
+### 1. Vector Magnitude and Free-Fall Physics
+```cpp
+float aTot = sqrt(ax*ax + ay*ay + az*az);
+if (aTot < THRES_FREE_FALL) { // aTot < 0.4g
+```
+- When you stand still, gravity exerts a 1.0g force on you. When you jump out of a plane (or fall), you are in "free-fall", and the sensors read close to 0.0g!
+- We use the 3D Pythagorean Theorem to calculate the total magnitude of acceleration across all axes. If this total drops below 0.4g, the state machine triggers Phase 1: Free-Fall detected!
+
+### 2. The Post-Fall Inactivity Check
+```cpp
+if (now - inactivityStartTime >= TIME_INACTIVITY_REQ) {
+  if (tilt > THRES_TILT) {
+     // TRIGGER ALARM
+```
+- A person jumping off a chair experiences free-fall and a massive impact spike upon landing, but this isn't a medical emergency!
+- To prevent false alarms, our Finite State Machine (FSM) implements a Post-Fall phase. It waits 2 seconds. If the person stood up (movement detected), the alarm cancels. 
+- If the sensor remains perfectly still *and* the `tilt` angle calculation shows the sensor is lying flat (not upright), we assume the person is incapacitated and trigger the siren!

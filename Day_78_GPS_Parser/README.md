@@ -126,3 +126,31 @@ NMEA coordinates are formatted as `DDMM.MMMM` (Degrees and Minutes):
 | Console output is empty (no serial bytes) | SoftwareSerial pins swapped | Ensure GPS TX connects to D2 (RX) and GPS RX connects to D3 (TX). |
 | Decoded latitude/longitude coordinates are zero | No active lock | Coordinate data is only parsed when the status byte in GPRMC is `'A'` (Active). Wait for the red LED on the GPS board to blink. |
 | `Checksum failed!` warnings in console | Serial noise or baud rate mismatch | Keep wires short. Ensure the software baud rate is configured to `9600`. |
+
+## 🧠 Code Explanation
+
+Let's break down how we parse raw satellite data from the cosmos:
+
+### 1. Serial Stream Buffering and Sentence Extraction
+```cpp
+if (c == '$') {
+  isRecording = true;
+} else if (isRecording && (c == '' || c == '
+')) {
+  // Parse complete sentence
+}
+```
+- GPS modules blindly blast text data out of their TX pin at 9600 baud.
+- Instead of using a library, we built a Ring Buffer. We ignore everything until we see the start character (`$`). We then record every character into a character array (`sentenceBuffer`) until we see a newline (`
+`). 
+- We now have a perfectly isolated NMEA sentence string ready for analysis!
+
+### 2. Tokenizing and Coordinate Translation
+```cpp
+int degrees = (int)(rawValue / 100.0f);
+float minutes = rawValue - (degrees * 100.0f);
+float decimalDegrees = degrees + (minutes / 60.0f);
+```
+- The `$GPRMC` sentence gives us coordinates in "Degrees-Minutes" format (e.g., `4807.038`).
+- Google Maps and modern APIs require "Decimal Degrees".
+- Because the first two (or three) digits are Degrees and the remaining digits are Minutes, we divide by 100 and cast to an `int` to cleanly slice off the Degrees. We then divide the remaining Minutes by 60 to convert them to a decimal, yielding the exact Decimal Degree format!

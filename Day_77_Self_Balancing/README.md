@@ -126,3 +126,28 @@ If the robot tilts beyond a threshold (e.g. $\pm 40^\circ$), it has fallen past 
 | Robot falls over slowly without recovering | $K_p$ gain too low | Increase $K_p$ to generate more restoring force. |
 | Motors do not rotate | Battery disconnected or safety lock active | Ensure the motor power battery is connected to L298N. Release lock via Serial (`e 1`). |
 | System freezes during I2C read | SCL/SDA wiring loose | Verify I2C connections and add decoupling capacitors to the motor power line to prevent EMF noise resetting the IMU. |
+
+## 🧠 Code Explanation
+
+Let's break down the control logic for an inverted pendulum (Self-Balancing Robot):
+
+### 1. The PID Control Loop
+```cpp
+float error = targetAngle - currentAngle;
+float pTerm = Kp * error;
+float iTerm = Ki * errorIntegral;
+float dTerm = Kd * ((error - lastError) / dt);
+return pTerm + iTerm + dTerm;
+```
+- A self-balancing robot is inherently unstable. If it tilts forward, it must drive its wheels forward to "catch" itself.
+- We use a **Proportional-Integral-Derivative (PID)** algorithm to calculate the perfect motor speed.
+- **P (Proportional)** pushes harder the further it tilts.
+- **I (Integral)** accumulates error over time to overcome steady-state friction (e.g. if the floor is slightly slanted).
+- **D (Derivative)** predicts the future. If the robot is tilting back toward zero very fast, D pushes *backwards* to act like a brake, preventing it from overshooting and falling the other way!
+
+### 2. Anti-Windup Clamping
+```cpp
+errorIntegral = constrain(errorIntegral, -MAX_INTEGRAL, MAX_INTEGRAL);
+```
+- If a human holds the robot and forces it to stay tilted, the `errorIntegral` variable will add up to infinity! When the human lets go, the robot will fly across the room at max speed until the integral slowly unwinds.
+- We "clamp" the accumulator using `constrain()`. This "Anti-Windup" technique guarantees the integral term can never exceed a mathematically safe limit.

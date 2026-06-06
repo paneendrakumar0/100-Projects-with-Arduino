@@ -122,3 +122,29 @@ As light increases, $R_{LDR}$ decreases, pushing $V_{out}$ closer to $V_{in}$ (5
 | Button toggles continuously when pressed once | Switch bounce | Check if debounce time is set correctly (50ms). |
 | LDR raw value is stuck at 0 or 1023 | Voltage divider wired incorrectly | Ensure the LDR is in series with a 10kΩ resistor, with the signal A0 tapped between them. |
 | CSV header row prints multiple times | Board resetting or file formatted | The sketch only writes the header if the file does not exist. Format the card or delete the file to trigger a clean header write. |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a robust CSV datalogging engine:
+
+### 1. Formatting for Data Science (CSV)
+```cpp
+if (!SD.exists(CSV_FILENAME)) {
+  myFile.println(F("Timestamp_ms,LDR_Raw,Pot_Raw,Voltage_V"));
+}
+```
+- CSV (Comma-Separated Values) is the universal language for data analysis. Every spreadsheet program and Python data library natively understands it.
+- On boot, we check if the file exists. If it's brand new, we automatically inject a "Header Row" containing the names of our variables separated by commas.
+- During logging, we separate every reading with `,` and end the line with `
+` (`println`), creating a perfectly structured grid of data over time!
+
+### 2. State-Driven Safe Ejection
+```cpp
+if (isLogging) {
+  myFile.println(F("# LOGGER: Logging session started."));
+} else {
+  myFile.println(F("# LOGGER: Logging session terminated gracefully."));
+}
+```
+- Yanking an SD card out while the Arduino is actively writing to the FAT filesystem will corrupt the entire card.
+- We implemented a debounced toggle button. When pressed to STOP, the Arduino finalizes the file by writing a termination comment and closing all hardware handles. The status LED turns off, signaling to the human that it is 100% safe to eject the card.

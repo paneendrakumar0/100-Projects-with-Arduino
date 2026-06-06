@@ -121,3 +121,27 @@ Refer to the wiring mapping from Day 78. If no physical GPS module is connected,
 | Navigational coordinates show `NaN` | Division by zero or domain error in `asin`/`acos` | Check that lat/lon inputs are within valid ranges: Latitude $\pm 90^\circ$, Longitude $\pm 180^\circ$. |
 | Distance values differ from online map tools | Spherical vs Oblate Spheroid models | Haversine assumes a perfect sphere. Online tools use the WGS-84 oblate spheroid model (Vincenty's formula), resulting in minor deviations of up to $0.5\%$. |
 | Serial parses floats incorrectly | String formatting symbols | Enter coordinates with clear space dividers and no commas (e.g., `c 12.34 56.78`). |
+
+## 🧠 Code Explanation
+
+Let's break down how we navigate the globe using spherical geometry:
+
+### 1. The Haversine Formula (Great-Circle Distance)
+```cpp
+float a = sin(dLat/2)*sin(dLat/2) + cos(lat1)*cos(lat2) * sin(dLon/2)*sin(dLon/2);
+float c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
+float distance = EARTH_RADIUS_M * c;
+```
+- You cannot use standard algebra (Pythagorean theorem) to measure distance on a global scale because the Earth is a sphere, not flat!
+- We implemented the Haversine Formula, a robust spherical trigonometry algorithm used by aircraft and ships. It calculates the shortest path over the curved surface of the Earth between two points.
+- By multiplying the resulting angle by the radius of the Earth ($6,371,000$ meters), we get an incredibly accurate distance measurement in meters!
+
+### 2. Forward Bearing (Compass Heading)
+```cpp
+float y = sin(dLon) * cos(lat2);
+float x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+float bearing = atan2(y, x) * RAD_TO_DEG;
+```
+- Distance alone isn't enough; an autonomous robot needs to know *which direction* to drive to get Home.
+- This formula computes the initial bearing angle. We use `atan2()`, which intelligently handles all four quadrants of the coordinate plane.
+- The result is an angle from 0° to 360°, pointing directly True North (0°), East (90°), South (180°), or West (270°)!

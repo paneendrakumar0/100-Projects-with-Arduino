@@ -101,3 +101,27 @@ SD cards operate strictly at **3.3V logic levels**. If you connect the Arduino's
 | `SD Card initialization failed!` | Poor/incorrect SPI wiring | Double-check connections. Ensure SPI pins match (MISO D12, MOSI D11, SCK D13, CS D4). |
 | File writes successfully but data is empty | File not closed | Always call `myFile.close()` or `myFile.flush()` to commit cache buffer to physical flash. |
 | Data gets corrupted during logging | Power spike or card removal | Add a decoupling capacitor (e.g. 10µF) across the module's VCC and GND. |
+
+## 🧠 Code Explanation
+
+Let's break down how we securely write to physical media:
+
+### 1. The SPI Level-Shifting Interface
+```cpp
+// Check if card is present and can be initialized
+if (!SD.begin(CS_PIN)) {
+  // Initialization failed!
+}
+```
+- SD Cards use logic levels of 3.3V, but the Arduino operates at 5.0V. We use a module with an onboard regulator and a 74LVC125A level-shifter chip to translate the 5V signals to safe 3.3V signals.
+- The `SD.begin()` function sends a raw SPI "wake up" command to the card. If the card isn't physically inserted, or the FAT file system is corrupted, it returns false, letting us know it's unsafe to proceed.
+
+### 2. Physical Writes and File Flushing
+```cpp
+myFile.print(timestamp);
+myFile.flush();
+myFile.close();
+```
+- Writing data to an SD card is physically very slow compared to the Arduino's CPU. The `SD.h` library uses a 512-byte SRAM cache. When we call `.print()`, it actually just writes to this fast RAM cache.
+- If power is pulled before the cache is written to the physical SD card, data is permanently lost.
+- By explicitly calling `flush()` and `close()`, we force the Arduino to halt and physically commit the SRAM cache to the non-volatile SD flash memory, ensuring perfect data integrity!

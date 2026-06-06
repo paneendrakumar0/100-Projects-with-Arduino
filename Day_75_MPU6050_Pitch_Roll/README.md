@@ -118,3 +118,20 @@ Reading all 14 bytes in one single I2C request ensures that the acceleration and
 | Pitch/Roll values drift indefinitely | Gyro calibration missed or board moved on boot | Press reset button on the Arduino and keep the sensor perfectly still during calibration. |
 | Fused angle lags behind actual movements | Alpha constant ($\alpha$) too high or loop rate too slow | Ensure loop runs at 100 Hz (10ms). Reduce $\alpha$ to $0.95$ to give more weight to the accelerometer. |
 | Gimbal lock (angles jump wildly at 90°) | Mathematical limit of Euler angles | Pitch/Roll angles suffer from mathematical singularities at $\pm 90^\circ$. For full 3D rotation ($360^\circ$), upgrade to a **quaternion-based filter** (e.g. Madgwick filter). |
+
+## 🧠 Code Explanation
+
+Let's break down how we achieve perfect stability with Sensor Fusion:
+
+### 1. The Flaws of Individual Sensors
+- **Accelerometers** are noisy. Any vibration from motors causes the reading to spike wildly. However, in the long term, they always point straight down toward Earth's gravity.
+- **Gyroscopes** are clean and immune to vibration. However, due to the integration math, any tiny microscopic error accumulates over time, causing the angle to drift away into infinity!
+
+### 2. The Complementary Filter Algorithm
+```cpp
+fusedRoll = ALPHA * (fusedRoll + gx * dt) + (1.0f - ALPHA) * accRoll;
+```
+- The Complementary Filter mathematically fuses both sensors to get the best of both worlds. 
+- `ALPHA` is our weight (e.g., 0.96). 
+- We trust the Gyroscope's integrated angle for 96% of our calculation. This acts as a High-Pass Filter, reacting instantly and smoothly to rapid movement while ignoring vibrations.
+- We trust the Accelerometer's gravity angle for the remaining 4%. This acts as a Low-Pass Filter. Over a period of a few seconds, it gently tugs the total calculation back toward absolute zero, completely eliminating the gyroscope's drift!

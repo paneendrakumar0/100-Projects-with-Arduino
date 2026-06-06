@@ -113,3 +113,25 @@ If we read these bytes individually, the sensor might update its readings mid-pr
 | `Failed to communicate with MPU6050!` | Address mismatch (AD0 Pin) | Tie AD0 pin to GND to force `0x68` address. |
 | Readings are static and do not change | MPU6050 remained in Sleep mode | Ensure `PWR_MGMT_1` (0x6B) was set to `0x00` during setup. |
 | Z-axis reading fluctuates significantly | Mechanical vibrations | Mount sensor securely. Use a low-pass filter (software) or activate MPU6050 Digital Low Pass Filter (DLPF) register `0x1A`. |
+
+## 🧠 Code Explanation
+
+Let's break down how we communicate directly with the MPU6050 hardware:
+
+### 1. I2C Initialization and Waking the Sensor
+```cpp
+Wire.beginTransmission(MPU6050_ADDR);
+Wire.write(REG_PWR_MGMT_1); // 0x6B
+Wire.write(0x00);           // Wake up
+```
+- By default, the MPU6050 boots into Sleep Mode to save power. 
+- We use the I2C bus (`Wire.h`) to open a line to address `0x68`, point the hardware register to `0x6B` (Power Management 1), and overwrite it with `0x00`. The internal MEMS oscillator wakes up, and the sensor begins continuously sampling physics data!
+
+### 2. Atomic Burst Reading and Reassembly
+```cpp
+Wire.requestFrom(MPU6050_ADDR, (uint8_t)6);
+x = (Wire.read() << 8) | Wire.read();
+```
+- If we read the X, Y, and Z registers one at a time with delays in between, the robot might have moved, causing the X and Z data to represent different points in time!
+- We execute an Atomic Burst Read: We request 6 bytes simultaneously. The MPU6050 hardware freezes its data buffer and streams all 6 bytes (High and Low for each axis) instantly over I2C.
+- Because the data is 16-bit but I2C only sends 8-bit bytes, we shift the High byte left by 8 bits (`<< 8`) and use bitwise OR (`|`) to stitch the Low byte to it, reconstructing the true 16-bit integer!
