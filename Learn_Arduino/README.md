@@ -18,6 +18,7 @@ This guide is designed to take you by the hand and explain **everything** you ne
 8. [Chapter 8: Serial Communication](./Chapter_08_Serial_Communication.md) - Talking to your PC and debugging like a pro.
 9. [Chapter 9: Libraries and Sensors](./Chapter_09_Libraries_and_Sensors.md) - Expanding your capabilities without reinventing the wheel.
 10. [Chapter 10: Best Practices](./Chapter_10_Best_Practices.md) - How to write clean, non-blocking code to prepare for the 100 Days of Arduino.
+11. [Chapter 11: Component Visual Glossary](./Chapter_11_Component_Glossary.md) - A massive visual encyclopedia of every module, sensor, and motor you will encounter.
 
 ## 🛠️ How to use this guide
 
