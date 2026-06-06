@@ -21,6 +21,9 @@ This guide is designed to take you by the hand and explain **everything** you ne
 11. [Chapter 11: Component Visual Glossary](./Chapter_11_Component_Glossary.md) - A massive visual encyclopedia of every module, sensor, and motor you will encounter.
 12. [Chapter 12: Troubleshooting & Common Errors](./Chapter_12_Troubleshooting.md) - How to fix `programmer is not responding` and other headaches.
 13. [Chapter 13: Powering Your Projects](./Chapter_13_Powering_Your_Projects.md) - How to prevent your Arduino from going up in smoke when using motors.
+14. [Chapter 14: Reading Schematics and Wiring Diagrams](./Chapter_14_Reading_Schematics.md) - How to translate lines and symbols into physical circuits.
+15. [Chapter 15: Communication Protocols (I2C, SPI, UART)](./Chapter_15_Communication_Protocols.md) - How the Arduino talks to advanced sensors.
+16. [Chapter 16: The Secret to Multitasking](./Chapter_16_Millis_vs_Delay.md) - Why `delay()` is your enemy, and how to use `millis()`.
 
 ## 🛠️ How to use this guide
 
