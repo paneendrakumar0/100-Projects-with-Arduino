@@ -126,3 +126,36 @@ Connect Pin 1 and Pin 3 both to GND. The DS18B20 draws power from the DQ line du
 | `CRC mismatch` occasionally | Long wire causing signal degradation | Shorten wire or add 100nF capacitor on DQ |
 | Temperature stuck at 85°C | Sensor powers up but conversion never completes | Ensure DQ pull-up is strong enough; check 750ms delay |
 | Temperature reads −127°C | Sensor not recognized | Check DS18B20 pinout (flat face forward: GND, DQ, VDD) |
+
+## 🧠 Code Explanation
+
+Let's break down how we bit-banged the Dallas 1-Wire Protocol:
+
+### 1. Microsecond Timing Slots
+```cpp
+void ow_write_bit(uint8_t bit) {
+  ow_low();
+  if (bit) {
+    delayMicroseconds(6);   // Short pull for '1'
+    ow_release();
+    delayMicroseconds(64);
+  } else {
+    delayMicroseconds(70);  // Long pull for '0'
+    ow_release();
+  }
+}
+```
+- The DS18B20 only has one data wire. To communicate, both devices must agree on strict timing windows (Time Slots).
+- A Time Slot is about 70 microseconds long. The Master (Arduino) starts every slot by pulling the line LOW.
+- If we want to send a `1`, we quickly release the line after 6µs. The sensor looks at the line 15µs in, sees it is HIGH, and records a `1`.
+- If we want to send a `0`, we hold the line LOW for the entire 70µs. The sensor looks at 15µs, sees it is LOW, and records a `0`.
+
+### 2. CRC-8 Integrity Checking
+```cpp
+uint8_t mix = (crc ^ byte) & 0x01;
+crc >>= 1;
+if (mix) crc ^= 0x8C; // Reflected polynomial 0x31
+```
+- Because 1-Wire is susceptible to electrical noise over long cables, the DS18B20 computes a mathematical hash (Cyclic Redundancy Check) of its temperature data and sends it as the 9th byte.
+- We run the exact same polynomial division algorithm (`x^8 + x^5 + x^4 + 1`) on the first 8 bytes we receive.
+- If our calculated hash matches the 9th byte sent by the sensor, we are 100% mathematically certain that the temperature reading is flawless and uncorrupted!

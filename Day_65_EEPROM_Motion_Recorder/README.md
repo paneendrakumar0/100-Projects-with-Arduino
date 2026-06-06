@@ -106,3 +106,30 @@ Buttons: one leg to the pin, other leg to GND. `INPUT_PULLUP` handles the pull-u
 | Servo jitters during recording | Power supply too weak | Use external 5V 1A+ for servo |
 | Only 0 frames recorded | Button bounce detected as no-press | Hold button for at least 200ms before releasing |
 | Motion replayed in reverse | Recording or playback loop direction | Code replays forward by default; swap loop direction if needed |
+
+## 🧠 Code Explanation
+
+Let's break down how we record physical motion to Non-Volatile Memory:
+
+### 1. Real-Time EEPROM Streaming
+```cpp
+if (millis() - lastRecordTime >= RECORD_INTERVAL_MS) {
+  EEPROM.write(EEPROM_DATA_ADDR + frameCount, angle);
+  frameCount++;
+}
+```
+- Standard Arduino variables are erased the moment power is lost. EEPROM is special flash memory that survives power-cycles.
+- While the record button is held, we take a snapshot of the servo angle every 50 milliseconds (20 frames per second).
+- We write this single byte directly to EEPROM. Since the ATmega328P has 1024 bytes of EEPROM, we can record about 50 seconds of motion before running out of tape!
+
+### 2. The Magic Sentinel Byte
+```cpp
+const uint8_t EEPROM_MAGIC = 0xA5;
+// ...
+if (EEPROM.read(EEPROM_MAGIC_ADDR) == EEPROM_MAGIC) {
+  // Valid recording found!
+}
+```
+- How does the Arduino know if it has a valid recording saved after you unplug it and plug it back in months later?
+- When we stop recording, we write a specific "Magic Number" (`0xA5`) to address 254. 
+- On boot, the very first thing `setup()` does is check address 254. If it sees `0xA5`, it knows a human intentionally saved a sequence, and it is safe to play it back!

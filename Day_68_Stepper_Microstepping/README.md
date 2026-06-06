@@ -132,3 +132,29 @@ Set $V_{REF} = 0.4\,\text{V}$ for $I_{max} = 0.5\,\text{A}$ (good for NEMA 17 at
 | Motor skips steps at high speed | MIN_DELAY_US too small or VREF too low | Increase `MIN_DELAY_US` or raise VREF |
 | A4988 gets very hot | VREF too high | Lower VREF to match motor rated current |
 | Smoke / burnt smell | No 100µF cap on VMOT | Power off immediately, add capacitor |
+
+## 🧠 Code Explanation
+
+Let's break down how we achieve silky smooth stepper motion:
+
+### 1. Hardware Microstepping Control
+```cpp
+digitalWrite(MS1_PIN, HIGH);
+digitalWrite(MS2_PIN, HIGH);
+digitalWrite(MS3_PIN, HIGH); // 1/16th Step Mode
+```
+- A standard stepper motor has 200 physical "teeth" per revolution (1.8° per step). If you step them individually, the motor jumps and vibrates violently.
+- By toggling the `MS1`, `MS2`, and `MS3` pins on the A4988 driver, we command its internal DACs (Digital-to-Analog Converters) to feed sinusoidal partial-currents to the coils.
+- This creates magnetic "sub-steps" between the physical teeth. At 1/16th mode, our 200-step motor transforms into an ultra-smooth 3,200-step motor!
+
+### 2. The Trapezoidal Velocity Profile
+```cpp
+if (i < accelSteps) {
+  stepDelay = map(i, 0, accelSteps, START_DELAY_US, minDelayUs);
+} else if (i > steps - accelSteps) {
+  stepDelay = map(i, steps - accelSteps, steps, minDelayUs, START_DELAY_US);
+}
+```
+- A stepper motor has zero torque at high speeds. If you instantly command it to spin at 1000 RPM, the magnetic field will spin faster than the physical rotor can accelerate, and the motor will screech and stall ("skipping steps").
+- We use a Trapezoidal Profile: We start with a long `stepDelay` (slow speed), and linearly decrease it (accelerate) over the first 100 steps. 
+- We cruise at maximum speed in the middle, and linearly increase the delay (decelerate) at the end. This prevents stalling and allows for massive top speeds!

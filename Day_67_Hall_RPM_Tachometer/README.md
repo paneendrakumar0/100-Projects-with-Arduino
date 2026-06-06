@@ -114,3 +114,24 @@ Magnet mounting: glue one small neodymium disc magnet to the side of your motor 
 | Wildly fluctuating readings | No noise canceller or long unshielded wire | `ICNC1` is enabled — shorten sensor wire |
 | Always shows 0 RPM | Sensor output never goes LOW | Check sensor type; reverse magnet polarity (South pole) |
 | RPM correct at high speed, wrong at low | Overflow not counted | Confirm `TIMSK1 = _BV(ICIE1) | _BV(TOIE1)` — both interrupts enabled |
+
+## 🧠 Code Explanation
+
+Let's break down how we measure extreme RPMs using Hardware Timers:
+
+### 1. The Input Capture Unit (ICU)
+```cpp
+TCCR1B = _BV(ICNC1) | _BV(CS11); 
+TIMSK1 = _BV(ICIE1);
+```
+- Reading a fast motor with `digitalRead()` or even standard `attachInterrupt()` introduces Software Jitter—tiny delays caused by the CPU doing other things. This ruins RPM calculations at high speeds.
+- We bypass software entirely and use the ATmega328P's internal hardware: The **Input Capture Unit**.
+- When the Hall Sensor detects a magnet, the hardware *instantly* takes a snapshot of the 16-bit `Timer1` clock and freezes it into the `ICR1` register. The CPU can then casually read this perfectly accurate timestamp later!
+
+### 2. Handling Timer Overflows
+```cpp
+uint32_t periodTicks = ((uint32_t)oflows << 16) + (uint32_t)cap - (uint32_t)last;
+```
+- Timer1 runs so fast (2 MHz) that it resets to zero every 32 milliseconds.
+- If the motor is spinning slowly (e.g., 60 RPM = 1 second per revolution), Timer1 will overflow dozens of times between magnet detections!
+- We enable an Overflow Interrupt (`TIMER1_OVF_vect`) to count how many times the clock rolls over. By combining the 16-bit hardware timestamp (`cap`) with our 16-bit software rollover count (`oflows`), we create a massive 32-bit timestamp capable of tracking periods from microseconds all the way up to hours!

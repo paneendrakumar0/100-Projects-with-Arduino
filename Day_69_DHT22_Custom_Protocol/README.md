@@ -105,3 +105,26 @@ The 40 bits are grouped into 5 bytes:
 | `ERROR: Read failed` (checksum mismatch) | Timing jitter or signal noise | Ensure wires are short. Disable interrupts if other modules cause delays. |
 | Sensor returns `0.0` or stale values | Read requested too quickly | DHT22 needs at least 2 seconds between reads. Verify the program waits 2.5s. |
 | Negative temperature reading in warm room | MSB bit manipulation bug | Ensure the sign bit extraction masks correctly (`data[2] & 0x80`). |
+
+## 🧠 Code Explanation
+
+Let's break down how we bit-bang the precise DHT22 digital protocol:
+
+### 1. Handshake and Pulse Timing
+```cpp
+unsigned long pulseWidth = micros() - t;
+uint8_t bit = (pulseWidth > BIT_THRESHOLD_US) ? 1 : 0;
+```
+- The DHT22 sends data by manipulating the length of the HIGH voltage pulses on a single wire.
+- A HIGH pulse of 28µs means a logical `0`. A HIGH pulse of 70µs means a logical `1`.
+- We use a `while(digitalRead() == HIGH)` loop to time the pulse using `micros()`. If the pulse was longer than our threshold (40µs), we shift a `1` into our byte array. Otherwise, we shift a `0`.
+
+### 2. Bitwise Assembly and Sign Masking
+```cpp
+uint16_t rawTemp = ((uint16_t)(data[2] & 0x7F) << 8) | data[3];
+tempC = (float)rawTemp / 10.0f;
+if (data[2] & 0x80) tempC = -tempC;
+```
+- The sensor gives us Temperature split across two 8-bit bytes (`data[2]` and `data[3]`).
+- The protocol dictates that the highest bit of `data[2]` (Bit 15) is the Sign bit. If it's a `1`, the temperature is negative (sub-zero).
+- We use `& 0x7F` to strip away the Sign bit so it doesn't mess up our math, combine the remaining 15 bits into an integer, divide by 10 to get the decimal point, and then manually multiply by `-1` if the Sign bit was present!

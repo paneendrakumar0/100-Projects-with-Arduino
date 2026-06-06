@@ -123,3 +123,29 @@ To address Chip 2, send a 32-bit word: `[Chip2_Reg][Chip2_Data][NOOP][NOOP]`.
 | Display too dim | Intensity too low | Increase `maxWrite(REG_INTENSITY, 0x0F)` |
 | Only first character scrolls | `MSG_LEN` constant wrong | Set `MSG_LEN` to match `strlen(MESSAGE)` |
 | All LEDs flicker badly | Missing decoupling cap | Add 100nF cap between VCC and GND of MAX7219 |
+
+## 🧠 Code Explanation
+
+Let's break down how we manipulate an LED Matrix using direct SPI registers:
+
+### 1. Addressing Hardware Registers over SPI
+```cpp
+void maxWrite(uint8_t reg, uint8_t data) {
+  digitalWrite(CS_PIN, LOW);
+  SPI.transfer(reg);
+  SPI.transfer(data);
+  digitalWrite(CS_PIN, HIGH);
+}
+```
+- The MAX7219 is an incredibly smart driver chip. Instead of the Arduino constantly flashing LEDs to multiplex them, we just send a 16-bit command to the MAX7219 and it handles the high-speed flashing autonomously!
+- We pull Chip Select (CS) LOW, blast 8 bits for the Register Address (e.g., `0x0A` for Intensity), blast 8 bits for the Value (e.g., `0x04` for half brightness), and pull CS HIGH. The hardware instantly latches the new setting.
+
+### 2. The Framebuffer and Bitwise Drawing
+```cpp
+if (colByte & (1 << row)) {
+    pixel |= (0x80 >> col);
+}
+```
+- We create an 8-byte array in Arduino RAM called `framebuffer`. Each byte represents one row of 8 LEDs on the physical matrix.
+- To draw graphics (like scrolling text or bouncing balls), we use bitwise math (`&` and `|`) to flip individual bits inside the array `1` or `0`.
+- Once our virtual drawing is complete, we run a `flushFramebuffer()` function that blasts the entire 8-byte array over SPI to the MAX7219 chip, updating the physical screen instantly!

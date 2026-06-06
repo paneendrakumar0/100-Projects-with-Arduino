@@ -116,3 +116,30 @@ Arduino D13 ──── LED ──── 220Ω ──── GND  (touch indicat
 | Never shows TOUCHED | Threshold too high or electrode too small | Lower `TOUCH_THRESHOLD` to 50; make electrode larger |
 | Erratic readings | Electrical noise / fluorescent lights | Add 47 pF cap D5 to GND; shield electrode wire |
 | Reading = 5000 (MAX_CYCLES) | SENSE_PIN never goes HIGH | Check resistor connection and wiring |
+
+## 🧠 Code Explanation
+
+Let's break down how we measured physical capacitance without any special chips:
+
+### 1. The RC Time Constant
+```cpp
+digitalWrite(SEND_PIN, HIGH);
+int count = 0;
+while (digitalRead(SENSE_PIN) == LOW && count < MAX_CYCLES) {
+  count++;
+}
+```
+- Capacitors take time to fill up with electricity. The time it takes is directly proportional to how big the capacitor is.
+- By connecting a massive 1-Megohm resistor between `SEND` and `SENSE`, we slow down the charging process of the physical wire.
+- We pull `SEND` HIGH, and then rapidly count in a `while` loop until `SENSE` registers a HIGH voltage (2.5V). 
+- If the wire is untouched, it charges very fast (low count). When a human touches the wire, the human body acts as a massive capacitor, soaking up the electricity and slowing down the voltage rise (high count)!
+
+### 2. Dynamic Calibration
+```cpp
+baseline = calSum / CALIBRATE_READS;
+long delta = reading - baseline;
+bool isTouched = (delta > TOUCH_THRESHOLD);
+```
+- Humidity, wire length, and nearby electronics change the baseline capacitance of the room.
+- To prevent false triggers, the Arduino takes 50 readings at boot to establish what "normal" looks like.
+- In the main loop, we only trigger a touch if the current reading spikes drastically (`delta`) above that dynamic baseline!

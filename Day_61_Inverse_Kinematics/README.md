@@ -114,3 +114,27 @@ The joystick button toggles between both solutions at runtime.
 | `NaN` in serial output | acos receiving value outside [-1, 1] | The `constrain(cos_theta2, -1, 1)` line prevents this — if NaN occurs, the link lengths may be wrong |
 | Arm tip doesn't reach corners | `L1`/`L2` constants don't match physical links | Measure links in mm and update code constants |
 | Elbow moves in wrong direction | Servo horn installed backwards | Physically reverse the servo horn, or swap `theta2_deg` sign in code |
+
+## 🧠 Code Explanation
+
+Let's break down how we use Inverse Kinematics (IK) to control a robotic arm:
+
+### 1. The Math: Law of Cosines
+```cpp
+float cos_theta2 = (d_sq - L1 * L1 - L2 * L2) / (2.0f * L1 * L2);
+float theta2_rad = acos(cos_theta2);
+```
+- In Forward Kinematics, we know the joint angles and want to find the hand position. Inverse Kinematics is the opposite: we know the hand position (from the joystick) and must calculate the required joint angles!
+- We use the Law of Cosines on the triangle formed by the upper arm (`L1`), the forearm (`L2`), and the straight-line distance (`d`) from the shoulder to the target.
+- By isolating `theta2`, we discover exactly how much the elbow needs to bend to place the wrist at the correct distance from the shoulder.
+
+### 2. Workspace Constraints
+```cpp
+float d_min = fabsf(L1 - L2) + 0.01f;
+float d_max = L1 + L2 - 0.01f;
+if (d < d_min) d = d_min;
+if (d > d_max) d = d_max;
+```
+- A physical robot arm can't reach everywhere. If you push the joystick too far away, it can't stretch longer than `L1 + L2` (fully extended). If you pull it too close, it can't fold tighter than `L1 - L2`.
+- Attempting to calculate angles outside this "donut-shaped" workspace results in imaginary numbers (mathematical singularities), which crash the Arduino.
+- We "clamp" the target distance `d` so the arm simply stretches as far as it can and stops smoothly at its physical boundary.

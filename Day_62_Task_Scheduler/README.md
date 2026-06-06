@@ -124,3 +124,32 @@ Because this is cooperative, task timing has jitter equal to the **worst-case ex
 | All tasks delayed | One task contains a `delay()` call | Remove all `delay()` calls from task functions — use non-blocking timing |
 | Heartbeat shows 0 idle cycles | CPU is fully saturated | Increase task periods or remove heavy tasks |
 | Button press not detected | Debounce period too long | Reduce `periodMs` of `Button_Monitor` task to 20 ms |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a Cooperative RTOS Kernel:
+
+### 1. The Task Control Block (TCB)
+```cpp
+struct Task {
+  const char* name;
+  TaskFn      taskFn;
+  uint16_t    periodMs;
+  unsigned long lastRunMs;
+  // ...
+};
+```
+- Every operating system tracks programs using a Task Control Block. Our simple array holds all the metadata for our 5 functions.
+- Instead of using `delay()` (which paralyzes the entire CPU), we give each task a `periodMs`. The scheduler promises to call the function pointer (`taskFn`) only when enough time has elapsed since `lastRunMs`.
+
+### 2. The Super-Loop Dispatcher
+```cpp
+for (int i = 0; i < NUM_TASKS; i++) {
+  if (now - tasks[i].lastRunMs >= tasks[i].periodMs) {
+    tasks[i].taskFn();
+    tasks[i].lastRunMs  = now;
+  }
+}
+```
+- The main `loop()` does nothing but rapidly scan through the task array. 
+- Because this is a **Cooperative** scheduler, the system relies on trust. When `taskFn()` is called, the task *must* do its job quickly and return. If a task accidentally runs a `while(true)` loop, the entire OS freezes because the dispatcher never gets control back!

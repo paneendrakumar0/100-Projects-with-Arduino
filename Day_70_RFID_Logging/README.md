@@ -127,3 +127,27 @@ ATmega328P EEPROM is rated for 100,000 write cycles per byte. To prevent prematu
 | Console reports `Failed to read from DS3231` | RTC I2C wiring loose or missing | Verify SDA is on A4 and SCL is on A5. The system will fall back to Software RTC. |
 | Database full error when adding first card | EEPROM corruption | Send command `c` in the Serial Monitor to re-initialize and format EEPROM. |
 | LEDs do not light up | Reversed LED polarity or missing GND connection | Ensure the longer LED leg (anode) connects to D5/D6, and short leg (cathode) to GND. |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a secure EEPROM Access Logger with Wear-Leveling:
+
+### 1. The EEPROM Ring Buffer
+```cpp
+int targetSlot = (activeSlotIndex + 1) % NUM_LOG_SLOTS;
+int targetAddress = EEPROM_LOG_START + (targetSlot * LOG_ENTRY_SIZE);
+```
+- EEPROM memory degrades after 100,000 writes. If we always logged access events to Address 100, that specific memory cell would die very quickly!
+- To prevent this, we divide the EEPROM into 46 "Slots" (20 bytes each). 
+- We use the Modulo operator (`%`) to create a "Ring Buffer". Every time someone scans a card, we write to the *next* slot in the circle. When we hit slot 46, we loop back and overwrite slot 0. This spreads the wear evenly across the entire chip!
+
+### 2. State-Machine Driven LED Animations
+```cpp
+if (indState == IND_ACCESS_DENIED) {
+  int phase = elapsed / 200;
+  digitalWrite(DENIED_LED, (phase % 2 == 0) ? HIGH : LOW);
+}
+```
+- When access is denied, we want the red LED to flash rapidly 3 times. But if we use `delay(200)`, the CPU is frozen for a whole second, meaning a second person scanning their card would be completely ignored!
+- We use a non-blocking State Machine. The main loop checks `millis()` and divides the elapsed time into 200ms "phases". 
+- Depending on whether the phase number is even or odd (`% 2`), it turns the LED on or off. The CPU never stops executing the rest of the code!
