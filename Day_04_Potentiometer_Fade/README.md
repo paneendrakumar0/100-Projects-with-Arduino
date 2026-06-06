@@ -160,3 +160,35 @@ Follow these steps to upload, run, and verify the analog-to-PWM translation:
   - Make sure you are using a 10kΩ potentiometer. Higher resistance (like 1MΩ) can cause unstable readings on AVR microcontrollers due to impedance matching issues.
 * **The direction is backward (brightest is CCW, darkest is CW):**
   - Swap the two outer wires on the potentiometer (swap Pin 1 and Pin 3 connections). This reverses the voltage divider sweep.
+
+## 🧠 Code Explanation
+
+Let's look at how we translate analog voltages into LED brightness:
+
+### 1. Reading the Potentiometer
+```cpp
+int adcValue = analogRead(POT_PIN);
+```
+- `analogRead()` asks the Arduino's built-in Analog-to-Digital Converter (ADC) to read the voltage on Pin A0.
+- It converts 0V to 5V into a number between `0` and `1023`.
+
+### 2. The Map Function
+```cpp
+int pwmValue = map(adcValue, 0, 1023, 0, 255);
+```
+- We cannot send `1023` to the LED because the LED pin only accepts 8-bit values (from `0` to `255`).
+- `map()` is a brilliant math function that scales ranges. It takes our `adcValue` and mathematically shrinks the `0-1023` range down to a perfect `0-255` range for the LED!
+
+### 3. PWM Output
+```cpp
+analogWrite(LED_PIN, pwmValue);
+```
+- Despite the name, `analogWrite()` does not output a true analog voltage. It outputs **PWM** (Pulse Width Modulation).
+- It turns the LED fully ON and fully OFF almost 500 times a second. 
+- A value of `127` means the LED is ON 50% of the time, making it appear half as bright to our eyes!
+
+### 4. Telemetry Logging
+```cpp
+float voltage = adcValue * (5.0 / 1023.0);
+```
+- We do a bit of math to convert the raw `1023` back into real-world Volts so we can print it nicely to the Serial Monitor!

@@ -37,3 +37,43 @@ In our code, we constantly check this stopwatch: _"Has one second passed since I
 - If **YES**: Flip the LED on (or off), record the new time, and keep going.
 
 This allows the Arduino's `loop()` to run thousands of times a second without ever stopping! Upload the code below to see it in action.
+
+## 🧠 Code Explanation
+
+Let's break down the actual code used in this project line-by-line:
+
+### 1. Variables
+```cpp
+unsigned long previousMillis = 0; 
+const long interval = 1000;       
+bool ledState = LOW;
+```
+- `unsigned long`: A massive variable type. `millis()` gets huge very fast (up to 4 billion), so a standard `int` would crash your Arduino in 32 seconds! We use this to remember the last time we blinked.
+- `interval`: The delay we want (1000ms = 1 second).
+- `ledState`: A boolean variable (`true/false` or `HIGH/LOW`) to remember if the LED is currently ON or OFF.
+
+### 2. The Setup
+```cpp
+void setup() {
+    pinMode(ledPin, OUTPUT);
+    Serial.begin(9600);
+}
+```
+- `pinMode`: Tells the Arduino to push electricity OUT to the LED.
+- `Serial.begin(9600)`: Opens the communication line to your computer at 9600 bits per second so we can print messages.
+
+### 3. The Non-Blocking Logic
+```cpp
+unsigned long currentMillis = millis();
+
+if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    ledState = !ledState;
+    digitalWrite(ledPin, ledState);
+}
+```
+- `currentMillis = millis()`: We check our stopwatch.
+- `if (current - previous >= interval)`: This is the magic formula. It asks: "Has the time passed since my last action exceeded 1 second?"
+- `previousMillis = currentMillis`: If yes, we immediately reset our memory of the "last action" to right now.
+- `ledState = !ledState`: The `!` means "NOT". It flips the state. If it was ON, it becomes OFF.
+- `digitalWrite`: Finally, we physically turn the pin ON or OFF based on our new `ledState`.

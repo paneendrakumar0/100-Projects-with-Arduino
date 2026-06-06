@@ -180,3 +180,31 @@ Follow these steps to run and calibrate your night light:
 * **The LED flickers rapidly when starting to turn on:**
   - Increase the gap between `DARK_THRESHOLD` and `LIGHT_THRESHOLD` (increase the hysteresis dead band). For example, set `DARK_THRESHOLD = 300` and `LIGHT_THRESHOLD = 500`.
   - Ensure the LED light is not shining directly into the LDR. If the LED shines on the LDR, as soon as the LED turns on, it "thinks" it's daytime and turns off, creating a feedback flicker loop. Shield the LDR physically from the LED.
+
+## 🧠 Code Explanation
+
+Let's look at how we implemented professional Hysteresis:
+
+### 1. The Thresholds
+```cpp
+const int DARK_THRESHOLD = 350;
+const int LIGHT_THRESHOLD = 450;
+```
+- If we only used one threshold (e.g., `400`), what happens when the room light fluctuates between `399` and `401` really fast? The LED would strobe rapidly! 
+- By using two thresholds, we create a "dead band". The light must cross a solid 100-point margin to trigger a state change, making it extremely stable.
+
+### 2. The Hysteresis Logic
+```cpp
+if (!nightLightActive && lightLevel < DARK_THRESHOLD) {
+    nightLightActive = true;
+    digitalWrite(LED_PIN, HIGH);
+} 
+else if (nightLightActive && lightLevel > LIGHT_THRESHOLD) {
+    nightLightActive = false;
+    digitalWrite(LED_PIN, LOW);
+}
+```
+- `!nightLightActive`: If the light is currently OFF...
+- `&& lightLevel < DARK_THRESHOLD`: AND the room drops below `350`...
+- Then we turn the LED ON and update our memory (`nightLightActive = true`).
+- The reverse happens when the sun comes up and the value rises past `450`!

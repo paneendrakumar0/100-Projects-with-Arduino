@@ -153,3 +153,34 @@ Follow these steps to run and calibrate your logger:
 * **The readings are constant and never change:**
   - DHT11s have a slow response rate. It can take up to 30 seconds for the internal sensor elements to settle when exposed to new conditions.
   - Check if the sensor is powered with 5V (3.3V is sometimes insufficient for cheap DHT11 clones).
+
+## 🧠 Code Explanation
+
+Let's break down how we use a Library to read the DHT11:
+
+### 1. Loading the Library
+```cpp
+#include "DHT.h"
+#define DHTTYPE DHT11 
+DHT dht(DHT_PIN, DHTTYPE);
+```
+- `#include` tells the compiler to grab the Adafruit DHT code.
+- We define what type of sensor we have (DHT11, DHT22, etc.).
+- We create an *object* called `dht` linked to pin 2. 
+
+### 2. Reading Data
+```cpp
+float humidity = dht.readHumidity();
+float tempC = dht.readTemperature();
+```
+- Because we included the library, all the complex 40-bit timing protocols are handled for us behind the scenes. We just ask the library for the numbers!
+
+### 3. Validation Checks (NaN)
+```cpp
+if (isnan(humidity) || isnan(tempC)) {
+    Serial.println("[ERROR] Failed to read from DHT sensor!");
+    return;
+}
+```
+- `isnan()` stands for "Is Not A Number".
+- If the sensor is unplugged or broken, the library returns `NaN`. If we tried to do math with `NaN`, our program would crash. Always validate your sensor readings!

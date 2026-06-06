@@ -154,3 +154,30 @@ Follow these steps to upload, run, and verify the color mixer:
 * **The colors are inverted (e.g. it turns OFF when it should be ON):**
   - You likely have a **Common Anode** RGB LED instead of Common Cathode.
   - **The Fix:** Connect the longest pin to **5V** instead of GND. In the code, invert the values written to the pins by changing `analogWrite(pin, val)` to `analogWrite(pin, 255 - val)`.
+
+## 🧠 Code Explanation
+
+Let's break down the math behind the smooth Rainbow cycle:
+
+### 1. The Sine Wave Math
+```cpp
+angle += angleIncrement;
+
+int rVal = (sin(angle) + 1.0) * 127.5;
+int gVal = (sin(angle + (2.0 * PI / 3.0)) + 1.0) * 127.5;
+int bVal = (sin(angle + (4.0 * PI / 3.0)) + 1.0) * 127.5;
+```
+- To make a smooth rainbow, we treat the colors like a wave.
+- `sin(angle)` generates a math wave that goes from `-1.0` to `1.0`. 
+- Since PWM can't be negative, we add `1.0` to make it range from `0.0` to `2.0`.
+- We then multiply by `127.5`. The result is a perfect wave oscillating between `0` and `255`!
+- The secret to the rainbow is **phase shifting**. We shift the Green wave by 120 degrees (`2*PI/3` radians) and the Blue wave by 240 degrees. This ensures that when Red is fading out, Green is perfectly fading in!
+
+### 2. Outputting the Colors
+```cpp
+analogWrite(RED_PIN, rVal);
+analogWrite(GREEN_PIN, gVal);
+analogWrite(BLUE_PIN, bVal);
+```
+- We use PWM on all three pins simultaneously.
+- If `rVal = 255`, `gVal = 255`, and `bVal = 0`, the LED will shine Yellow. The smooth sine waves do all this blending for us automatically!

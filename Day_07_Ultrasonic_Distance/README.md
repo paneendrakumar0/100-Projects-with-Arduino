@@ -149,3 +149,32 @@ Follow these steps to upload, run, and verify the distance measurer:
 * **The serial monitor prints "Out of range" constantly:**
   - Check your Echo and Trig wiring. Verify Trig is connected to Pin 3 and Echo to Pin 4.
   - Make sure the sensor is getting exactly 5V. The HC-SR04 will fail to operate on 3.3V power.
+
+## 🧠 Code Explanation
+
+Let's break down how we measure distance using sound:
+
+### 1. Triggering the Pulse
+```cpp
+digitalWrite(TRIG_PIN, LOW);
+delayMicroseconds(2);
+digitalWrite(TRIG_PIN, HIGH);
+delayMicroseconds(10);
+digitalWrite(TRIG_PIN, LOW);
+```
+- The sensor needs a very specific wake-up call. We hold the Trigger pin `LOW` to ensure it's clean, then blast it `HIGH` for exactly 10 microseconds. This tells the sensor: *"Fire the ultrasonic burst now!"*
+
+### 2. Reading the Echo
+```cpp
+unsigned long duration = pulseIn(ECHO_PIN, HIGH, ECHO_TIMEOUT);
+```
+- `pulseIn()` listens to a pin and waits for it to go `HIGH`. Once it goes HIGH, it starts a stopwatch and stops it when it goes `LOW`. It returns the duration in microseconds.
+- `ECHO_TIMEOUT`: We set a hard timeout of 26,000µs. If we don't hear an echo by then, it means the sound travelled into the void (over 4.5 meters). This prevents our Arduino from freezing forever while waiting for a ghost echo.
+
+### 3. The Math
+```cpp
+float distanceCm = duration / 58.3;
+```
+- Speed of sound = 343 m/s. 
+- The sound travels TO the object and BACK, so we divide the total time by 2.
+- After converting units from seconds/meters to microseconds/centimeters, the magic constant simplifies to `58.3`!

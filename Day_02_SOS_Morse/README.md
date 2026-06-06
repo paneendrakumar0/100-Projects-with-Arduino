@@ -105,3 +105,40 @@ Follow these steps to upload, run, and verify the SOS Morse Code generator:
 * **The LED doesn't blink:**
   - Make sure the LED is not inserted backward (the long leg must connect to Pin 13).
   - Ensure the resistor is connected properly between the cathode and Ground.
+
+## 🧠 Code Explanation
+
+Let's break down the Morse Code Generator:
+
+### 1. The Struct and Array
+```cpp
+struct MorseEvent {
+  bool state;
+  unsigned int units;
+};
+const MorseEvent sosPattern[] = { {true, 1}, {false, 1}, ... };
+```
+- `struct`: A struct is a way to group related variables together. Here, we pair a `state` (ON/OFF) with a `duration` (how many time units).
+- `sosPattern[]`: Instead of writing 50 lines of `digitalWrite`, we store our sequence in an array. This makes the code drastically cleaner and easy to modify for other words.
+
+### 2. State Machine Logic
+```cpp
+if (currentTime - stepStartTime >= currentStepDuration) {
+    currentStep++;
+    if (currentStep >= totalSteps) currentStep = 0;
+    startStep(currentStep);
+}
+```
+- Just like Day 1, we use non-blocking `millis()` math to check if the current event is over.
+- If it is over, we increment `currentStep` to move to the next event in our array.
+- If we reach the end of the array, we reset `currentStep` to 0 to loop the SOS message forever!
+
+### 3. Executing a Step
+```cpp
+void startStep(int stepIndex) {
+    stepStartTime = millis();
+    bool state = sosPattern[stepIndex].state;
+    // ... turn pins HIGH or LOW based on 'state'
+}
+```
+- This custom function reads the instruction from our array, applies the ON/OFF state to the LED and Buzzer, and most importantly, resets `stepStartTime` so the `loop()` knows exactly when to trigger the next event!

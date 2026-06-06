@@ -169,3 +169,32 @@ Follow these steps to upload, calibrate, and verify the alarm:
 * **The alarm turns on randomly when no one is in the room:**
   - Make sure the sensor has completed the 15-second warm-up phase.
   - Ensure the PIR output pin is connected to **Pin 2** and the ground is solid. A floating input will cause random triggers.
+
+## 🧠 Code Explanation
+
+Let's see how we handled the PIR sensor's unique quirks:
+
+### 1. Calibration Warm-up
+```cpp
+for (int i = 0; i < CALIBRATION_TIME; i++) {
+    // ... blink the LED and wait
+}
+```
+- A PIR sensor takes 30-60 seconds to "learn" the background infrared heat signature of the room. If you check it too early, it will trigger false alarms. This `for` loop forces the Arduino to wait before arming the system.
+
+### 2. Edge Triggering
+```cpp
+int currentPirState = digitalRead(PIR_PIN);
+
+if (currentPirState != lastPirState) {
+    if (currentPirState == HIGH) {
+        // Motion Started!
+    } else {
+        // Motion Stopped!
+    }
+    lastPirState = currentPirState;
+}
+```
+- Just like the pushbutton debounce from Day 3, we only want to act when the state **changes**. 
+- If someone is dancing in front of the sensor, we don't want the Serial Monitor to print "Motion Detected!" 1,000 times a second. 
+- By checking `if (current != last)`, we only print the message exactly once when motion *starts*, and once when it *stops*.

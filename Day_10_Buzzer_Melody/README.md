@@ -155,3 +155,34 @@ Follow these steps to configure your firmware and verify sound output:
   - Standard piezo buzzers draw up to 20mA. If too loud, increase the series resistor value to 220Ω, 330Ω, or 1kΩ. Do not go below 100Ω to prevent excessive current draw from the ATmega328P I/O pin (40mA absolute maximum).
 * **The sound has random crackling:**
   - Ensure the legs of the buzzer are pushed firmly into the breadboard columns. Loose contacts introduce microsecond disconnects, causing audio static.
+
+## 🧠 Code Explanation
+
+Let's look at how we control a passive buzzer using `tone()`:
+
+### 1. The Pre-processor Directives
+```cpp
+#define IS_PASSIVE_BUZZER true
+
+#if IS_PASSIVE_BUZZER
+    // Passive buzzer code...
+#else
+    // Active buzzer code...
+#endif
+```
+- The `#define` and `#if` statements are **Pre-processor Directives**. Before your code is even uploaded to the Arduino, the compiler looks at this.
+- If `IS_PASSIVE_BUZZER` is true, it literally deletes the active buzzer code from memory. This saves valuable space on the microcontroller!
+
+### 2. Playing the Melody
+```cpp
+int note = melody[stepIndex];
+currentStepDuration = 1000 / noteDurations[stepIndex];
+```
+- We store the frequencies (e.g. 262 Hz for Middle C) in the `melody` array.
+- We store the note type in the `noteDurations` array. A "4" means a quarter note, which lasts `1000ms / 4 = 250ms`.
+
+### 3. The `tone()` Function
+```cpp
+tone(BUZZER_PIN, note, currentStepDuration);
+```
+- `tone()` automatically generates a square wave at the exact frequency specified by the `note` variable, effectively playing music!

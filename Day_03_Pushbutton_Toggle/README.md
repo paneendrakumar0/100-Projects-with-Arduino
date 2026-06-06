@@ -165,3 +165,41 @@ Once you have wired the circuit and uploaded the code from `Day_03_Pushbutton_To
   - Rotate the button 90 degrees on the breadboard. Tactile buttons can be oriented incorrectly, causing the connection to be permanently closed or permanently open.
 * **The button feels sluggish or requires a long press:**
   - In your code, check if you added any `delay()` calls in the loop. The loop must remain non-blocking. If other parts of your code block execution, the debouncing logic will not sample the pin fast enough.
+
+## 🧠 Code Explanation
+
+Let's break down how we clean up the messy, bouncing signals from the pushbutton:
+
+### 1. INPUT_PULLUP
+```cpp
+pinMode(BUTTON_PIN, INPUT_PULLUP);
+```
+- Normally, an unpressed button leaves the pin "floating" (picking up random static electricity). `INPUT_PULLUP` turns on a tiny resistor inside the Arduino that connects the pin to 5V. 
+- Because of this, an UNPRESSED button reads as `HIGH`.
+- When you press the button, it connects directly to Ground, overriding the weak resistor, causing it to read `LOW`.
+
+### 2. Detecting a Change
+```cpp
+int reading = digitalRead(BUTTON_PIN);
+
+if (reading != lastButtonState) {
+    lastDebounceTime = millis();
+}
+```
+- If the button physically bounces, the reading fluctuates wildly between HIGH and LOW.
+- Every single time it fluctuates, it is "different" than the last state, so we reset our `lastDebounceTime` stopwatch back to 0.
+
+### 3. Confirming a Stable State
+```cpp
+if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading != buttonState) {
+        buttonState = reading;
+        if (buttonState == LOW) {
+            ledState = !ledState;
+            digitalWrite(LED_PIN, ledState);
+        }
+    }
+}
+```
+- The code only reaches inside this `if` statement when the button has stopped bouncing for 50 uninterrupted milliseconds.
+- Once stable, we check if it transitioned to `LOW` (pressed!). If so, we toggle the `ledState` and write it to the LED pin.
