@@ -150,3 +150,30 @@ To prevent the Arduino from sending new commands while the memory chip is execut
 * **Data wraps around or becomes corrupted when writing long arrays**:
   * > [!WARNING]
     > **Page Boundary Wraparound**: The W25QXX Page Program command (`0x02`) cannot cross a 256-byte page boundary. For example, if you start writing a 20-byte block at address `0x0000FA` (250), the write will NOT continue to address `0x000100` (256). Instead, it wraps around to the start of Page 0 (`0x000000`), corrupting whatever was there. To log larger buffers, write a page-splitting function in your code.
+
+## 🧠 Code Explanation
+
+Let's break down how we perform raw memory operations on a Winbond SPI Flash chip:
+
+### 1. The Sector Erase Cycle
+```cpp
+digitalWrite(FLASH_CS_PIN, LOW);
+SPI.transfer(CMD_SECTOR_ERASE_4K);
+SPI.transfer((address >> 16) & 0xFF);
+SPI.transfer((address >> 8) & 0xFF);
+SPI.transfer(address & 0xFF);
+digitalWrite(FLASH_CS_PIN, HIGH);
+```
+- Flash memory physically cannot overwrite a `0` bit with a `1` bit. You can only flip `1`s to `0`s.
+- Therefore, before writing new data, you MUST erase the memory (which flips all bits in the sector to `1`, or `0xFF`).
+- We send the Erase command (`0x20`) followed by a 24-bit address (`A23` down to `A0`), chopped into three 8-bit chunks using bit-shifting.
+
+### 2. Writing C++ Structs directly to Silicon
+```cpp
+void writeBytes(uint32_t address, uint8_t* buffer, int length)
+// ...
+TelemetryRecord record1 = { 1000, 24.57, 1, "OK_SYS" };
+writeBytes(writeAddr, (uint8_t*)&record1, sizeof(record1));
+```
+- Instead of converting our variables into messy Comma-Separated Strings, we write the raw binary memory of our C++ `struct` directly to the flash chip!
+- By casting the address of our struct to a byte pointer `(uint8_t*)&record1`, our `writeBytes` loop steps through the exact 16 bytes of RAM where the integer, float, and char array live, transferring them 1:1 onto the Flash silicon.

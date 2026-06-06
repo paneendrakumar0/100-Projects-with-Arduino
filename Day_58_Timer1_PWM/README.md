@@ -91,3 +91,24 @@ Both potentiometers: outer pins to 5V and GND, middle wiper to analog input.
 * **Pin 9 stays constant HIGH or LOW**: Ensure `pinMode(9, OUTPUT)` is called before configuring TCCR1A. The OC1A output only drives the pin when it is configured as an output.
 * **Frequency is exactly half of expected**: Your ICR1 calculation may be using integer division incorrectly. Cast operands to `uint32_t` before multiplying to prevent 16-bit overflow (as done in `computeICR()`).
 * **analogWrite() on Pin 9 stops working after this sketch**: Timer1 registers persist across sketches until the Uno is power-cycled or reset. Upload any other sketch to restore defaults.
+
+## 🧠 Code Explanation
+
+Let's break down how we control Hardware PWM via direct AVR Registers:
+
+### 1. Configuring Fast PWM Mode 14
+```cpp
+TCCR1A = _BV(COM1A1) | _BV(WGM11);
+TCCR1B = _BV(WGM13) | _BV(WGM12) | PRESCALER_BITS;
+```
+- The Arduino `analogWrite()` command locks you into ~490 Hz or ~980 Hz. To get custom frequencies, we talk directly to the CPU's Timer1 registers (`TCCR1A`, `TCCR1B`).
+- We set the Waveform Generation Mode (WGM) bits to `1110` (Mode 14). This mode uses the `ICR1` register to define the "TOP" of the timer (controlling the frequency), and the `OCR1A` register to define when the pin turns off (controlling the duty cycle).
+
+### 2. Calculating the Register Values (TOP and Compare)
+```cpp
+uint32_t icr = (F_CPU / (PRESCALER_VALUE * freq)) - 1;
+ICR1 = icr;
+OCR1A = (uint16_t)((dutyCycle / 100.0) * (icr + 1));
+```
+- **Frequency:** We divide the CPU clock (`16,000,000`) by our prescaler (`8`) and our desired frequency (e.g., `1000 Hz`). This gives us the exact number of clock ticks required for one wave period! We shove this into `ICR1`.
+- **Duty Cycle:** If we want a 50% duty cycle, we multiply our total ticks (`icr`) by 0.50, and put that into `OCR1A`. The hardware pin will now stay HIGH for exactly 50% of the clock ticks, and then autonomously switch LOW for the remaining ticks!

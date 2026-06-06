@@ -138,3 +138,28 @@ Make sure to hook up the data lines to the split ports exactly as shown in the t
   * Ensure the shared Ground connection is stable.
 * **Some custom characters appear corrupted or distorted**:
   * Ensure you reset the DDRAM pointer address after writing to CGRAM. The command `lcdWriteCommand(0x80)` must be called to return the cursor to standard display coordinates before printing text.
+
+## 🧠 Code Explanation
+
+Let's break down how we built an 8-bit parallel bus using Port Splitting:
+
+### 1. Port Splitting the Data Bus
+```cpp
+PORTD = (PORTD & 0x03) | ((value & 0x3F) << 2);
+PORTB = (PORTB & 0xFC) | ((value & 0xC0) >> 6);
+```
+- An 8-bit parallel LCD needs 8 data wires. The ATmega328P's "Port D" has 8 pins (D0-D7). But D0 and D1 are used for the USB Serial connection! If we overwrite them, we lose `Serial.print()`.
+- **The Split:** We take our 8-bit character (e.g., `value`).
+- We slice off the bottom 6 bits (`& 0x3F`), shift them left by 2 (`<< 2`), and inject them into D2-D7 on `PORTD`. 
+- We slice off the top 2 bits (`& 0xC0`), shift them right by 6 (`>> 6`), and inject them into D8-D9 on `PORTB`. 
+- Our 8-bit byte is perfectly split across two physical hardware ports simultaneously!
+
+### 2. The Enable Strobe
+```cpp
+digitalWrite(PIN_E, HIGH);
+delayMicroseconds(5); 
+digitalWrite(PIN_E, LOW);
+```
+- Once all 8 data wires are energized with the correct 1s and 0s, the LCD doesn't read them immediately.
+- We have to flick the Enable (`E`) pin HIGH, wait a few microseconds, and pull it LOW.
+- The LCD's internal controller latches the 8 bits into its memory on the *falling edge* of this strobe pulse!

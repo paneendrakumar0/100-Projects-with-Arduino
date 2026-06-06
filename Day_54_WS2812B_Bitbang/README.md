@@ -126,3 +126,27 @@ If using an external power supply:
   * Keep the jumper wires between the Arduino and the LED strip as short as possible.
 * **The Arduino crashes or resets repeatedly when the strip lights up**:
   * The strip is drawing too much current, causing a voltage brown-out. Place a large capacitor ($1000\,\mu\text{F}$) across the 5V and GND terminals of the strip, or use an external 5V regulator to power the LEDs.
+
+## 🧠 Code Explanation
+
+Let's break down the assembly-level magic required to bit-bang WS2812B timings:
+
+### 1. Bypassing the Arduino Abstraction
+```cpp
+volatile uint8_t *port = &PORTB;
+*port = portValHigh; // Sets Pin 8 HIGH instantly
+```
+- The standard `digitalWrite()` function takes about 4 to 5 microseconds to execute. 
+- A WS2812B bit requires a pulse that is only 0.4 microseconds long! `digitalWrite` is 10x too slow.
+- We bypass it entirely by using pointers to directly write to the ATmega328P's `PORTB` hardware register, which executes in a single 62.5-nanosecond clock cycle!
+
+### 2. Nanosecond NOP Delays
+```cpp
+__asm__ __volatile__ (
+    "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
+    "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
+);
+```
+- To hold a pin HIGH for exactly 750 nanoseconds, we can't use `delayMicroseconds()`.
+- Instead, we inject raw Assembly Language instructions directly into the C++ compiler.
+- `nop` stands for "No Operation". It tells the CPU to literally do nothing for exactly 1 clock cycle (62.5ns). By stringing 12 `nop`s together, we create a perfectly deterministic 750ns delay to fulfill the exact waveform requirement of a '1' bit!

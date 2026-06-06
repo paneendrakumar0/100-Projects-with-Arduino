@@ -122,3 +122,24 @@ Rail Voltage (+) ──── R1 (47k) ──┬──── R2 (5.1k) ───
 | BusVoltage = 0V always | I2C address wrong | Run I2C scanner sketch; confirm A0/A1 address pins |
 | Rail voltage is 10x off | Wrong R1/R2 values in code | Update `R1` and `R2` constants to match your actual resistors |
 | Over-current never triggers | `OVERCURRENT_THRESHOLD` too high | Lower threshold to match expected load |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a precision I2C power monitor:
+
+### 1. Configuring the INA219 ADC Registers
+```cpp
+uint16_t config = 0b0011111111111111;
+writeRegister16(INA219_ADDR, REG_CONFIG, config);
+```
+- We bypass libraries and write a 16-bit binary string directly to the INA219's `0x00` config register over I2C.
+- This binary string (`0x3FFF`) sets the Bus Voltage range to 32V, the Shunt Voltage range to ±320mV, and importantly, configures the internal hardware to take 128 samples and average them together before giving us a reading, completely eliminating electrical noise!
+
+### 2. Calibrating the Current Engine
+```cpp
+// Cal = trunc(0.04096 / (0.001 * 0.1)) = 4096
+writeRegister16(INA219_ADDR, REG_CALIBRATION, 4096);
+```
+- The INA219 has a built-in math engine. To use it, we have to tell it the physical value of our shunt resistor (`0.1 Ohm`) and the resolution we want (`1 mA per bit`).
+- We plug those into the datasheet's calibration formula to get a magic integer (`4096`).
+- Once we write `4096` to the calibration register (`0x05`), the INA219 hardware automatically multiplies the raw voltage drop across the shunt resistor by this value. When we read the Current Register (`0x04`), it instantly spits out the exact Amperage, saving our Arduino from doing any floating-point math!

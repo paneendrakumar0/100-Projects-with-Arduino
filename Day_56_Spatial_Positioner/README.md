@@ -149,3 +149,25 @@ Ensure the sensors are wired to separate digital pins to enable sequential contr
   * Reduce the scanning frequency by increasing `scanIntervalMs` if testing in a small room with hard walls (sound reflections bounce off walls and trigger false echo signals).
 * **The serial monitor outputs "WARNING: Intersection error"**:
   * The target is too close to the sensors, or the sensors are misaligned. If the calculated coordinates exceed physical bounds, `yRadicand` becomes negative. Ensure your sensors are aimed parallel to each other.
+
+## 🧠 Code Explanation
+
+Let's break down the math behind 2D Ultrasonic Trilateration:
+
+### 1. Sequential Gating to Prevent Cross-Talk
+```cpp
+float r1 = readDistance(S1_TRIG_PIN, S1_ECHO_PIN);
+delay(30); 
+float r2 = readDistance(S2_TRIG_PIN, S2_ECHO_PIN);
+```
+- If we trigger both sonars at the same time, the acoustic pings will collide in the air. Sensor 1 might hear Sensor 2's echo, resulting in completely corrupted coordinate data!
+- We enforce a strict 30-millisecond delay between reads. Since sound travels 10 meters in 30ms, this ensures all bouncing echoes from the first ping have faded away before we fire the second.
+
+### 2. Trilateration Geometry
+```cpp
+float x = (dSq + r1Sq - r2Sq) / (2.0 * BASELINE_D);
+float y = sqrt(r1Sq - (x * x));
+```
+- We treat the two sensors as the centers of two intersecting circles. The radius of Circle 1 is `r1` and the radius of Circle 2 is `r2`.
+- By placing Sensor 1 at coordinate `(0,0)` and Sensor 2 at coordinate `(d, 0)`, we can use algebra to find the exact intersection point `(x, y)` of the two circles.
+- This gives us the absolute Cartesian coordinates of the target object relative to our sensor baseline!

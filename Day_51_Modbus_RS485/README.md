@@ -149,3 +149,30 @@ To test the node, you can use a PC software utility (like **QModMaster** or **Mo
   * For long cable runs, add a **$120\,\Omega$ termination resistor** across the $A$ and $B$ terminals at both ends of the bus to prevent signal reflections.
 * **The driver fails to revert to listen mode after sending**:
   * Ensure `rs485Serial.flush()` is called in your transmit function. If the flow control pin is pulled LOW before the UART finishes pushing bytes out of the hardware register, the end of the packet will be cut off.
+
+## 🧠 Code Explanation
+
+Let's break down how we built a raw Modbus RTU node:
+
+### 1. The RS485 Half-Duplex Transceiver
+```cpp
+void transmitFrame(uint8_t* buffer, int length) {
+  digitalWrite(RS485_FLOW_PIN, HIGH);
+  rs485Serial.write(buffer, length);
+  rs485Serial.flush();
+  digitalWrite(RS485_FLOW_PIN, LOW);
+}
+```
+- RS485 is a 2-wire differential bus. It is "Half-Duplex", meaning devices cannot talk and listen at the same time.
+- The MAX485 chip has a Flow Control pin (`DE/RE`). We must pull it `HIGH` to put the chip into Transmit Mode, blast our byte array out the serial port, call `.flush()` to ensure every single bit has physically left the Arduino, and then instantly pull the pin `LOW` to go back to Listening mode before the master replies!
+
+### 2. Modbus Silent Interval Delimiter
+```cpp
+if (rxIndex > 0 && (millis() - lastCharTimeMs >= MODBUS_SILENT_INTERVAL_MS)) {
+    processModbusFrame();
+    rxIndex = 0; 
+}
+```
+- Unlike some protocols that use start/stop characters (like `<` and `>`), Modbus uses **Time** as a delimiter.
+- The standard dictates that any silence on the line longer than 3.5 character times (about 4-5ms at 9600 baud) signifies the End of a Frame.
+- Every time a byte arrives, we reset `lastCharTimeMs`. Once the line goes quiet for >5ms, our `if` statement triggers, taking all the bytes we collected in the buffer and passing them to the CRC validator and parser!

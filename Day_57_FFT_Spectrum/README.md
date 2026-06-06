@@ -130,3 +130,26 @@ $$\text{Magnitude} = \sqrt{\text{Real}^2 + \text{Imaginary}^2}$$
     > **DC Offset**: Microphone modules output an audio signal centered around a bias voltage (typically half of VCC, e.g. $1.65\text{V}$ or $2.5\text{V}$). This offset appears in the Fourier analysis as a massive frequency amplitude at $0\,\text{Hz}$ (direct current). In our code, we subtract `512` from the raw analog readings to shift the wave to zero-center, and ignore Bin 0 during plotting to prevent this offset from skewing the graph.
 * **The frequency spikes are wide and muddy instead of a single sharp line**:
   * This is a normal mathematical artifact known as **spectral leakage**. Because the sample block cut-off is sudden at $N=64$, frequencies that do not fall exactly on bin intervals leak into adjacent bins. To reduce this, you can apply a windowing function (such as a Hann or Hamming window) to the input array before executing the FFT.
+
+## 🧠 Code Explanation
+
+Let's break down how we built a Fast Fourier Transform (FFT) engine from scratch:
+
+### 1. Deterministic Sampling at the Nyquist Rate
+```cpp
+while (micros() - tStart < SAMPLING_PERIOD_US) { }
+```
+- To analyze frequency, our samples must be perfectly spaced in time. We chose a 4000 Hz sample rate (one sample every 250us).
+- `analogRead()` takes ~100us. We then trap the code in an empty `while` loop, monitoring `micros()`, and breaking out the *exact* microsecond the 250us timer hits. This guarantees perfect phase alignment!
+- A 4000 Hz sample rate gives us a "Nyquist Frequency" of 2000 Hz. We can accurately detect any audio pitch up to 2000 Hz.
+
+### 2. The Cooley-Tukey Butterfly Operation
+```cpp
+float tr = real[v] * wr - imag[v] * wi;
+float ti = real[v] * wi + imag[v] * wr;
+real[v] = real[u] - tr;
+// ...
+```
+- The FFT algorithm breaks a massive 64-point calculation down into tiny pairs of 2, called "Butterflies".
+- It multiplies the time-domain audio samples by complex "Twiddle Factors" (Sines and Cosines, represented by `wr` and `wi`).
+- This recursively recombines the time-domain points until they mathematically morph into the frequency-domain magnitudes, showing us exactly how much bass, mid, and treble energy is in the audio signal!

@@ -148,3 +148,27 @@ To test the CAN network, you must connect **two separate Arduino nodes** togethe
   * Cheap MCP2515 breakout modules are sold with either a **$16\,\text{MHz}$** crystal or an **$8\,\text{MHz}$** crystal.
   * The code timing configurations are calculated for a **$16\,\text{MHz}$** crystal. If your module has an $8\,\text{MHz}$ crystal (check the silver cylinder on the board), the baud rate will run at $62.5\,\text{kbps}$ instead of $125\,\text{kbps}$.
   * To fix this for an $8\,\text{MHz}$ module, adjust the baud rate prescaler ($BRP$) in register `CNF1` to **`0x03`** (BRP=3) instead of `0x07`. This matches the timing values to the slower clock rate.
+
+## 🧠 Code Explanation
+
+Let's break down how we talk to the CAN Bus controller using raw SPI registers:
+
+### 1. Bit Timing and Baud Rate Configuration
+```cpp
+mcpWriteRegister(REG_CNF1, 0x07);
+mcpWriteRegister(REG_CNF2, 0x91);
+mcpWriteRegister(REG_CNF3, 0x01);
+```
+- CAN bus requires exact synchronization between nodes. 125 kbps means 1 bit takes exactly 8 microseconds.
+- An automotive CAN controller breaks that 8µs bit down into Time Quanta (TQ) to handle propagation delays across long copper wires.
+- We configure `CNF1`, `CNF2`, and `CNF3` to set the Prescaler to 8 (yielding 1µs TQ) and divide the bit into a Sync phase, Prop phase, Phase 1, and Phase 2. This perfectly aligns our sampling point to 75% of the bit time!
+
+### 2. Fast SPI Transmission (RTS)
+```cpp
+digitalWrite(CAN_CS_PIN, LOW);
+SPI.transfer(INST_RTS_TXB0);
+digitalWrite(CAN_CS_PIN, HIGH);
+```
+- We write our Standard ID, Data Length (DLC), and 8 bytes of payload into the `TXB0` registers.
+- Instead of using a slow software command to tell the chip to transmit, we use a dedicated hardware SPI instruction: Request-To-Send (`INST_RTS_TXB0`, 0x81).
+- This blasts the packet out onto the differential CAN lines instantly, autonomously handling bit-stuffing and CRC generation in hardware!

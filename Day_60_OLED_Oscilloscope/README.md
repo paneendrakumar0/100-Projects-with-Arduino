@@ -117,3 +117,28 @@ Before each frame, we wait for the signal to cross the `TRIGGER_LEVEL` threshold
 | Waveform scrolls horizontally | No trigger lock | Ensure `TRIGGER_ENABLE = true` |
 | Signal too small / flat | ADC input too close to 2.5V ground | Add DC bias or adjust signal amplitude |
 | Only top portion of display used | `WAVE_ROWS` constant mismatch | Ensure `WAVE_ROWS = 48` and ADC mapping is `(WAVE_ROWS - 1)` |
+
+## 🧠 Code Explanation
+
+Let's break down how we built a real-time OLED Oscilloscope:
+
+### 1. Mapping ADC Amplitude to Pixel Rows
+```cpp
+uint8_t pixelY = WAVE_ROWS - 1 - (uint8_t)((uint32_t)samples[col] * (WAVE_ROWS - 1) / 1023);
+setPixel(col, pixelY);
+```
+- Our ADC reads analog voltage as a number between 0 and 1023.
+- Our OLED screen has 64 vertical pixels, but we reserve the bottom 16 for text, giving us 48 pixels (`WAVE_ROWS`) for the waveform.
+- We scale the 0-1023 reading down to 0-47. 
+- Because pixel `Y=0` is at the *top* of the screen, we subtract our value from `47` to invert it, ensuring that 5V (1023) plots at the top, and 0V (0) plots at the bottom!
+
+### 2. High-Speed I2C Framebuffer Flushing
+```cpp
+Wire.write(0x40); // Data continuation byte
+for (uint8_t col = 0; col < SCREEN_W; col++) {
+    Wire.write(framebuffer[col][page]);
+}
+```
+- We don't use slow commands like `display.drawPixel()`. We maintain a 1024-byte `framebuffer` array in the Arduino's RAM.
+- We draw our entire waveform into this invisible RAM array first.
+- Once complete, we use a rapid I2C loop to dump the entire array sequentially to the OLED's Graphics RAM in one giant blast. This allows us to achieve incredibly high frame rates required for a responsive oscilloscope!
