@@ -25,6 +25,10 @@ To follow along with the entire 100 days, you will need an Arduino Uno/Mega, a s
 If you are completely new to Arduino, electronics, or C++ programming, **start here before Day 1.**
 [**Go to the "Learn Arduino" Guide ➔**](./Learn_Arduino/README.md)
 
+### 🧠 Companion Textbook: Arduino Core Theory Masterclass
+For deep-dives into micro-architecture, memory management, hardware interrupts, communication protocols, and signal processing, read the masterclass companion guide:
+[**Read the Arduino Core Theory Masterclass ➔**](./ARDUINO_CORE_THEORY.md)
+
 ### Phase 1: The Fundamentals
 
 - [x] [Day 1: The Non-Blocking Blink (Using `millis()`)](./Day_01_Millis_Blink)
