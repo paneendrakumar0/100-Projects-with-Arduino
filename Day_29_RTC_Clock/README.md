@@ -129,3 +129,26 @@ When selecting timekeepers for embedded designs:
 * **Time resets to `2000-00-00 00:00:00` when the Arduino is power cycled:**
   * The CR2032 coin cell battery is dead or missing. Replace the battery.
   * Check that the battery is seated firmly in the metal retention clip on the underside of the breakout.
+
+## 🧠 Code Explanation
+
+Let's break down how to talk directly to the DS3231 RTC microchip using raw I2C registers instead of a wrapper library!
+
+### 1. I2C Register Reading
+```cpp
+Wire.beginTransmission(DS3231_I2C_ADDRESS);
+Wire.write(0x00); // Point to seconds register
+Wire.endTransmission();
+
+Wire.requestFrom(DS3231_I2C_ADDRESS, 7);
+```
+- The DS3231 stores the Time and Date inside 7 internal "Registers" (memory slots), starting at memory address `0x00`.
+- We use the `Wire` library to ping the chip, telling it "I want to read starting at address `0x00`".
+- Then, we `requestFrom()` 7 bytes. The chip streams the seconds, minutes, hours, day, date, month, and year back to us in one quick burst!
+
+### 2. BCD (Binary Coded Decimal) Parsing
+```cpp
+dt->minute = bcdToDec(Wire.read());
+```
+- The DS3231 stores numbers in a weird format called **BCD**. Instead of storing the number `45` as a standard binary integer (`0010 1101`), it splits the 4 and the 5 into two 4-bit chunks: `0100` (4) and `0101` (5).
+- We use a custom `bcdToDec()` bitwise math function to convert this hardware format back into standard decimal numbers that the Arduino (and humans) can read.

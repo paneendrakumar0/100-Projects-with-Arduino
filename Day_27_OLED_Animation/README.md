@@ -117,3 +117,25 @@ When selecting displays for real-time graphics and animation, developers must ba
 * **The frame rate (FPS) is extremely low (below 10):**
   * Ensure there are no active `delay()` statements in the main loop or graphics functions.
   * Verify your Arduino IDE serial monitor baud rate is set to 9600 (printing too fast over slower serial streams can occasionally back up the system).
+
+## 🧠 Code Explanation
+
+Let's break down how we programmed a 2D physics engine for the OLED display:
+
+### 1. Vector Kinematics
+```cpp
+ballX += ballVx;
+ballY += ballVy;
+```
+- Every frame (30 times a second), the ball's position (`ballX`, `ballY`) is updated by adding its Velocity Vectors (`ballVx`, `ballVy`). This makes the ball fly smoothly across the screen diagonally!
+
+### 2. Elastic Collision & Penetration Resolution
+```cpp
+if (ballX - ballRadius <= PLAY_X_MIN) {
+    ballVx = -ballVx;                 // Reverse direction vector
+    ballX = PLAY_X_MIN + ballRadius;  // Penetration resolution
+}
+```
+- We check if the edge of the ball (`ballX - ballRadius`) has hit the left wall.
+- If it has, we simply multiply the X-velocity by `-1`. If it was moving Left at `2px/frame`, it is now moving Right at `2px/frame`! A perfect bounce.
+- **Pro Tip:** We also manually snap `ballX` exactly against the wall. Because our simulation moves in "chunks" of pixels, the ball might have accidentally sunken *into* the wall during the frame. Snapping it back prevents the ball from getting permanently stuck inside the wall boundary!

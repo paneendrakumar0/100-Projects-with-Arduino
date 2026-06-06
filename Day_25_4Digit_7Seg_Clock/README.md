@@ -147,3 +147,25 @@ Follow these steps to install the library and verify your clock:
 * **The colon does not flash (always ON or always OFF):**
   - Verify your module has a physical colon. Some modules have 4 decimal points (one per digit) instead of a colon.
   - If using a decimal point module, the `showNumberDecEx` colon mask `0b01000000` will turn on the second digit's decimal point.
+
+## 🧠 Code Explanation
+
+Let's break down how we drive a 4-digit display using a TM1637 driver chip:
+
+### 1. Hardware Multiplexing
+```cpp
+#include <TM1637Display.h>
+TM1637Display display(CLK_PIN, DIO_PIN);
+```
+- To display "1234", you can't turn on all the LEDs at once, or you'd get an overlapping mess of numbers. You actually have to flash "1" on the first digit, turn it off, flash "2" on the second digit, turn it off, and repeat hundreds of times a second (Multiplexing).
+- Doing this manually on an Arduino completely locks up the CPU.
+- The TM1637 chip solves this. You send it the number "1234" over Serial, and the chip's internal processor handles the high-speed multiplexing in the background, freeing your Arduino to do other things!
+
+### 2. Time Accumulation Math
+```cpp
+int displayVal = (hours * 100) + minutes;
+byte colonMask = colonState ? 0b01000000 : 0x00;
+display.showNumberDecEx(displayVal, colonMask, true);
+```
+- The TM1637 wants a single integer to display. So to show `12:34`, we multiply hours by 100 (`1200`), and add minutes (`34`), resulting in the integer `1234`.
+- The library has a special function `showNumberDecEx()` that allows us to pass a `colonMask` byte. Sending `0x40` (Bit 6) tells the chip to turn on the two LED dots in the center!

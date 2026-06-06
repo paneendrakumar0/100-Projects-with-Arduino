@@ -127,3 +127,19 @@ Follow these steps to run the marquee and test its wrap behavior:
   - Verify that the I2C wires are pushed fully into the header. Noise on the SDA/SCL lines can corrupt communication packets, hanging the LiquidCrystal_I2C driver.
 * **The scroll string length is too short:**
   - The circular wrapping logic expects the message length to be larger than 16 characters. If your message is shorter than 16, pad it with trailing spaces in the code string until it exceeds 16 characters.
+
+## 🧠 Code Explanation
+
+Let's break down how to scroll a marquee cleanly:
+
+### 1. The Sliding Window (Substring)
+```cpp
+String displayWindow = "";
+for (int i = 0; i < DISPLAY_WIDTH; i++) {
+    int characterIndex = (scrollIndex + i) % messageLength;
+    displayWindow += scrollMessage[characterIndex];
+}
+```
+- We want to scroll text on Row 2 while keeping Row 1 completely static. The built-in `lcd.scrollDisplayLeft()` command scrolls the ENTIRE screen, ruining Row 1.
+- Instead, we build a 16-character `displayWindow` in software. We grab 16 characters from our long `scrollMessage` starting at `scrollIndex`.
+- The magic is the `% messageLength` (modulo operator). If our index exceeds the length of the string, it cleanly wraps back around to `0`. This creates a perfect, infinite circular buffer loop!

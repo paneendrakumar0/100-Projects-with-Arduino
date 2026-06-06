@@ -135,3 +135,26 @@ Follow these steps to install the drivers, adjust contrast, and run the HelloWor
 * **The monitor prints updates, but the LCD is completely dead (no backlight):**
   - Check your VCC and GND connections. Verify the jumper wires are solid.
   - Check the I2C SCL/SDA pins. If you swapped SCL and SDA, the backpack cannot receive data.
+
+## 🧠 Code Explanation
+
+Let's break down how to interface an LCD using only 2 wires (I2C):
+
+### 1. The I2C Backpack
+```cpp
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+```
+- A standard LCD screen has 16 pins. Wiring all of those up manually takes 6 digital pins from the Arduino and creates a massive nest of wires.
+- The I2C Backpack has a microchip (PCF8574) soldered to the back of the LCD. This chip acts as a translator. It takes serial data from the Arduino over just 2 wires (`SDA` and `SCL`) and internally converts it to the 16 parallel pins needed to drive the screen.
+- `0x27` is the physical hex address of this specific chip on the I2C bus.
+
+### 2. Formatting the Screen
+```cpp
+lcd.setCursor(0, 1);
+lcd.print("Uptime: ");
+lcd.print(uptimeSeconds);
+lcd.print("s    ");
+```
+- The LCD is a grid of 16 columns and 2 rows. `setCursor(Column, Row)` moves the invisible typing cursor. Note that it is 0-indexed! (Row 1 is actually index `0`, Row 2 is index `1`).
+- Because the screen doesn't automatically erase old text, printing `10s` over `9s` would look like `10s`. But if the time goes backward (or clears), you get leftover garbage characters. Printing `s    ` (with trailing spaces) perfectly erases any leftover digits from the previous update!

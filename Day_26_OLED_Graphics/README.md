@@ -144,3 +144,19 @@ Follow these steps to install libraries and verify the graphics scenes:
   - This occurs if the Arduino runs out of memory. The Adafruit library allocates 1024 bytes of SRAM. On the Uno (which only has 2048 bytes of SRAM), this leaves only 1kB for the rest of your variables. Avoid using large arrays or strings in your code to prevent memory collisions.
 * **The screen contrast is low or parts are dim:**
   - The SSD1306 relies on a stable power supply. Make sure it is connected to the 5V or 3.3V pins directly, not through a resistor.
+
+## 🧠 Code Explanation
+
+Let's break down how to draw vector graphics on an OLED screen:
+
+### 1. The Local Framebuffer
+```cpp
+display.clearDisplay();
+display.drawCircle(32, 32, 20, SSD1306_WHITE);
+display.drawLine(0, 0, 128, 64, SSD1306_WHITE);
+display.display();
+```
+- An I2C bus is too slow to send instructions pixel by pixel in real time.
+- The Adafruit library creates a "Framebuffer" - a 1024-byte chunk of memory right on the Arduino's RAM representing the 128x64 screen.
+- When you call `drawCircle()`, the Arduino mathematically changes the bits inside its own memory instantly.
+- When you are completely done drawing your scene, you call `display.display()`. This blasts the entire 1KB memory chunk over the I2C bus in one swift transmission, updating the physical screen flawlessly without tearing!

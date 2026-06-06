@@ -150,3 +150,25 @@ Follow these steps to upload, run, and verify your stopwatch:
 * **The buttons don't react, or trigger multiple start/stop events per single press:**
   - Check that the buttons are wired to the correct pins (Pin 2 and Pin 3).
   - Ensure the button pins are configured as `INPUT_PULLUP`.
+
+## 🧠 Code Explanation
+
+Let's break down how we built a responsive Stopwatch UI:
+
+### 1. Display Refresh Rate Limiter
+```cpp
+const unsigned long DISPLAY_REFRESH_INTERVAL = 50; 
+if (currentTime - lastDisplayRefreshTime >= DISPLAY_REFRESH_INTERVAL) {
+    updateTimeDisplay(activeTime);
+}
+```
+- Sending text over the I2C bus takes real CPU time (about 1-2 milliseconds per update). If we let the `loop()` update the screen at maximum speed, the I2C bus bottlenecks, the screen flickers violently, and our button presses get ignored.
+- We limit the LCD update to exactly 20 Hz (every 50ms). This is fast enough to look perfectly smooth to the human eye, but slow enough to leave 99% of the CPU free to calculate time and read buttons!
+
+### 2. Centisecond Math
+```cpp
+unsigned long centiseconds = (msTime % 1000) / 10;
+```
+- We want to display hundredths of a second (like a real sports stopwatch). 
+- `msTime % 1000` grabs only the remainder milliseconds (e.g., if total time is `1234ms`, it grabs `234ms`).
+- We then divide by `10` to convert milliseconds to centiseconds (`234 / 10 = 23`).

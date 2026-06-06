@@ -117,3 +117,31 @@ Ensure you locate the correct pinout for your module. Standard VS1838B units loo
   * Fluorescent bulbs or direct sunlight can interfere with the sensor. Block external light sources.
 * **The code fails to compile:**
   * Ensure you have installed version 4.x of the `IRremote` library. Older versions do not support the `IrReceiver` class object or `.decode()` structure.
+
+## 🧠 Code Explanation
+
+Let's break down how to decode invisible infrared light:
+
+### 1. The NEC Protocol
+```cpp
+#include <IRremote.hpp>
+IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
+```
+- When you press a button on a remote, the IR LED flashes at exactly 38,000 times a second (38 kHz). This specific frequency cuts through the infrared noise of the sun and house lights.
+- The flash pattern spells out a 32-bit binary code (the NEC Protocol).
+- The `IrReceiver` object monitors the digital pin in the background using hardware interrupts. It captures the exact microsecond lengths of the flashes and decodes them into a clean Hexadecimal number for us.
+
+### 2. Processing Commands
+```cpp
+if (IrReceiver.decode()) {
+    bool isRepeat = (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_REPEAT);
+    
+    if (!isRepeat) {
+        processIRCommand(IrReceiver.decodedIRData.command);
+    }
+    IrReceiver.resume(); 
+}
+```
+- `IrReceiver.decode()` returns `true` if a full, valid IR packet was captured.
+- We check for a "Repeat" flag. If you hold a button down, the remote sends a special "Repeat" code. We ignore it so that our LED doesn't rapidly toggle on and off while the button is held!
+- Finally, `IrReceiver.resume()` resets the sensor so it can catch the next incoming flash.

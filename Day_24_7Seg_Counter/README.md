@@ -166,3 +166,30 @@ Follow these steps to upload, verify, and debug your counter:
   - Verify you did not place a single resistor on the GND common pin instead of seven separate resistors on the anode pins.
 * **The numbers are inverted (e.g., segments that should be OFF are ON, and vice versa):**
   - Your `#define IS_COMMON_CATHODE` setting does not match your display. Change the definition.
+
+## 🧠 Code Explanation
+
+Let's break down how we use Binary Bit-Masks to drive the 7-segment display:
+
+### 1. The Binary Bit-Mask
+```cpp
+const byte numPatterns[] = {
+  0b00111111, // 0: A, B, C, D, E, F ON
+  0b00000110, // 1: B, C ON
+  // ...
+};
+```
+- A 7-segment display has 7 individual LEDs. To display a '1', we need segments B and C on, and the rest off.
+- Instead of writing 7 messy `digitalWrite()` lines for every single number, we pack the ON/OFF states into a single 8-bit Byte (`0b0GFEDCBA`). 
+- For '1', bits B and C are `1`, everything else is `0`. So the byte is `0b00000110`.
+
+### 2. The Hardware Decoder
+```cpp
+byte pattern = numPatterns[number];
+for (int i = 0; i < 7; i++) {
+    int segmentState = bitRead(pattern, i);
+    digitalWrite(segmentPins[i], segmentState);
+}
+```
+- We grab the master pattern for the number we want to show.
+- A `for` loop cycles through pins 0 through 6. The Arduino `bitRead()` function extracts the specific `1` or `0` for that exact segment from our byte, and we instantly write it to the physical pin!

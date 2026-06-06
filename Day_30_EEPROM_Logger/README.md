@@ -104,3 +104,24 @@ No external components are strictly required. If you want to connect a Potentiom
   * Manufacturers often test boards before shipping, which leaves random values in the EEPROM. Type `c` in the serial prompt to execute a format pass.
 * **The analog sensor values are constant or floating erratically:**
   * If nothing is wired to A0, the pin acts as an antenna and picks up ambient static noise (values between 0 and 1023). This is normal. Hook up a potentiometer to A0 to log controlled voltage values.
+
+## 🧠 Code Explanation
+
+Let's break down how we drastically extended the lifespan of our Arduino's memory:
+
+### 1. EEPROM Wear Leveling (Ring Buffer)
+```cpp
+int targetSlot = (activeSlotIndex + 1) % NUM_SLOTS;
+int targetAddress = targetSlot * ENTRY_SIZE;
+EEPROM.put(targetAddress, entry);
+```
+- The Arduino's EEPROM memory physically degrades when you write to it. A single byte can only be erased/written about 100,000 times before it is destroyed forever.
+- If we always saved our sensor data to address `0`, the memory would break in a few days.
+- **The Fix:** We divide the memory into 128 slots. Every time we save a log, we advance to the next slot (using the `%` modulo operator to loop back to 0 when we reach the end). Because we are spreading the wear out evenly, the memory will last 128x longer (over 12 million writes)!
+
+### 2. Data Integrity Checksums
+```cpp
+entry.checksum = calculateChecksum(entry.logID, entry.sensorValue);
+```
+- When EEPROM ages, bits can randomly flip. We calculate a simple mathematical checksum (`logID + sensorValue`) and save it alongside the data.
+- When we read the memory later, we do the math again. If our result doesn't match the saved checksum, we instantly know the memory slot has been corrupted!
