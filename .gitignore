@@ -1,0 +1,27 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs and local environment
+*.log
+.env
+.env.*
+
+# Dependency folders
+node_modules/
+docs-website/node_modules/
+
+# Next.js generated output
+docs-website/.next/
+docs-website/out/
+docs-website/build/
+
+# Test and package manager caches
+coverage/
+.next/
+.turbo/
+.pnpm-store/

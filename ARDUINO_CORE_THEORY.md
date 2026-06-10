@@ -2,12 +2,12 @@
 
 Welcome to the ultimate Arduino Computer Science and Electrical Engineering companion!
 
-While the 100 projects in this repository will teach you *how* to wire components and write specific scripts, this guide exists to teach you *why* those scripts work at a silicon level. If you master the concepts in this document, you won't just be an "Arduino Hobbyist"—you will be a capable Embedded Systems Engineer.
+While the 100 projects in this repository will teach you *how* to wire components and write specific scripts, this guide exists to teach you *why* those scripts work at a silicon level. If you master the concepts in this document, you won't just be an "Arduino Hobbyist" - you will be a capable Embedded Systems Engineer.
 
 ---
 
 
-## 📸 Component Visuals
+## Component Visuals
 
 <p align="center">
   <img src="assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
@@ -159,7 +159,7 @@ If radiation or a coding bug causes your robot to freeze in an infinite `while` 
 The WDT is an independent hardware timer. You arm it to (for example) 2 seconds. You must "feed the dog" (`wdt_reset()`) in your main loop. If the loop crashes and fails to feed the dog, the timer hits zero, and physically pulls the reset pin, automatically rebooting your crashed robot!
 
 ### Deep Sleep
-The 16 MHz clock burns ~15mA of current. In Deep Sleep, we physically turn off the clock and internal silicon peripherals (ADC, Brown-out Detectors). The power draw drops to `< 1 µA`, allowing a battery to last for years. The only way to wake up the frozen CPU is via a Hardware Interrupt.
+The 16 MHz clock burns ~15mA of current. In Deep Sleep, we physically turn off the clock and internal silicon peripherals (ADC, Brown-out Detectors). The power draw drops to `< 1 uA`, allowing a battery to last for years. The only way to wake up the frozen CPU is via a Hardware Interrupt.
 
 ---
 *Happy Engineering!*
