@@ -49,7 +49,7 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
           transition={{ duration: 0.5 }}
         >
           <Link href="/" className="logo">
-            <Cpu size={28} color="#00e5ff" />
+            <Cpu size={28} color="#00d4ff" />
             <span>Arduino 100</span>
           </Link>
         </motion.div>
@@ -96,7 +96,7 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
           top: 0;
           bottom: 0;
           left: 0;
-          background: var(--glass-bg);
+          background: rgba(7, 10, 14, 0.92);
           backdrop-filter: blur(24px);
           -webkit-backdrop-filter: blur(24px);
           border-right: 1px solid var(--glass-border);
@@ -120,7 +120,7 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
         }
 
         .logo span {
-          background: linear-gradient(135deg, #00e5ff, #7000ff);
+          background: linear-gradient(135deg, #00d4ff, #79f2c0, #ffc857);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
@@ -132,7 +132,7 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
         .nav-title {
           font-size: 0.75rem;
           text-transform: uppercase;
-          letter-spacing: 0.15em;
+          letter-spacing: 0.08em;
           color: var(--text-secondary);
           font-weight: 800;
           margin-bottom: 1rem;
@@ -163,10 +163,10 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
 
         .nav-link.active {
           color: #fff;
-          background: linear-gradient(90deg, rgba(0, 229, 255, 0.15) 0%, rgba(0,0,0,0) 100%);
+          background: linear-gradient(90deg, rgba(0, 212, 255, 0.14) 0%, rgba(121, 242, 192, 0.05) 100%);
           border-left: 3px solid var(--accent-primary);
           border-radius: 0 8px 8px 0;
-          text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+          text-shadow: 0 0 10px rgba(0, 212, 255, 0.45);
         }
 
         .nav-link.active::before {

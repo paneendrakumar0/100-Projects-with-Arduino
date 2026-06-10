@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Fuse from 'fuse.js';
 import { Search, X, FileText, Calendar } from 'lucide-react';
@@ -13,6 +13,13 @@ export default function SearchModal({ searchIndex }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
   const router = useRouter();
+
+  const openSearch = useCallback(() => {
+    setQuery('');
+    setResults([]);
+    setSelectedIndex(0);
+    setIsOpen(true);
+  }, []);
 
   // Initialize Fuse
   const fuse = useRef(null);
@@ -29,7 +36,11 @@ export default function SearchModal({ searchIndex }) {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setIsOpen((prev) => !prev);
+        if (isOpen) {
+          setIsOpen(false);
+        } else {
+          openSearch();
+        }
       }
       if (e.key === 'Escape' && isOpen) {
         setIsOpen(false);
@@ -37,18 +48,12 @@ export default function SearchModal({ searchIndex }) {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, openSearch]);
 
   // Auto-focus input when opened
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setQuery('');
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setResults([]);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedIndex(0);
     }
   }, [isOpen]);
 
@@ -90,11 +95,10 @@ export default function SearchModal({ searchIndex }) {
 
   return (
     <>
-      {/* Sidebar Search Button (We'll render this where appropriate via a portal or wrapper, but for now we just provide the shortcut logic. Actually, we can export a hook or just render the button here and style it) */}
-      <button className="search-trigger" onClick={() => setIsOpen(true)}>
+      <button className="search-trigger" onClick={openSearch}>
         <Search size={18} />
         <span>Search documentation...</span>
-        <kbd className="shortcut">⌘K</kbd>
+        <kbd className="shortcut">Ctrl K</kbd>
       </button>
 
       <AnimatePresence>
