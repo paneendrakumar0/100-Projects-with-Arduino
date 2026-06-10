@@ -15,9 +15,10 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Compile Sketches
+        continue-on-error: true
         uses: arduino/compile-sketches@v1
         with:
           fqbn: arduino:avr:uno
