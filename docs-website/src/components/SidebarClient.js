@@ -26,6 +26,7 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
 
   // Close sidebar on route change on mobile
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
   }, [pathname]);
 

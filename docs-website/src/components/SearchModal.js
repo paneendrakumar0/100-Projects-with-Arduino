@@ -43,8 +43,11 @@ export default function SearchModal({ searchIndex }) {
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setQuery('');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults([]);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedIndex(0);
     }
   }, [isOpen]);
@@ -151,7 +154,7 @@ export default function SearchModal({ searchIndex }) {
               
               {query.length > 1 && results.length === 0 && (
                 <div className="search-empty">
-                  No results found for "{query}"
+                  No results found for &quot;{query}&quot;
                 </div>
               )}
             </motion.div>
