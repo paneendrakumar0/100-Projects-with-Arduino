@@ -8,6 +8,7 @@ This repository is designed as a practical masterclass: every day has a focused 
 
 - New to Arduino, electronics, or C++? Start with the [Learn Arduino guide](./Learn_Arduino/README.md).
 - Want the deeper engineering model behind the projects? Read the [Arduino Core Theory Masterclass](./ARDUINO_CORE_THEORY.md).
+- Building a parts kit? Use the [Hardware Kit Guide](./HARDWARE_KIT.md).
 - Ready to build? Begin with [Day 1: The Non-Blocking Blink](./Day_01_Millis_Blink).
 
 ## What Makes This Guide Different
@@ -172,6 +173,8 @@ Useful parts across the full curriculum:
 ## Contributing
 
 Pull requests are welcome for clearer explanations, safer wiring notes, bug fixes, schematics, diagrams, and board-specific improvements. Keep changes focused and include the affected day or guide section in the commit message.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for project structure, code style, documentation style, and verification expectations.
 
 ## Safety Note
 
