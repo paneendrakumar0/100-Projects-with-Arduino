@@ -1,0 +1,29 @@
+name: Compile Arduino Sketches
+
+on:
+  push:
+    paths:
+      - '**/*.ino'
+      - '.github/workflows/arduino-compile.yml'
+  pull_request:
+    paths:
+      - '**/*.ino'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Compile Sketches
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: arduino:avr:uno
+          sketch-paths: |
+            .
+          # We can add libraries here later if certain days require specific third-party libraries.
+          # libraries: |
+          #   - name: Servo
+          #   - name: DHT sensor library
