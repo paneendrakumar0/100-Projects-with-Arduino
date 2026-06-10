@@ -34,19 +34,6 @@ export default async function ChapterPage({ params }) {
         <Pagination prev={prev} next={next} />
       </article>
       <TableOfContents />
-      <style jsx>{`
-        .page-with-toc {
-          display: flex;
-          position: relative;
-          max-width: 1400px;
-          margin: 0 auto;
-        }
-        .prose {
-          flex: 1;
-          max-width: 850px;
-          padding-bottom: 4rem;
-        }
-      `}</style>
     </div>
   );
 }

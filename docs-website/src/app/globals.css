@@ -244,3 +244,6 @@ img:hover {
 .hljs-function .hljs-keyword { color: #c678dd; }
 .hljs-string, .hljs-title, .hljs-name, .hljs-type, .hljs-attribute, .hljs-symbol, .hljs-bullet, .hljs-addition, .hljs-variable, .hljs-template-tag, .hljs-template-variable { color: #98c379; }
 .hljs-comment, .hljs-quote, .hljs-deletion, .hljs-meta { color: #5c6370; font-style: italic; }
+
+.page-with-toc { display: flex; position: relative; max-width: 1400px; margin: 0 auto; }
+.prose { flex: 1; max-width: 850px; padding-bottom: 4rem; }
