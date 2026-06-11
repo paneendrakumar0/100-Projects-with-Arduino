@@ -1,0 +1,21 @@
+{
+  "name": "100 Days of Arduino",
+  "short_name": "Arduino 100",
+  "description": "The ultimate Arduino masterclass.",
+  "start_url": "/100-Projects-with-Arduino/",
+  "display": "standalone",
+  "background_color": "#18181b",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/100-Projects-with-Arduino/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/100-Projects-with-Arduino/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+name: Release E-Book
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate E-Book
+        run: node scripts/generate-ebook.js
+
+      - name: Create Release Archive
+        run: zip -r 100_Days_of_Arduino_Source.zip . -x "*.git*" "docs-website/node_modules/*" "docs-website/.next/*"
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            100_Days_of_Arduino_Book.md
+            100_Days_of_Arduino_Source.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
