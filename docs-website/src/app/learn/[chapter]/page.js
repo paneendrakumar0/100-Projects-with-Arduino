@@ -2,6 +2,7 @@ import { getLearnArduinoChapter, getLearnArduinoChapters } from '@/lib/markdown'
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import TableOfContents from '@/components/TableOfContents';
 import Pagination from '@/components/Pagination';
+import EditPageButton from '@/components/EditPageButton';
 import MarkCompleteButton from '@/components/MarkCompleteButton';
 
 export async function generateStaticParams() {
@@ -54,6 +55,9 @@ export default async function ChapterPage({ params }) {
       <article className="prose prose-invert">
         <MarkdownRenderer content={chapter.content} />
         <MarkCompleteButton dayId={chapter.slug} />
+        <div className="flex justify-end mt-8 pt-8 border-t border-zinc-800">
+          <EditPageButton filePath={`Learn_Arduino/${chapter.slug}.md`} />
+        </div>
         <Pagination prev={prev} next={next} />
       </article>
       <TableOfContents />

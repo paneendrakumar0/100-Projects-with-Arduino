@@ -1,6 +1,7 @@
 import './globals.css';
 import Sidebar from '@/components/Sidebar';
 import ProgressBar from '@/components/ProgressBar';
+import KonamiCode from '@/components/KonamiCode';
 
 export const metadata = {
   title: '100 Days of Arduino',
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <KonamiCode />
         <div className="noise-overlay"></div>
         <ProgressBar />
         <div className="app-container">
