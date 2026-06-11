@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Menu, X, Cpu } from 'lucide-react';
+import { Menu, X, Cpu, CheckCircle2 } from 'lucide-react';
 import SearchModal from './SearchModal';
 
 export default function SidebarClient({ chapters, days, searchIndex }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [completedDays, setCompletedDays] = useState([]);
   const pathname = usePathname();
 
   const container = {
@@ -30,6 +31,17 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
     setPrevPathname(pathname);
     setIsOpen(false);
   }
+
+  // Handle local progress tracking
+  useEffect(() => {
+    const updateProgress = () => {
+      setCompletedDays(JSON.parse(localStorage.getItem('completedDays') || '[]'));
+    };
+
+    updateProgress();
+    window.addEventListener('progressUpdated', updateProgress);
+    return () => window.removeEventListener('progressUpdated', updateProgress);
+  }, []);
 
   return (
     <>
@@ -62,10 +74,12 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
         <ul className="nav-list">
           {chapters.map((chapter) => {
             const isActive = pathname === `/learn/${chapter.slug}`;
+            const isCompleted = completedDays.includes(chapter.slug);
             return (
               <motion.li variants={item} key={chapter.slug} className="nav-item">
-                <Link href={`/learn/${chapter.slug}`} className={`nav-link ${isActive ? 'active' : ''}`}>
-                  {chapter.title}
+                <Link href={`/learn/${chapter.slug}`} className={`nav-link ${isActive ? 'active' : ''} flex items-center justify-between`}>
+                  <span>{chapter.title}</span>
+                  {isCompleted && <CheckCircle2 className="w-4 h-4 text-green-400" />}
                 </Link>
               </motion.li>
             );
@@ -78,10 +92,12 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
         <ul className="nav-list">
           {days.map((day) => {
             const isActive = pathname === `/days/${day.slug}`;
+            const isCompleted = completedDays.includes(day.slug);
             return (
               <motion.li variants={item} key={day.slug} className="nav-item">
-                <Link href={`/days/${day.slug}`} className={`nav-link ${isActive ? 'active' : ''}`}>
-                  Day {day.dayNumber}: {day.title}
+                <Link href={`/days/${day.slug}`} className={`nav-link ${isActive ? 'active' : ''} flex items-center justify-between`}>
+                  <span>Day {day.dayNumber}: {day.title}</span>
+                  {isCompleted && <CheckCircle2 className="w-4 h-4 text-green-400" />}
                 </Link>
               </motion.li>
             );

@@ -1,0 +1,44 @@
+name: Arduino CI Compilation
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install AVR Core
+        run: arduino-cli core install arduino:avr
+
+      - name: Install Required Libraries
+        run: |
+          arduino-cli lib install "Adafruit GFX Library" "Adafruit SSD1306" "FreeRTOS" "HID-Project" "IRremote" "Joystick" "Keypad" "LiquidCrystal I2C" "MFRC522" "RF24" "TM1637"
+
+      - name: Compile all Sketches
+        run: |
+          # Loop through all Day_ folders
+          for dir in Day_*; do
+            if [ -d "$dir" ]; then
+              # Default board is Arduino Uno
+              board="arduino:avr:uno"
+              
+              # If the sketch uses Keyboard, Mouse, Joystick, or HID-Project, it needs a Leonardo/Micro
+              if grep -qE "Keyboard\.h|Mouse\.h|Joystick\.h|HID-Project\.h" "$dir"/*.ino 2>/dev/null; then
+                board="arduino:avr:leonardo"
+              fi
+              
+              echo "--------------------------------------------------------"
+              echo "Compiling $dir for $board..."
+              arduino-cli compile -b "$board" "$dir" || exit 1
+            fi
+          done

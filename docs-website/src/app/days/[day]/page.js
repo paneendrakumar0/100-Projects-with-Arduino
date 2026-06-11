@@ -2,6 +2,7 @@ import { getDayLog, get100DaysLogs } from '@/lib/markdown';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import TableOfContents from '@/components/TableOfContents';
 import Pagination from '@/components/Pagination';
+import MarkCompleteButton from '@/components/MarkCompleteButton';
 
 export async function generateStaticParams() {
   const days = get100DaysLogs();
@@ -31,6 +32,7 @@ export default async function DayPage({ params }) {
     <div className="page-with-toc">
       <article className="prose prose-invert">
         <MarkdownRenderer content={day.content} />
+        <MarkCompleteButton dayId={day.slug} />
         <Pagination prev={prev} next={next} />
       </article>
       <TableOfContents />

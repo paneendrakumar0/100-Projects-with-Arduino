@@ -2,6 +2,7 @@ import { getLearnArduinoChapter, getLearnArduinoChapters } from '@/lib/markdown'
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import TableOfContents from '@/components/TableOfContents';
 import Pagination from '@/components/Pagination';
+import MarkCompleteButton from '@/components/MarkCompleteButton';
 
 export async function generateStaticParams() {
   const chapters = getLearnArduinoChapters();
@@ -31,6 +32,7 @@ export default async function ChapterPage({ params }) {
     <div className="page-with-toc">
       <article className="prose prose-invert">
         <MarkdownRenderer content={chapter.content} />
+        <MarkCompleteButton dayId={chapter.slug} />
         <Pagination prev={prev} next={next} />
       </article>
       <TableOfContents />
