@@ -28,11 +28,11 @@ jobs:
         with:
           node-version: "20"
       - name: Install dependencies
-        run: npm ci
+        run: npm install || (echo "::error::Install dependencies failed" && exit 1)
       - name: Run Linter
-        run: npm run lint
+        run: npm run lint || (echo "::error::Linter failed" && exit 1)
       - name: Build with Next.js
-        run: npm run build
+        run: npm run build || (echo "::error::Next build failed" && exit 1)
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
