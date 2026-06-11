@@ -1,8 +1,22 @@
 # 100 Days of Arduino
 
+> ⭐ **If you find these projects helpful, please consider leaving a star! It helps the repository grow.**
+
+![Arduino Uno](Learn_Arduino/images/Arduino_Uno.jpg)
+
 An end-to-end Arduino curriculum that grows from first circuits to autonomous robotics, control systems, embedded architecture, and ROS-style integration.
 
 This repository is designed as a practical masterclass: every day has a focused project, working Arduino code, wiring guidance, and a concept trail that explains why the build works. The path starts with safe beginner fundamentals, then moves deliberately into non-blocking programming, sensors, motors, displays, wireless communication, control loops, signal processing, low-power design, and robotics.
+
+## Table of Contents
+
+- [Start Here](#start-here)
+- [What Makes This Guide Different](#what-makes-this-guide-different)
+- [Repository Structure](#repository-structure)
+- [Hardware You Will Use](#hardware-you-will-use)
+- [The Journey Log](#the-journey-log)
+- [Contributing](#contributing)
+- [Safety Note](#safety-note)
 
 ## Start Here
 
@@ -180,4 +194,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for project structure, code style, docu
 
 Double-check wiring before powering a circuit. Use resistors with LEDs, avoid shorting power rails, keep motor power separate from logic power when needed, and never work on high-voltage AC projects without proper training and isolation.
 
-If this guide helps you, star the repository and share what you build.
+If this guide helps you, share what you build!
+
+---
+> ⭐ **Did you enjoy this journey? Please consider leaving a star! It helps others find these projects and grow the community.**
