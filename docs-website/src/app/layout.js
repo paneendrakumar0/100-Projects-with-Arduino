@@ -7,9 +7,16 @@ export const metadata = {
   description: 'A practical Arduino curriculum from first circuits to robotics, control systems, and embedded autonomy.',
   metadataBase: new URL('https://paneendrakumar0.github.io/100-Projects-with-Arduino'),
   openGraph: {
-    title: '100 Days of Arduino',
-    description: 'A practical Arduino curriculum from first circuits to robotics, control systems, and embedded autonomy.',
+    title: '100 Days of Arduino Masterclass',
+    description: 'A practical Arduino curriculum from first circuits to robotics, control systems, and embedded autonomy. Build 100 hardware projects from scratch.',
     type: 'website',
+    url: 'https://paneendrakumar0.github.io/100-Projects-with-Arduino',
+    siteName: '100 Days of Arduino',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '100 Days of Arduino Masterclass',
+    description: 'A practical Arduino curriculum from first circuits to robotics, control systems, and embedded autonomy.',
   },
 };
 

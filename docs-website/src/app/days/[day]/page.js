@@ -13,6 +13,27 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const day = getDayLog(resolvedParams.day);
+  if (!day) return {};
+  
+  return {
+    title: `${day.title} | 100 Days of Arduino`,
+    description: `Learn how to build ${day.title} in the 100 Days of Arduino Masterclass.`,
+    openGraph: {
+      title: `${day.title} | 100 Days of Arduino`,
+      description: `Learn how to build ${day.title} in the 100 Days of Arduino Masterclass.`,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${day.title} | 100 Days of Arduino`,
+      description: `Learn how to build ${day.title} in the 100 Days of Arduino Masterclass.`,
+    }
+  };
+}
+
 export default async function DayPage({ params }) {
   const resolvedParams = await params;
   const days = get100DaysLogs();

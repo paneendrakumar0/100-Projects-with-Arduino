@@ -11,6 +11,27 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const chapter = getLearnArduinoChapter(resolvedParams.chapter);
+  if (!chapter) return {};
+  
+  return {
+    title: `${chapter.title} | Arduino Theory`,
+    description: `Read ${chapter.title} from the 100 Days of Arduino Masterclass.`,
+    openGraph: {
+      title: `${chapter.title} | Arduino Theory`,
+      description: `Read ${chapter.title} from the 100 Days of Arduino Masterclass.`,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${chapter.title} | Arduino Theory`,
+      description: `Read ${chapter.title} from the 100 Days of Arduino Masterclass.`,
+    }
+  };
+}
+
 export default async function ChapterPage({ params }) {
   const resolvedParams = await params;
   const chapters = getLearnArduinoChapters();
