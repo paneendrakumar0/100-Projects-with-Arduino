@@ -16,8 +16,9 @@ export default function TableOfContents() {
         level: Number(elem.nodeName.charAt(1)),
         top: elem.getBoundingClientRect().top + window.scrollY,
       }));
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setHeadings(elements);
+    
+    const updateHeadings = () => setHeadings(elements);
+    updateHeadings();
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100;
