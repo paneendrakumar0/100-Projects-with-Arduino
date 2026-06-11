@@ -1,14 +1,14 @@
 /*
  * 100 Projects with Arduino - Day 96
  * Project: Differential Drive Robot Odometry & Dead Reckoning
- * 
+ *
  * DESCRIPTION:
- * This project implements local position estimation (odometry or dead reckoning) for a 
- * two-wheeled differential drive mobile robot. 
- * 
+ * This project implements local position estimation (odometry or dead reckoning) for a
+ * two-wheeled differential drive mobile robot.
+ *
  * By reading rotary encoders attached to the left and right wheels, the robot tracks its
  * coordinate position (X, Y) and heading (Theta) relative to its startup position (0, 0, 0).
- * 
+ *
  * CORE MATHEMATICS (RUNGE-KUTTA MIDPOINT INTEGRATION):
  * 1. Wheel Displacement:
  *      dL = ticksLeft * DistancePerTick
@@ -21,12 +21,13 @@
  *      thetaNew = thetaOld + dTheta
  *      XNew = xOld + dC * cos(thetaOld + dTheta / 2)
  *      YNew = yOld + dC * sin(thetaOld + dTheta / 2)
- * 
+ *
  * INTERACTIVE CLI & KINEMATICS SIMULATOR:
  * To allow testing without physical encoders, the CLI allows manually incrementing/decrementing
- * encoder ticks or launching automated path simulations (straight line, circular orbit, pivot turns).
- * Telemetry is formatted for the Serial Plotter to visualize the robot's trajectory in 2D space.
- * 
+ * encoder ticks or launching automated path simulations (straight line, circular orbit, pivot
+ * turns). Telemetry is formatted for the Serial Plotter to visualize the robot's trajectory in 2D
+ * space.
+ *
  * WIRING (For real-world encoders):
  * - Left Encoder Signal (Interrupt A)  -> Pin 2 (INT0)
  * - Right Encoder Signal (Interrupt B) -> Pin 3 (INT1)
@@ -34,9 +35,9 @@
  */
 
 // --- ROBOT PHYSICAL CONSTANTS (Dimensions in cm) ---
-const float WHEEL_DIAMETER   = 6.6f;   // Diameter of robot wheels (e.g. 66mm standard yellow wheel)
-const int   TICKS_PER_REV    = 20;     // Encoder slots per revolution (standard plastic disc)
-const float WHEEL_TRACK      = 15.0f;  // Width between wheel contact patches (track width)
+const float WHEEL_DIAMETER = 6.6f;  // Diameter of robot wheels (e.g. 66mm standard yellow wheel)
+const int TICKS_PER_REV = 20;       // Encoder slots per revolution (standard plastic disc)
+const float WHEEL_TRACK = 15.0f;    // Width between wheel contact patches (track width)
 
 // Distance traveled per single encoder slot transition
 // Distance = (pi * diameter) / ticks_per_rev
@@ -46,15 +47,15 @@ const float DISTANCE_PER_TICK = (PI * WHEEL_DIAMETER) / (float)TICKS_PER_REV;
 volatile long leftEncoderTicks = 0;
 volatile long rightEncoderTicks = 0;
 
-float robotX = 0.0f;     // Position X (cm)
-float robotY = 0.0f;     // Position Y (cm)
-float robotTheta = 0.0f; // Heading angle (Radians, 0 = facing along positive X axis)
+float robotX = 0.0f;      // Position X (cm)
+float robotY = 0.0f;      // Position Y (cm)
+float robotTheta = 0.0f;  // Heading angle (Radians, 0 = facing along positive X axis)
 
 // --- SIMULATION VARIABLES ---
 bool autoSimActive = false;
-char simPattern = 'f'; // 'f' = forward, 'c' = circle, 't' = spin turn
+char simPattern = 'f';  // 'f' = forward, 'c' = circle, 't' = spin turn
 unsigned long lastSimUpdate = 0;
-const unsigned long SIM_INTERVAL = 100; // 10 Hz updates
+const unsigned long SIM_INTERVAL = 100;  // 10 Hz updates
 
 void setup() {
   Serial.begin(9600);
@@ -70,7 +71,7 @@ void setup() {
   Serial.println(F("=================================================="));
   Serial.println(F("Day 96: Differential Drive Robot Odometry"));
   Serial.println(F("=================================================="));
-  
+
   printMenu();
 }
 
@@ -83,7 +84,7 @@ void loop() {
 
   // 2. Perform Odometry Update Loop (Non-blocking)
   static unsigned long lastOdomUpdate = 0;
-  if (millis() - lastOdomUpdate >= 50) { // 20 Hz calculation frequency
+  if (millis() - lastOdomUpdate >= 50) {  // 20 Hz calculation frequency
     lastOdomUpdate = millis();
     updateRobotOdometry();
   }
@@ -125,7 +126,7 @@ void updateRobotOdometry() {
   // Calculate delta ticks since last cycle
   long deltaL = currentTicksL - lastTicksL;
   long deltaR = currentTicksR - lastTicksR;
-  
+
   // Save current ticks for next iteration
   lastTicksL = currentTicksL;
   lastTicksR = currentTicksR;
@@ -146,7 +147,7 @@ void updateRobotOdometry() {
   // 4. Integrate coordinate updates using midpoint approximation
   // Adds half of the heading change before calculating coordinate projection
   float midTheta = robotTheta + (dTheta / 2.0f);
-  
+
   robotX += dC * cos(midTheta);
   robotY += dC * sin(midTheta);
   robotTheta += dTheta;
@@ -160,11 +161,16 @@ void updateRobotOdometry() {
 
   // Output kinematics telemetry for Serial Monitor / Plotter
   float thetaDeg = robotTheta * 180.0f / PI;
-  Serial.print(F("X:"));         Serial.print(robotX, 2);
-  Serial.print(F(",Y:"));         Serial.print(robotY, 2);
-  Serial.print(F(",Heading:"));   Serial.print(thetaDeg, 1);
-  Serial.print(F(",LeftTicks:"));  Serial.print(currentTicksL);
-  Serial.print(F(",RightTicks:")); Serial.println(currentTicksR);
+  Serial.print(F("X:"));
+  Serial.print(robotX, 2);
+  Serial.print(F(",Y:"));
+  Serial.print(robotY, 2);
+  Serial.print(F(",Heading:"));
+  Serial.print(thetaDeg, 1);
+  Serial.print(F(",LeftTicks:"));
+  Serial.print(currentTicksL);
+  Serial.print(F(",RightTicks:"));
+  Serial.println(currentTicksR);
 }
 
 // =============================================================
@@ -173,16 +179,16 @@ void updateRobotOdometry() {
 void generateSimulatedTicks() {
   noInterrupts();
   switch (simPattern) {
-    case 'f': // Path: Move Straight Forward
-      leftEncoderTicks  += 2;
+    case 'f':  // Path: Move Straight Forward
+      leftEncoderTicks += 2;
       rightEncoderTicks += 2;
       break;
-    case 'c': // Path: Circle (Left wheel turns faster, tracing a curve to the right)
-      leftEncoderTicks  += 3;
+    case 'c':  // Path: Circle (Left wheel turns faster, tracing a curve to the right)
+      leftEncoderTicks += 3;
       rightEncoderTicks += 1;
       break;
-    case 't': // Path: Turn on the spot (Spin turn CCW: left backwards, right forwards)
-      leftEncoderTicks  -= 1;
+    case 't':  // Path: Turn on the spot (Spin turn CCW: left backwards, right forwards)
+      leftEncoderTicks -= 1;
       rightEncoderTicks += 1;
       break;
   }
@@ -195,14 +201,18 @@ void handleCLICommand(char cmd) {
   switch (cmd) {
     // Manual ticks simulation
     case 'l':
-      noInterrupts(); leftEncoderTicks += 5; interrupts();
+      noInterrupts();
+      leftEncoderTicks += 5;
+      interrupts();
       Serial.println(F("[CLI] Added 5 ticks to Left Wheel"));
       break;
     case 'r':
-      noInterrupts(); rightEncoderTicks += 5; interrupts();
+      noInterrupts();
+      rightEncoderTicks += 5;
+      interrupts();
       Serial.println(F("[CLI] Added 5 ticks to Right Wheel"));
       break;
-      
+
     // Simulation pattern selections
     case 'f':
     case 'F':
@@ -222,7 +232,7 @@ void handleCLICommand(char cmd) {
       autoSimActive = true;
       Serial.println(F("[SIMULATOR] Pattern set to: PIVOT SPIN TURN"));
       break;
-      
+
     // Simulation state controls
     case 'p':
     case 'P':
@@ -241,12 +251,12 @@ void handleCLICommand(char cmd) {
       robotTheta = 0.0f;
       Serial.println(F("[SYSTEM] Odometry coordinate system reset to (0, 0, 0)"));
       break;
-      
+
     case 'h':
     case 'H':
       printMenu();
       break;
-      
+
     default:
       break;
   }

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Menu, X, Cpu, CheckCircle2 } from 'lucide-react';
+import { Menu, X, Cpu, CheckCircle2, Award } from 'lucide-react';
 import SearchModal from './SearchModal';
 
 export default function SidebarClient({ chapters, days, searchIndex }) {
@@ -103,6 +103,19 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
             );
           })}
         </ul>
+      </motion.div>
+      <motion.div variants={container} initial="hidden" animate="show" className="nav-section mt-8">
+        <div className="border-t border-zinc-800/50 pt-6">
+          <Link href="/certificate" className="flex items-center gap-3 p-4 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 rounded-xl transition-all group">
+            <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Award className="text-indigo-400 w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-indigo-300">Your Certificate</div>
+              <div className="text-xs text-indigo-400/70">{completedDays.length}/100 Days Completed</div>
+            </div>
+          </Link>
+        </div>
       </motion.div>
       </aside>
 

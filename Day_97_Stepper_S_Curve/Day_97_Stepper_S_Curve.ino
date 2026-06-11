@@ -1,26 +1,26 @@
 /*
  * 100 Projects with Arduino - Day 97
  * Project: Stepper Motor S-Curve Acceleration Profiler
- * 
+ *
  * DESCRIPTION:
  * This project implements a real-time S-Curve (Raised Cosine) Acceleration Profile Generator
- * for stepper motors. 
- * 
+ * for stepper motors.
+ *
  * TRAPEZOIDAL vs S-CURVE ACCELERATION:
  * 1. Trapezoidal (Linear): Acceleration changes instantly from 0 to max at the start and end
  *    of the ramp. This creates infinite "jerk" (the rate of change of acceleration), which causes
  *    mechanical vibration, resonance, and motor stall at high speeds.
  * 2. S-Curve (Smooth): Acceleration ramp is rounded off, gradually ramping up and down. This
  *    minimizes jerk, resulting in smooth motion, quiet operation, and higher achievable speeds.
- * 
+ *
  * THE MATHEMATICAL MODEL:
  * We precompute the step intervals (delay in microseconds between steps) for a 100-step ramp.
  * The velocity v(i) at step index i (from 0 to N-1) is modeled using a raised cosine:
  *   v(i) = vStart + (vMax - vStart) * [ (1 - cos(pi * i / (N - 1))) / 2 ]
- * 
+ *
  * The corresponding step delay interval in microseconds is:
  *   delay(i) = 1,000,000 / v(i)
- * 
+ *
  * INTERACTIVE CLI & PLOTTER TELEMETRY:
  * The Serial CLI lets the user set target steps and switch between three profiles:
  * - Constant Speed (No ramp)
@@ -28,7 +28,7 @@
  * - S-Curve Ramping
  * During movement, the current speed is printed to the Serial Monitor in real-time,
  * allowing visualization of the speed curves on the Serial Plotter.
- * 
+ *
  * WIRING:
  * - Stepper Driver STEP Pin -> Pin 9
  * - Stepper Driver DIR Pin  -> Pin 8
@@ -37,24 +37,20 @@
 
 // --- PIN DEFINITIONS ---
 const int STEP_PIN = 9;
-const int DIR_PIN  = 8;
-const int LED_PIN  = 13;
+const int DIR_PIN = 8;
+const int LED_PIN = 13;
 
 // --- STEPPER CONSTANTS ---
-const int RAMP_STEPS = 100; // Number of steps in the acceleration/deceleration ramp
-float vStart = 150.0f;      // Starting velocity (steps/second)
-float vMax   = 1200.0f;     // Maximum peak velocity (steps/second)
+const int RAMP_STEPS = 100;  // Number of steps in the acceleration/deceleration ramp
+float vStart = 150.0f;       // Starting velocity (steps/second)
+float vMax = 1200.0f;        // Maximum peak velocity (steps/second)
 
 // --- MEMORY ARRAYS FOR RAMP PROFILES ---
-uint16_t sCurveIntervals[RAMP_STEPS]; // Step delay intervals in microseconds (S-Curve)
-uint16_t linearIntervals[RAMP_STEPS]; // Step delay intervals in microseconds (Linear)
+uint16_t sCurveIntervals[RAMP_STEPS];  // Step delay intervals in microseconds (S-Curve)
+uint16_t linearIntervals[RAMP_STEPS];  // Step delay intervals in microseconds (Linear)
 
 // --- MOTION STATE VARIABLES ---
-enum ProfileType {
-  PROFILE_CONSTANT,
-  PROFILE_LINEAR,
-  PROFILE_SCURVE
-};
+enum ProfileType { PROFILE_CONSTANT, PROFILE_LINEAR, PROFILE_SCURVE };
 
 ProfileType currentProfile = PROFILE_SCURVE;
 long targetSteps = 0;
@@ -78,7 +74,7 @@ void setup() {
   Serial.println(F("=================================================="));
   Serial.println(F("Day 97: Stepper Motor S-Curve Speed Profiler"));
   Serial.println(F("=================================================="));
-  
+
   printMenu();
 }
 
@@ -129,7 +125,7 @@ void generateProfileTables() {
 void executeMotionStep() {
   static unsigned long lastStepMicros = 0;
   static uint16_t currentIntervalUs = 10000;
-  
+
   unsigned long currentMicros = micros();
 
   // Wait until the step interval has expired
@@ -151,7 +147,7 @@ void executeMotionStep() {
 
     // Determine current speed based on ramp position
     float speedHz = 0.0f;
-    
+
     if (stepsRemaining == 0) {
       // Motion complete
       motorRunning = false;
@@ -166,10 +162,11 @@ void executeMotionStep() {
       speedHz = vMax;
     } else {
       // Ramping velocity
-      uint16_t* profileTable = (currentProfile == PROFILE_SCURVE) ? sCurveIntervals : linearIntervals;
-      
+      uint16_t* profileTable =
+          (currentProfile == PROFILE_SCURVE) ? sCurveIntervals : linearIntervals;
+
       long totalSteps = stepsCompleted + stepsRemaining;
-      
+
       if (stepsCompleted < RAMP_STEPS) {
         // Acceleration phase
         currentIntervalUs = profileTable[stepsCompleted];
@@ -180,14 +177,17 @@ void executeMotionStep() {
         // Flat peak velocity phase
         currentIntervalUs = (uint16_t)(1000000.0f / vMax);
       }
-      
+
       speedHz = 1000000.0f / (float)currentIntervalUs;
     }
 
-    // Output telemetry data formatted for the Serial Plotter (1 out of every 5 steps to throttle output)
+    // Output telemetry data formatted for the Serial Plotter (1 out of every 5 steps to throttle
+    // output)
     if (stepsCompleted % 2 == 0) {
-      Serial.print(F("Step:"));      Serial.print(stepsCompleted);
-      Serial.print(F(",SpeedHz:"));  Serial.println(speedHz, 1);
+      Serial.print(F("Step:"));
+      Serial.print(stepsCompleted);
+      Serial.print(F(",SpeedHz:"));
+      Serial.println(speedHz, 1);
     }
   }
 }
@@ -204,7 +204,7 @@ void handleCLICommand(char cmd) {
       // Read target steps from Serial
       targetSteps = Serial.parseInt();
       if (targetSteps == 0) return;
-      
+
       // Configure direction
       if (targetSteps > 0) {
         digitalWrite(DIR_PIN, HIGH);
@@ -214,13 +214,16 @@ void handleCLICommand(char cmd) {
         targetSteps = -targetSteps;
         Serial.print(F("\n[MOTION] Counter-Clockwise Move: "));
       }
-      
+
       Serial.print(targetSteps);
       Serial.print(F(" steps using "));
-      
-      if (currentProfile == PROFILE_CONSTANT) Serial.println(F("CONSTANT SPEED profile."));
-      else if (currentProfile == PROFILE_LINEAR) Serial.println(F("LINEAR TRAPEZOIDAL profile."));
-      else Serial.println(F("S-CURVE profile."));
+
+      if (currentProfile == PROFILE_CONSTANT)
+        Serial.println(F("CONSTANT SPEED profile."));
+      else if (currentProfile == PROFILE_LINEAR)
+        Serial.println(F("LINEAR TRAPEZOIDAL profile."));
+      else
+        Serial.println(F("S-CURVE profile."));
 
       // Start movement
       stepsRemaining = targetSteps;
@@ -246,12 +249,16 @@ void handleCLICommand(char cmd) {
     case 'u':
       vMax = constrain(vMax + 100.0f, vStart + 100.0f, 2500.0f);
       generateProfileTables();
-      Serial.print(F("[CONFIG] Peak Velocity increased to: ")); Serial.print(vMax); Serial.println(F(" steps/sec"));
+      Serial.print(F("[CONFIG] Peak Velocity increased to: "));
+      Serial.print(vMax);
+      Serial.println(F(" steps/sec"));
       break;
     case 'd':
       vMax = constrain(vMax - 100.0f, vStart + 100.0f, 2500.0f);
       generateProfileTables();
-      Serial.print(F("[CONFIG] Peak Velocity decreased to: ")); Serial.print(vMax); Serial.println(F(" steps/sec"));
+      Serial.print(F("[CONFIG] Peak Velocity decreased to: "));
+      Serial.print(vMax);
+      Serial.println(F(" steps/sec"));
       break;
 
     case 'h':

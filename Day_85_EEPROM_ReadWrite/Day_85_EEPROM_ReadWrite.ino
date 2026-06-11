@@ -1,29 +1,31 @@
 /*
  * 100 Projects with Arduino - Day 85
  * Project: Persistent System Configuration Manager (EEPROM Structs & CRC Diagnostics)
- * 
+ *
  * DESCRIPTION:
  * This project demonstrates how to save, load, and manage structured non-volatile configuration
  * parameters (such as sensor offsets, calibration constants, and boot logs) using the Arduino's
  * built-in EEPROM. To align with industrial firmware design standards:
- * 1. Struct Serialization: Packs multiple heterogeneous variables (integer, float, char array) 
- *    into a single data structure (`SystemConfig`) and saves/loads it using `EEPROM.put()` and `EEPROM.get()`.
+ * 1. Struct Serialization: Packs multiple heterogeneous variables (integer, float, char array)
+ *    into a single data structure (`SystemConfig`) and saves/loads it using `EEPROM.put()` and
+ * `EEPROM.get()`.
  * 2. Data Integrity (Checksum Validation): Calculates a checksum for the config block to verify
  *    that memory has not degraded or been corrupted.
- * 3. Boot Tracking: Automatically loads, increments, and rewrites a persistent boot counter on startup.
+ * 3. Boot Tracking: Automatically loads, increments, and rewrites a persistent boot counter on
+ * startup.
  * 4. Configuration CLI: Provides a Serial Command Line Interface to dynamically edit multiplier,
  *    offset, and system name parameters, and save them permanently.
- * 
+ *
  * EEPROM CONFIGURATION THEORY:
  * - Direct Struct Writing: Standard EEPROM libraries write bytes. `EEPROM.put()` simplifies writing
  *   complex structs by calculating the byte size internally and calling `EEPROM.update()` to write
  *   each byte sequentially.
- * - Write Gating: `EEPROM.put()` only writes a byte if the new value differs from the existing value
- *   stored in that cell. This prevents unnecessary wear on the silicon.
+ * - Write Gating: `EEPROM.put()` only writes a byte if the new value differs from the existing
+ * value stored in that cell. This prevents unnecessary wear on the silicon.
  * - Struct Padding: Compilers sometimes insert empty padding bytes to align variables to 2-byte or
- *   4-byte boundaries. On the 8-bit AVR architecture, variables are aligned to single bytes, meaning
- *   no padding is added, making the struct size compact and predictable.
- * 
+ *   4-byte boundaries. On the 8-bit AVR architecture, variables are aligned to single bytes,
+ * meaning no padding is added, making the struct size compact and predictable.
+ *
  * WIRING:
  * No external components are required. Runs on internal EEPROM.
  */
@@ -32,12 +34,12 @@
 
 // --- STRUCT DEFINITIONS ---
 struct SystemConfig {
-  uint32_t bootCount;         // 4 bytes: Persistent reboot log counter
-  float sensorMultiplier;     // 4 bytes: Simulated sensor scaling factor
-  float sensorOffset;         // 4 bytes: Simulated sensor zero-point offset
-  char systemName[16];        // 16 bytes: Device identification tag
-  uint16_t checksum;          // 2 bytes: Validation checksum
-}; // Total size = 30 bytes
+  uint32_t bootCount;      // 4 bytes: Persistent reboot log counter
+  float sensorMultiplier;  // 4 bytes: Simulated sensor scaling factor
+  float sensorOffset;      // 4 bytes: Simulated sensor zero-point offset
+  char systemName[16];     // 16 bytes: Device identification tag
+  uint16_t checksum;       // 2 bytes: Validation checksum
+};                         // Total size = 30 bytes
 
 // --- GLOBAL VARIABLES ---
 const int EEPROM_START_ADDR = 0;
@@ -46,7 +48,7 @@ SystemConfig activeConfig;
 void setup() {
   Serial.begin(9600);
   while (!Serial) {
-    ; // Wait for USB connection
+    ;  // Wait for USB connection
   }
 
   Serial.println(F("=================================================="));
@@ -63,7 +65,7 @@ void setup() {
   Serial.print(F("[BOOT] Boot cycle #"));
   Serial.print(activeConfig.bootCount);
   Serial.println(F(" logged successfully."));
-  
+
   printConfig(activeConfig);
   printMenu();
 }
@@ -116,7 +118,7 @@ uint16_t calculateChecksum(const SystemConfig& cfg) {
   uint16_t sum = 0;
   const byte* bytePtr = (const byte*)&cfg;
   int size = sizeof(SystemConfig) - sizeof(cfg.checksum);
-  
+
   for (int i = 0; i < size; i++) {
     sum += bytePtr[i];
   }
@@ -128,14 +130,15 @@ uint16_t calculateChecksum(const SystemConfig& cfg) {
  */
 void loadConfiguration() {
   Serial.println(F("[SYSTEM] Loading configuration from EEPROM..."));
-  
+
   // Read struct from EEPROM address
   EEPROM.get(EEPROM_START_ADDR, activeConfig);
 
   // Validate loaded data using the checksum
   uint16_t calculatedCheck = calculateChecksum(activeConfig);
 
-  if (activeConfig.checksum == calculatedCheck && activeConfig.bootCount > 0 && activeConfig.bootCount != 0xFFFFFFFF) {
+  if (activeConfig.checksum == calculatedCheck && activeConfig.bootCount > 0 &&
+      activeConfig.bootCount != 0xFFFFFFFF) {
     Serial.println(F("[SYSTEM] Configuration loaded successfully (CRC match)."));
   } else {
     Serial.println(F("[WARNING] Checksum mismatch or uninitialized memory!"));
@@ -185,8 +188,8 @@ void resetToFactoryDefaults() {
 void parseAndSaveConfig() {
   // Read parameters
   float newMultiplier = Serial.parseFloat();
-  float newOffset     = Serial.parseFloat();
-  String newName      = Serial.readStringUntil('\n');
+  float newOffset = Serial.parseFloat();
+  String newName = Serial.readStringUntil('\n');
   newName.trim();
 
   // Validate parameters
@@ -199,7 +202,7 @@ void parseAndSaveConfig() {
   // Update active config
   activeConfig.sensorMultiplier = newMultiplier;
   activeConfig.sensorOffset = newOffset;
-  
+
   if (newName.length() > 0) {
     // Ensure name fits within char array (15 chars + null terminator)
     newName.substring(0, 15).toCharArray(activeConfig.systemName, 16);
@@ -216,11 +219,16 @@ void parseAndSaveConfig() {
 // =============================================================
 void printConfig(const SystemConfig& cfg) {
   Serial.println(F("--------------------------------------"));
-  Serial.print(F(" System Name : ")); Serial.println(cfg.systemName);
-  Serial.print(F(" Boot Count  : ")); Serial.println(cfg.bootCount);
-  Serial.print(F(" Multiplier  : ")); Serial.println(cfg.sensorMultiplier, 4);
-  Serial.print(F(" Zero Offset : ")); Serial.println(cfg.sensorOffset, 4);
-  Serial.print(F(" Checksum    : 0x")); Serial.println(cfg.checksum, HEX);
+  Serial.print(F(" System Name : "));
+  Serial.println(cfg.systemName);
+  Serial.print(F(" Boot Count  : "));
+  Serial.println(cfg.bootCount);
+  Serial.print(F(" Multiplier  : "));
+  Serial.println(cfg.sensorMultiplier, 4);
+  Serial.print(F(" Zero Offset : "));
+  Serial.println(cfg.sensorOffset, 4);
+  Serial.print(F(" Checksum    : 0x"));
+  Serial.println(cfg.checksum, HEX);
   Serial.println(F("--------------------------------------"));
 }
 

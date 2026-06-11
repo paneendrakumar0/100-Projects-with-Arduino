@@ -1,7 +1,7 @@
 /*
  * 100 Projects with Arduino - Day 82
  * Project: FreeRTOS Task Synchronization (Queues, Producer-Consumer Pattern & Heartbeat)
- * 
+ *
  * DESCRIPTION:
  * This project demonstrates task synchronization, thread-safety, and inter-task communication
  * inside FreeRTOS. Rather than sharing raw global variables (which causes race conditions
@@ -14,7 +14,7 @@
  * 3. Heartbeat Task (TaskHeartbeat - Priority 1): Blinks the onboard LED (Pin 13) at 5 Hz
  *    independently, showing that system multitasking remains active even when other tasks
  *    are blocked waiting for data.
- * 
+ *
  * FreeRTOS QUEUES & TASK SYNCHRONIZATION:
  * - Thread Safety: A Queue is a kernel object that handles mutual exclusion automatically.
  *   Only one thread can access the queue buffer at a time, preventing race conditions.
@@ -23,7 +23,7 @@
  *   scheduler immediately suspends the task (`Blocked` state) and releases the CPU. When the
  *   producer pushes data via xQueueSend(), the scheduler instantly wakes up the consumer and
  *   moves it back to the `Ready` state.
- * 
+ *
  * WIRING:
  * - Potentiometer (10kΩ) -> Outer pins to 5V and GND, center wiper to Pin A0
  * - Onboard LED (Pin 13) -> Heartbeat visualizer
@@ -43,54 +43,45 @@ QueueHandle_t sensorQueue;
 void setup() {
   Serial.begin(9600);
   while (!Serial) {
-    ; // Wait for USB serial connection
+    ;  // Wait for USB serial connection
   }
 
   Serial.println(F("=================================================="));
   Serial.println(F("Day 82: FreeRTOS Task Synchronization via Queues"));
   Serial.println(F("=================================================="));
-  
+
   // 1. Create a Queue to hold up to 5 integers
-  sensorQueue = xQueueCreate(
-    5,           // Queue length (maximum number of items)
-    sizeof(int)  // Size of each item (2 bytes for int on AVR)
+  sensorQueue = xQueueCreate(5,           // Queue length (maximum number of items)
+                             sizeof(int)  // Size of each item (2 bytes for int on AVR)
   );
 
   if (sensorQueue != NULL) {
     Serial.println(F("[SYSTEM] FreeRTOS Queue created successfully."));
-    
+
     // 2. Create tasks with prioritized scheduling
-    xTaskCreate(
-      TaskSensorRead,
-      "SensorRead",
-      100, // Stack size (words)
-      NULL,
-      2,   // Priority 2 (Higher: critical timing for sampling)
-      NULL
-    );
+    xTaskCreate(TaskSensorRead, "SensorRead",
+                100,  // Stack size (words)
+                NULL,
+                2,  // Priority 2 (Higher: critical timing for sampling)
+                NULL);
 
-    xTaskCreate(
-      TaskSerialDisplay,
-      "SerialDisplay",
-      128, // Stack size (words)
-      NULL,
-      1,   // Priority 1 (Lower: display can be delayed)
-      NULL
-    );
+    xTaskCreate(TaskSerialDisplay, "SerialDisplay",
+                128,  // Stack size (words)
+                NULL,
+                1,  // Priority 1 (Lower: display can be delayed)
+                NULL);
 
-    xTaskCreate(
-      TaskHeartbeat,
-      "Heartbeat",
-      80,  // Stack size (words)
-      NULL,
-      1,   // Priority 1
-      NULL
-    );
+    xTaskCreate(TaskHeartbeat, "Heartbeat",
+                80,  // Stack size (words)
+                NULL,
+                1,  // Priority 1
+                NULL);
 
     Serial.println(F("[SYSTEM] Starting Scheduler. Tasks activated."));
   } else {
     Serial.println(F("[ERROR] Failed to create FreeRTOS Queue!"));
-    while (1); // Freeze
+    while (1)
+      ;  // Freeze
   }
 }
 
@@ -107,7 +98,7 @@ void loop() {
  * Runs at 5 Hz (every 200ms).
  */
 void TaskSensorRead(void *pvParameters) {
-  (void) pvParameters;
+  (void)pvParameters;
 
   for (;;) {
     // Read raw sensor data
@@ -131,7 +122,7 @@ void TaskSensorRead(void *pvParameters) {
  * Blocks indefinitely when the queue is empty.
  */
 void TaskSerialDisplay(void *pvParameters) {
-  (void) pvParameters;
+  (void)pvParameters;
   int receivedValue = 0;
 
   for (;;) {
@@ -141,7 +132,7 @@ void TaskSerialDisplay(void *pvParameters) {
     if (xQueueReceive(sensorQueue, &receivedValue, portMAX_DELAY) == pdPASS) {
       // Print the received value and compute voltage
       float voltage = (receivedValue * 5.0f) / 1023.0f;
-      
+
       Serial.print(F("[CONSUMER] Received ADC: "));
       Serial.print(receivedValue);
       Serial.print(F(" | Calculated Voltage: "));
@@ -156,13 +147,13 @@ void TaskSerialDisplay(void *pvParameters) {
  * Demonstrates independent multitasking.
  */
 void TaskHeartbeat(void *pvParameters) {
-  (void) pvParameters;
+  (void)pvParameters;
   pinMode(13, OUTPUT);
 
   for (;;) {
     digitalWrite(13, HIGH);
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    
+
     digitalWrite(13, LOW);
     vTaskDelay(100 / portTICK_PERIOD_MS);
   }

@@ -1,30 +1,32 @@
 /*
  * 100 Projects with Arduino - Day 86
- * Project: Persistent Sensor Calibration Manager (MPU6050 Boot-trigger Calibration & EEPROM Storage)
- * 
+ * Project: Persistent Sensor Calibration Manager (MPU6050 Boot-trigger Calibration & EEPROM
+ * Storage)
+ *
  * DESCRIPTION:
  * This project implements a production-grade Sensor Calibration Manager for the MPU6050 IMU.
  * To meet industrial robotics and aerospace control standards:
  * 1. Factory/Boot-Trigger Calibration: Instead of forcing a 2-second calibration on every boot
- *    (which requires the robot to be perfectly still every time it powers up), the system loads 
+ *    (which requires the robot to be perfectly still every time it powers up), the system loads
  *    pre-calculated calibration offsets from the EEPROM. If the user holds down a physical button
- *    on Pin 2 during boot, it forces a fresh 500-sample calibration cycle and writes the offsets to EEPROM.
- * 2. 6-Axis Offset Struct: Stores calibration offsets for all 6 degrees of freedom (X, Y, Z accelerometer
- *    offsets and X, Y, Z gyroscope offsets) in a structured EEPROM block.
+ *    on Pin 2 during boot, it forces a fresh 500-sample calibration cycle and writes the offsets to
+ * EEPROM.
+ * 2. 6-Axis Offset Struct: Stores calibration offsets for all 6 degrees of freedom (X, Y, Z
+ * accelerometer offsets and X, Y, Z gyroscope offsets) in a structured EEPROM block.
  * 3. Validation Checksums: Protects calibration data using a magic configuration byte (0xC4) and
  *    a block checksum to prevent reading corrupt or uninitialized memory.
- * 4. Calibration CLI: Allows triggering a calibration routine and listing active parameters via 
+ * 4. Calibration CLI: Allows triggering a calibration routine and listing active parameters via
  *    Serial commands.
- * 
+ *
  * THE PHYSICS of IMU BIAS:
- * Accelerometer and Gyroscope sensors suffer from static bias (offset) caused by silicon manufacturing
- * tolerances, mechanical stress from soldering, and temperature.
+ * Accelerometer and Gyroscope sensors suffer from static bias (offset) caused by silicon
+ * manufacturing tolerances, mechanical stress from soldering, and temperature.
  * - Gyroscope Bias: Outputs a non-zero rotation speed at rest (e.g. +0.2 deg/sec).
  * - Accelerometer Bias: Outputs acceleration offsets (e.g. +0.05g) even when sitting flat.
  * Calibration calculates these offsets by averaging readings at rest, and subtracts them from all
  * future measurements:
  * $$\text{Reading}_{\text{calibrated}} = \text{Reading}_{\text{raw}} - \text{Offset}$$
- * 
+ *
  * WIRING:
  * - MPU6050 Pin -> Arduino Uno Pin
  *   - VCC -> 5V | GND -> GND | SDA -> A4 | SCL -> A5
@@ -32,30 +34,30 @@
  * - Calibrating LED Indicator -> Pin 13 (Built-in LED, stays solid during calibration)
  */
 
-#include <Wire.h>
 #include <EEPROM.h>
+#include <Wire.h>
 
 // --- MPU6050 REGISTERS ---
-const uint8_t MPU6050_ADDR      = 0x68;
-const uint8_t REG_ACCEL_XOUT_H  = 0x3B;
-const uint8_t REG_PWR_MGMT_1    = 0x6B;
-const float ACCEL_SCALE_FACTOR = 16384.0f; // ±2g sensitivity
-const float GYRO_SCALE_FACTOR  = 131.0f;   // ±250°/s sensitivity
+const uint8_t MPU6050_ADDR = 0x68;
+const uint8_t REG_ACCEL_XOUT_H = 0x3B;
+const uint8_t REG_PWR_MGMT_1 = 0x6B;
+const float ACCEL_SCALE_FACTOR = 16384.0f;  // ±2g sensitivity
+const float GYRO_SCALE_FACTOR = 131.0f;     // ±250°/s sensitivity
 
 // --- PIN CONFIGURATION ---
-const int CAL_BUTTON_PIN = 2; // Press during boot to force calibration
-const int CAL_LED_PIN    = 13; // Onboard LED, active during calibration
+const int CAL_BUTTON_PIN = 2;  // Press during boot to force calibration
+const int CAL_LED_PIN = 13;    // Onboard LED, active during calibration
 
 // --- STRUCT FOR PERSISTENT CALIBRATION DATA ---
 struct CalibrationData {
-  byte magicByte;          // 0xC4 = valid calibration data stored
+  byte magicByte;  // 0xC4 = valid calibration data stored
   float accelOffsetX;
   float accelOffsetY;
-  float accelOffsetZ;      // Accel Z should offset to 1.0g at rest
+  float accelOffsetZ;  // Accel Z should offset to 1.0g at rest
   float gyroOffsetX;
   float gyroOffsetY;
   float gyroOffsetZ;
-  uint16_t checksum;       // Data validation checksum
+  uint16_t checksum;  // Data validation checksum
 };
 
 const int EEPROM_CAL_ADDR = 0;
@@ -75,7 +77,8 @@ void setup() {
 
   if (!initMPU6050()) {
     Serial.println(F("[ERROR] Failed to communicate with MPU6050!"));
-    while (1);
+    while (1)
+      ;
   }
 
   // Check if user is pressing the button during boot to force calibration
@@ -144,7 +147,7 @@ uint16_t calculateCalChecksum(const CalibrationData& data) {
   uint16_t sum = 0;
   const byte* bytePtr = (const byte*)&data;
   int size = sizeof(CalibrationData) - sizeof(data.checksum);
-  
+
   for (int i = 0; i < size; i++) {
     sum += bytePtr[i];
   }
@@ -156,12 +159,12 @@ uint16_t calculateCalChecksum(const CalibrationData& data) {
  */
 bool loadCalibration() {
   EEPROM.get(EEPROM_CAL_ADDR, calData);
-  
+
   uint16_t check = calculateCalChecksum(calData);
   if (calData.magicByte == 0xC4 && calData.checksum == check) {
-    return true; // Valid configuration
+    return true;  // Valid configuration
   }
-  
+
   // Set default zero offsets if invalid
   calData.magicByte = 0x00;
   calData.accelOffsetX = 0;
@@ -178,8 +181,8 @@ bool loadCalibration() {
  */
 void runSelfCalibration() {
   Serial.println(F("\n[CALIBRATION] Starting auto-calibration. Keep IMU flat and still!"));
-  digitalWrite(CAL_LED_PIN, HIGH); // Turn on indicator LED
-  delay(1000); // Allow transient vibrations to settle
+  digitalWrite(CAL_LED_PIN, HIGH);  // Turn on indicator LED
+  delay(1000);                      // Allow transient vibrations to settle
 
   long sumAx = 0, sumAy = 0, sumAz = 0;
   long sumGx = 0, sumGy = 0, sumGz = 0;
@@ -195,9 +198,9 @@ void runSelfCalibration() {
       sumGy += gy;
       sumGz += gz;
     } else {
-      i--; // Retry read
+      i--;  // Retry read
     }
-    delay(4); // 250 Hz sample rate
+    delay(4);  // 250 Hz sample rate
   }
 
   // Calculate average offsets
@@ -216,7 +219,7 @@ void runSelfCalibration() {
   calData.checksum = calculateCalChecksum(calData);
   EEPROM.put(EEPROM_CAL_ADDR, calData);
 
-  digitalWrite(CAL_LED_PIN, LOW); // Turn off indicator LED
+  digitalWrite(CAL_LED_PIN, LOW);  // Turn off indicator LED
   Serial.println(F("[CALIBRATION] Auto-calibration completed. Offsets saved to EEPROM."));
 }
 
@@ -225,8 +228,8 @@ void runSelfCalibration() {
  */
 void invalidateEEPROM() {
   Serial.println(F("[SYSTEM] Invalidating calibration data in EEPROM..."));
-  EEPROM.write(EEPROM_CAL_ADDR, 0x00); // Overwrite magic byte
-  loadCalibration(); // Reload default parameters
+  EEPROM.write(EEPROM_CAL_ADDR, 0x00);  // Overwrite magic byte
+  loadCalibration();                    // Reload default parameters
 }
 
 // =============================================================
@@ -234,7 +237,7 @@ void invalidateEEPROM() {
 // =============================================================
 bool initMPU6050() {
   Wire.beginTransmission(MPU6050_ADDR);
-  Wire.write(0x75); // WHO_AM_I
+  Wire.write(0x75);  // WHO_AM_I
   if (Wire.endTransmission() != 0) return false;
   Wire.requestFrom(MPU6050_ADDR, (uint8_t)1);
   if (Wire.available() && Wire.read() != 0x68) return false;
@@ -246,22 +249,21 @@ bool initMPU6050() {
   return (Wire.endTransmission() == 0);
 }
 
-bool readIMU(int16_t& ax, int16_t& ay, int16_t& az, 
-             int16_t& temp, 
-             int16_t& gx, int16_t& gy, int16_t& gz) {
+bool readIMU(int16_t& ax, int16_t& ay, int16_t& az, int16_t& temp, int16_t& gx, int16_t& gy,
+             int16_t& gz) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_ACCEL_XOUT_H);
   if (Wire.endTransmission() != 0) return false;
 
   Wire.requestFrom(MPU6050_ADDR, (uint8_t)14);
   if (Wire.available() >= 14) {
-    ax   = (Wire.read() << 8) | Wire.read();
-    ay   = (Wire.read() << 8) | Wire.read();
-    az   = (Wire.read() << 8) | Wire.read();
+    ax = (Wire.read() << 8) | Wire.read();
+    ay = (Wire.read() << 8) | Wire.read();
+    az = (Wire.read() << 8) | Wire.read();
     temp = (Wire.read() << 8) | Wire.read();
-    gx   = (Wire.read() << 8) | Wire.read();
-    gy   = (Wire.read() << 8) | Wire.read();
-    gz   = (Wire.read() << 8) | Wire.read();
+    gx = (Wire.read() << 8) | Wire.read();
+    gy = (Wire.read() << 8) | Wire.read();
+    gz = (Wire.read() << 8) | Wire.read();
     return true;
   }
   return false;
@@ -280,12 +282,18 @@ void readAndPrintCalibratedData() {
     float gzCal = (gz - calData.gyroOffsetZ) / GYRO_SCALE_FACTOR;
 
     // Print calibrated readings
-    Serial.print(F("ACCEL [g] -> X: "));  Serial.print(axCal, 3);
-    Serial.print(F("\tY: "));             Serial.print(ayCal, 3);
-    Serial.print(F("\tZ: "));             Serial.print(azCal, 3);
-    Serial.print(F(" | GYRO [d/s] -> X: ")); Serial.print(gxCal, 1);
-    Serial.print(F("\tY: "));             Serial.print(gyCal, 1);
-    Serial.print(F("\tZ: "));             Serial.println(gzCal, 1);
+    Serial.print(F("ACCEL [g] -> X: "));
+    Serial.print(axCal, 3);
+    Serial.print(F("\tY: "));
+    Serial.print(ayCal, 3);
+    Serial.print(F("\tZ: "));
+    Serial.print(azCal, 3);
+    Serial.print(F(" | GYRO [d/s] -> X: "));
+    Serial.print(gxCal, 1);
+    Serial.print(F("\tY: "));
+    Serial.print(gyCal, 1);
+    Serial.print(F("\tZ: "));
+    Serial.println(gzCal, 1);
   }
 }
 
@@ -294,14 +302,23 @@ void readAndPrintCalibratedData() {
 // =============================================================
 void printOffsets(const CalibrationData& data) {
   Serial.println(F("----------------- CALIBRATION OFFSETS -----------------"));
-  Serial.print(F(" Status: ")); Serial.println(data.magicByte == 0xC4 ? F("ACTIVE (Offsets Applied)") : F("DEFAULT (No offsets)"));
-  Serial.print(F(" Accel Offsets (LSB) -> X: ")); Serial.print(data.accelOffsetX, 1);
-  Serial.print(F("\tY: ")); Serial.print(data.accelOffsetY, 1);
-  Serial.print(F("\tZ: ")); Serial.println(data.accelOffsetZ, 1);
-  Serial.print(F(" Gyro Offsets (LSB)  -> X: ")); Serial.print(data.gyroOffsetX, 1);
-  Serial.print(F("\tY: ")); Serial.print(data.gyroOffsetY, 1);
-  Serial.print(F("\tZ: ")); Serial.println(data.gyroOffsetZ, 1);
-  Serial.print(F(" Config Checksum     -> 0x")); Serial.println(data.checksum, HEX);
+  Serial.print(F(" Status: "));
+  Serial.println(data.magicByte == 0xC4 ? F("ACTIVE (Offsets Applied)")
+                                        : F("DEFAULT (No offsets)"));
+  Serial.print(F(" Accel Offsets (LSB) -> X: "));
+  Serial.print(data.accelOffsetX, 1);
+  Serial.print(F("\tY: "));
+  Serial.print(data.accelOffsetY, 1);
+  Serial.print(F("\tZ: "));
+  Serial.println(data.accelOffsetZ, 1);
+  Serial.print(F(" Gyro Offsets (LSB)  -> X: "));
+  Serial.print(data.gyroOffsetX, 1);
+  Serial.print(F("\tY: "));
+  Serial.print(data.gyroOffsetY, 1);
+  Serial.print(F("\tZ: "));
+  Serial.println(data.gyroOffsetZ, 1);
+  Serial.print(F(" Config Checksum     -> 0x"));
+  Serial.println(data.checksum, HEX);
   Serial.println(F("-------------------------------------------------------"));
 }
 
