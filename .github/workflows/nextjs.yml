@@ -29,6 +29,8 @@ jobs:
           node-version: "20"
       - name: Install dependencies
         run: npm ci
+      - name: Run Linter
+        run: npm run lint
       - name: Build with Next.js
         run: npm run build
       - name: Upload artifact
