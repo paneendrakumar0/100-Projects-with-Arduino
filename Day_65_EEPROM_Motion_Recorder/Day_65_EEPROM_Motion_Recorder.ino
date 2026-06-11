@@ -40,27 +40,27 @@
  *   STATUS LED (play)    -> D11 (HIGH during playback)
  */
 
-#include <Servo.h>
 #include <EEPROM.h>
+#include <Servo.h>
 
 // --- PINS ---
-const int POT_PIN         = A0;
-const int SERVO_PIN       = 9;
-const int RECORD_BTN_PIN  = 2;
-const int PLAY_BTN_PIN    = 3;
-const int REC_LED_PIN     = 12;
-const int PLAY_LED_PIN    = 11;
+const int POT_PIN = A0;
+const int SERVO_PIN = 9;
+const int RECORD_BTN_PIN = 2;
+const int PLAY_BTN_PIN = 3;
+const int REC_LED_PIN = 12;
+const int PLAY_LED_PIN = 11;
 
 // --- EEPROM LAYOUT CONSTANTS ---
-const int  EEPROM_COUNT_ADDR   = 0;     // Byte 0: frame count
-const int  EEPROM_DATA_ADDR    = 1;     // Bytes 1–253: servo angles
-const int  EEPROM_MAGIC_ADDR   = 254;   // Byte 254: magic sentinel
-const uint8_t EEPROM_MAGIC     = 0xA5;  // Valid recording marker
-const int  MAX_FRAMES          = 253;   // Maximum recordable frames
+const int EEPROM_COUNT_ADDR = 0;    // Byte 0: frame count
+const int EEPROM_DATA_ADDR = 1;     // Bytes 1–253: servo angles
+const int EEPROM_MAGIC_ADDR = 254;  // Byte 254: magic sentinel
+const uint8_t EEPROM_MAGIC = 0xA5;  // Valid recording marker
+const int MAX_FRAMES = 253;         // Maximum recordable frames
 
 // --- TIMING ---
-const unsigned long RECORD_INTERVAL_MS = 50; // 20 Hz sample rate
-const unsigned long DEBOUNCE_MS        = 30;
+const unsigned long RECORD_INTERVAL_MS = 50;  // 20 Hz sample rate
+const unsigned long DEBOUNCE_MS = 30;
 
 // --- SERVO ---
 Servo myServo;
@@ -72,17 +72,18 @@ State state = IDLE;
 void setup() {
   Serial.begin(9600);
   pinMode(RECORD_BTN_PIN, INPUT_PULLUP);
-  pinMode(PLAY_BTN_PIN,   INPUT_PULLUP);
-  pinMode(REC_LED_PIN,    OUTPUT);
-  pinMode(PLAY_LED_PIN,   OUTPUT);
+  pinMode(PLAY_BTN_PIN, INPUT_PULLUP);
+  pinMode(REC_LED_PIN, OUTPUT);
+  pinMode(PLAY_LED_PIN, OUTPUT);
   myServo.attach(SERVO_PIN);
-  myServo.write(90); // Center position
+  myServo.write(90);  // Center position
 
   // Check for existing valid recording
   if (EEPROM.read(EEPROM_MAGIC_ADDR) == EEPROM_MAGIC) {
     uint8_t frames = EEPROM.read(EEPROM_COUNT_ADDR);
     Serial.print(F("[EEPROM] Valid recording found: "));
-    Serial.print(frames); Serial.println(F(" frames."));
+    Serial.print(frames);
+    Serial.println(F(" frames."));
   } else {
     Serial.println(F("[EEPROM] No previous recording. Record a motion first."));
   }
@@ -91,12 +92,12 @@ void setup() {
 }
 
 void loop() {
-  bool recBtn  = (digitalRead(RECORD_BTN_PIN) == LOW);
+  bool recBtn = (digitalRead(RECORD_BTN_PIN) == LOW);
   bool playBtn = (digitalRead(PLAY_BTN_PIN) == LOW);
 
   // --- Read pot and drive servo in real time (unless playing back) ---
   if (state != PLAYING) {
-    int potVal   = analogRead(POT_PIN);
+    int potVal = analogRead(POT_PIN);
     int servoPos = map(potVal, 0, 1023, 0, 180);
     myServo.write(servoPos);
 
@@ -126,7 +127,7 @@ uint8_t frameCount = 0;
 unsigned long lastRecordTime = 0;
 
 void startRecording() {
-  state      = RECORDING;
+  state = RECORDING;
   frameCount = 0;
   lastRecordTime = millis();
   digitalWrite(REC_LED_PIN, HIGH);
@@ -141,7 +142,7 @@ void recordFrame() {
     return;
   }
 
-  int potVal    = analogRead(POT_PIN);
+  int potVal = analogRead(POT_PIN);
   uint8_t angle = (uint8_t)map(potVal, 0, 1023, 0, 180);
 
   EEPROM.write(EEPROM_DATA_ADDR + frameCount, angle);
@@ -150,8 +151,10 @@ void recordFrame() {
 
   // Show progress every 10 frames
   if (frameCount % 10 == 0) {
-    Serial.print(F("[REC] Frame ")); Serial.print(frameCount);
-    Serial.print(F(" | Angle: ")); Serial.println(angle);
+    Serial.print(F("[REC] Frame "));
+    Serial.print(frameCount);
+    Serial.print(F(" | Angle: "));
+    Serial.println(angle);
   }
 }
 
@@ -186,16 +189,20 @@ void playRecording() {
 
   state = PLAYING;
   digitalWrite(PLAY_LED_PIN, HIGH);
-  Serial.print(F("[PLAY] Playing back ")); Serial.print(frames); Serial.println(F(" frames..."));
+  Serial.print(F("[PLAY] Playing back "));
+  Serial.print(frames);
+  Serial.println(F(" frames..."));
 
   for (uint8_t i = 0; i < frames; i++) {
     uint8_t angle = EEPROM.read(EEPROM_DATA_ADDR + i);
     myServo.write(angle);
-    delay(RECORD_INTERVAL_MS); // Replay at the same rate as recording
+    delay(RECORD_INTERVAL_MS);  // Replay at the same rate as recording
 
     if (i % 10 == 0) {
-      Serial.print(F("[PLAY] Frame ")); Serial.print(i);
-      Serial.print(F(" | Angle: ")); Serial.println(angle);
+      Serial.print(F("[PLAY] Frame "));
+      Serial.print(i);
+      Serial.print(F(" | Angle: "));
+      Serial.println(angle);
     }
   }
 

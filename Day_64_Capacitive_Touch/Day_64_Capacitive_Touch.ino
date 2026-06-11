@@ -38,25 +38,25 @@
  */
 
 // --- PINS ---
-const int SEND_PIN  = 4;  // Drives the RC network charge
+const int SEND_PIN = 4;   // Drives the RC network charge
 const int SENSE_PIN = 5;  // Reads the RC network charge state
-const int LED_PIN   = 13; // Touch indicator LED
+const int LED_PIN = 13;   // Touch indicator LED
 
 // --- PARAMETERS ---
-const int  SAMPLES          = 30;    // Number of ADC samples to average per reading
-const long TOUCH_THRESHOLD  = 150;   // Delta above baseline to count as touch
-const int  MAX_CYCLES       = 5000;  // Max loop iterations (timeout guard)
-const int  CALIBRATE_READS  = 50;    // Samples taken during auto-calibration
+const int SAMPLES = 30;            // Number of ADC samples to average per reading
+const long TOUCH_THRESHOLD = 150;  // Delta above baseline to count as touch
+const int MAX_CYCLES = 5000;       // Max loop iterations (timeout guard)
+const int CALIBRATE_READS = 50;    // Samples taken during auto-calibration
 
 // --- GLOBALS ---
-long baseline  = 0;
-bool touched   = false;
+long baseline = 0;
+bool touched = false;
 
 void setup() {
   Serial.begin(9600);
   pinMode(LED_PIN, OUTPUT);
   pinMode(SEND_PIN, OUTPUT);
-  
+
   Serial.println(F("[CapTouch] Calibrating baseline — do NOT touch the sensor..."));
   delay(1000);
 
@@ -68,14 +68,16 @@ void setup() {
   }
   baseline = calSum / CALIBRATE_READS;
 
-  Serial.print(F("[CapTouch] Baseline established: ")); Serial.println(baseline);
-  Serial.print(F("[CapTouch] Touch threshold delta: ")); Serial.println(TOUCH_THRESHOLD);
+  Serial.print(F("[CapTouch] Baseline established: "));
+  Serial.println(baseline);
+  Serial.print(F("[CapTouch] Touch threshold delta: "));
+  Serial.println(TOUCH_THRESHOLD);
   Serial.println(F("[CapTouch] Ready — touch the sensor electrode!"));
 }
 
 void loop() {
   long reading = measureCharge();
-  long delta   = reading - baseline;
+  long delta = reading - baseline;
 
   bool isTouched = (delta > TOUCH_THRESHOLD);
 
@@ -95,9 +97,12 @@ void loop() {
   static unsigned long lastLog = 0;
   if (millis() - lastLog >= 200) {
     lastLog = millis();
-    Serial.print(F("[CapTouch] Reading: ")); Serial.print(reading);
-    Serial.print(F(" | Delta: ")); Serial.print(delta);
-    Serial.print(F(" | Touched: ")); Serial.println(isTouched ? F("YES") : F("NO"));
+    Serial.print(F("[CapTouch] Reading: "));
+    Serial.print(reading);
+    Serial.print(F(" | Delta: "));
+    Serial.print(delta);
+    Serial.print(F(" | Touched: "));
+    Serial.println(isTouched ? F("YES") : F("NO"));
   }
 }
 

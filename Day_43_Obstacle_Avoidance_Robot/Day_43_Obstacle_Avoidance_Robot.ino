@@ -1,28 +1,31 @@
 /*
  * 100 Projects with Arduino - Day 43
  * Project: Autonomous Obstacle-Avoidance Robot (State Machine Navigation)
- * 
+ *
  * DESCRIPTION:
- * This project implements an autonomous mobile robot platform utilizing differential drive kinematics.
- * To achieve professional mechatronic system standards:
- * 1. Non-Blocking Navigation State Machine: Manages driving, stopping, scanning, deciding, and turning
- *    states using a millis() scheduler, ensuring sensor loops and motor triggers execute concurrently.
- * 2. Active Obstacle Scanning: Mounts an HC-SR04 rangefinder on a micro servo. When blocked, the robot
- *    stops, sweeps the servo left and right to record clearances, and selects the direction with more space.
- * 3. Differential Drive Steering: Controls two DC motors via an L298N H-bridge (speed PWM, direction pins).
- * 4. High-Integrity Safe Mode: Automatically falls back to a 180° spin escape sequence if both left and
- *    right paths are blocked.
- * 
+ * This project implements an autonomous mobile robot platform utilizing differential drive
+ * kinematics. To achieve professional mechatronic system standards:
+ * 1. Non-Blocking Navigation State Machine: Manages driving, stopping, scanning, deciding, and
+ * turning states using a millis() scheduler, ensuring sensor loops and motor triggers execute
+ * concurrently.
+ * 2. Active Obstacle Scanning: Mounts an HC-SR04 rangefinder on a micro servo. When blocked, the
+ * robot stops, sweeps the servo left and right to record clearances, and selects the direction with
+ * more space.
+ * 3. Differential Drive Steering: Controls two DC motors via an L298N H-bridge (speed PWM,
+ * direction pins).
+ * 4. High-Integrity Safe Mode: Automatically falls back to a 180° spin escape sequence if both left
+ * and right paths are blocked.
+ *
  * ROBOT NAVIGATION PHYSICS:
- * - Differential Drive Kinematics: Steering is accomplished by varying the relative velocity of the left
- *   and right wheels. 
+ * - Differential Drive Kinematics: Steering is accomplished by varying the relative velocity of the
+ * left and right wheels.
  *   - Forward: Both motors spin forward.
  *   - Turn Left: Left motor spins backward, Right motor spins forward (zero-radius spin-in-place).
  *   - Stop: Both motors de-energized or actively braked.
- * - Sonar Spatial Resolution: Acoustic waves expand in a 15° cone. When scanning left and right, the servo
- *   must hold position for 300ms to allow the acoustic pulses to complete transit and the servo to settle
- *   before triggering range pings.
- * 
+ * - Sonar Spatial Resolution: Acoustic waves expand in a 15° cone. When scanning left and right,
+ * the servo must hold position for 300ms to allow the acoustic pulses to complete transit and the
+ * servo to settle before triggering range pings.
+ *
  * WIRING:
  * - L298N Motor Driver -> Arduino Uno
  *   - ENA (Left Speed PWM)  -> Pin 5
@@ -45,24 +48,24 @@
 #include <Servo.h>
 
 // --- PIN DEFINITIONS ---
-const int L_ENA_PIN = 5; // Left motor PWM speed
-const int L_IN1_PIN = 4; // Left motor direction pin 1
-const int L_IN2_PIN = 3; // Left motor direction pin 2
+const int L_ENA_PIN = 5;  // Left motor PWM speed
+const int L_IN1_PIN = 4;  // Left motor direction pin 1
+const int L_IN2_PIN = 3;  // Left motor direction pin 2
 
-const int R_ENB_PIN = 6; // Right motor PWM speed
-const int R_IN3_PIN = 7; // Right motor direction pin 1
-const int R_IN4_PIN = 8; // Right motor direction pin 2
+const int R_ENB_PIN = 6;  // Right motor PWM speed
+const int R_IN3_PIN = 7;  // Right motor direction pin 1
+const int R_IN4_PIN = 8;  // Right motor direction pin 2
 
-const int SERVO_PIN = 9;   // Sensor sweep servo
-const int TRIG_PIN =  11;  // Sonar Trigger
-const int ECHO_PIN =  12;  // Sonar Echo
+const int SERVO_PIN = 9;  // Sensor sweep servo
+const int TRIG_PIN = 11;  // Sonar Trigger
+const int ECHO_PIN = 12;  // Sonar Echo
 
 // --- SYSTEM CONSTANTS ---
-const float CRITICAL_DIST_CM = 25.0; // Distance threshold to trigger obstacle avoidance
-const int MOTOR_BASE_SPEED = 180;    // Standard PWM cruise speed (0-255)
+const float CRITICAL_DIST_CM = 25.0;  // Distance threshold to trigger obstacle avoidance
+const int MOTOR_BASE_SPEED = 180;     // Standard PWM cruise speed (0-255)
 const int SERVO_CENTER = 90;
-const int SERVO_RIGHT  = 30;
-const int SERVO_LEFT   = 150;
+const int SERVO_RIGHT = 30;
+const int SERVO_LEFT = 150;
 
 // --- NAVIGATION STATE MACHINE ---
 enum DriveState {
@@ -80,8 +83,8 @@ DriveState currentDriveState = STATE_DRIVE_FORWARD;
 // --- TIMING AND CALIBRATION VARIABLES ---
 unsigned long stateTimerStart = 0;
 unsigned long scanTimerStart = 0;
-const unsigned long servoSettleTimeMs = 350; // Delay for servo physical transit
-unsigned long turnDurationMs = 0; // Configured dynamically based on angle
+const unsigned long servoSettleTimeMs = 350;  // Delay for servo physical transit
+unsigned long turnDurationMs = 0;             // Configured dynamically based on angle
 
 float leftDistance = 0.0;
 float rightDistance = 0.0;
@@ -91,7 +94,7 @@ Servo sensorServo;
 
 void setup() {
   Serial.begin(9600);
-  
+
   Serial.println("==================================================");
   Serial.println("Day 43: Autonomous Obstacle-Avoidance Mobile Robot");
   Serial.println("==================================================");
@@ -113,7 +116,7 @@ void setup() {
   sensorServo.write(SERVO_CENTER);
 
   haltMotors();
-  delay(500); // Settle boot states
+  delay(500);  // Settle boot states
 
   Serial.println("[SYSTEM] Calibration complete. Autonomous navigation active.");
 }
@@ -122,18 +125,17 @@ void loop() {
   unsigned long currentMillis = millis();
 
   switch (currentDriveState) {
-
     case STATE_DRIVE_FORWARD: {
       // Cruising Forward
       driveForward(MOTOR_BASE_SPEED);
-      
+
       // Monitor forward distance
       float frontDist = getPingDistance();
       if (frontDist > 0.0 && frontDist < CRITICAL_DIST_CM) {
         Serial.print("[OBSTACLE] Blockage detected at: ");
         Serial.print(frontDist, 1);
         Serial.println(" cm. Halting robot.");
-        
+
         haltMotors();
         currentDriveState = STATE_STOP_ROBOT;
         stateTimerStart = currentMillis;
@@ -158,7 +160,7 @@ void loop() {
         Serial.print("[SCAN] Right clearance: ");
         Serial.print(rightDistance, 1);
         Serial.println(" cm");
-        
+
         sensorServo.write(SERVO_LEFT);
         currentDriveState = STATE_SCAN_LEFT;
         scanTimerStart = currentMillis;
@@ -172,8 +174,8 @@ void loop() {
         Serial.print("[SCAN] Left clearance: ");
         Serial.print(leftDistance, 1);
         Serial.println(" cm");
-        
-        sensorServo.write(SERVO_CENTER); // Recenter sensor
+
+        sensorServo.write(SERVO_CENTER);  // Recenter sensor
         currentDriveState = STATE_EVALUATE_PATH;
         stateTimerStart = currentMillis;
       }
@@ -182,23 +184,20 @@ void loop() {
     case STATE_EVALUATE_PATH:
       // Wait for servo to recenter before moving
       if (currentMillis - stateTimerStart >= servoSettleTimeMs) {
-        
         // Router decisions
         if (leftDistance < CRITICAL_DIST_CM && rightDistance < CRITICAL_DIST_CM) {
           Serial.println("[ROUTE] Dead End. Both paths blocked. Initiating escape spin.");
           currentDriveState = STATE_ESCAPE_SPIN;
           stateTimerStart = currentMillis;
-          turnDurationMs = 1200; // Time needed to rotate 180 degrees in place
+          turnDurationMs = 1200;  // Time needed to rotate 180 degrees in place
           spinLeft(MOTOR_BASE_SPEED);
-        } 
-        else if (leftDistance >= rightDistance) {
+        } else if (leftDistance >= rightDistance) {
           Serial.println("[ROUTE] Steering LEFT (Max clearance path).");
           currentDriveState = STATE_EXECUTE_TURN;
           stateTimerStart = currentMillis;
-          turnDurationMs = 600; // Time needed to rotate ~90 degrees
+          turnDurationMs = 600;  // Time needed to rotate ~90 degrees
           spinLeft(MOTOR_BASE_SPEED);
-        } 
-        else {
+        } else {
           Serial.println("[ROUTE] Steering RIGHT (Max clearance path).");
           currentDriveState = STATE_EXECUTE_TURN;
           stateTimerStart = currentMillis;
@@ -232,7 +231,7 @@ float getPingDistance() {
   // Gated echo search (20ms timeout limit)
   unsigned long duration = pulseIn(ECHO_PIN, HIGH, 20000);
   if (duration == 0) {
-    return 400.0; // Return max range if no echo (path clear)
+    return 400.0;  // Return max range if no echo (path clear)
   }
   return (float)duration * 0.0343 / 2.0;
 }

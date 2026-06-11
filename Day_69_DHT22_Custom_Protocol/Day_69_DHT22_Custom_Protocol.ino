@@ -46,15 +46,15 @@
 const int DHT_PIN = 2;
 
 // --- TIMING CONSTANTS (µs) ---
-const int START_LOW_MS       = 2;    // Host start: pull LOW this many ms
-const int BIT_THRESHOLD_US   = 40;   // HIGH > 40µs → '1', else → '0'
-const int MAX_WAIT_US        = 200;  // Timeout for sensor response
+const int START_LOW_MS = 2;       // Host start: pull LOW this many ms
+const int BIT_THRESHOLD_US = 40;  // HIGH > 40µs → '1', else → '0'
+const int MAX_WAIT_US = 200;      // Timeout for sensor response
 
 void setup() {
   Serial.begin(9600);
   Serial.println(F("[DHT22] Custom Protocol Parser initialized."));
   Serial.println(F("[DHT22] Sampling every 2.5 seconds (sensor min interval)."));
-  delay(2000); // DHT22 requires 2 seconds after power-on before first read
+  delay(2000);  // DHT22 requires 2 seconds after power-on before first read
 }
 
 void loop() {
@@ -65,16 +65,25 @@ void loop() {
     float tempF = tempC * 9.0f / 5.0f + 32.0f;
     float dewPoint = calculateDewPoint(tempC, humidity);
 
-    Serial.print(F("[DHT22] Temp: ")); Serial.print(tempC, 1);
-    Serial.print(F("°C / ")); Serial.print(tempF, 1); Serial.print(F("°F"));
-    Serial.print(F(" | RH: ")); Serial.print(humidity, 1); Serial.print(F("%"));
-    Serial.print(F(" | HeatIdx: ")); Serial.print(heatIndex, 1); Serial.print(F("°C"));
-    Serial.print(F(" | DewPt: ")); Serial.print(dewPoint, 1); Serial.println(F("°C"));
+    Serial.print(F("[DHT22] Temp: "));
+    Serial.print(tempC, 1);
+    Serial.print(F("°C / "));
+    Serial.print(tempF, 1);
+    Serial.print(F("°F"));
+    Serial.print(F(" | RH: "));
+    Serial.print(humidity, 1);
+    Serial.print(F("%"));
+    Serial.print(F(" | HeatIdx: "));
+    Serial.print(heatIndex, 1);
+    Serial.print(F("°C"));
+    Serial.print(F(" | DewPt: "));
+    Serial.print(dewPoint, 1);
+    Serial.println(F("°C"));
   } else {
     Serial.println(F("[DHT22] ERROR: Read failed (timeout or checksum mismatch)"));
   }
 
-  delay(2500); // DHT22 minimum 2.5s between reads
+  delay(2500);  // DHT22 minimum 2.5s between reads
 }
 
 // =============================================================
@@ -86,16 +95,16 @@ bool readDHT22(float& humidity, float& tempC, float& heatIndex) {
   // --- STEP 1: HOST START SIGNAL ---
   pinMode(DHT_PIN, OUTPUT);
   digitalWrite(DHT_PIN, LOW);
-  delay(START_LOW_MS);       // Pull LOW for 2 ms
+  delay(START_LOW_MS);  // Pull LOW for 2 ms
   digitalWrite(DHT_PIN, HIGH);
-  delayMicroseconds(30);     // Wait 20-40 µs
-  pinMode(DHT_PIN, INPUT);   // Release bus
+  delayMicroseconds(30);    // Wait 20-40 µs
+  pinMode(DHT_PIN, INPUT);  // Release bus
 
   // --- STEP 2: WAIT FOR SENSOR RESPONSE ---
   // Sensor should pull LOW for 80 µs
   unsigned long t = micros();
   while (digitalRead(DHT_PIN) == HIGH) {
-    if (micros() - t > MAX_WAIT_US) return false; // Timeout — no sensor
+    if (micros() - t > MAX_WAIT_US) return false;  // Timeout — no sensor
   }
   // Sensor pulls LOW (80 µs)
   t = micros();
@@ -138,18 +147,14 @@ bool readDHT22(float& humidity, float& tempC, float& heatIndex) {
   // Temperature: bit15 of byte2 is sign bit
   uint16_t rawTemp = ((uint16_t)(data[2] & 0x7F) << 8) | data[3];
   tempC = (float)rawTemp / 10.0f;
-  if (data[2] & 0x80) tempC = -tempC; // Negative temperature
+  if (data[2] & 0x80) tempC = -tempC;  // Negative temperature
 
   // --- STEP 6: HEAT INDEX (simplified Steadman equation) ---
-  heatIndex = -8.78469475556f
-    + 1.61139411f    * tempC
-    + 2.338548839f   * humidity
-    - 0.14611605f    * tempC * humidity
-    - 0.012308094f   * tempC * tempC
-    - 0.016424828f   * humidity * humidity
-    + 0.002211732f   * tempC * tempC * humidity
-    + 0.00072546f    * tempC * humidity * humidity
-    - 0.000003582f   * tempC * tempC * humidity * humidity;
+  heatIndex = -8.78469475556f + 1.61139411f * tempC + 2.338548839f * humidity -
+              0.14611605f * tempC * humidity - 0.012308094f * tempC * tempC -
+              0.016424828f * humidity * humidity + 0.002211732f * tempC * tempC * humidity +
+              0.00072546f * tempC * humidity * humidity -
+              0.000003582f * tempC * tempC * humidity * humidity;
 
   return true;
 }

@@ -1,14 +1,14 @@
 /*
  * 100 Projects with Arduino - Day 80
  * Project: I2C Multi-Node Master/Slave Communication (Wire Callback Architecture)
- * 
+ *
  * DESCRIPTION:
- * This project demonstrates how to build an inter-microcontroller network using the I2C (Inter-Integrated
- * Circuit) bus. To maximize educational clarity and follow clean engineering practices, this project
- * is contained in a single `.ino` file. By changing the `#define I2C_MODE` compiler switch at the top,
- * the user can flash this codebase onto two separate Arduino boards to make one the **Master** node
- * and the other the **Slave** node.
- * 
+ * This project demonstrates how to build an inter-microcontroller network using the I2C
+ * (Inter-Integrated Circuit) bus. To maximize educational clarity and follow clean engineering
+ * practices, this project is contained in a single `.ino` file. By changing the `#define I2C_MODE`
+ * compiler switch at the top, the user can flash this codebase onto two separate Arduino boards to
+ * make one the **Master** node and the other the **Slave** node.
+ *
  * NODE BEHAVIORS:
  * 1. MASTER NODE (Mode = 1):
  *    - Periodically (every 1 second, non-blocking) requests a 2-byte sensor telemetry packet from
@@ -18,9 +18,10 @@
  * 2. SLAVE NODE (Mode = 0, address 0x08):
  *    - Uses interrupt-driven callbacks (`Wire.onRequest` and `Wire.onReceive`) to process Master
  *      interactions.
- *    - onRequest(): Reads its analog input A0 and writes the 2-byte data package back to the Master.
+ *    - onRequest(): Reads its analog input A0 and writes the 2-byte data package back to the
+ * Master.
  *    - onReceive(): Parses the incoming command package to toggle its local onboard LED (Pin 13).
- * 
+ *
  * I2C NETWORKING THEORY:
  * - Two-Wire Interface: Uses two bidirectional open-drain lines pulled HIGH by resistors:
  *   - SDA (Serial Data Line)
@@ -30,7 +31,7 @@
  * - Hardware Interrupts: Slaves do not poll. When an I2C start condition matching their address
  *   is detected, the hardware handles the clock sync and triggers the interrupt callbacks,
  *   allowing the main loop to execute other tasks concurrently.
- * 
+ *
  * WIRING:
  * - Connect two Arduinos (Master and Slave) pin-to-pin:
  *   - Master GND <-> Slave GND (CRITICAL: I2C requires a shared ground reference!)
@@ -52,12 +53,12 @@ const uint8_t SLAVE_I2C_ADDR = 0x08;
 
 // --- COMMON PIN DEFINITIONS ---
 const int ONBOARD_LED = 13;
-const int SENSOR_PIN  = A0; // Potentiometer or analog sensor input on Slave
+const int SENSOR_PIN = A0;  // Potentiometer or analog sensor input on Slave
 
 // --- MASTER STATE & TIMING VARIABLES ---
 #if (I2C_MODE == 1)
 unsigned long lastRequestTime = 0;
-const unsigned long REQUEST_INTERVAL_MS = 1000; // Request data every 1 second
+const unsigned long REQUEST_INTERVAL_MS = 1000;  // Request data every 1 second
 bool masterLedState = false;
 #endif
 
@@ -73,90 +74,90 @@ void setup() {
   digitalWrite(ONBOARD_LED, LOW);
 
   Serial.println(F("=================================================="));
-  #if (I2C_MODE == 1)
-    Serial.println(F("Day 80: I2C Master Controller Node"));
-    Wire.begin(); // Join I2C Bus as Master (no address needed)
-    Serial.println(F("[SYSTEM] Bus Initialized. Operating as Master."));
-  #else
-    Serial.println(F("Day 80: I2C Slave Peripheral Node"));
-    Wire.begin(SLAVE_I2C_ADDR); // Join I2C Bus as Slave with address 0x08
-    
-    // Register hardware interrupt callbacks
-    Wire.onRequest(handleMasterRequest);
-    Wire.onReceive(handleMasterReceive);
-    
-    Serial.print(F("[SYSTEM] Slave initialized at Address: 0x"));
-    Serial.println(SLAVE_I2C_ADDR, HEX);
-    Serial.println(F("[SYSTEM] Waiting for Master transactions..."));
-  #endif
+#if (I2C_MODE == 1)
+  Serial.println(F("Day 80: I2C Master Controller Node"));
+  Wire.begin();  // Join I2C Bus as Master (no address needed)
+  Serial.println(F("[SYSTEM] Bus Initialized. Operating as Master."));
+#else
+  Serial.println(F("Day 80: I2C Slave Peripheral Node"));
+  Wire.begin(SLAVE_I2C_ADDR);  // Join I2C Bus as Slave with address 0x08
+
+  // Register hardware interrupt callbacks
+  Wire.onRequest(handleMasterRequest);
+  Wire.onReceive(handleMasterReceive);
+
+  Serial.print(F("[SYSTEM] Slave initialized at Address: 0x"));
+  Serial.println(SLAVE_I2C_ADDR, HEX);
+  Serial.println(F("[SYSTEM] Waiting for Master transactions..."));
+#endif
   Serial.println(F("=================================================="));
 }
 
 void loop() {
-  #if (I2C_MODE == 1)
-    // =============================================================
-    //  MASTER OPERATION LOOP
-    // =============================================================
-    unsigned long currentMillis = millis();
+#if (I2C_MODE == 1)
+  // =============================================================
+  //  MASTER OPERATION LOOP
+  // =============================================================
+  unsigned long currentMillis = millis();
 
-    // Periodic non-blocking loop to poll Slave telemetry and send commands
-    if (currentMillis - lastRequestTime >= REQUEST_INTERVAL_MS) {
-      lastRequestTime = currentMillis;
+  // Periodic non-blocking loop to poll Slave telemetry and send commands
+  if (currentMillis - lastRequestTime >= REQUEST_INTERVAL_MS) {
+    lastRequestTime = currentMillis;
 
-      // 1. Request Telemetry from Slave (2 bytes)
-      Serial.print(F("[MASTER] Requesting 2 bytes from Slave 0x"));
-      Serial.print(SLAVE_I2C_ADDR, HEX);
-      Serial.println(F("..."));
+    // 1. Request Telemetry from Slave (2 bytes)
+    Serial.print(F("[MASTER] Requesting 2 bytes from Slave 0x"));
+    Serial.print(SLAVE_I2C_ADDR, HEX);
+    Serial.println(F("..."));
 
-      Wire.requestFrom(SLAVE_I2C_ADDR, (uint8_t)2);
-      
-      if (Wire.available() >= 2) {
-        // Reassemble 16-bit integer from high/low bytes
-        byte high = Wire.read();
-        byte low  = Wire.read();
-        uint16_t receivedValue = (high << 8) | low;
+    Wire.requestFrom(SLAVE_I2C_ADDR, (uint8_t)2);
 
-        Serial.print(F("[MASTER] Received Slave Sensor: "));
-        Serial.println(receivedValue);
-      } else {
-        Serial.println(F("[WARNING] Slave failed to respond / Bus timeout."));
-      }
+    if (Wire.available() >= 2) {
+      // Reassemble 16-bit integer from high/low bytes
+      byte high = Wire.read();
+      byte low = Wire.read();
+      uint16_t receivedValue = (high << 8) | low;
 
-      // 2. Transmit LED toggle command to Slave
-      masterLedState = !masterLedState;
-      Serial.print(F("[MASTER] Transmitting LED state: "));
-      Serial.println(masterLedState ? F("HIGH") : F("LOW"));
-
-      Wire.beginTransmission(SLAVE_I2C_ADDR);
-      Wire.write(0x01);            // Command byte: 0x01 = LED Command
-      Wire.write(masterLedState);  // Parameter byte: 1 or 0
-      byte status = Wire.endTransmission();
-
-      if (status != 0) {
-        Serial.print(F("[ERROR] Transmission failed! Error code: "));
-        Serial.println(status);
-      }
-      Serial.println();
+      Serial.print(F("[MASTER] Received Slave Sensor: "));
+      Serial.println(receivedValue);
+    } else {
+      Serial.println(F("[WARNING] Slave failed to respond / Bus timeout."));
     }
 
-  #else
-    // =============================================================
-    //  SLAVE OPERATION LOOP
-    // =============================================================
-    // Read the local analog sensor continuously in the background
-    // (This value will be served instantly whenonRequest interrupts trigger)
-    uint16_t currentReading = analogRead(SENSOR_PIN);
-    
-    // Disable interrupts briefly to perform an atomic write to the volatile variable
-    noInterrupts();
-    slaveSensorValue = currentReading;
-    interrupts();
+    // 2. Transmit LED toggle command to Slave
+    masterLedState = !masterLedState;
+    Serial.print(F("[MASTER] Transmitting LED state: "));
+    Serial.println(masterLedState ? F("HIGH") : F("LOW"));
 
-    // Toggle local LED based on received command param
-    digitalWrite(ONBOARD_LED, slaveLedCommand ? HIGH : LOW);
-    
-    delay(50); // Small limit to prevent ADC thrashing
-  #endif
+    Wire.beginTransmission(SLAVE_I2C_ADDR);
+    Wire.write(0x01);            // Command byte: 0x01 = LED Command
+    Wire.write(masterLedState);  // Parameter byte: 1 or 0
+    byte status = Wire.endTransmission();
+
+    if (status != 0) {
+      Serial.print(F("[ERROR] Transmission failed! Error code: "));
+      Serial.println(status);
+    }
+    Serial.println();
+  }
+
+#else
+  // =============================================================
+  //  SLAVE OPERATION LOOP
+  // =============================================================
+  // Read the local analog sensor continuously in the background
+  // (This value will be served instantly whenonRequest interrupts trigger)
+  uint16_t currentReading = analogRead(SENSOR_PIN);
+
+  // Disable interrupts briefly to perform an atomic write to the volatile variable
+  noInterrupts();
+  slaveSensorValue = currentReading;
+  interrupts();
+
+  // Toggle local LED based on received command param
+  digitalWrite(ONBOARD_LED, slaveLedCommand ? HIGH : LOW);
+
+  delay(50);  // Small limit to prevent ADC thrashing
+#endif
 }
 
 // =============================================================
@@ -170,8 +171,8 @@ void loop() {
 void handleMasterRequest() {
   // Send the 2-byte sensor value package (high byte first)
   byte high = (byte)(slaveSensorValue >> 8);
-  byte low  = (byte)(slaveSensorValue & 0xFF);
-  
+  byte low = (byte)(slaveSensorValue & 0xFF);
+
   Wire.write(high);
   Wire.write(low);
 }

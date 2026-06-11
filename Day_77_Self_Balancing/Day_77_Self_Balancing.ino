@@ -1,11 +1,11 @@
 /*
  * 100 Projects with Arduino - Day 77
  * Project: Self-Balancing Robot Controller (Stabilization Loop & PID Tuning Shell)
- * 
+ *
  * DESCRIPTION:
  * This project implements the complete control loop for a two-wheeled Self-Balancing Robot.
  * To align with professional robotic stability systems:
- * 1. Complementary Filter Pitch Estimator: Reads MPU6050 direct I2C registers to calculate 
+ * 1. Complementary Filter Pitch Estimator: Reads MPU6050 direct I2C registers to calculate
  *    the robot's tilt angle relative to gravity.
  * 2. High-Speed PID Controller: Computes the corrective motor control effort at a precise
  *    100 Hz (10ms) frequency to drive the robot towards its upright setpoint ($0^\circ$).
@@ -15,14 +15,14 @@
  *    PWM speed signals and direction commands for left/right wheel motors.
  * 5. Interactive Tuning Shell: Allows real-time modification of Kp, Ki, and Kd coefficients,
  *    and tilt angle simulation via Serial Commands.
- * 
+ *
  * PID CONTROL MATHEMATICS:
  * - Error: $e(t) = \theta_{target} - \theta_{current}$
  * - Proportional: $P = K_p \cdot e(t)$ (immediate response to tilt)
  * - Integral: $I = K_i \cdot \int e(t) dt$ (corrects steady-state offset/friction)
  * - Derivative: $D = K_d \cdot \frac{de(t)}{dt}$ (damps oscillations and predicts overshoot)
  * - Control Output: $u(t) = P + I + D$
- * 
+ *
  * WIRING:
  * - MPU6050 Pin -> Arduino Uno Pin
  *   - VCC -> 5V | GND -> GND | SDA -> A4 | SCL -> A5
@@ -37,44 +37,44 @@
 #include <Wire.h>
 
 // --- MPU6050 I2C CONFIG ---
-const uint8_t MPU6050_ADDR      = 0x68;
-const uint8_t REG_ACCEL_XOUT_H  = 0x3B;
-const uint8_t REG_PWR_MGMT_1    = 0x6B;
+const uint8_t MPU6050_ADDR = 0x68;
+const uint8_t REG_ACCEL_XOUT_H = 0x3B;
+const uint8_t REG_PWR_MGMT_1 = 0x6B;
 const float ACCEL_SCALE_FACTOR = 16384.0f;
-const float GYRO_SCALE_FACTOR  = 131.0f;
-const float RAD_TO_DEG         = 180.0f / PI;
+const float GYRO_SCALE_FACTOR = 131.0f;
+const float RAD_TO_DEG = 180.0f / PI;
 
 // --- MOTOR CONTROLLER PIN DEFINITIONS ---
-const int ENA = 5; // Left Motor Enable (PWM)
-const int IN1 = 3; // Left Motor Direction 1
-const int IN2 = 4; // Left Motor Direction 2
-const int IN3 = 7; // Right Motor Direction 1
-const int IN4 = 8; // Right Motor Direction 2
-const int ENB = 6; // Right Motor Enable (PWM)
+const int ENA = 5;  // Left Motor Enable (PWM)
+const int IN1 = 3;  // Left Motor Direction 1
+const int IN2 = 4;  // Left Motor Direction 2
+const int IN3 = 7;  // Right Motor Direction 1
+const int IN4 = 8;  // Right Motor Direction 2
+const int ENB = 6;  // Right Motor Enable (PWM)
 
 // --- CONTROL LOOP CONFIGURATION ---
 unsigned long lastLoopTime = 0;
-const unsigned long LOOP_PERIOD_US = 10000; // 10ms = 100 Hz sample rate
+const unsigned long LOOP_PERIOD_US = 10000;  // 10ms = 100 Hz sample rate
 
 // --- SENSOR STATE & FILTER CONFIG ---
 float gyroOffsetX = 0, gyroOffsetY = 0, gyroOffsetZ = 0;
-float robotPitch = 0.0f; // Fused tilt angle (degrees)
-const float ALPHA = 0.96f; // Complementary Filter Weight
+float robotPitch = 0.0f;    // Fused tilt angle (degrees)
+const float ALPHA = 0.96f;  // Complementary Filter Weight
 
 // --- PID PARAMETERS ---
-float Kp = 22.5f;   // Proportional Gain
-float Ki = 1.8f;    // Integral Gain
-float Kd = 1.2f;    // Derivative Gain
+float Kp = 22.5f;  // Proportional Gain
+float Ki = 1.8f;   // Integral Gain
+float Kd = 1.2f;   // Derivative Gain
 
-float targetAngle = 0.0f;  // Upright setpoint (degrees)
-float errorIntegral = 0.0f;// Accumulator for Ki
-float lastError = 0.0f;    // Memory for Kd
-const float MAX_INTEGRAL = 150.0f; // Anti-windup limit
+float targetAngle = 0.0f;           // Upright setpoint (degrees)
+float errorIntegral = 0.0f;         // Accumulator for Ki
+float lastError = 0.0f;             // Memory for Kd
+const float MAX_INTEGRAL = 150.0f;  // Anti-windup limit
 
 // Simulation & Safety parameters
 bool simulationMode = false;
 float simPitch = 0.0f;
-bool motorsEnabled = false; // Safety lock, turn on via Serial
+bool motorsEnabled = false;  // Safety lock, turn on via Serial
 
 void setup() {
   Serial.begin(9600);
@@ -122,7 +122,7 @@ void loop() {
         float ax = axRaw / ACCEL_SCALE_FACTOR;
         float ay = ayRaw / ACCEL_SCALE_FACTOR;
         float az = azRaw / ACCEL_SCALE_FACTOR;
-        float gy = (gyRaw - gyroOffsetY) / GYRO_SCALE_FACTOR; // Y-axis is tilt velocity
+        float gy = (gyRaw - gyroOffsetY) / GYRO_SCALE_FACTOR;  // Y-axis is tilt velocity
 
         // Trigonometric tilt angle from accelerometer
         float accPitch = atan2(-ax, sqrt(ay * ay + az * az)) * RAD_TO_DEG;
@@ -244,21 +244,20 @@ void calibrateGyro() {
   gyroOffsetY = (float)sumY / samples;
 }
 
-bool readIMU(int16_t& ax, int16_t& ay, int16_t& az, 
-             int16_t& temp, 
-             int16_t& gx, int16_t& gy, int16_t& gz) {
+bool readIMU(int16_t& ax, int16_t& ay, int16_t& az, int16_t& temp, int16_t& gx, int16_t& gy,
+             int16_t& gz) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_ACCEL_XOUT_H);
   if (Wire.endTransmission() != 0) return false;
   Wire.requestFrom(MPU6050_ADDR, (uint8_t)14);
   if (Wire.available() >= 14) {
-    ax   = (Wire.read() << 8) | Wire.read();
-    ay   = (Wire.read() << 8) | Wire.read();
-    az   = (Wire.read() << 8) | Wire.read();
+    ax = (Wire.read() << 8) | Wire.read();
+    ay = (Wire.read() << 8) | Wire.read();
+    az = (Wire.read() << 8) | Wire.read();
     temp = (Wire.read() << 8) | Wire.read();
-    gx   = (Wire.read() << 8) | Wire.read();
-    gy   = (Wire.read() << 8) | Wire.read();
-    gz   = (Wire.read() << 8) | Wire.read();
+    gx = (Wire.read() << 8) | Wire.read();
+    gy = (Wire.read() << 8) | Wire.read();
+    gz = (Wire.read() << 8) | Wire.read();
     return true;
   }
   return false;
@@ -279,24 +278,28 @@ void pollTuningShell() {
       case 'p':
       case 'P':
         Kp = val;
-        Serial.print(F("[PID] Kp set to: ")); Serial.println(Kp, 3);
+        Serial.print(F("[PID] Kp set to: "));
+        Serial.println(Kp, 3);
         break;
       case 'i':
       case 'I':
         Ki = val;
-        errorIntegral = 0; // Reset integrator on gain change
-        Serial.print(F("[PID] Ki set to: ")); Serial.println(Ki, 3);
+        errorIntegral = 0;  // Reset integrator on gain change
+        Serial.print(F("[PID] Ki set to: "));
+        Serial.println(Ki, 3);
         break;
       case 'd':
       case 'D':
         Kd = val;
-        Serial.print(F("[PID] Kd set to: ")); Serial.println(Kd, 3);
+        Serial.print(F("[PID] Kd set to: "));
+        Serial.println(Kd, 3);
         break;
       case 'e':
       case 'E':
         motorsEnabled = (val > 0.0f);
         if (!motorsEnabled) stopMotors();
-        Serial.print(F("[MOTOR] Enabled State: ")); Serial.println(motorsEnabled ? F("ON") : F("OFF"));
+        Serial.print(F("[MOTOR] Enabled State: "));
+        Serial.println(motorsEnabled ? F("ON") : F("OFF"));
         break;
       case 's':
       case 'S':
@@ -305,12 +308,15 @@ void pollTuningShell() {
           simulationMode = true;
           Serial.println(F("[SYSTEM] Simulation Mode turned ON."));
         }
-        Serial.print(F("[SIMULATION] Injected Pitch Angle: ")); Serial.print(simPitch, 2); Serial.println(F(" deg"));
+        Serial.print(F("[SIMULATION] Injected Pitch Angle: "));
+        Serial.print(simPitch, 2);
+        Serial.println(F(" deg"));
         break;
       case 'm':
       case 'M':
         simulationMode = !simulationMode;
-        Serial.print(F("[SYSTEM] Simulation Mode: ")); Serial.println(simulationMode ? F("ON") : F("OFF"));
+        Serial.print(F("[SYSTEM] Simulation Mode: "));
+        Serial.println(simulationMode ? F("ON") : F("OFF"));
         break;
       case 'r':
       case 'R':
@@ -337,9 +343,12 @@ void printTelemetry(float effort) {
   Serial.print(F(" | Pitch: "));
   Serial.print(robotPitch, 2);
   Serial.print(F(" deg | PID: ["));
-  Serial.print(Kp, 1); Serial.print(F(", "));
-  Serial.print(Ki, 1); Serial.print(F(", "));
-  Serial.print(Kd, 1); Serial.print(F("] | Effort: "));
+  Serial.print(Kp, 1);
+  Serial.print(F(", "));
+  Serial.print(Ki, 1);
+  Serial.print(F(", "));
+  Serial.print(Kd, 1);
+  Serial.print(F("] | Effort: "));
   Serial.println(effort, 1);
 }
 

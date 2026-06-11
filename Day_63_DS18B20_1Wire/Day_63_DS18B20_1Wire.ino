@@ -55,8 +55,10 @@ void loop() {
   } else {
     float tempF = tempC * 9.0f / 5.0f + 32.0f;
     Serial.print(F("[Temp] "));
-    Serial.print(tempC, 4); Serial.print(F(" °C  |  "));
-    Serial.print(tempF, 2); Serial.println(F(" °F"));
+    Serial.print(tempC, 4);
+    Serial.print(F(" °C  |  "));
+    Serial.print(tempF, 2);
+    Serial.println(F(" °F"));
   }
 
   delay(1000);
@@ -74,7 +76,7 @@ void ow_low() {
 
 // Release bus (let pull-up pull HIGH)
 void ow_release() {
-  pinMode(OW_PIN, INPUT); // Hi-Z, external 4.7k pulls HIGH
+  pinMode(OW_PIN, INPUT);  // Hi-Z, external 4.7k pulls HIGH
 }
 
 // Read current bus state
@@ -85,11 +87,11 @@ uint8_t ow_read_bit_raw() {
 // Reset pulse — returns true if presence detected
 bool ow_reset() {
   ow_low();
-  delayMicroseconds(480);   // Hold LOW >= 480 us
+  delayMicroseconds(480);  // Hold LOW >= 480 us
   ow_release();
-  delayMicroseconds(70);    // Wait for presence pulse start (60 us typical)
-  bool presence = (ow_read_bit_raw() == LOW); // DS18B20 pulls LOW
-  delayMicroseconds(410);   // Complete reset window (total >= 480 us from release)
+  delayMicroseconds(70);                       // Wait for presence pulse start (60 us typical)
+  bool presence = (ow_read_bit_raw() == LOW);  // DS18B20 pulls LOW
+  delayMicroseconds(410);  // Complete reset window (total >= 480 us from release)
   return presence;
 }
 
@@ -97,7 +99,7 @@ bool ow_reset() {
 void ow_write_bit(uint8_t bit) {
   ow_low();
   if (bit) {
-    delayMicroseconds(6);   // Short pull for '1': < 15 us
+    delayMicroseconds(6);  // Short pull for '1': < 15 us
     ow_release();
     delayMicroseconds(64);  // Remainder of 70 us slot
   } else {
@@ -110,11 +112,11 @@ void ow_write_bit(uint8_t bit) {
 // Read a single bit
 uint8_t ow_read_bit() {
   ow_low();
-  delayMicroseconds(6);     // Initiate read slot
+  delayMicroseconds(6);  // Initiate read slot
   ow_release();
-  delayMicroseconds(9);     // Wait to sample (must be within 15 us of start)
+  delayMicroseconds(9);  // Wait to sample (must be within 15 us of start)
   uint8_t bit = ow_read_bit_raw();
-  delayMicroseconds(55);    // Complete 70 us slot
+  delayMicroseconds(55);  // Complete 70 us slot
   return bit;
 }
 
@@ -145,7 +147,7 @@ uint8_t crc8(uint8_t* buf, uint8_t len) {
     for (uint8_t j = 0; j < 8; j++) {
       uint8_t mix = (crc ^ byte) & 0x01;
       crc >>= 1;
-      if (mix) crc ^= 0x8C; // Reflected 0x31
+      if (mix) crc ^= 0x8C;  // Reflected 0x31
       byte >>= 1;
     }
   }
@@ -171,7 +173,7 @@ float readDS18B20() {
   // Step 5: Reset again, skip ROM, read scratchpad
   if (!ow_reset()) return -999.0f;
   ow_write_byte(0xCC);
-  ow_write_byte(0xBE); // Read Scratchpad command
+  ow_write_byte(0xBE);  // Read Scratchpad command
 
   // Step 6: Read 9 bytes of scratchpad
   uint8_t scratchpad[9];
@@ -181,10 +183,10 @@ float readDS18B20() {
 
   // Step 7: Verify CRC
   if (crc8(scratchpad, 8) != scratchpad[8]) {
-    return -999.0f; // CRC mismatch
+    return -999.0f;  // CRC mismatch
   }
 
   // Step 8: Convert raw to temperature
   int16_t raw = (int16_t)((scratchpad[1] << 8) | scratchpad[0]);
-  return (float)raw / 16.0f; // 12-bit resolution: 0.0625°C per LSB
+  return (float)raw / 16.0f;  // 12-bit resolution: 0.0625°C per LSB
 }

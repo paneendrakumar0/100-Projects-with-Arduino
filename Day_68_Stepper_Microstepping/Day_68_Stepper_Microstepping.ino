@@ -54,49 +54,49 @@
  */
 
 // --- PINS ---
-const int STEP_PIN   = 3;
-const int DIR_PIN    = 4;
-const int MS1_PIN    = 5;
-const int MS2_PIN    = 6;
-const int MS3_PIN    = 7;
+const int STEP_PIN = 3;
+const int DIR_PIN = 4;
+const int MS1_PIN = 5;
+const int MS2_PIN = 6;
+const int MS3_PIN = 7;
 const int ENABLE_PIN = 8;
-const int SPEED_POT  = A0;
-const int MODE_BTN   = 2;
+const int SPEED_POT = A0;
+const int MODE_BTN = 2;
 
 // --- MICROSTEPPING MODE TABLE ---
 struct MicrostepMode {
   const char* name;
-  int         stepsPerRev;    // For 1.8° NEMA 17 motor
-  uint8_t     ms1, ms2, ms3;
+  int stepsPerRev;  // For 1.8° NEMA 17 motor
+  uint8_t ms1, ms2, ms3;
 };
 
 const MicrostepMode MODES[] = {
-  { "Full Step  (200/rev)", 200,  LOW,  LOW,  LOW  },
-  { "Half Step  (400/rev)", 400,  HIGH, LOW,  LOW  },
-  { "1/4 Step   (800/rev)", 800,  LOW,  HIGH, LOW  },
-  { "1/8 Step  (1600/rev)", 1600, HIGH, HIGH, LOW  },
-  { "1/16 Step (3200/rev)", 3200, HIGH, HIGH, HIGH },
+    {"Full Step  (200/rev)", 200, LOW, LOW, LOW},
+    {"Half Step  (400/rev)", 400, HIGH, LOW, LOW},
+    {"1/4 Step   (800/rev)", 800, LOW, HIGH, LOW},
+    {"1/8 Step  (1600/rev)", 1600, HIGH, HIGH, LOW},
+    {"1/16 Step (3200/rev)", 3200, HIGH, HIGH, HIGH},
 };
 const int NUM_MODES = 5;
 int currentMode = 0;
 
 // --- TRAPEZOIDAL PROFILE CONSTANTS ---
-const unsigned long START_DELAY_US = 4000; // Initial step period (slow start)
-const unsigned long MIN_DELAY_US   = 400;  // Maximum speed step period
-const unsigned long ACCEL_STEPS    = 100;  // Steps over which to accelerate
+const unsigned long START_DELAY_US = 4000;  // Initial step period (slow start)
+const unsigned long MIN_DELAY_US = 400;     // Maximum speed step period
+const unsigned long ACCEL_STEPS = 100;      // Steps over which to accelerate
 
 // --- STATE ---
-bool direction = true; // true = CW, false = CCW
+bool direction = true;  // true = CW, false = CCW
 
 void setup() {
   Serial.begin(9600);
-  pinMode(STEP_PIN,   OUTPUT);
-  pinMode(DIR_PIN,    OUTPUT);
-  pinMode(MS1_PIN,    OUTPUT);
-  pinMode(MS2_PIN,    OUTPUT);
-  pinMode(MS3_PIN,    OUTPUT);
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(MS1_PIN, OUTPUT);
+  pinMode(MS2_PIN, OUTPUT);
+  pinMode(MS3_PIN, OUTPUT);
   pinMode(ENABLE_PIN, OUTPUT);
-  pinMode(MODE_BTN,   INPUT_PULLUP);
+  pinMode(MODE_BTN, INPUT_PULLUP);
 
   // Disable motor initially (de-energize coils)
   digitalWrite(ENABLE_PIN, HIGH);
@@ -116,7 +116,7 @@ void loop() {
     currentMode = (currentMode + 1) % NUM_MODES;
     applyMode(currentMode);
     printModeInfo();
-    delay(50); // Debounce
+    delay(50);  // Debounce
   }
   lastBtn = curBtn;
 
@@ -142,7 +142,7 @@ void loop() {
 // --- ROTATE N STEPS WITH TRAPEZOIDAL VELOCITY PROFILE ---
 void runRevolution(int steps, unsigned long minDelayUs, bool cw) {
   digitalWrite(DIR_PIN, cw ? HIGH : LOW);
-  delayMicroseconds(5); // DIR setup time for A4988
+  delayMicroseconds(5);  // DIR setup time for A4988
 
   unsigned long accelSteps = min((long)ACCEL_STEPS, (long)steps / 3);
 

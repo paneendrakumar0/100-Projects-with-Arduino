@@ -1,7 +1,7 @@
 /*
  * 100 Projects with Arduino - Day 70
  * Project: RFID Access Control Logging System
- * 
+ *
  * DESCRIPTION:
  * This project implements a secure, standalone Access Control System using the MFRC522
  * RFID reader (SPI) and a DS3231 Real-Time Clock (I2C), backed by the Arduino's built-in
@@ -15,7 +15,7 @@
  *    Red status LEDs (blinks in program mode, shows access granted/denied animations).
  * 5. Interactive Serial Shell & Simulator: Supports commands to dump logs, list cards, clear
  *    memory, and simulate card scans via hex entry (perfect for testing without hardware).
- * 
+ *
  * EEPROM MEMORY MAP (1024 bytes available on ATmega328P):
  *   - [Address 0]       : System Config Magic Byte (0x7A = initialized, other = format on boot)
  *   - [Address 1]       : Master Card UID Length (1 byte)
@@ -24,7 +24,7 @@
  *   - [Address 11-90]   : Registered User Cards Database (10 slots * 8 bytes each = 80 bytes)
  *                         (Each slot: 1 byte length + 7 bytes UID)
  *   - [Address 100-1019]: Access Log Ring Buffer (46 slots * 20 bytes each = 920 bytes)
- * 
+ *
  * WIRING:
  *   - MFRC522 Pin  -> Arduino Uno Pin
  *     - 3.3V       -> 3.3V (WARNING: 5V will destroy the MFRC522 chip!)
@@ -43,30 +43,30 @@
  *   - Red LED (Denied)   -> Pin 6 (via 220Ω resistor to GND)
  */
 
-#include <SPI.h>
-#include <MFRC522.h>
-#include <Wire.h>
 #include <EEPROM.h>
+#include <MFRC522.h>
+#include <SPI.h>
+#include <Wire.h>
 
 // --- PIN DEFINITIONS ---
-const int RST_PIN     = 9;  // MFRC522 Reset
-const int SS_PIN      = 10; // MFRC522 Slave Select (SDA)
-const int ACCESS_LED  = 5;  // Green LED (Access Granted)
-const int DENIED_LED  = 6;  // Red LED (Access Denied / Programming Mode)
+const int RST_PIN = 9;     // MFRC522 Reset
+const int SS_PIN = 10;     // MFRC522 Slave Select (SDA)
+const int ACCESS_LED = 5;  // Green LED (Access Granted)
+const int DENIED_LED = 6;  // Red LED (Access Denied / Programming Mode)
 
 // --- EEPROM DATABASE ADDRESSES ---
-const int EEPROM_MAGIC_ADDR        = 0;
-const int EEPROM_MASTER_LEN_ADDR   = 1;
-const int EEPROM_MASTER_UID_ADDR   = 2;
-const int EEPROM_USER_COUNT_ADDR   = 10;
-const int EEPROM_USER_DB_START     = 11;
-const int MAX_USER_CARDS           = 10;
-const int USER_SLOT_SIZE           = 8; // 1 byte length + 7 bytes UID
+const int EEPROM_MAGIC_ADDR = 0;
+const int EEPROM_MASTER_LEN_ADDR = 1;
+const int EEPROM_MASTER_UID_ADDR = 2;
+const int EEPROM_USER_COUNT_ADDR = 10;
+const int EEPROM_USER_DB_START = 11;
+const int MAX_USER_CARDS = 10;
+const int USER_SLOT_SIZE = 8;  // 1 byte length + 7 bytes UID
 
 // --- EEPROM LOG BUFFER CONFIGURATION ---
-const int EEPROM_LOG_START         = 100;
-const int EEPROM_LOG_END           = 1020;
-const int MAX_UID_LEN              = 7;
+const int EEPROM_LOG_START = 100;
+const int EEPROM_LOG_END = 1020;
+const int MAX_UID_LEN = 7;
 
 // --- I2C RTC ADDRESS ---
 #define DS3231_I2C_ADDRESS 0x68
@@ -76,28 +76,29 @@ struct RTCDateTime {
   byte second;
   byte minute;
   byte hour;
-  byte dayOfWeek;  // 1 = Sunday, 2 = Monday, etc.
-  byte dayOfMonth; // 1 - 31
-  byte month;      // 1 - 12
-  byte year;       // 0 - 99 (represents 2000 - 2099)
+  byte dayOfWeek;   // 1 = Sunday, 2 = Monday, etc.
+  byte dayOfMonth;  // 1 - 31
+  byte month;       // 1 - 12
+  byte year;        // 0 - 99 (represents 2000 - 2099)
 };
 
 struct LogEntry {
-  uint32_t logID;       // 4 bytes: Monotonically increasing record ID
-  byte uid[7];          // 7 bytes: Card UID (standard MIFARE tags use 4 or 7 bytes)
-  byte uidLength;       // 1 byte: Scanned card UID length
-  byte hour;            // 1 byte: Timestamp Hour
-  byte minute;          // 1 byte: Timestamp Minute
-  byte second;          // 1 byte: Timestamp Second
-  byte day;             // 1 byte: Timestamp Day
-  byte month;           // 1 byte: Timestamp Month
-  byte year;            // 1 byte: Timestamp Year (offset from 2000)
-  byte status;          // 1 byte: 0 = Denied, 1 = Granted, 2 = Registered, 3 = Deregistered
-  uint16_t checksum;    // 2 bytes: Integrity validation checksum
-}; // Struct Size = 20 bytes
+  uint32_t logID;     // 4 bytes: Monotonically increasing record ID
+  byte uid[7];        // 7 bytes: Card UID (standard MIFARE tags use 4 or 7 bytes)
+  byte uidLength;     // 1 byte: Scanned card UID length
+  byte hour;          // 1 byte: Timestamp Hour
+  byte minute;        // 1 byte: Timestamp Minute
+  byte second;        // 1 byte: Timestamp Second
+  byte day;           // 1 byte: Timestamp Day
+  byte month;         // 1 byte: Timestamp Month
+  byte year;          // 1 byte: Timestamp Year (offset from 2000)
+  byte status;        // 1 byte: 0 = Denied, 1 = Granted, 2 = Registered, 3 = Deregistered
+  uint16_t checksum;  // 2 bytes: Integrity validation checksum
+};                    // Struct Size = 20 bytes
 
-const int LOG_ENTRY_SIZE = sizeof(LogEntry); // 20 bytes
-const int NUM_LOG_SLOTS = (EEPROM_LOG_END - EEPROM_LOG_START) / LOG_ENTRY_SIZE; // (1020 - 100)/20 = 46 slots
+const int LOG_ENTRY_SIZE = sizeof(LogEntry);  // 20 bytes
+const int NUM_LOG_SLOTS =
+    (EEPROM_LOG_END - EEPROM_LOG_START) / LOG_ENTRY_SIZE;  // (1020 - 100)/20 = 46 slots
 
 // --- STATE VARIABLES ---
 MFRC522 mfrc522(SS_PIN, RST_PIN);
@@ -105,8 +106,8 @@ int activeSlotIndex = -1;  // Pointer to the newest log slot in EEPROM
 uint32_t nextLogID = 1;    // Next log ID to assign
 
 // Software RTC Fallback state
-unsigned long softwareTimeOffset = 0; // Accumulated software time in seconds
-RTCDateTime bootDateTime = {0, 0, 12, 5, 4, 6, 26}; // Default: Thursday, June 4, 2026 12:00:00
+unsigned long softwareTimeOffset = 0;                // Accumulated software time in seconds
+RTCDateTime bootDateTime = {0, 0, 12, 5, 4, 6, 26};  // Default: Thursday, June 4, 2026 12:00:00
 
 // Non-blocking indicator animation state machine
 enum IndicatorState {
@@ -152,14 +153,14 @@ void loop() {
   // 2. Poll physical MFRC522 RFID reader
   if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
     processCardScan(mfrc522.uid.uidByte, mfrc522.uid.size);
-    mfrc522.PICC_HaltA(); // Halt PICC to prevent duplicate scans
+    mfrc522.PICC_HaltA();  // Halt PICC to prevent duplicate scans
   }
 
   // 3. Process Serial Shell commands & Simulation scans
   if (Serial.available() > 0) {
     char cmd = Serial.read();
-    if (cmd == '\n' || cmd == '\r') return; // Ignore formatting characters
-    
+    if (cmd == '\n' || cmd == '\r') return;  // Ignore formatting characters
+
     switch (cmd) {
       case 'r':
       case 'R':
@@ -203,7 +204,7 @@ void processCardScan(byte* uid, byte len) {
     for (int i = 0; i < len && i < 8; i++) {
       EEPROM.write(EEPROM_MASTER_UID_ADDR + i, uid[i]);
     }
-    EEPROM.write(EEPROM_USER_COUNT_ADDR, 0); // User count = 0
+    EEPROM.write(EEPROM_USER_COUNT_ADDR, 0);  // User count = 0
 
     Serial.println(F("[ACCESS CONTROL] Master Card successfully registered!"));
     Serial.print(F("[ACCESS CONTROL] Master Card UID:"));
@@ -221,7 +222,8 @@ void processCardScan(byte* uid, byte len) {
 
   // --- TOGGLE PROGRAM MODE (MASTER CARD SCANNED) ---
   if (isMasterCard(uid, len)) {
-    if (indState == IND_PROGRAM_MODE || indState == IND_CARD_ADDED || indState == IND_CARD_REMOVED) {
+    if (indState == IND_PROGRAM_MODE || indState == IND_CARD_ADDED ||
+        indState == IND_CARD_REMOVED) {
       indState = IND_IDLE;
       Serial.println(F("[ACCESS CONTROL] Exited Program Mode. Returned to Access Control Mode."));
     } else {
@@ -238,7 +240,7 @@ void processCardScan(byte* uid, byte len) {
     if (checkDatabase(uid, len)) {
       // Card exists: remove it (Deregistration)
       if (removeCardFromDatabase(uid, len)) {
-        logAccess(uid, len, 3); // Status 3 = Deregistered
+        logAccess(uid, len, 3);  // Status 3 = Deregistered
         Serial.println(F("[ACCESS CONTROL] Card removed from database."));
         indState = IND_CARD_REMOVED;
         indStart = millis();
@@ -248,7 +250,7 @@ void processCardScan(byte* uid, byte len) {
     } else {
       // Card is new: add it (Registration)
       if (addCardToDatabase(uid, len)) {
-        logAccess(uid, len, 2); // Status 2 = Registered
+        logAccess(uid, len, 2);  // Status 2 = Registered
         Serial.println(F("[ACCESS CONTROL] Card added to database."));
         indState = IND_CARD_ADDED;
         indStart = millis();
@@ -264,12 +266,12 @@ void processCardScan(byte* uid, byte len) {
   // --- ACCESS CONTROL MODE (NORMAL OPERATION) ---
   if (checkDatabase(uid, len)) {
     Serial.println(F("[ACCESS CONTROL] -> AUTHORIZED KEY SCANNED. Access Granted!"));
-    logAccess(uid, len, 1); // Status 1 = Granted
+    logAccess(uid, len, 1);  // Status 1 = Granted
     indState = IND_ACCESS_GRANTED;
     indStart = millis();
   } else {
     Serial.println(F("[ACCESS CONTROL] -> WARNING: UNAUTHORIZED KEY SCANNED. Access Denied!"));
-    logAccess(uid, len, 0); // Status 0 = Denied
+    logAccess(uid, len, 0);  // Status 0 = Denied
     indState = IND_ACCESS_DENIED;
     indStart = millis();
   }
@@ -300,7 +302,7 @@ bool checkDatabase(const byte* uid, byte len) {
 bool addCardToDatabase(const byte* uid, byte len) {
   byte count = EEPROM.read(EEPROM_USER_COUNT_ADDR);
   if (count >= MAX_USER_CARDS) return false;
-  if (checkDatabase(uid, len)) return true; // Already exists
+  if (checkDatabase(uid, len)) return true;  // Already exists
 
   int addr = EEPROM_USER_DB_START + (count * USER_SLOT_SIZE);
   EEPROM.write(addr, len);
@@ -357,7 +359,8 @@ bool isMasterCard(const byte* uid, byte len) {
 // =============================================================
 uint16_t calculateLogChecksum(const LogEntry& entry) {
   uint16_t sum = 0;
-  sum += (entry.logID & 0xFF) + ((entry.logID >> 8) & 0xFF) + ((entry.logID >> 16) & 0xFF) + ((entry.logID >> 24) & 0xFF);
+  sum += (entry.logID & 0xFF) + ((entry.logID >> 8) & 0xFF) + ((entry.logID >> 16) & 0xFF) +
+         ((entry.logID >> 24) & 0xFF);
   for (int i = 0; i < 7; i++) sum += entry.uid[i];
   sum += entry.uidLength;
   sum += entry.hour + entry.minute + entry.second + entry.day + entry.month + entry.year;
@@ -417,12 +420,12 @@ void logAccess(const byte* uid, byte len, byte status) {
 
   RTCDateTime now;
   getSystemTime(now);
-  entry.hour   = now.hour;
+  entry.hour = now.hour;
   entry.minute = now.minute;
   entry.second = now.second;
-  entry.day    = now.dayOfMonth;
-  entry.month  = now.month;
-  entry.year   = now.year;
+  entry.day = now.dayOfMonth;
+  entry.month = now.month;
+  entry.year = now.year;
   entry.status = status;
   entry.checksum = calculateLogChecksum(entry);
 
@@ -438,10 +441,18 @@ void logAccess(const byte* uid, byte len, byte status) {
   Serial.print(entry.logID);
   Serial.print(F(" | Status: "));
   switch (status) {
-    case 0: Serial.print(F("DENIED")); break;
-    case 1: Serial.print(F("GRANTED")); break;
-    case 2: Serial.print(F("REGISTERED")); break;
-    case 3: Serial.print(F("DEREGISTERED")); break;
+    case 0:
+      Serial.print(F("DENIED"));
+      break;
+    case 1:
+      Serial.print(F("GRANTED"));
+      break;
+    case 2:
+      Serial.print(F("REGISTERED"));
+      break;
+    case 3:
+      Serial.print(F("DEREGISTERED"));
+      break;
   }
   Serial.print(F(" | Timestamp: "));
   printDateTime(now);
@@ -472,14 +483,22 @@ void readAllLogs() {
             Serial.print(temp.uid[j] < 0x10 ? " 0" : " ");
             Serial.print(temp.uid[j], HEX);
           }
-          for (int p = temp.uidLength; p < 7; p++) Serial.print(F("   ")); // Padding
+          for (int p = temp.uidLength; p < 7; p++) Serial.print(F("   "));  // Padding
 
           Serial.print(F(" | Status: "));
           switch (temp.status) {
-            case 0: Serial.print(F("DENIED      ")); break;
-            case 1: Serial.print(F("GRANTED     ")); break;
-            case 2: Serial.print(F("REGISTERED  ")); break;
-            case 3: Serial.print(F("DEREGISTERED")); break;
+            case 0:
+              Serial.print(F("DENIED      "));
+              break;
+            case 1:
+              Serial.print(F("GRANTED     "));
+              break;
+            case 2:
+              Serial.print(F("REGISTERED  "));
+              break;
+            case 3:
+              Serial.print(F("DEREGISTERED"));
+              break;
           }
           Serial.print(F(" | Time: 20"));
           if (temp.year < 10) Serial.print(F("0"));
@@ -524,20 +543,20 @@ byte bcdToDec(byte val) {
 
 bool readRTCDateTime(RTCDateTime* dt) {
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
-  Wire.write(0x00); // Point to register 0 (seconds)
+  Wire.write(0x00);  // Point to register 0 (seconds)
   if (Wire.endTransmission() != 0) {
-    return false; // RTC device not responding
+    return false;  // RTC device not responding
   }
 
   Wire.requestFrom(DS3231_I2C_ADDRESS, 7);
   if (Wire.available() >= 7) {
-    dt->second     = bcdToDec(Wire.read() & 0x7F);
-    dt->minute     = bcdToDec(Wire.read());
-    dt->hour       = bcdToDec(Wire.read() & 0x3F); // 24-hr format
-    dt->dayOfWeek  = bcdToDec(Wire.read());
+    dt->second = bcdToDec(Wire.read() & 0x7F);
+    dt->minute = bcdToDec(Wire.read());
+    dt->hour = bcdToDec(Wire.read() & 0x3F);  // 24-hr format
+    dt->dayOfWeek = bcdToDec(Wire.read());
     dt->dayOfMonth = bcdToDec(Wire.read());
-    dt->month      = bcdToDec(Wire.read() & 0x1F);
-    dt->year       = bcdToDec(Wire.read());
+    dt->month = bcdToDec(Wire.read() & 0x1F);
+    dt->year = bcdToDec(Wire.read());
     return true;
   }
   return false;
@@ -551,10 +570,11 @@ void getSystemTime(RTCDateTime& dt) {
 
   // Fallback to Software RTC calculation using millis()
   unsigned long currentTotalSeconds = (millis() / 1000) + softwareTimeOffset;
-  
+
   // Advance seconds, minutes, hours, days
   unsigned long seconds = (bootDateTime.second + currentTotalSeconds) % 60;
-  unsigned long totalMinutes = bootDateTime.minute + (bootDateTime.second + currentTotalSeconds) / 60;
+  unsigned long totalMinutes =
+      bootDateTime.minute + (bootDateTime.second + currentTotalSeconds) / 60;
   unsigned long minutes = totalMinutes % 60;
   unsigned long totalHours = bootDateTime.hour + totalMinutes / 60;
   unsigned long hours = totalHours % 24;
@@ -563,7 +583,7 @@ void getSystemTime(RTCDateTime& dt) {
   dt.second = seconds;
   dt.minute = minutes;
   dt.hour = hours;
-  dt.dayOfMonth = bootDateTime.dayOfMonth + daysIncrement; // Simple linear approximation
+  dt.dayOfMonth = bootDateTime.dayOfMonth + daysIncrement;  // Simple linear approximation
   dt.month = bootDateTime.month;
   dt.year = bootDateTime.year;
   dt.dayOfWeek = ((bootDateTime.dayOfWeek - 1 + daysIncrement) % 7) + 1;

@@ -1,7 +1,7 @@
 /*
  * 100 Projects with Arduino - Day 71
  * Project: SD Card Module File Writing (SPI Datalogger Basics)
- * 
+ *
  * DESCRIPTION:
  * This project demonstrates how to interface a standard SPI SD Card Module with an Arduino
  * using the standard SD and SPI libraries. To align with industrial firmware design paradigms:
@@ -10,17 +10,17 @@
  * 2. Diagnostics: Checks for card presence and verifies the SPI link before initiating file access.
  * 3. Interactive Serial Shell: Provides a console interface to write data, read log history,
  *    and delete files, facilitating in-field testing.
- * 
+ *
  * SD CARD MODULE & SPI THEORY:
- * - FAT File System: The SD library supports FAT16 and FAT32 filesystems on standard SD and SDHC cards.
- *   Note: Cards must be formatted as FAT16 or FAT32 (NOT exFAT or NTFS).
+ * - FAT File System: The SD library supports FAT16 and FAT32 filesystems on standard SD and SDHC
+ * cards. Note: Cards must be formatted as FAT16 or FAT32 (NOT exFAT or NTFS).
  * - SPI (Serial Peripheral Interface): The SD Card module communicates via SPI.
  *   - CS (Chip Select) is typically connected to Pin 4 or Pin 10.
  *   - MOSI (Pin 11), MISO (Pin 12), SCK (Pin 13) are standard hardware SPI pins on Arduino Uno.
  * - Logic Level Shifting: SD cards operate at 3.3V logic. Connecting 5V signals directly to the
  *   SD card pins will damage it. Most breakout boards include an onboard 3.3V regulator and a
  *   level shifter IC (like the 74LVC125A) to translate the 5V signals from the Arduino safely.
- * 
+ *
  * WIRING:
  * - SD Card Module Pin -> Arduino Uno Pin
  *   - GND             -> GND
@@ -31,11 +31,11 @@
  *   - CS              -> Pin 4 (configurable)
  */
 
-#include <SPI.h>
 #include <SD.h>
+#include <SPI.h>
 
 // --- PIN DEFINITIONS ---
-const int CS_PIN = 4; // Chip Select pin for SD card module
+const int CS_PIN = 4;  // Chip Select pin for SD card module
 
 // --- FILE PATH CONFIGURATION ---
 const char* LOG_FILENAME = "datalog.txt";
@@ -43,7 +43,7 @@ const char* LOG_FILENAME = "datalog.txt";
 void setup() {
   Serial.begin(9600);
   while (!Serial) {
-    ; // Wait for serial port to connect (needed for native USB boards like Leonardo/Micro)
+    ;  // Wait for serial port to connect (needed for native USB boards like Leonardo/Micro)
   }
 
   Serial.println(F("=================================================="));
@@ -59,7 +59,7 @@ void loop() {
   // Check for serial commands
   if (Serial.available() > 0) {
     char cmd = Serial.read();
-    if (cmd == '\n' || cmd == '\r') return; // Ignore formatting
+    if (cmd == '\n' || cmd == '\r') return;  // Ignore formatting
 
     switch (cmd) {
       case 'w':
@@ -112,9 +112,9 @@ void initializeSDCard() {
     Serial.println(F("  3. Is the card formatted as FAT16 or FAT32?"));
     return;
   }
-  
+
   Serial.println(F("[SYSTEM] SD Card initialized successfully."));
-  
+
   // Check if our log file already exists
   if (SD.exists(LOG_FILENAME)) {
     Serial.print(F("[SYSTEM] Active log file '"));
@@ -183,12 +183,12 @@ void readFileContents() {
 
   if (myFile) {
     Serial.println(F("----------------- FILE CONTENTS -----------------"));
-    
+
     // Read from the file until there's nothing else in it
     while (myFile.available()) {
       Serial.write(myFile.read());
     }
-    
+
     myFile.close();
     Serial.println(F("-------------------------------------------------"));
   } else {

@@ -1,9 +1,9 @@
 /*
  * 100 Projects with Arduino - Day 54
  * Project: WS2812B Addressable RGB LED Strip (Bit-Banged Assembly Timings)
- * 
+ *
  * DESCRIPTION:
- * This project interfaces a WS2812B (NeoPixel) addressable RGB LED strip. 
+ * This project interfaces a WS2812B (NeoPixel) addressable RGB LED strip.
  * Because the WS2812B uses a high-speed, single-wire sub-microsecond pulse-width protocol
  * running at 800 kHz, standard Arduino GPIO pin operations (digitalWrite) are too slow.
  * To demonstrate low-level firmware timing and AVR architecture capabilities:
@@ -14,7 +14,7 @@
  *    frames to prevent timer interrupts from corrupting the critical high/low waveforms.
  * 3. Color Shift Mathematics: Generates smooth GRB transitions (rainbow cycles and breathing
  *    patterns) computed programmatically in memory.
- * 
+ *
  * WS2812B SUB-MICROSECOND PROTOCOL TIMING (at 16 MHz = 62.5ns per clock cycle):
  * - Total Bit Time: 1.25µs (20 cycles)
  * - Bit '0':
@@ -24,7 +24,7 @@
  *   - High Time: 0.80µs (13-14 cycles)
  *   - Low Time:  0.45µs (6-7 cycles)
  * - Latch/Reset time: Keep line low for >= 300µs to display/load colors.
- * 
+ *
  * WIRING:
  * - WS2812B LED Strip (e.g., 8-LED ring or strip) -> Arduino Uno
  *   - VCC  -> 5V (For long strips, connect to an external 5V power supply)
@@ -34,16 +34,16 @@
 
 // --- CONFIGURATION ---
 const int NUM_LEDS = 8;
-const int BYTES_PER_LED = 3; // GRB (Green, Red, Blue) order
+const int BYTES_PER_LED = 3;  // GRB (Green, Red, Blue) order
 const int TOTAL_BYTES = NUM_LEDS * BYTES_PER_LED;
 
-uint8_t ledBuffer[TOTAL_BYTES]; // Framebuffer containing color bytes
+uint8_t ledBuffer[TOTAL_BYTES];  // Framebuffer containing color bytes
 
 void setup() {
   // Configure Pin 8 (PORTB bit 0) as OUTPUT
   DDRB |= 0x01;
-  PORTB &= ~0x01; // Drive low default
-  
+  PORTB &= ~0x01;  // Drive low default
+
   clearStrip();
   show();
 }
@@ -72,7 +72,7 @@ void loop() {
 
   // Cycle 3: Warm Breathing Light
   for (int brightness = 5; brightness < 120; brightness++) {
-    fillStrip(brightness, brightness / 3, 0); // Orange flame breath
+    fillStrip(brightness, brightness / 3, 0);  // Orange flame breath
     show();
     delay(10);
   }
@@ -87,66 +87,87 @@ void loop() {
 
 void show() {
   // Pin 8 corresponds to PORTB, Bit 0 on the ATmega328P
-  volatile uint8_t *port = &PORTB;
+  volatile uint8_t* port = &PORTB;
   uint8_t pinMask = 0x01;
 
   uint8_t portValHigh = *port | pinMask;
-  uint8_t portValLow  = *port & ~pinMask;
+  uint8_t portValLow = *port & ~pinMask;
 
   // Disable interrupts. Any interrupt during the sub-microsecond transmission
   // will cause timing violations, resulting in flickering or incorrect colors.
-  cli(); 
+  cli();
 
   for (uint16_t i = 0; i < TOTAL_BYTES; i++) {
     uint8_t byteVal = ledBuffer[i];
-    
+
     for (uint8_t bit = 0; bit < 8; bit++) {
-      if (byteVal & 0x80) { // MSB is 1
+      if (byteVal & 0x80) {  // MSB is 1
         // Waveform for '1': 0.8us HIGH, 0.45us LOW
         // Step 1: Drive pin HIGH
         *port = portValHigh;
         // Step 2: Hold HIGH for 12 clock cycles (12 * 62.5ns = 750ns)
-        __asm__ __volatile__ (
-          "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
-        );
+        __asm__ __volatile__(
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t");
         // Step 3: Drive pin LOW
         *port = portValLow;
         // Step 4: Hold LOW for 6 clock cycles (6 * 62.5ns = 375ns)
-        __asm__ __volatile__ (
-          "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t" "nop\n\t" "nop\n\t"
-        );
-      } 
-      else { // MSB is 0
+        __asm__ __volatile__(
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t");
+      } else {  // MSB is 0
         // Waveform for '0': 0.4us HIGH, 0.85us LOW
         // Step 1: Drive pin HIGH
         *port = portValHigh;
         // Step 2: Hold HIGH for 6 clock cycles (6 * 62.5ns = 375ns)
-        __asm__ __volatile__ (
-          "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t" "nop\n\t" "nop\n\t"
-        );
+        __asm__ __volatile__(
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t");
         // Step 3: Drive pin LOW
         *port = portValLow;
         // Step 4: Hold LOW for 13 clock cycles (13 * 62.5ns = 812.5ns)
-        __asm__ __volatile__ (
-          "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t" "nop\n\t" "nop\n\t" "nop\n\t"
-          "nop\n\t"
-        );
+        __asm__ __volatile__(
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t");
       }
-      byteVal <<= 1; // Shift to next bit
+      byteVal <<= 1;  // Shift to next bit
     }
   }
 
   // Restore interrupts
-  sei(); 
-  
+  sei();
+
   // Latch command: Hold line low for 300 microseconds
-  delayMicroseconds(300); 
+  delayMicroseconds(300);
 }
 
 // --- FRAMEBUFFER MANIPULATORS ---
@@ -154,7 +175,7 @@ void show() {
 void setLEDColor(int ledIdx, uint8_t r, uint8_t g, uint8_t b) {
   if (ledIdx < NUM_LEDS) {
     int baseIdx = ledIdx * BYTES_PER_LED;
-    ledBuffer[baseIdx]     = g; // WS2812B uses GRB format
+    ledBuffer[baseIdx] = g;  // WS2812B uses GRB format
     ledBuffer[baseIdx + 1] = r;
     ledBuffer[baseIdx + 2] = b;
   }

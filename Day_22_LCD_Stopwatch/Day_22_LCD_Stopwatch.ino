@@ -1,7 +1,7 @@
 /*
  * 100 Projects with Arduino - Day 22
  * Project: LCD Stopwatch (FSM User Interface & I2C Display Performance Tuning)
- * 
+ *
  * DESCRIPTION:
  * This project implements a digital stopwatch using a 16x2 character LCD and two tactile
  * pushbuttons (Start/Stop and Reset).
@@ -12,7 +12,7 @@
  *    using a non-blocking scheduler. This prevents the I2C bus from bottlenecking and eliminates
  *    display flickering while maintaining smooth centisecond updates.
  * 3. Software Button Debouncing: Filters button presses non-blockingly.
- * 
+ *
  * WIRING:
  * - Start/Stop Button Pin A -> Arduino Pin 2 (Digital input, INPUT_PULLUP)
  * - Start/Stop Button Pin B -> Arduino GND
@@ -22,35 +22,31 @@
  * - LCD SDA/SCL             -> Arduino SDA (A4) / SCL (A5)
  */
 
-#include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <Wire.h>
 
 // --- PIN DEFINITIONS ---
-const int START_STOP_PIN = 2; // Pin connected to the Start/Stop button
-const int RESET_PIN = 3;      // Pin connected to the Reset button
+const int START_STOP_PIN = 2;  // Pin connected to the Start/Stop button
+const int RESET_PIN = 3;       // Pin connected to the Reset button
 
 // --- LCD CONFIGURATION ---
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // --- FINITE STATE MACHINE STATES ---
-enum StopwatchState {
-  STATE_RESET,
-  STATE_RUNNING,
-  STATE_PAUSED
-};
+enum StopwatchState { STATE_RESET, STATE_RUNNING, STATE_PAUSED };
 
 StopwatchState currentUIState = STATE_RESET;
 
 // --- TIME TRACKING VARIABLES ---
-unsigned long totalElapsedTime = 0; // Total accumulated time in milliseconds
-unsigned long sessionStartTime = 0;   // Timestamp when the current running session started
+unsigned long totalElapsedTime = 0;  // Total accumulated time in milliseconds
+unsigned long sessionStartTime = 0;  // Timestamp when the current running session started
 
 // --- TIMING/SCHEDULING CONSTANTS ---
-const unsigned long DISPLAY_REFRESH_INTERVAL = 50; // Refresh display every 50ms (20 Hz)
+const unsigned long DISPLAY_REFRESH_INTERVAL = 50;  // Refresh display every 50ms (20 Hz)
 unsigned long lastDisplayRefreshTime = 0;           // Stores last display refresh timestamp
 
 // --- BUTTON DEBOUNCING VARIABLES ---
-const unsigned long DEBOUNCE_DELAY = 50; // Button debounce threshold (50ms)
+const unsigned long DEBOUNCE_DELAY = 50;  // Button debounce threshold (50ms)
 unsigned long lastStartDebounceTime = 0;  // Debounce timer for Start/Stop button
 unsigned long lastResetDebounceTime = 0;  // Debounce timer for Reset button
 int lastStartButtonRawState = HIGH;
@@ -61,22 +57,22 @@ int resetButtonState = HIGH;
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(9600);
-  
+
   // Configure button inputs with internal pull-up resistors
   pinMode(START_STOP_PIN, INPUT_PULLUP);
   pinMode(RESET_PIN, INPUT_PULLUP);
-  
+
   // Initialize LCD screen
   lcd.init();
   lcd.backlight();
   lcd.clear();
-  
+
   // Write static layout labels
   lcd.setCursor(0, 0);
   lcd.print("STATUS: RESET   ");
   lcd.setCursor(0, 1);
   lcd.print("TIME:   00:00.00");
-  
+
   Serial.println("==================================================");
   Serial.println("Day 22: LCD Stopwatch (FSM UI & Performance Tuned)");
   Serial.println("==================================================");
@@ -85,7 +81,7 @@ void setup() {
 
 void loop() {
   unsigned long currentTime = millis();
-  
+
   // --- PART 1: NON-BLOCKING DEBOUNCED BUTTON SAMPLING ---
   // Start/Stop Button debounce scan
   int startReading = digitalRead(START_STOP_PIN);
@@ -127,7 +123,7 @@ void loop() {
   // --- PART 3: SCHEDULER REFRESH LIMITER (20 Hz) ---
   if (currentTime - lastDisplayRefreshTime >= DISPLAY_REFRESH_INTERVAL) {
     lastDisplayRefreshTime = currentTime;
-    
+
     // Update the second row (time string)
     updateTimeDisplay(activeTime);
   }
@@ -138,22 +134,21 @@ void loop() {
  */
 void handleStartStopPress() {
   unsigned long pressTime = millis();
-  
+
   if (currentUIState == STATE_RESET || currentUIState == STATE_PAUSED) {
     // Transition to RUNNING
     currentUIState = STATE_RUNNING;
-    sessionStartTime = pressTime; // Mark start time of this session
-    
+    sessionStartTime = pressTime;  // Mark start time of this session
+
     lcd.setCursor(8, 0);
     lcd.print("RUNNING ");
     Serial.println("[STOPWATCH] State: RUNNING");
-  } 
-  else if (currentUIState == STATE_RUNNING) {
+  } else if (currentUIState == STATE_RUNNING) {
     // Transition to PAUSED
     currentUIState = STATE_PAUSED;
     // Add current session time to cumulative running elapsed time
     totalElapsedTime += (pressTime - sessionStartTime);
-    
+
     lcd.setCursor(8, 0);
     lcd.print("PAUSED  ");
     Serial.println("[STOPWATCH] State: PAUSED");
@@ -167,11 +162,11 @@ void handleResetPress() {
   // Reset only works when the stopwatch is NOT running (i.e. reset or paused)
   if (currentUIState == STATE_PAUSED) {
     currentUIState = STATE_RESET;
-    totalElapsedTime = 0; // Clear accumulated time
-    
+    totalElapsedTime = 0;  // Clear accumulated time
+
     lcd.setCursor(8, 0);
     lcd.print("RESET   ");
-    updateTimeDisplay(0); // Immediately update screen to 00:00.00
+    updateTimeDisplay(0);  // Immediately update screen to 00:00.00
     Serial.println("[STOPWATCH] State: RESET (Time cleared)");
   }
 }
@@ -185,20 +180,20 @@ void updateTimeDisplay(unsigned long msTime) {
   unsigned long totalSeconds = msTime / 1000;
   unsigned long minutes = (totalSeconds / 60) % 60;
   unsigned long seconds = totalSeconds % 60;
-  unsigned long centiseconds = (msTime % 1000) / 10; // 1 centisecond = 10ms
-  
+  unsigned long centiseconds = (msTime % 1000) / 10;  // 1 centisecond = 10ms
+
   lcd.setCursor(8, 1);
-  
+
   // Format Minutes (pad single-digit with '0')
   if (minutes < 10) lcd.print('0');
   lcd.print(minutes);
   lcd.print(':');
-  
+
   // Format Seconds (pad single-digit with '0')
   if (seconds < 10) lcd.print('0');
   lcd.print(seconds);
   lcd.print('.');
-  
+
   // Format Centiseconds (pad single-digit with '0')
   if (centiseconds < 10) lcd.print('0');
   lcd.print(centiseconds);

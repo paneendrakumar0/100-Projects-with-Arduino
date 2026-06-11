@@ -46,18 +46,18 @@
  */
 
 // --- CONFIGURATION ---
-const uint8_t  MAGNETS_PER_REV = 1;    // Magnets on the shaft (1 = 1 pulse/rev)
-const uint16_t PRESCALER_VALUE = 8;    // Timer1 prescaler (CS12:0 = 010)
-const float    TICK_FREQ       = (float)F_CPU / PRESCALER_VALUE; // 2,000,000 Hz
-const float    TICK_PERIOD_US  = 1e6f / TICK_FREQ;               // 0.5 µs per tick
+const uint8_t MAGNETS_PER_REV = 1;                       // Magnets on the shaft (1 = 1 pulse/rev)
+const uint16_t PRESCALER_VALUE = 8;                      // Timer1 prescaler (CS12:0 = 010)
+const float TICK_FREQ = (float)F_CPU / PRESCALER_VALUE;  // 2,000,000 Hz
+const float TICK_PERIOD_US = 1e6f / TICK_FREQ;           // 0.5 µs per tick
 
 const int LED_PIN = 13;
 
 // --- VOLATILE: Shared between ISR and main loop ---
-volatile uint16_t captureValue   = 0;   // ICR1 snapshot at capture moment
-volatile uint16_t lastCapture    = 0;   // Previous capture value
-volatile uint16_t overflowCount  = 0;   // Timer1 overflow count between captures
-volatile bool     newCapture     = false; // Flag: new RPM period available
+volatile uint16_t captureValue = 0;   // ICR1 snapshot at capture moment
+volatile uint16_t lastCapture = 0;    // Previous capture value
+volatile uint16_t overflowCount = 0;  // Timer1 overflow count between captures
+volatile bool newCapture = false;     // Flag: new RPM period available
 
 void setup() {
   Serial.begin(9600);
@@ -72,9 +72,9 @@ void setup() {
   //   ICES1 = 0 (capture on FALLING edge — Hall sensor active-LOW)
   //   WGM13:WGM12 = 00 (Normal mode, no TOP)
   //   CS12:CS10 = 010 (Prescaler /8 → 2 MHz ticks)
-  TCCR1B = _BV(ICNC1) | _BV(CS11); // ICNC1 + /8 prescaler
+  TCCR1B = _BV(ICNC1) | _BV(CS11);  // ICNC1 + /8 prescaler
 
-  TCNT1 = 0; // Reset counter
+  TCNT1 = 0;  // Reset counter
 
   // Enable Input Capture Interrupt (ICIE1) and Overflow Interrupt (TOIE1)
   TIMSK1 = _BV(ICIE1) | _BV(TOIE1);
@@ -82,12 +82,16 @@ void setup() {
   // Configure ICP1 (Pin 8) as input with pull-up
   pinMode(8, INPUT_PULLUP);
 
-  sei(); // Enable global interrupts
+  sei();  // Enable global interrupts
 
   Serial.println(F("[ICU Tacho] Timer1 Input Capture RPM Meter initialized."));
-  Serial.print(F("[ICU Tacho] Tick frequency: ")); Serial.print(TICK_FREQ / 1000.0f, 1);
-  Serial.print(F(" kHz | Period: ")); Serial.print(TICK_PERIOD_US, 1); Serial.println(F(" µs/tick"));
-  Serial.print(F("[ICU Tacho] Magnets per revolution: ")); Serial.println(MAGNETS_PER_REV);
+  Serial.print(F("[ICU Tacho] Tick frequency: "));
+  Serial.print(TICK_FREQ / 1000.0f, 1);
+  Serial.print(F(" kHz | Period: "));
+  Serial.print(TICK_PERIOD_US, 1);
+  Serial.println(F(" µs/tick"));
+  Serial.print(F("[ICU Tacho] Magnets per revolution: "));
+  Serial.println(MAGNETS_PER_REV);
   Serial.println(F("[ICU Tacho] Waiting for rotation..."));
 }
 
@@ -97,9 +101,9 @@ void loop() {
 
     // Atomically capture values (disable interrupts briefly)
     noInterrupts();
-    uint16_t cap     = captureValue;
-    uint16_t last    = lastCapture;
-    uint16_t oflows  = overflowCount;
+    uint16_t cap = captureValue;
+    uint16_t last = lastCapture;
+    uint16_t oflows = overflowCount;
     interrupts();
 
     // Compute period in Timer1 ticks (account for overflows)
@@ -108,15 +112,21 @@ void loop() {
     if (cap < last && oflows == 0) periodTicks += 65536UL;
 
     float periodSec = (float)periodTicks / TICK_FREQ;
-    float freqHz    = 1.0f / periodSec;
-    float rpm       = freqHz * 60.0f / MAGNETS_PER_REV;
-    float periodMs  = periodSec * 1000.0f;
+    float freqHz = 1.0f / periodSec;
+    float rpm = freqHz * 60.0f / MAGNETS_PER_REV;
+    float periodMs = periodSec * 1000.0f;
 
     digitalWrite(LED_PIN, HIGH);
-    Serial.print(F("[TACHO] RPM: ")); Serial.print(rpm, 1);
-    Serial.print(F(" | Freq: ")); Serial.print(freqHz, 2); Serial.print(F(" Hz"));
-    Serial.print(F(" | Period: ")); Serial.print(periodMs, 1); Serial.print(F(" ms"));
-    Serial.print(F(" | Ticks: ")); Serial.println(periodTicks);
+    Serial.print(F("[TACHO] RPM: "));
+    Serial.print(rpm, 1);
+    Serial.print(F(" | Freq: "));
+    Serial.print(freqHz, 2);
+    Serial.print(F(" Hz"));
+    Serial.print(F(" | Period: "));
+    Serial.print(periodMs, 1);
+    Serial.print(F(" ms"));
+    Serial.print(F(" | Ticks: "));
+    Serial.println(periodTicks);
     digitalWrite(LED_PIN, LOW);
   }
 
@@ -132,7 +142,7 @@ void loop() {
     }
   } else {
     static bool stoppedPrinted = false;
-    stoppedPrinted = false; // Reset when pulses resume
+    stoppedPrinted = false;  // Reset when pulses resume
   }
 }
 
@@ -140,19 +150,19 @@ void loop() {
 //  TIMER1 INPUT CAPTURE ISR
 // =============================================================
 ISR(TIMER1_CAPT_vect) {
-  uint16_t captured = ICR1; // Read capture register (hardware latched at edge moment)
+  uint16_t captured = ICR1;  // Read capture register (hardware latched at edge moment)
 
-  lastCapture   = captureValue; // Shift current → last
-  captureValue  = captured;
-  overflowCount = 0;            // Reset overflow counter for this period
-  newCapture    = true;
+  lastCapture = captureValue;  // Shift current → last
+  captureValue = captured;
+  overflowCount = 0;  // Reset overflow counter for this period
+  newCapture = true;
 }
 
 // =============================================================
 //  TIMER1 OVERFLOW ISR (counts rollovers for slow RPM)
 // =============================================================
 ISR(TIMER1_OVF_vect) {
-  if (!newCapture) { // Only count overflows between captures
+  if (!newCapture) {  // Only count overflows between captures
     overflowCount++;
   }
 }

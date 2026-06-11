@@ -1,22 +1,22 @@
 /*
  * 100 Projects with Arduino - Day 47
  * Project: Self-Balancing Robot Controller (Inverted Pendulum PID Stabilization)
- * 
+ *
  * DESCRIPTION:
  * This project implements a closed-loop PID control system to stabilize a two-wheeled
  * self-balancing robot (inverted pendulum) using sensor fusion telemetry from an MPU6050 IMU.
- * 
+ *
  * CORE SYSTEMS:
  * 1. MPU6050 I2C Register Pipeline: Retrieves raw accelerometer and gyroscope registers.
  * 2. Complementary Filter: Blends high-pass gyro integration and low-pass accelerometer tilt
  *    calculations at a strict 100 Hz sample rate (10ms dt) to calculate the precise pitch angle.
- * 3. Proportional-Integral-Derivative (PID) Controller: Evaluates the angle error, integrates 
+ * 3. Proportional-Integral-Derivative (PID) Controller: Evaluates the angle error, integrates
  *    steady-state errors (with anti-windup clamping), and computes the derivative damping force.
- * 4. Differential Motor Mapping: Translates the PID correction output into dual H-Bridge PWM commands.
- *    Incorporates a minimum PWM deadband threshold to overcome static motor friction.
+ * 4. Differential Motor Mapping: Translates the PID correction output into dual H-Bridge PWM
+ * commands. Incorporates a minimum PWM deadband threshold to overcome static motor friction.
  * 5. Safety Tilt Cut-off: Instantly shuts down the motors if the robot tilts beyond ±40 degrees
  *    to prevent runaway conditions when the robot falls.
- * 
+ *
  * WIRING:
  * - MPU6050 IMU -> Arduino Uno
  *   - VCC -> 5V (or 3.3V)
@@ -41,7 +41,7 @@ const int REG_GYRO_XOUT_H = 0x43;
 
 // --- SCALE FACTORS (±2g range, ±250°/s range) ---
 const float ACCEL_SCALE = 16384.0;
-const float GYRO_SCALE  = 131.0;
+const float GYRO_SCALE = 131.0;
 
 // --- FILTER COEFFICIENT (Alpha) ---
 const float ALPHA = 0.98;
@@ -65,28 +65,29 @@ double Ki = 140.0;
 double Kd = 1.8;
 
 // --- CALIBRATION & ANGLE telemetry ---
-float gyroBiasY = 0.0; // Gyroscope offset for Pitch (rotation around Y-axis)
-float fusedPitch = 0.0; // Current estimated tilt angle
+float gyroBiasY = 0.0;   // Gyroscope offset for Pitch (rotation around Y-axis)
+float fusedPitch = 0.0;  // Current estimated tilt angle
 
 // --- PID STATE VARIABLES ---
-double targetPitch = -1.2; // Target angle (perfect vertical balance point, adjusted for CoG offset)
+double targetPitch =
+    -1.2;  // Target angle (perfect vertical balance point, adjusted for CoG offset)
 double errorSum = 0.0;
 double lastError = 0.0;
-const double maxErrorSum = 150.0; // Anti-windup limit for Integral term
+const double maxErrorSum = 150.0;  // Anti-windup limit for Integral term
 
 // --- TIMING CONFIGURATION ---
 unsigned long lastLoopTimeUs = 0;
-const unsigned long samplePeriodUs = 10000; // 10ms sample period = 100 Hz loop rate
+const unsigned long samplePeriodUs = 10000;  // 10ms sample period = 100 Hz loop rate
 
 // --- MOTOR DEADBAND PARAMETER ---
-const int MIN_MOTOR_PWM = 45; // Minimum PWM required to overcome static motor friction
+const int MIN_MOTOR_PWM = 45;  // Minimum PWM required to overcome static motor friction
 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
 
   pinMode(LED_INDICATOR_PIN, OUTPUT);
-  
+
   // Initialize Motor driver pins
   pinMode(L_ENA_PIN, OUTPUT);
   pinMode(L_IN1_PIN, OUTPUT);
@@ -104,7 +105,8 @@ void setup() {
   if (Wire.endTransmission() != 0) {
     Serial.println("[ERROR] MPU6050 initialization failed! Halting system.");
     digitalWrite(LED_INDICATOR_PIN, HIGH);
-    for (;;);
+    for (;;)
+      ;
   }
 
   // Calibrate Gyroscope bias while stationary
@@ -112,7 +114,7 @@ void setup() {
 
   // Initialize timing
   lastLoopTimeUs = micros();
-  
+
   // Output column headers for Serial Plotter telemetry
   Serial.println("Target_Angle,Actual_Angle,Motor_Output");
 }
@@ -122,7 +124,8 @@ void loop() {
 
   // Strict 100 Hz loop rate (10ms)
   if (currentTimeUs - lastLoopTimeUs >= samplePeriodUs) {
-    double dt = (double)(currentTimeUs - lastLoopTimeUs) / 1000000.0; // Loop duration in seconds (~0.01s)
+    double dt =
+        (double)(currentTimeUs - lastLoopTimeUs) / 1000000.0;  // Loop duration in seconds (~0.01s)
     lastLoopTimeUs = currentTimeUs;
 
     int16_t rawAccelX, rawAccelY, rawAccelZ;
@@ -131,7 +134,6 @@ void loop() {
     // Read MPU6050 raw registers
     if (readRawAccel(&rawAccelX, &rawAccelY, &rawAccelZ) &&
         readRawGyro(&rawGyroX, &rawGyroY, &rawGyroZ)) {
-
       // Convert raw accelerometer values to Gs
       float ax = (float)rawAccelX / ACCEL_SCALE;
       float ay = (float)rawAccelY / ACCEL_SCALE;
@@ -152,14 +154,14 @@ void loop() {
       // If the robot is tilted more than 40 degrees, it has fallen. Halt motors.
       if (abs(fusedPitch) > 40.0) {
         haltMotors();
-        errorSum = 0.0; // Clear accumulated errors
+        errorSum = 0.0;  // Clear accumulated errors
         lastError = 0.0;
-        
+
         Serial.print(targetPitch, 1);
         Serial.print(",");
         Serial.print(fusedPitch, 1);
-        Serial.println(",0"); // Zero output
-        return; 
+        Serial.println(",0");  // Zero output
+        return;
       }
 
       // --- PID CALCULATIONS ---
@@ -245,10 +247,10 @@ bool readRawGyro(int16_t* gx, int16_t* gy, int16_t* gz) {
 void calibrateGyroscope() {
   Serial.println("[IMU] Calibrating Gyroscope. Keep the robot still on a flat surface...");
   digitalWrite(LED_INDICATOR_PIN, HIGH);
-  
+
   long sumY = 0;
-  int samples = 200; // Average over 200 samples for high accuracy
-  
+  int samples = 200;  // Average over 200 samples for high accuracy
+
   for (int i = 0; i < samples; i++) {
     int16_t gx, gy, gz;
     if (readRawGyro(&gx, &gy, &gz)) {
@@ -256,13 +258,13 @@ void calibrateGyroscope() {
     }
     delay(5);
   }
-  
+
   gyroBiasY = (float)(sumY / samples) / GYRO_SCALE;
-  
+
   digitalWrite(LED_INDICATOR_PIN, LOW);
   Serial.print("[IMU] Calibration complete. Gyro Y bias offset: ");
   Serial.println(gyroBiasY, 4);
-  delay(1500); // Allow user to place the robot in its starting position
+  delay(1500);  // Allow user to place the robot in its starting position
 }
 
 // --- MOTOR ACTUATION SCHEDULERS ---

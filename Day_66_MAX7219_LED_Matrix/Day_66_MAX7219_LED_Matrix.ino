@@ -43,33 +43,33 @@
 const int CS_PIN = 10;  // LOAD/CS pin
 
 // --- MAX7219 REGISTER ADDRESSES ---
-const uint8_t REG_NOOP        = 0x00;
-const uint8_t REG_DIGIT0      = 0x01; // Row 1
+const uint8_t REG_NOOP = 0x00;
+const uint8_t REG_DIGIT0 = 0x01;  // Row 1
 const uint8_t REG_DECODE_MODE = 0x09;
-const uint8_t REG_INTENSITY   = 0x0A;
-const uint8_t REG_SCAN_LIMIT  = 0x0B;
-const uint8_t REG_SHUTDOWN    = 0x0C;
-const uint8_t REG_DISP_TEST   = 0x0F;
+const uint8_t REG_INTENSITY = 0x0A;
+const uint8_t REG_SCAN_LIMIT = 0x0B;
+const uint8_t REG_SHUTDOWN = 0x0C;
+const uint8_t REG_DISP_TEST = 0x0F;
 
 // --- FONT: 5x8 bitmap font for characters ---
 // Each character = 5 bytes, each byte = one column, bit0=top row
 const uint8_t FONT_5x8[][5] = {
-  { 0x7C, 0x82, 0x82, 0x82, 0x7C }, // 0: 'A'
-  { 0x3E, 0x49, 0x49, 0x49, 0x36 }, // 1: 'B'
-  { 0x3E, 0x41, 0x41, 0x41, 0x22 }, // 2: 'C'
-  { 0x7F, 0x49, 0x49, 0x49, 0x36 }, // 3: 'D'
-  { 0x7F, 0x49, 0x49, 0x41, 0x41 }, // 4: 'E'
-  { 0x7F, 0x09, 0x09, 0x01, 0x01 }, // 5: 'F'
-  { 0x3E, 0x41, 0x49, 0x49, 0x7A }, // 6: 'G'
-  { 0x7F, 0x08, 0x08, 0x08, 0x7F }, // 7: 'H'
-  { 0x00, 0x41, 0x7F, 0x41, 0x00 }, // 8: 'I'
-  { 0x20, 0x40, 0x41, 0x3F, 0x01 }, // 9: 'J'
-  { 0x7F, 0x08, 0x14, 0x22, 0x41 }, // 10: 'K'
-  { 0x7F, 0x40, 0x40, 0x40, 0x40 }, // 11: 'L'
-  { 0x7F, 0x02, 0x0C, 0x02, 0x7F }, // 12: 'M'
-  { 0x7F, 0x04, 0x08, 0x10, 0x7F }, // 13: 'N'
-  { 0x3E, 0x41, 0x41, 0x41, 0x3E }, // 14: 'O'
-  { 0x7F, 0x09, 0x09, 0x09, 0x06 }, // 15: 'P'
+    {0x7C, 0x82, 0x82, 0x82, 0x7C},  // 0: 'A'
+    {0x3E, 0x49, 0x49, 0x49, 0x36},  // 1: 'B'
+    {0x3E, 0x41, 0x41, 0x41, 0x22},  // 2: 'C'
+    {0x7F, 0x49, 0x49, 0x49, 0x36},  // 3: 'D'
+    {0x7F, 0x49, 0x49, 0x41, 0x41},  // 4: 'E'
+    {0x7F, 0x09, 0x09, 0x01, 0x01},  // 5: 'F'
+    {0x3E, 0x41, 0x49, 0x49, 0x7A},  // 6: 'G'
+    {0x7F, 0x08, 0x08, 0x08, 0x7F},  // 7: 'H'
+    {0x00, 0x41, 0x7F, 0x41, 0x00},  // 8: 'I'
+    {0x20, 0x40, 0x41, 0x3F, 0x01},  // 9: 'J'
+    {0x7F, 0x08, 0x14, 0x22, 0x41},  // 10: 'K'
+    {0x7F, 0x40, 0x40, 0x40, 0x40},  // 11: 'L'
+    {0x7F, 0x02, 0x0C, 0x02, 0x7F},  // 12: 'M'
+    {0x7F, 0x04, 0x08, 0x10, 0x7F},  // 13: 'N'
+    {0x3E, 0x41, 0x41, 0x41, 0x3E},  // 14: 'O'
+    {0x7F, 0x09, 0x09, 0x09, 0x06},  // 15: 'P'
 };
 
 // --- FRAMEBUFFER: 8 rows, 8 columns per row ---
@@ -77,7 +77,7 @@ uint8_t framebuffer[8] = {0};
 
 // --- SCROLLING MESSAGE ---
 const char* MESSAGE = "HI ARDUINO";
-const int   MSG_LEN = 10; // Length of MESSAGE
+const int MSG_LEN = 10;  // Length of MESSAGE
 
 void setup() {
   Serial.begin(9600);
@@ -87,11 +87,11 @@ void setup() {
   digitalWrite(CS_PIN, HIGH);
 
   // Initialize MAX7219
-  maxWrite(REG_DISP_TEST,   0x00); // Normal mode (no test)
-  maxWrite(REG_SHUTDOWN,    0x01); // Wake up
-  maxWrite(REG_DECODE_MODE, 0x00); // No BCD decode (raw LED control)
-  maxWrite(REG_SCAN_LIMIT,  0x07); // All 8 rows active
-  maxWrite(REG_INTENSITY,   0x04); // Medium brightness
+  maxWrite(REG_DISP_TEST, 0x00);    // Normal mode (no test)
+  maxWrite(REG_SHUTDOWN, 0x01);     // Wake up
+  maxWrite(REG_DECODE_MODE, 0x00);  // No BCD decode (raw LED control)
+  maxWrite(REG_SCAN_LIMIT, 0x07);   // All 8 rows active
+  maxWrite(REG_INTENSITY, 0x04);    // Medium brightness
 
   clearDisplay();
 
@@ -125,18 +125,20 @@ void loop() {
 void scrollText(const char* msg, int len, int delayMs) {
   // Build wide buffer: concatenate all character columns with 1 blank col between
   // Each char = 5 cols + 1 blank = 6 cols total
-  int totalCols = len * 6 + 8; // Extra 8 cols padding at start and end
+  int totalCols = len * 6 + 8;  // Extra 8 cols padding at start and end
   uint8_t* buf = (uint8_t*)calloc(totalCols, 1);
   if (!buf) return;
 
-  int pos = 8; // Start after 8 blank columns
+  int pos = 8;  // Start after 8 blank columns
   for (int c = 0; c < len; c++) {
     char ch = msg[c];
     int fi = 0;
-    if (ch >= 'A' && ch <= 'P') fi = ch - 'A';
-    else fi = 14; // Default to 'O' for unknown chars
+    if (ch >= 'A' && ch <= 'P')
+      fi = ch - 'A';
+    else
+      fi = 14;  // Default to 'O' for unknown chars
     for (int col = 0; col < 5; col++) buf[pos++] = FONT_5x8[fi][col];
-    buf[pos++] = 0x00; // Column gap between characters
+    buf[pos++] = 0x00;  // Column gap between characters
   }
 
   // Scroll through buffer
@@ -168,7 +170,8 @@ void bouncingBall(unsigned long durationMs) {
   while (millis() - start < durationMs) {
     memset(framebuffer, 0, sizeof(framebuffer));
 
-    bx += vx; by += vy;
+    bx += vx;
+    by += vy;
     if (bx <= 0 || bx >= 7) vx = -vx;
     if (by <= 0 || by >= 7) vy = -vy;
 
@@ -189,7 +192,7 @@ void knightRider(int passes, int delayMs) {
   for (int p = 0; p < passes; p++) {
     for (int row = 0; row < 8; row++) {
       memset(framebuffer, 0, sizeof(framebuffer));
-      framebuffer[row] = 0xFF; // Full row of LEDs lit
+      framebuffer[row] = 0xFF;  // Full row of LEDs lit
       flushFramebuffer();
       delay(delayMs);
     }
@@ -225,7 +228,7 @@ void clearDisplay() {
 // =============================================================
 void maxWrite(uint8_t reg, uint8_t data) {
   digitalWrite(CS_PIN, LOW);
-  SPI.transfer(reg);   // Address byte (D11:D8 in the 16-bit word)
-  SPI.transfer(data);  // Data byte (D7:D0)
-  digitalWrite(CS_PIN, HIGH); // Latch on rising edge of LOAD
+  SPI.transfer(reg);           // Address byte (D11:D8 in the 16-bit word)
+  SPI.transfer(data);          // Data byte (D7:D0)
+  digitalWrite(CS_PIN, HIGH);  // Latch on rising edge of LOAD
 }

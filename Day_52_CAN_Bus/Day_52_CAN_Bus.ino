@@ -1,14 +1,14 @@
 /*
  * 100 Projects with Arduino - Day 52
  * Project: CAN Bus Controller (MCP2515 SPI Node Driver from scratch)
- * 
+ *
  * DESCRIPTION:
  * This project implements a raw register-level SPI driver for the MCP2515 CAN Bus Controller.
- * It configures standard CAN 2.0B frame transmission and reception at a bus speed of 125 kbps 
+ * It configures standard CAN 2.0B frame transmission and reception at a bus speed of 125 kbps
  * (standard for automotive/industrial networks) without any high-level CAN libraries.
- * 
+ *
  * LOW-LEVEL SPI INSTRUCTION STACK:
- * 1. SPI Interface Setup: Drives Chip Select (CS) Pin 10, communicating using mode 0,0 
+ * 1. SPI Interface Setup: Drives Chip Select (CS) Pin 10, communicating using mode 0,0
  *    with a SPI clock frequency of 4 MHz (SPI_CLOCK_DIV4).
  * 2. MCP2515 SPI Command Set:
  *    - RESET (0xC0): Soft-resets the internal registers.
@@ -17,16 +17,16 @@
  *    - BIT MODIFY (0x05): Changes individual bits of a register without altering others.
  *    - LOAD TX BUFFER (0x40): Rapidly writes payload bytes to TX buffer.
  *    - RTS (0x81): Request-to-Send instruction to trigger message transmission.
- * 3. Baud Rate Bit Timing (CNF Registers): Computes the time quanta (TQ) phases (Propagation, 
+ * 3. Baud Rate Bit Timing (CNF Registers): Computes the time quanta (TQ) phases (Propagation,
  *    Phase1, Phase2 Segments) for a 16 MHz oscillator to achieve 125 kbps.
  * 4. Message Filtering: Configures RXB0 to accept all standard message IDs by disabling mask gates,
  *    storing incoming packets, and parsing fields (Standard Identifier, DLC, Data Bytes).
- * 
+ *
  * CAN MESSAGE FRAME (Standard Frame 2.0B):
  * - Standard ID (11 bits): Identifier determining packet priority.
  * - DLC (Data Length Code): Integer (0-8) specifying byte count.
  * - Data Bytes: 0 to 8 bytes payload.
- * 
+ *
  * WIRING:
  * - MCP2515 CAN Controller -> Arduino Uno
  *   - VCC -> 5V
@@ -44,52 +44,52 @@
 
 // --- PIN DEFINITIONS ---
 const int CAN_CS_PIN = 10;
-const int LED_INDICATOR_PIN = 9; // Status LED indicating packet activity
+const int LED_INDICATOR_PIN = 9;  // Status LED indicating packet activity
 const int TX_TRIGGER_PIN = 7;     // Pull low (button press) to transmit a test frame
 
 // --- MCP2515 INSTRUCTION CODES ---
-const uint8_t INST_RESET      = 0xC0;
-const uint8_t INST_READ       = 0x03;
-const uint8_t INST_WRITE      = 0x02;
+const uint8_t INST_RESET = 0xC0;
+const uint8_t INST_READ = 0x03;
+const uint8_t INST_WRITE = 0x02;
 const uint8_t INST_BIT_MODIFY = 0x05;
-const uint8_t INST_RTS_TXB0   = 0x81; // RTS for TX buffer 0
+const uint8_t INST_RTS_TXB0 = 0x81;  // RTS for TX buffer 0
 
 // --- MCP2515 REGISTER MAP ---
-const uint8_t REG_CANSTAT    = 0x0E;
-const uint8_t REG_CANCTRL    = 0x0F;
-const uint8_t REG_CNF1       = 0x2A;
-const uint8_t REG_CNF2       = 0x29;
-const uint8_t REG_CNF3       = 0x28;
-const uint8_t REG_CANINTF    = 0x2C; // Interrupt Flag Register
-const uint8_t REG_RXB0CTRL   = 0x60; // RX Buffer 0 Control
-const uint8_t REG_RXB0SIDH   = 0x61; // RX Buffer 0 Std Identifier High
-const uint8_t REG_RXB0SIDL   = 0x62; // RX Buffer 0 Std Identifier Low
-const uint8_t REG_RXB0DLC    = 0x65; // RX Buffer 0 Data Length Code
-const uint8_t REG_RXB0D0     = 0x66; // RX Buffer 0 Data Byte 0
+const uint8_t REG_CANSTAT = 0x0E;
+const uint8_t REG_CANCTRL = 0x0F;
+const uint8_t REG_CNF1 = 0x2A;
+const uint8_t REG_CNF2 = 0x29;
+const uint8_t REG_CNF3 = 0x28;
+const uint8_t REG_CANINTF = 0x2C;   // Interrupt Flag Register
+const uint8_t REG_RXB0CTRL = 0x60;  // RX Buffer 0 Control
+const uint8_t REG_RXB0SIDH = 0x61;  // RX Buffer 0 Std Identifier High
+const uint8_t REG_RXB0SIDL = 0x62;  // RX Buffer 0 Std Identifier Low
+const uint8_t REG_RXB0DLC = 0x65;   // RX Buffer 0 Data Length Code
+const uint8_t REG_RXB0D0 = 0x66;    // RX Buffer 0 Data Byte 0
 
-const uint8_t REG_TXB0CTRL   = 0x30; // TX Buffer 0 Control
-const uint8_t REG_TXB0SIDH   = 0x31; // TX Buffer 0 Std Identifier High
-const uint8_t REG_TXB0SIDL   = 0x32; // TX Buffer 0 Std Identifier Low
-const uint8_t REG_TXB0DLC    = 0x35; // TX Buffer 0 Data Length Code
-const uint8_t REG_TXB0D0     = 0x36; // TX Buffer 0 Data Byte 0
+const uint8_t REG_TXB0CTRL = 0x30;  // TX Buffer 0 Control
+const uint8_t REG_TXB0SIDH = 0x31;  // TX Buffer 0 Std Identifier High
+const uint8_t REG_TXB0SIDL = 0x32;  // TX Buffer 0 Std Identifier Low
+const uint8_t REG_TXB0DLC = 0x35;   // TX Buffer 0 Data Length Code
+const uint8_t REG_TXB0D0 = 0x36;    // TX Buffer 0 Data Byte 0
 
 // Mode bits
-const uint8_t MODE_CONFIG    = 0x80;
-const uint8_t MODE_NORMAL    = 0x00;
+const uint8_t MODE_CONFIG = 0x80;
+const uint8_t MODE_NORMAL = 0x00;
 
 // Update timing control
 unsigned long lastTxTime = 0;
-const unsigned long txIntervalMs = 2000; // Auto-transmit a telemetry node frame every 2s
+const unsigned long txIntervalMs = 2000;  // Auto-transmit a telemetry node frame every 2s
 
 void setup() {
   Serial.begin(9600);
-  
+
   pinMode(CAN_CS_PIN, OUTPUT);
-  digitalWrite(CAN_CS_PIN, HIGH); // CS active low, start HIGH
-  
+  digitalWrite(CAN_CS_PIN, HIGH);  // CS active low, start HIGH
+
   pinMode(LED_INDICATOR_PIN, OUTPUT);
   pinMode(TX_TRIGGER_PIN, INPUT_PULLUP);
-  
+
   digitalWrite(LED_INDICATOR_PIN, LOW);
 
   // Initialize Hardware SPI
@@ -107,8 +107,9 @@ void setup() {
 
   if ((status & 0xE0) != MODE_CONFIG) {
     Serial.println(F("[ERROR] MCP2515 failed to enter Config mode! Check wiring."));
-    digitalWrite(LED_INDICATOR_PIN, HIGH); // Fail light
-    for (;;);
+    digitalWrite(LED_INDICATOR_PIN, HIGH);  // Fail light
+    for (;;)
+      ;
   }
 
   // --- CONFIGURE CAN BAUD RATE (125 kbps with 16 MHz Oscillator) ---
@@ -124,39 +125,40 @@ void setup() {
 
   // Configure RXB0: Accept all standard frames, turn off filter masks
   // RXM1:0 = 11 (Turn filters/masks off, receive all valid messages)
-  mcpWriteRegister(REG_RXB0CTRL, 0x60); 
+  mcpWriteRegister(REG_RXB0CTRL, 0x60);
 
   // Switch MCP2515 to NORMAL mode to join the active CAN network
   mcpBitModify(REG_CANCTRL, 0xE0, MODE_NORMAL);
   delay(10);
-  
+
   status = mcpReadRegister(REG_CANSTAT);
   if ((status & 0xE0) != MODE_NORMAL) {
     Serial.println(F("[ERROR] MCP2515 failed to enter Normal operating mode."));
-    for (;;);
+    for (;;)
+      ;
   }
-  
+
   Serial.println(F("[CAN] Node initialized at 125 kbps. Operational."));
 }
 
 void loop() {
   // Check if a packet has been received in RX Buffer 0
   uint8_t intFlags = mcpReadRegister(REG_CANINTF);
-  
-  if (intFlags & 0x01) { // RXB0IF is high: packet received!
+
+  if (intFlags & 0x01) {  // RXB0IF is high: packet received!
     receiveCANFrame();
   }
 
   // Handle periodic telemetry transmit
   if (millis() - lastTxTime >= txIntervalMs) {
     lastTxTime = millis();
-    
+
     // Read local sensor data
     int rawSensorVal = analogRead(A0);
     uint8_t payload[4];
-    payload[0] = 0x55; // Telemetry header code
-    payload[1] = (rawSensorVal >> 8) & 0xFF; // Data High
-    payload[2] = rawSensorVal & 0xFF;        // Data Low
+    payload[0] = 0x55;                        // Telemetry header code
+    payload[1] = (rawSensorVal >> 8) & 0xFF;  // Data High
+    payload[2] = rawSensorVal & 0xFF;         // Data Low
     payload[3] = digitalRead(LED_INDICATOR_PIN);
 
     // Transmit message with standard priority ID 0x244
@@ -166,8 +168,8 @@ void loop() {
   // Handle manual trigger transmit
   if (digitalRead(TX_TRIGGER_PIN) == LOW) {
     uint8_t alertPayload[2] = {0xAA, 0x99};
-    transmitCANFrame(0x100, 2, alertPayload); // ID 0x100 (high priority alert ID)
-    delay(250); // Debounce button trigger
+    transmitCANFrame(0x100, 2, alertPayload);  // ID 0x100 (high priority alert ID)
+    delay(250);                                // Debounce button trigger
   }
 }
 
@@ -233,8 +235,8 @@ void transmitCANFrame(uint16_t id, uint8_t length, uint8_t* data) {
   digitalWrite(CAN_CS_PIN, LOW);
   SPI.transfer(INST_RTS_TXB0);
   digitalWrite(CAN_CS_PIN, HIGH);
-  
-  delayMicroseconds(50); // Small settle
+
+  delayMicroseconds(50);  // Small settle
   digitalWrite(LED_INDICATOR_PIN, LOW);
 
   // Log event

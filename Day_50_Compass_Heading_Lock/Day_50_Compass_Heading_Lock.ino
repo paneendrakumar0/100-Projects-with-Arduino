@@ -1,33 +1,36 @@
 /*
  * 100 Projects with Arduino - Day 50
  * Project: Digital Compass Heading Lock (QMC5883L I2C Magnetometer Navigation)
- * 
+ *
  * DESCRIPTION:
- * This project interfaces a QMC5883L 3-axis digital magnetometer over I2C (using Wire.h 
- * direct register addressing) to implement an absolute Heading-Lock navigation controller 
+ * This project interfaces a QMC5883L 3-axis digital magnetometer over I2C (using Wire.h
+ * direct register addressing) to implement an absolute Heading-Lock navigation controller
  * for a 2WD differential robot chassis.
- * 
+ *
  * CONTROL SYSTEMS & SIGNAL PROCESSING:
  * 1. Direct I2C Register Pipeline: Configures the QMC5883L at 200 Hz Output Data Rate (ODR),
  *    2 Gauss range, and 512 Over-Sampling Ratio (OSR) by writing to registers 0x09 and 0x0A.
  * 2. Hard-Iron Bias Calibration: Sweeps the sensor in a 360-degree circle during setup to record
- *    the maximum and minimum raw field vectors, calculating offset biases to eliminate magnetic distortions.
- * 3. Heading Angle Formulation: Computes relative magnetic heading via atan2(y, x), adjusts 
+ *    the maximum and minimum raw field vectors, calculating offset biases to eliminate magnetic
+ * distortions.
+ * 3. Heading Angle Formulation: Computes relative magnetic heading via atan2(y, x), adjusts
  *    for local Geographic Declination, and normalizes output bounds to 0 - 360 degrees.
  * 4. Closed-Loop Heading-Lock Steering: Runs a Proportional control loop to calculate differential
- *    motor speed adjustments based on Heading Error, allowing the robot to travel along a precise absolute bearing.
- * 
+ *    motor speed adjustments based on Heading Error, allowing the robot to travel along a precise
+ * absolute bearing.
+ *
  * PHYSICS & NAVIGATION MATHEMATICS:
  * - Magnetic Declination: Adjusts the heading from Magnetic North to True (Geographic) North:
  *     True Heading = Magnetic Heading + Declination Angle
- *     (Declination varies by location. E.g., London is +0.022 rad / +1.28°, Tokyo is -0.138 rad / -7.9°).
+ *     (Declination varies by location. E.g., London is +0.022 rad / +1.28°, Tokyo is -0.138 rad /
+ * -7.9°).
  * - Hard-Iron Correction:
  *     X_offset = (X_max + X_min) / 2;  Y_offset = (Y_max + Y_min) / 2;
  *     X_calibrated = X_raw - X_offset; Y_calibrated = Y_raw - Y_offset;
  * - Angular Error Shortest-Path Normalization:
  *     Error = Target_Heading - Current_Heading
  *     If Error > 180, Error = Error - 360; If Error < -180, Error = Error + 360;
- * 
+ *
  * WIRING:
  * - QMC5883L Magnetometer (GY-271) -> Arduino Uno
  *   - VCC -> 5V (or 3.3V depending on module)
@@ -46,8 +49,8 @@
 // --- QMC5883L I2C REGISTER DEFS ---
 const int QMC_ADDRESS = 0x0D;
 const int REG_DATA_X_LSB = 0x00;
-const int REG_CONTROL_1  = 0x09;
-const int REG_CONTROL_2  = 0x0A;
+const int REG_CONTROL_1 = 0x09;
+const int REG_CONTROL_2 = 0x0A;
 
 // --- MOTOR CONTROLLER PIN DEFINITIONS ---
 const int L_ENA_PIN = 5;
@@ -62,24 +65,25 @@ const int LED_INDICATOR_PIN = 13;
 
 // --- GEOGRAPHIC CALIBRATION CONFIG ---
 // Find your local declination at: http://www.magnetic-declination.com/
-// Example declination: +2 degrees 30 minutes East -> +2.5 degrees -> (2.5 * PI / 180) = +0.0436 radians
-const float LOCAL_DECLINATION_RAD = 0.0436; 
+// Example declination: +2 degrees 30 minutes East -> +2.5 degrees -> (2.5 * PI / 180) = +0.0436
+// radians
+const float LOCAL_DECLINATION_RAD = 0.0436;
 
 // --- HARD-IRON CALIBRATION BIASES ---
 float xOffset = 0.0;
 float yOffset = 0.0;
 
 // --- NAVIGATION STATE VARIABLES ---
-double targetHeading = 90.0; // Target heading in degrees (90.0 = True East)
+double targetHeading = 90.0;  // Target heading in degrees (90.0 = True East)
 double currentHeading = 0.0;
 
 // --- STEERING CONTROL PARAMETERS ---
-const double Kp = 2.2; // Proportional feedback steering aggressiveness
+const double Kp = 2.2;  // Proportional feedback steering aggressiveness
 const int BASE_CRUISE_SPEED = 120;
 
 // --- TIMING CYCLE CONFIG ---
 unsigned long lastLoopTimeUs = 0;
-const unsigned long samplePeriodUs = 20000; // 20ms sample period = 50 Hz control loop
+const unsigned long samplePeriodUs = 20000;  // 20ms sample period = 50 Hz control loop
 
 void setup() {
   Serial.begin(9600);
@@ -141,7 +145,7 @@ void loop() {
 
       // Step 6: Compute Heading Error (Shortest path rotation)
       double error = targetHeading - currentHeading;
-      
+
       // Keep error within [-180, 180] degrees
       if (error > 180.0) {
         error -= 360.0;
@@ -153,7 +157,7 @@ void loop() {
       double correction = Kp * error;
 
       // Adjust motor PWM to steer toward the lock direction
-      int leftPWM  = BASE_CRUISE_SPEED - (int)correction;
+      int leftPWM = BASE_CRUISE_SPEED - (int)correction;
       int rightPWM = BASE_CRUISE_SPEED + (int)correction;
 
       driveMotors(leftPWM, rightPWM);
@@ -174,7 +178,7 @@ void initMagnetometer() {
   // Reset QMC5883L chip
   Wire.beginTransmission(QMC_ADDRESS);
   Wire.write(REG_CONTROL_2);
-  Wire.write(0x80); // Software reset
+  Wire.write(0x80);  // Software reset
   Wire.endTransmission();
   delay(100);
 
@@ -183,11 +187,12 @@ void initMagnetometer() {
   // Let's use OSR=512 (00), RNG=2G (00), ODR=200Hz (11), MODE=Continuous (01) -> 00001101 = 0x0D
   Wire.beginTransmission(QMC_ADDRESS);
   Wire.write(REG_CONTROL_1);
-  Wire.write(0x0D); 
+  Wire.write(0x0D);
   if (Wire.endTransmission() != 0) {
     Serial.println(F("[ERROR] QMC5883L communication failed! Halt."));
     digitalWrite(LED_INDICATOR_PIN, HIGH);
-    for (;;);
+    for (;;)
+      ;
   }
   Serial.println(F("[COMPASS] QMC5883L configured successfully."));
 }
@@ -252,8 +257,10 @@ void runCompassCalibration() {
   yOffset = (float)(yMax + yMin) / 2.0;
 
   Serial.println(F("[CALIBRATION] Complete. Offsets established:"));
-  Serial.print(F("  X Offset: ")); Serial.println(xOffset);
-  Serial.print(F("  Y Offset: ")); Serial.println(yOffset);
+  Serial.print(F("  X Offset: "));
+  Serial.println(xOffset);
+  Serial.print(F("  Y Offset: "));
+  Serial.println(yOffset);
   delay(1500);
 }
 
@@ -285,14 +292,14 @@ void driveMotors(int leftSpeed, int rightSpeed) {
 }
 
 void drivePivot(int dir, int speed) {
-  if (dir == 1) { // Pivot Right
+  if (dir == 1) {  // Pivot Right
     digitalWrite(L_IN1_PIN, HIGH);
     digitalWrite(L_IN2_PIN, LOW);
     analogWrite(L_ENA_PIN, speed);
     digitalWrite(R_IN3_PIN, LOW);
     digitalWrite(R_IN4_PIN, HIGH);
     analogWrite(R_ENB_PIN, speed);
-  } else { // Pivot Left
+  } else {  // Pivot Left
     digitalWrite(L_IN1_PIN, LOW);
     digitalWrite(L_IN2_PIN, HIGH);
     analogWrite(L_ENA_PIN, speed);

@@ -1,18 +1,18 @@
 /*
  * 100 Projects with Arduino - Day 72
  * Project: CSV Datalogger (Sensors to SD Card with Safe Toggle/Eject)
- * 
+ *
  * DESCRIPTION:
  * This project implements a robust, periodic sensor datalogger that records sensor telemetry
  * in Comma-Separated Values (CSV) format onto an SD Card. To meet industrial design standards:
  * 1. Safe Eject/Toggle Button: Integrates a debounced push button on Pin 2 that allows the user
- *    to gracefully start and stop the datalogger. Stopping the logger writes a finalization footer 
+ *    to gracefully start and stop the datalogger. Stopping the logger writes a finalization footer
  *    to the CSV file and closes the file system handles, enabling safe card ejection.
  * 2. Comma-Separated Values (CSV): Writes a header row on boot if the file is new. Fields logged:
  *    Timestamp (ms), LDR Raw, Potentiometer Raw, Computed Voltage (V).
  * 3. Non-blocking Execution: Sampling and logging are managed at a precise 1 Hz (1000ms) interval
  *    using millis() timers, allowing concurrent button polling and LED status flashing.
- * 
+ *
  * WIRING:
  * - SD Card Module Pin -> Arduino Uno Pin
  *   - GND             -> GND
@@ -28,25 +28,25 @@
  *   - Status LED (Logging)  -> Pin 5 (via 220Ω resistor to GND)
  */
 
-#include <SPI.h>
 #include <SD.h>
+#include <SPI.h>
 
 // --- PIN DEFINITIONS ---
-const int CS_PIN      = 4;  // SD CS pin
-const int BUTTON_PIN  = 2;  // Start/Stop logging toggle button
-const int STATUS_LED  = 5;  // Logging status LED indicator
-const int LDR_PIN     = A0; // LDR analog input
-const int POT_PIN     = A1; // Potentiometer analog input
+const int CS_PIN = 4;      // SD CS pin
+const int BUTTON_PIN = 2;  // Start/Stop logging toggle button
+const int STATUS_LED = 5;  // Logging status LED indicator
+const int LDR_PIN = A0;    // LDR analog input
+const int POT_PIN = A1;    // Potentiometer analog input
 
 // --- DATALOG CONFIGURATION ---
 const char* CSV_FILENAME = "datalog.csv";
-const unsigned long SAMPLE_INTERVAL_MS = 1000; // Log data every 1 second
+const unsigned long SAMPLE_INTERVAL_MS = 1000;  // Log data every 1 second
 
 // --- STATE VARIABLES ---
-bool isLogging = false;                 // Current logging state
-unsigned long lastSampleTime = 0;       // Timer for sampling interval
-unsigned long lastBlinkTime = 0;        // Timer for status LED blink
-bool statusLedState = false;            // LED state tracking
+bool isLogging = false;            // Current logging state
+unsigned long lastSampleTime = 0;  // Timer for sampling interval
+unsigned long lastBlinkTime = 0;   // Timer for status LED blink
+bool statusLedState = false;       // LED state tracking
 
 // Button debounce state variables
 bool buttonState = HIGH;
@@ -56,7 +56,7 @@ const unsigned long DEBOUNCE_DELAY_MS = 50;
 
 void setup() {
   Serial.begin(9600);
-  
+
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   pinMode(STATUS_LED, OUTPUT);
   digitalWrite(STATUS_LED, LOW);
@@ -76,12 +76,12 @@ void setup() {
       delay(100);
     }
   }
-  
+
   Serial.println(F("[SYSTEM] SD Card initialized successfully."));
-  
+
   // Write the CSV header row if the file is new
   checkAndWriteHeader();
-  
+
   printShellMenu();
   Serial.println(F("[STATUS] Press Button D2 or type 't' to START logging."));
 }
@@ -93,13 +93,13 @@ void loop() {
   // 2. Perform periodic sampling if logging is active
   if (isLogging) {
     unsigned long currentMillis = millis();
-    
+
     // Log data every 1000ms (non-blocking)
     if (currentMillis - lastSampleTime >= SAMPLE_INTERVAL_MS) {
       lastSampleTime = currentMillis;
       logSensorData();
     }
-    
+
     // Blink status LED to show active logging
     if (currentMillis - lastBlinkTime >= 500) {
       lastBlinkTime = currentMillis;
@@ -155,7 +155,7 @@ void checkAndWriteHeader() {
     Serial.print(F("[SYSTEM] Creating new CSV file '"));
     Serial.print(CSV_FILENAME);
     Serial.println(F("'..."));
-    
+
     File myFile = SD.open(CSV_FILENAME, FILE_WRITE);
     if (myFile) {
       // Write CSV headers
@@ -178,9 +178,9 @@ void checkAndWriteHeader() {
  */
 void toggleLogging() {
   isLogging = !isLogging;
-  
+
   File myFile = SD.open(CSV_FILENAME, FILE_WRITE);
-  
+
   if (isLogging) {
     Serial.println(F("[LOGGER] >>> LOGGING STARTED <<<"));
     if (myFile) {
@@ -202,10 +202,10 @@ void toggleLogging() {
 void logSensorData() {
   int ldrVal = analogRead(LDR_PIN);
   int potVal = analogRead(POT_PIN);
-  
+
   // Calculate voltage from potentiometer (0 - 1023 -> 0.0 - 5.0 V)
   float voltage = (potVal * 5.0f) / 1023.0f;
-  
+
   unsigned long timeStamp = millis();
 
   // Open the file in write mode
@@ -219,7 +219,7 @@ void logSensorData() {
     myFile.print(F(","));
     myFile.print(potVal);
     myFile.print(F(","));
-    myFile.println(voltage, 2); // 2 decimal places
+    myFile.println(voltage, 2);  // 2 decimal places
 
     // Commit changes to disk
     myFile.close();

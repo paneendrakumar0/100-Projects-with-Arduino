@@ -1,41 +1,42 @@
 /*
  * 100 Projects with Arduino - Day 48
  * Project: Maze Solving Robot (Left-Hand-On-Wall Rule & Path Optimization)
- * 
+ *
  * DESCRIPTION:
  * This project implements a fully autonomous maze-solving robot using a 5-sensor IR array
- * and a 2WD differential chassis. 
+ * and a 2WD differential chassis.
  * The system executes in two phases:
- * 1. Exploration Phase: The robot navigates an unknown line-based grid maze using the 
- *    "Left-Hand-On-Wall" (LHR) heuristic. It detects all intersections (L-turns, R-turns, T-junctions, 
- *    Cross-roads, Dead-ends, and the End-of-Maze target) and records every turn decision into memory.
+ * 1. Exploration Phase: The robot navigates an unknown line-based grid maze using the
+ *    "Left-Hand-On-Wall" (LHR) heuristic. It detects all intersections (L-turns, R-turns,
+ * T-junctions, Cross-roads, Dead-ends, and the End-of-Maze target) and records every turn decision
+ * into memory.
  * 2. Optimization Phase: Upon reaching the end of the maze, the robot processes the logged path
  *    to simplify U-turns and output the shortest, most direct route to the destination.
- * 
+ *
  * MAZE DECISION PRIORITY (Left-Hand Rule):
  * 1. Turn Left (if a left path is available)
  * 2. Go Straight (if no left path is available, but a straight path is)
  * 3. Turn Right (if no left or straight path is available)
  * 4. Turn Back / U-Turn (if it is a dead end)
- * 
+ *
  * PATH OPTIMIZATION MATH:
- * When the robot makes a U-turn (represented by 'U'), it implies that the previous turn, the U-turn, 
- * and the next turn can be combined into a single, direct path. 
- * The optimization algorithm searches the path array and replaces 3-turn sequences as follows:
+ * When the robot makes a U-turn (represented by 'U'), it implies that the previous turn, the
+ * U-turn, and the next turn can be combined into a single, direct path. The optimization algorithm
+ * searches the path array and replaces 3-turn sequences as follows:
  *   - L U L -> S
  *   - L U S -> R
  *   - R U L -> U
  *   - S U L -> R
  *   - S U S -> U
  *   - L U R -> U
- * 
+ *
  * STATE MACHINE:
  * - STATE_CALIBRATING: Pivots in place to calibrate the IR sensor array.
  * - STATE_FOLLOWING: Executes line tracking.
  * - STATE_INTERSECTION: Inches forward to analyze the junction, makes a decision, and transitions.
  * - STATE_TURNING: Pivots left, right, or around until the line is re-acquired.
  * - STATE_COMPLETED: Reaches the endpoint, halts, optimizes the path, and logs telemetry.
- * 
+ *
  * WIRING:
  * - 5-Channel IR Sensor Array -> Arduino Uno
  *   - OUT1 to OUT5 -> Pins A0 to A4
@@ -82,12 +83,7 @@ char pathLog[MAX_PATH_LENGTH];
 int pathLength = 0;
 
 // Turn directions
-enum TurnDirection {
-  TURN_LEFT,
-  TURN_RIGHT,
-  TURN_BACK,
-  GO_STRAIGHT
-};
+enum TurnDirection { TURN_LEFT, TURN_RIGHT, TURN_BACK, GO_STRAIGHT };
 TurnDirection activeTurn = GO_STRAIGHT;
 
 // --- TIMING & SPEED PARAMS ---
@@ -97,7 +93,7 @@ const int TURN_SPEED = 110;
 
 void setup() {
   Serial.begin(9600);
-  
+
   pinMode(LED_INDICATOR_PIN, OUTPUT);
   pinMode(L_ENA_PIN, OUTPUT);
   pinMode(L_IN1_PIN, OUTPUT);
@@ -115,7 +111,7 @@ void setup() {
   }
 
   runAutoCalibration();
-  
+
   currentState = STATE_FOLLOWING;
   Serial.println("[MAZE] Exploration started. Following line...");
 }
@@ -125,14 +121,14 @@ void loop() {
   int weights[NUM_SENSORS];
   long totalWeight = 0;
   float centroidSum = 0.0;
-  
+
   for (int i = 0; i < NUM_SENSORS; i++) {
     int raw = analogRead(SENSOR_PINS[i]);
     int norm = map(raw, sensorMinValues[i], sensorMaxValues[i], 0, 1000);
     norm = constrain(norm, 0, 1000);
     weights[i] = norm;
     totalWeight += norm;
-    centroidSum += ((float)norm * (i - 2)); // Coordinates: -2, -1, 0, 1, 2
+    centroidSum += ((float)norm * (i - 2));  // Coordinates: -2, -1, 0, 1, 2
   }
 
   // Boolean flags for line detection on parts of the array
@@ -142,7 +138,6 @@ void loop() {
   bool lineDetected = (totalWeight > 400);
 
   switch (currentState) {
-    
     case STATE_FOLLOWING: {
       // Check if we hit an intersection (detectable by wide lateral lines)
       if (leftSensorActive || rightSensorActive) {
@@ -151,17 +146,15 @@ void loop() {
         stateTimerStart = millis();
         // Drive forward slightly to position the wheels over the pivot point
         driveMotors(BASE_CRUISE_SPEED, BASE_CRUISE_SPEED);
-      } 
-      else if (!lineDetected) {
+      } else if (!lineDetected) {
         // No line detected -> We hit a Dead End!
         logDecision('U');
         activeTurn = TURN_BACK;
         currentState = STATE_TURNING;
-        drivePivot(TURN_LEFT); // Always pivot left for U-turn in LHR
-      } 
-      else {
+        drivePivot(TURN_LEFT);  // Always pivot left for U-turn in LHR
+      } else {
         // Standard Line Following (Proportional correction)
-        float offset = centroidSum / totalWeight; // Range: -2.0 to +2.0
+        float offset = centroidSum / totalWeight;  // Range: -2.0 to +2.0
         int correction = (int)(offset * 45.0);
         driveMotors(BASE_CRUISE_SPEED + correction, BASE_CRUISE_SPEED - correction);
       }
@@ -172,7 +165,7 @@ void loop() {
       // Inch forward for 120ms to check what lies ahead (beyond the initial branch detection)
       if (millis() - stateTimerStart >= 120) {
         haltRobot();
-        
+
         // Re-read sensors to identify intersection type
         long checkTotalWeight = 0;
         int checkWeights[NUM_SENSORS];
@@ -182,14 +175,14 @@ void loop() {
           checkWeights[i] = constrain(norm, 0, 1000);
           checkTotalWeight += checkWeights[i];
         }
-        
+
         bool pathAhead = (checkWeights[2] > 500 || checkWeights[1] > 500 || checkWeights[3] > 500);
-        bool pathLeft = leftSensorActive; // From cached readings when we entered
+        bool pathLeft = leftSensorActive;  // From cached readings when we entered
         bool pathRight = rightSensorActive;
 
         // Check for End-of-Maze (e.g. solid black block, all sensors strongly triggered)
         bool allSensorsTriggered = true;
-        for(int i = 0; i < NUM_SENSORS; i++) {
+        for (int i = 0; i < NUM_SENSORS; i++) {
           if (checkWeights[i] < 700) allSensorsTriggered = false;
         }
 
@@ -205,18 +198,15 @@ void loop() {
           activeTurn = TURN_LEFT;
           currentState = STATE_TURNING;
           drivePivot(TURN_LEFT);
-        } 
-        else if (pathAhead) {
+        } else if (pathAhead) {
           logDecision('S');
-          currentState = STATE_FOLLOWING; // Just drive straight forward
-        } 
-        else if (pathRight) {
+          currentState = STATE_FOLLOWING;  // Just drive straight forward
+        } else if (pathRight) {
           logDecision('R');
           activeTurn = TURN_RIGHT;
           currentState = STATE_TURNING;
           drivePivot(TURN_RIGHT);
-        } 
-        else {
+        } else {
           // Fallback: Should not be reached unless track is corrupted, turn back
           logDecision('U');
           activeTurn = TURN_BACK;
@@ -245,14 +235,15 @@ void loop() {
       digitalWrite(LED_INDICATOR_PIN, HIGH);
       Serial.println("[MAZE] Endpoint Reached!");
       printPath("Explored Path");
-      
+
       optimizePath();
       printPath("Optimized Path");
-      
+
       // Infinite halt loop
-      for(;;);
+      for (;;)
+        ;
     }
-    
+
     default:
       break;
   }
@@ -298,12 +289,18 @@ void optimizePath() {
         char replacement = ' ';
 
         // Rules based on coordinate turn math
-        if (prev == 'L' && next == 'L') replacement = 'S';
-        else if (prev == 'L' && next == 'S') replacement = 'R';
-        else if (prev == 'R' && next == 'L') replacement = 'U';
-        else if (prev == 'S' && next == 'L') replacement = 'R';
-        else if (prev == 'S' && next == 'S') replacement = 'U';
-        else if (prev == 'L' && next == 'R') replacement = 'U';
+        if (prev == 'L' && next == 'L')
+          replacement = 'S';
+        else if (prev == 'L' && next == 'S')
+          replacement = 'R';
+        else if (prev == 'R' && next == 'L')
+          replacement = 'U';
+        else if (prev == 'S' && next == 'L')
+          replacement = 'R';
+        else if (prev == 'S' && next == 'S')
+          replacement = 'U';
+        else if (prev == 'L' && next == 'R')
+          replacement = 'U';
 
         if (replacement != ' ') {
           // Perform shift operation: replace 3 elements with 1
@@ -313,7 +310,7 @@ void optimizePath() {
           }
           pathLength -= 2;
           simplified = true;
-          break; // Restart loop to find any remaining replacements
+          break;  // Restart loop to find any remaining replacements
         }
       }
     }
@@ -325,14 +322,14 @@ void optimizePath() {
 void runAutoCalibration() {
   Serial.println("[CALIBRATION] Starting. Place robot on line...");
   digitalWrite(LED_INDICATOR_PIN, HIGH);
-  
+
   unsigned long start = millis();
   unsigned long lastToggle = millis();
   int pivotDirection = 1;
-  
+
   // Slowly swing back and forth
   drivePivot(pivotDirection);
-  
+
   while (millis() - start < 5000) {
     if (millis() - lastToggle >= 700) {
       lastToggle = millis();
@@ -387,7 +384,7 @@ void drivePivot(TurnDirection dir) {
     digitalWrite(R_IN3_PIN, HIGH);
     digitalWrite(R_IN4_PIN, LOW);
     analogWrite(R_ENB_PIN, TURN_SPEED);
-  } else { // TURN_RIGHT
+  } else {  // TURN_RIGHT
     digitalWrite(L_IN1_PIN, HIGH);
     digitalWrite(L_IN2_PIN, LOW);
     analogWrite(L_ENA_PIN, TURN_SPEED);
@@ -395,7 +392,7 @@ void drivePivot(TurnDirection dir) {
     digitalWrite(R_IN4_PIN, HIGH);
     analogWrite(R_ENB_PIN, TURN_SPEED);
   }
-  stateTimerStart = millis(); // Reset stateTimer for turn timeout ignores
+  stateTimerStart = millis();  // Reset stateTimer for turn timeout ignores
 }
 
 void haltRobot() {

@@ -1,21 +1,22 @@
 /*
  * 100 Projects with Arduino - Day 49
  * Project: GPS Telemetry Decoder (Raw NMEA Sentence Parser & Checksum Verifier)
- * 
+ *
  * DESCRIPTION:
  * This project implements a high-performance, non-blocking GPS parser that decodes raw NMEA-0183
- * protocol streams directly from a NEO-6M GPS receiver without any third-party libraries (e.g. TinyGPS).
- * To demonstrate advanced firmware engineering standards:
- * 1. Byte-Level State Machine Parser: Reads characters from SoftwareSerial non-blockingly, reassembles
- *    individual sentences, and extracts fields dynamically using pointer index indexing.
+ * protocol streams directly from a NEO-6M GPS receiver without any third-party libraries (e.g.
+ * TinyGPS). To demonstrate advanced firmware engineering standards:
+ * 1. Byte-Level State Machine Parser: Reads characters from SoftwareSerial non-blockingly,
+ * reassembles individual sentences, and extracts fields dynamically using pointer index indexing.
  * 2. Hardware-Level Checksum Verification: Computes the XOR checksum of every sentence and verifies
  *    it against the received packet trailer hex byte, throwing away corrupted messages.
  * 3. NMEA Parsing Engine: Decodes:
- *    - $GPRMC: UTC time, Fix Status (A=Active, V=Void), Latitude, Longitude, Speed (knots), and Date.
+ *    - $GPRMC: UTC time, Fix Status (A=Active, V=Void), Latitude, Longitude, Speed (knots), and
+ * Date.
  *    - $GPGGA: Altitude (meters) and Number of Connected Satellites.
  * 4. Coordinate Conversion: Converts raw NMEA angular coordinates (DDMM.MMMM / DDDMM.MMMM)
  *    into standard decimal degrees (DD.DDDDD) with proper directional sign (+/-) representation.
- * 
+ *
  * NMEA COORDINATE CONVERSION MATHEMATICS:
  * - Raw Latitude String: "1302.3456" -> 13 degrees, 02.3456 minutes.
  *   Decimal Latitude = 13 + (02.3456 / 60.0) = 13.039093°
@@ -23,13 +24,14 @@
  * - Raw Longitude String: "08015.6789" -> 80 degrees, 15.6789 minutes.
  *   Decimal Longitude = 80 + (15.6789 / 60.0) = 80.261315°
  *   If direction is 'W' (West), multiply by -1.0.
- * 
+ *
  * WIRING:
  * - NEO-6M GPS Module -> Arduino Uno
  *   - VCC -> 5V (or 3.3V depending on module)
  *   - GND -> GND
  *   - TXD -> Pin 9 (Arduino SoftwareSerial RX)
- *   - RXD -> Pin 10 (Arduino SoftwareSerial TX via 1k/2k Ohm voltage divider to step 5V down to 3.3V)
+ *   - RXD -> Pin 10 (Arduino SoftwareSerial TX via 1k/2k Ohm voltage divider to step 5V down
+ * to 3.3V)
  */
 
 #include <SoftwareSerial.h>
@@ -49,7 +51,7 @@ bool isCapturing = false;
 
 // --- TELEMETRY CONTAINERS ---
 char utcTime[10] = "00:00:00";
-char fixStatus = 'V'; // 'A' = Active (3D Fix), 'V' = Void (No Fix)
+char fixStatus = 'V';  // 'A' = Active (3D Fix), 'V' = Void (No Fix)
 float decimalLatitude = 0.0;
 float decimalLongitude = 0.0;
 float speedKnots = 0.0;
@@ -59,15 +61,15 @@ float altitudeMeters = 0.0;
 
 // Update tracking to throttle Serial Monitor prints
 unsigned long lastDisplayTime = 0;
-const unsigned long displayIntervalMs = 1500; // Print telemetry summary every 1.5s
+const unsigned long displayIntervalMs = 1500;  // Print telemetry summary every 1.5s
 
 void setup() {
   Serial.begin(9600);
-  gpsSerial.begin(9600); // NEO-6M defaults to 9600 baud
-  
+  gpsSerial.begin(9600);  // NEO-6M defaults to 9600 baud
+
   pinMode(LED_INDICATOR_PIN, OUTPUT);
   digitalWrite(LED_INDICATOR_PIN, LOW);
-  
+
   Serial.println("[GPS] Starting raw NMEA telemetry decoder...");
   Serial.println("[GPS] Waiting for satellites 3D lock (LED blinks on active sentence parser)...");
 }
@@ -93,20 +95,17 @@ void parseRawByte(char c) {
     bufferIndex = 0;
     isCapturing = true;
     sentenceBuffer[bufferIndex] = '\0';
-  } 
-  else if (isCapturing) {
+  } else if (isCapturing) {
     if (c == '\r' || c == '\n') {
       sentenceBuffer[bufferIndex] = '\0';
       isCapturing = false;
-      
+
       // We have a complete sentence! Let's process it
       processCompleteSentence();
-    } 
-    else if (bufferIndex < MAX_SENTENCE_LEN - 1) {
+    } else if (bufferIndex < MAX_SENTENCE_LEN - 1) {
       sentenceBuffer[bufferIndex] = c;
       bufferIndex++;
-    } 
-    else {
+    } else {
       // Buffer overflow protection: reset parser
       isCapturing = false;
       bufferIndex = 0;
@@ -127,7 +126,7 @@ void processCompleteSentence() {
     }
   }
 
-  if (asteriskIndex == -1) return; // Invalid structure, throw out
+  if (asteriskIndex == -1) return;  // Invalid structure, throw out
 
   // Extract expected checksum hex code
   char hexChecksum[3];
@@ -159,8 +158,7 @@ void processCompleteSentence() {
   // Check identifier (e.g. "GPRMC" or "GNRMC" / "GPGGA" or "GNGGA")
   if (strstr(sentenceBuffer, "RMC") != NULL) {
     parseGPRMC();
-  } 
-  else if (strstr(sentenceBuffer, "GGA") != NULL) {
+  } else if (strstr(sentenceBuffer, "GGA") != NULL) {
     parseGPGGA();
   }
 }
@@ -211,9 +209,15 @@ void parseGPRMC() {
   // Field 1: UTC Time (HHMMSS.SS)
   if (getCommaField(sentenceBuffer, 1, temp, sizeof(temp))) {
     // Reformat into HH:MM:SS
-    utcTime[0] = temp[0]; utcTime[1] = temp[1]; utcTime[2] = ':';
-    utcTime[3] = temp[2]; utcTime[4] = temp[3]; utcTime[5] = ':';
-    utcTime[6] = temp[4]; utcTime[7] = temp[5]; utcTime[8] = '\0';
+    utcTime[0] = temp[0];
+    utcTime[1] = temp[1];
+    utcTime[2] = ':';
+    utcTime[3] = temp[2];
+    utcTime[4] = temp[3];
+    utcTime[5] = ':';
+    utcTime[6] = temp[4];
+    utcTime[7] = temp[5];
+    utcTime[8] = '\0';
   }
 
   // Field 2: Status (A = Active, V = Void)
@@ -225,13 +229,13 @@ void parseGPRMC() {
     char rawLat[15], ns[2], rawLon[15], ew[2];
 
     // Field 3 & 4: Latitude & North/South Indicator
-    if (getCommaField(sentenceBuffer, 3, rawLat, sizeof(rawLat)) && 
+    if (getCommaField(sentenceBuffer, 3, rawLat, sizeof(rawLat)) &&
         getCommaField(sentenceBuffer, 4, ns, sizeof(ns))) {
       decimalLatitude = convertNMEAToDecimal(rawLat, ns[0]);
     }
 
     // Field 5 & 6: Longitude & East/West Indicator
-    if (getCommaField(sentenceBuffer, 5, rawLon, sizeof(rawLon)) && 
+    if (getCommaField(sentenceBuffer, 5, rawLon, sizeof(rawLon)) &&
         getCommaField(sentenceBuffer, 6, ew, sizeof(ew))) {
       decimalLongitude = convertNMEAToDecimal(rawLon, ew[0]);
     }
@@ -298,17 +302,23 @@ float convertNMEAToDecimal(const char* rawCoord, char direction) {
 
 void displayTelemetry() {
   Serial.println(F("\n================ GPS TELEMETRY SUMMARY ================"));
-  Serial.print(F("  UTC Time:        ")); Serial.println(utcTime);
-  Serial.print(F("  Date:            ")); 
+  Serial.print(F("  UTC Time:        "));
+  Serial.println(utcTime);
+  Serial.print(F("  Date:            "));
   if (strcmp(dateString, "000000") != 0) {
-    Serial.print(dateString[0]); Serial.print(dateString[1]); Serial.print(F("/"));
-    Serial.print(dateString[2]); Serial.print(dateString[3]); Serial.print(F("/20"));
-    Serial.print(dateString[4]); Serial.println(dateString[5]);
+    Serial.print(dateString[0]);
+    Serial.print(dateString[1]);
+    Serial.print(F("/"));
+    Serial.print(dateString[2]);
+    Serial.print(dateString[3]);
+    Serial.print(F("/20"));
+    Serial.print(dateString[4]);
+    Serial.println(dateString[5]);
   } else {
     Serial.println(F("N/A"));
   }
-  
-  Serial.print(F("  Lock Status:     ")); 
+
+  Serial.print(F("  Lock Status:     "));
   if (fixStatus == 'A') {
     Serial.println(F("3D FIX ACTIVE (Lock established)"));
   } else {
@@ -316,11 +326,20 @@ void displayTelemetry() {
   }
 
   if (fixStatus == 'A') {
-    Serial.print(F("  Latitude:        ")); Serial.print(decimalLatitude, 6); Serial.println(F("°"));
-    Serial.print(F("  Longitude:       ")); Serial.print(decimalLongitude, 6); Serial.println(F("°"));
-    Serial.print(F("  Altitude:        ")); Serial.print(altitudeMeters, 1); Serial.println(F(" m"));
-    Serial.print(F("  Speed:           ")); Serial.print(speedKnots * 1.852, 2); Serial.println(F(" km/h")); // knots to km/h conversion
-    Serial.print(F("  Satellites:      ")); Serial.println(satelliteCount);
+    Serial.print(F("  Latitude:        "));
+    Serial.print(decimalLatitude, 6);
+    Serial.println(F("°"));
+    Serial.print(F("  Longitude:       "));
+    Serial.print(decimalLongitude, 6);
+    Serial.println(F("°"));
+    Serial.print(F("  Altitude:        "));
+    Serial.print(altitudeMeters, 1);
+    Serial.println(F(" m"));
+    Serial.print(F("  Speed:           "));
+    Serial.print(speedKnots * 1.852, 2);
+    Serial.println(F(" km/h"));  // knots to km/h conversion
+    Serial.print(F("  Satellites:      "));
+    Serial.println(satelliteCount);
   } else {
     Serial.println(F("  Latitude/Lon:    Waiting for valid lock coordinates..."));
     Serial.println(F("  Altitude:        Waiting..."));

@@ -1,7 +1,7 @@
 /*
  * 100 Projects with Arduino - Day 79
  * Project: GPS Distance & Bearing Calculator (Haversine Formula)
- * 
+ *
  * DESCRIPTION:
  * This project implements spherical geometry algorithms to calculate the shortest path
  * distance (great-circle distance) and bearing (compass heading) between two geographical
@@ -12,9 +12,9 @@
  *    Start (Home) point to the Current (Target) point.
  * 3. GPS Integration: Interfaces a physical NEO-6M GPS module over SoftwareSerial to calculate
  *    real-time distance and bearing back to a set "Home Base".
- * 4. Navigational Simulator Shell: Allows manual input of Home (`h lat lon`) and Current (`c lat lon`)
- *    positions to verify distance/bearing math immediately in the console.
- * 
+ * 4. Navigational Simulator Shell: Allows manual input of Home (`h lat lon`) and Current (`c lat
+ * lon`) positions to verify distance/bearing math immediately in the console.
+ *
  * NAVIGATIONAL MATHEMATICS:
  * - Haversine Formula:
  *   $$\Delta\phi = \text{lat}_2 - \text{lat}_1, \quad \Delta\lambda = \text{lon}_2 - \text{lon}_1$$
@@ -22,9 +22,10 @@
  *   $$c = 2 \cdot \text{atan2}(\sqrt{a}, \sqrt{1-a})$$
  *   $$\text{Distance } d = R \cdot c \quad (\text{where } R \approx 6,371,000\,\text{meters})$$
  * - Bearing Formula (True Heading):
- *   $$\theta = \text{atan2}(\sin(\Delta\lambda)\cos(\text{lat}_2), \cos(\text{lat}_1)\sin(\text{lat}_2) - \sin(\text{lat}_1)\cos(\text{lat}_2)\cos(\Delta\lambda))$$
+ *   $$\theta = \text{atan2}(\sin(\Delta\lambda)\cos(\text{lat}_2),
+ * \cos(\text{lat}_1)\sin(\text{lat}_2) - \sin(\text{lat}_1)\cos(\text{lat}_2)\cos(\Delta\lambda))$$
  *   Bearing (degrees) $= (\theta \cdot 180 / \pi + 360) \pmod{360}$
- * 
+ *
  * WIRING:
  * - NEO-6M GPS Pin -> Arduino Uno Pin
  *   - VCC -> 5V | GND -> GND | TX -> Pin 2 | RX -> Pin 3 (via resistor divider)
@@ -33,8 +34,8 @@
 #include <SoftwareSerial.h>
 
 // --- PIN DEFINITIONS ---
-const int GPS_RX_PIN = 2; // GPS TX
-const int GPS_TX_PIN = 3; // GPS RX
+const int GPS_RX_PIN = 2;  // GPS TX
+const int GPS_TX_PIN = 3;  // GPS RX
 
 SoftwareSerial gpsSerial(GPS_RX_PIN, GPS_TX_PIN);
 
@@ -65,7 +66,7 @@ void setup() {
   Serial.println(F("=================================================="));
   Serial.println(F("Day 79: GPS Distance & Bearing (Haversine Solver)"));
   Serial.println(F("=================================================="));
-  
+
   printHomeBase();
   printMenu();
 }
@@ -132,7 +133,7 @@ void calculateNavTelemetry() {
     Serial.println(F("[NAV] ERROR: Home Base coordinates not initialized."));
     return;
   }
-  
+
   // Convert coordinates to radians
   float lat1 = homeLat * DEG_TO_RAD;
   float lon1 = homeLon * DEG_TO_RAD;
@@ -145,20 +146,18 @@ void calculateNavTelemetry() {
 
   // --- HAVERSINE DISTANCE MATH ---
   float a = sin(dLat / 2.0f) * sin(dLat / 2.0f) +
-            cos(lat1) * cos(lat2) *
-            sin(dLon / 2.0f) * sin(dLon / 2.0f);
-  
+            cos(lat1) * cos(lat2) * sin(dLon / 2.0f) * sin(dLon / 2.0f);
+
   float c = 2.0f * atan2(sqrt(a), sqrt(1.0f - a));
   float distanceMeters = EARTH_RADIUS_M * c;
 
   // --- BEARING (HEADING) MATH ---
   float y = sin(dLon) * cos(lat2);
-  float x = cos(lat1) * sin(lat2) -
-            sin(lat1) * cos(lat2) * cos(dLon);
-  
+  float x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+
   float bearingRad = atan2(y, x);
   float bearingDegrees = bearingRad * RAD_TO_DEG;
-  
+
   // Normalize bearing to 0 - 360 degrees
   if (bearingDegrees < 0.0f) {
     bearingDegrees += 360.0f;
@@ -166,8 +165,10 @@ void calculateNavTelemetry() {
 
   // --- PRINT NAVIGATION SUMMARY ---
   Serial.println(F("\n====== NAVIGATIONAL VECTOR CALCULATED ======"));
-  Serial.print(F(" Origin (Home) : ")); printCoords(homeLat, homeLon);
-  Serial.print(F(" Target        : ")); printCoords(currentLat, currentLon);
+  Serial.print(F(" Origin (Home) : "));
+  printCoords(homeLat, homeLon);
+  Serial.print(F(" Target        : "));
+  printCoords(currentLat, currentLon);
   Serial.print(F(" Distance      : "));
   if (distanceMeters >= 1000.0f) {
     Serial.print(distanceMeters / 1000.0f, 3);
@@ -176,7 +177,7 @@ void calculateNavTelemetry() {
     Serial.print(distanceMeters, 1);
     Serial.println(F(" meters"));
   }
-  
+
   Serial.print(F(" Bearing       : "));
   Serial.print(bearingDegrees, 1);
   Serial.print(F("° ("));
@@ -194,12 +195,11 @@ void processGPSChar(char c) {
     isRecording = true;
     sentenceBuffer[bufferIndex] = c;
     bufferIndex++;
-  } 
-  else if (isRecording) {
+  } else if (isRecording) {
     if (c == '\r' || c == '\n') {
       sentenceBuffer[bufferIndex] = '\0';
       isRecording = false;
-      
+
       String sentence = String(sentenceBuffer);
       if (parseGPSCoordinates(sentence)) {
         // Automatically re-calculate navigation telemetry upon fresh GPS locks
@@ -207,8 +207,7 @@ void processGPSChar(char c) {
           calculateNavTelemetry();
         }
       }
-    } 
-    else if (bufferIndex < BUFFER_SIZE - 1) {
+    } else if (bufferIndex < BUFFER_SIZE - 1) {
       sentenceBuffer[bufferIndex] = c;
       bufferIndex++;
     }
@@ -222,7 +221,7 @@ bool parseGPSCoordinates(String sentence) {
   String fields[15];
   int fieldCount = 0;
   int lastComma = 0;
-  
+
   for (int i = 0; i < sentence.length(); i++) {
     if (sentence[i] == ',' || sentence[i] == '*') {
       fields[fieldCount] = sentence.substring(lastComma + 1, i);
@@ -278,14 +277,22 @@ void printCoords(float lat, float lon) {
 }
 
 void printCompassHeading(float degrees) {
-  if (degrees >= 337.5f || degrees < 22.5f)  Serial.print(F("North"));
-  else if (degrees >= 22.5f  && degrees < 67.5f)  Serial.print(F("North-East"));
-  else if (degrees >= 67.5f  && degrees < 112.5f) Serial.print(F("East"));
-  else if (degrees >= 112.5f && degrees < 157.5f) Serial.print(F("South-East"));
-  else if (degrees >= 157.5f && degrees < 202.5f) Serial.print(F("South"));
-  else if (degrees >= 202.5f && degrees < 247.5f) Serial.print(F("South-West"));
-  else if (degrees >= 247.5f && degrees < 292.5f) Serial.print(F("West"));
-  else if (degrees >= 292.5f && degrees < 337.5f) Serial.print(F("North-West"));
+  if (degrees >= 337.5f || degrees < 22.5f)
+    Serial.print(F("North"));
+  else if (degrees >= 22.5f && degrees < 67.5f)
+    Serial.print(F("North-East"));
+  else if (degrees >= 67.5f && degrees < 112.5f)
+    Serial.print(F("East"));
+  else if (degrees >= 112.5f && degrees < 157.5f)
+    Serial.print(F("South-East"));
+  else if (degrees >= 157.5f && degrees < 202.5f)
+    Serial.print(F("South"));
+  else if (degrees >= 202.5f && degrees < 247.5f)
+    Serial.print(F("South-West"));
+  else if (degrees >= 247.5f && degrees < 292.5f)
+    Serial.print(F("West"));
+  else if (degrees >= 292.5f && degrees < 337.5f)
+    Serial.print(F("North-West"));
 }
 
 void printHomeBase() {

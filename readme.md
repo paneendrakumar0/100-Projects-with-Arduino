@@ -1,5 +1,8 @@
 # 100 Days of Arduino
 
+[![Arduino CI Compilation](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/arduino-build.yml/badge.svg)](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/arduino-build.yml)
+[![Next.js Documentation Deploy](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/nextjs.yml/badge.svg)](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/nextjs.yml)
+
 > ⭐ **If you find these projects helpful, please consider leaving a star! It helps the repository grow.**
 
 ![Arduino Uno](Learn_Arduino/images/Arduino_Uno.jpg)

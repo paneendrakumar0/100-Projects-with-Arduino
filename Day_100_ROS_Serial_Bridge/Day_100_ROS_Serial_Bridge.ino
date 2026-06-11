@@ -1,55 +1,51 @@
 /*
  * 100 Projects with Arduino - Day 100 (The Capstone)
  * Project: Micro-ROS Serial Bridge Node (Differential Drive Twist Subscriber & Odometry Publisher)
- * 
+ *
  * DESCRIPTION:
  * This is the grand capstone project of the 100-day Arduino Masterclass! We build a custom
  * Micro-ROS Serial Bridge Node. This sketch allows an Arduino to communicate directly with a
  * host PC running ROS (Robot Operating System) over a robust serial connection.
- * 
+ *
  * The system implements two core ROS node operations:
  * 1. Subscriber ("/cmd_vel"): Listens for incoming Twist velocity commands (Linear X, Angular Z).
  *    Parses the command, executes differential drive kinematics, and calculates left/right
  *    wheel velocity targets (RPM).
  * 2. Publisher ("/odom"): Periodically (at 10 Hz) calculates and packs the robot's local 2D
  *    odometry state (X, Y, Theta) and transmits it to the PC in a structured binary frame.
- * 
+ *
  * THE PROTOCOL PACKET FRAMING:
  * To ensure high reliability, data is packaged in framed binary packets:
  *   [SOF (0x02)] [Length] [Msg Type] [Payload...] [Checksum] [EOF (0x03)]
- * 
+ *
  * Message Types:
- * - 0x10 : /cmd_vel (PC -> Arduino). Payload: 4 bytes (16-bit signed Linear X, 16-bit signed Angular Z, scaled by 1000)
- * - 0x20 : /odom (Arduino -> PC). Payload: 6 bytes (16-bit signed X, 16-bit signed Y, 16-bit signed Theta, scaled by 100)
- * 
+ * - 0x10 : /cmd_vel (PC -> Arduino). Payload: 4 bytes (16-bit signed Linear X, 16-bit signed
+ * Angular Z, scaled by 1000)
+ * - 0x20 : /odom (Arduino -> PC). Payload: 6 bytes (16-bit signed X, 16-bit signed Y, 16-bit signed
+ * Theta, scaled by 100)
+ *
  * INTERACTIVE ROS MASTER SIMULATOR:
  * The Serial CLI acts as a ROS Master Node running on a PC. You can publish velocity commands
  * (e.g. "v 0.25 -0.50" to set linear velocity = 0.25 m/s, angular = -0.50 rad/s), and watch
  * the Arduino parse the packet, adjust motor goals, update its internal coordinate frames,
  * and publish /odom telemetry packets back.
- * 
+ *
  * WIRING:
  * - Runs over USB Serial interface.
  */
 
 // --- ROBOT CONSTANTS ---
-const float WHEEL_TRACK = 0.15f; // Distance between wheels (meters)
-const float WHEEL_DIAM  = 0.066f; // Wheel diameter (meters)
+const float WHEEL_TRACK = 0.15f;  // Distance between wheels (meters)
+const float WHEEL_DIAM = 0.066f;  // Wheel diameter (meters)
 
 // --- MSG TYPE DEFINITIONS ---
 const uint8_t SOF_BYTE = 0x02;
 const uint8_t EOF_BYTE = 0x03;
 const uint8_t MSG_CMD_VEL = 0x10;
-const uint8_t MSG_ODOM    = 0x20;
+const uint8_t MSG_ODOM = 0x20;
 
 // --- FSM PARSER VARIABLES ---
-enum ParserState {
-  STATE_WAIT_SOF,
-  STATE_READ_LEN,
-  STATE_READ_DATA,
-  STATE_READ_CS,
-  STATE_READ_EOF
-};
+enum ParserState { STATE_WAIT_SOF, STATE_READ_LEN, STATE_READ_DATA, STATE_READ_CS, STATE_READ_EOF };
 
 ParserState currentState = STATE_WAIT_SOF;
 uint8_t rxBuffer[32];
@@ -58,22 +54,22 @@ uint8_t packetLen = 0;
 uint8_t calcChecksum = 0;
 
 // --- ROBOT STATE (ODOMETRY) ---
-float odomX = 0.0f;     // Meters
-float odomY = 0.0f;     // Meters
-float odomTheta = 0.0f; // Radians
+float odomX = 0.0f;      // Meters
+float odomY = 0.0f;      // Meters
+float odomTheta = 0.0f;  // Radians
 
 // Current wheel velocities (RPM)
 float targetRPM_L = 0.0f;
 float targetRPM_R = 0.0f;
 
 // --- TIMING VARIABLES ---
-const float dt = 0.1f; // 10 Hz update frequency (0.1s period)
+const float dt = 0.1f;  // 10 Hz update frequency (0.1s period)
 bool publisherActive = true;
 unsigned long lastOdomPublish = 0;
 
 void setup() {
-  Serial.begin(115200); // Standard high speed for ROS serial bridges
-  
+  Serial.begin(115200);  // Standard high speed for ROS serial bridges
+
   Serial.println(F("=================================================="));
   Serial.println(F("Day 100: Micro-ROS Serial Bridge Node"));
   Serial.println(F("=================================================="));
@@ -102,7 +98,8 @@ void loop() {
 }
 
 bool isAlphaCommand(uint8_t b) {
-  return (b == 'v' || b == 'V' || b == 's' || b == 'S' || b == 'r' || b == 'R' || b == 'h' || b == 'H');
+  return (b == 'v' || b == 'V' || b == 's' || b == 'S' || b == 'r' || b == 'R' || b == 'h' ||
+          b == 'H');
 }
 
 // =============================================================
@@ -110,7 +107,6 @@ bool isAlphaCommand(uint8_t b) {
 // =============================================================
 void processIncomingByte(uint8_t val) {
   switch (currentState) {
-    
     case STATE_WAIT_SOF:
       if (val == SOF_BYTE) {
         currentState = STATE_READ_LEN;
@@ -122,7 +118,7 @@ void processIncomingByte(uint8_t val) {
     case STATE_READ_LEN:
       packetLen = val;
       if (packetLen == 0 || packetLen > 30) {
-        currentState = STATE_WAIT_SOF; // Invalid packet size guard
+        currentState = STATE_WAIT_SOF;  // Invalid packet size guard
       } else {
         currentState = STATE_READ_DATA;
       }
@@ -162,11 +158,11 @@ void executeROSMessage() {
 
   if (msgType == MSG_CMD_VEL) {
     // Decode signed 16-bit scaled integers
-    int16_t rawLinearX  = (rxBuffer[1] << 8) | rxBuffer[2];
+    int16_t rawLinearX = (rxBuffer[1] << 8) | rxBuffer[2];
     int16_t rawAngularZ = (rxBuffer[3] << 8) | rxBuffer[4];
 
     // Convert back to floats (meters/sec and rad/sec)
-    float linearX  = (float)rawLinearX / 1000.0f;
+    float linearX = (float)rawLinearX / 1000.0f;
     float angularZ = (float)rawAngularZ / 1000.0f;
 
     // --- DIFFERENTIAL KINEMATICS ---
@@ -180,10 +176,18 @@ void executeROSMessage() {
     targetRPM_R = (vR / (PI * WHEEL_DIAM)) * 60.0f;
 
     Serial.println(F("\n---------------- ROS TOPIC: /cmd_vel ---------------"));
-    Serial.print(F(" Decoded Msg -> Linear X: ")); Serial.print(linearX, 3); Serial.print(F(" m/s"));
-    Serial.print(F(" | Angular Z: ")); Serial.print(angularZ, 3); Serial.println(F(" rad/s"));
-    Serial.print(F(" Actuator Target -> Left Wheel: ")); Serial.print(targetRPM_L, 1); Serial.print(F(" RPM"));
-    Serial.print(F(" | Right Wheel: ")); Serial.print(targetRPM_R, 1); Serial.println(F(" RPM"));
+    Serial.print(F(" Decoded Msg -> Linear X: "));
+    Serial.print(linearX, 3);
+    Serial.print(F(" m/s"));
+    Serial.print(F(" | Angular Z: "));
+    Serial.print(angularZ, 3);
+    Serial.println(F(" rad/s"));
+    Serial.print(F(" Actuator Target -> Left Wheel: "));
+    Serial.print(targetRPM_L, 1);
+    Serial.print(F(" RPM"));
+    Serial.print(F(" | Right Wheel: "));
+    Serial.print(targetRPM_R, 1);
+    Serial.println(F(" RPM"));
     Serial.println(F("----------------------------------------------------"));
   }
 }
@@ -201,15 +205,17 @@ void updateAndPublishOdom() {
   // 2. Perform Kinematic Integration
   float vCenter = (vL + vR) / 2.0f;
   float dTheta = (vR - vL) * dt / WHEEL_TRACK;
-  
+
   float midTheta = odomTheta + (dTheta / 2.0f);
   odomX += vCenter * dt * cos(midTheta);
   odomY += vCenter * dt * sin(midTheta);
   odomTheta += dTheta;
 
   // Constrain theta to [-pi, +pi]
-  if (odomTheta > PI) odomTheta -= 2.0f * PI;
-  else if (odomTheta < -PI) odomTheta += 2.0f * PI;
+  if (odomTheta > PI)
+    odomTheta -= 2.0f * PI;
+  else if (odomTheta < -PI)
+    odomTheta += 2.0f * PI;
 
   // 3. Pack data into /odom binary packet (6 bytes payload)
   // Scale floats to 16-bit signed integers (multiplied by 100)
@@ -217,27 +223,32 @@ void updateAndPublishOdom() {
   int16_t scaleY = (int16_t)(odomY * 100.0f);
   int16_t scaleT = (int16_t)(odomTheta * 100.0f);
 
-  uint8_t len = 7; // MsgType (1) + Payload (6)
-  uint8_t cs = MSG_ODOM ^ 
-               (uint8_t)(scaleX >> 8) ^ (uint8_t)(scaleX & 0xFF) ^
-               (uint8_t)(scaleY >> 8) ^ (uint8_t)(scaleY & 0xFF) ^
-               (uint8_t)(scaleT >> 8) ^ (uint8_t)(scaleT & 0xFF);
+  uint8_t len = 7;  // MsgType (1) + Payload (6)
+  uint8_t cs = MSG_ODOM ^ (uint8_t)(scaleX >> 8) ^ (uint8_t)(scaleX & 0xFF) ^
+               (uint8_t)(scaleY >> 8) ^ (uint8_t)(scaleY & 0xFF) ^ (uint8_t)(scaleT >> 8) ^
+               (uint8_t)(scaleT & 0xFF);
 
   // Send packet to PC over USB
   Serial.print(F("[ROS PUBLISH /odom] Binary Packet: "));
   printHexByte(SOF_BYTE);
   printHexByte(len);
   printHexByte(MSG_ODOM);
-  printHexByte((uint8_t)(scaleX >> 8));   printHexByte((uint8_t)(scaleX & 0xFF));
-  printHexByte((uint8_t)(scaleY >> 8));   printHexByte((uint8_t)(scaleY & 0xFF));
-  printHexByte((uint8_t)(scaleT >> 8));   printHexByte((uint8_t)(scaleT & 0xFF));
+  printHexByte((uint8_t)(scaleX >> 8));
+  printHexByte((uint8_t)(scaleX & 0xFF));
+  printHexByte((uint8_t)(scaleY >> 8));
+  printHexByte((uint8_t)(scaleY & 0xFF));
+  printHexByte((uint8_t)(scaleT >> 8));
+  printHexByte((uint8_t)(scaleT & 0xFF));
   printHexByte(cs);
   printHexByte(EOF_BYTE);
-  
+
   // Also print readable telemetry for the user
-  Serial.print(F(" | Decoded -> X:")); Serial.print(odomX, 2);
-  Serial.print(F("m, Y:")); Serial.print(odomY, 2);
-  Serial.print(F("m, Yaw:")); Serial.print(odomTheta * 180.0f / PI, 1);
+  Serial.print(F(" | Decoded -> X:"));
+  Serial.print(odomX, 2);
+  Serial.print(F("m, Y:"));
+  Serial.print(odomY, 2);
+  Serial.print(F("m, Yaw:"));
+  Serial.print(odomTheta * 180.0f / PI, 1);
   Serial.println(F("deg"));
 }
 
@@ -271,7 +282,7 @@ void handleCLICommand(char cmd) {
       uint8_t cs = msgType ^ val1 ^ val2 ^ val3 ^ val4;
 
       // Pack binary frame
-      uint8_t packet[9] = { SOF_BYTE, len, msgType, val1, val2, val3, val4, cs, EOF_BYTE };
+      uint8_t packet[9] = {SOF_BYTE, len, msgType, val1, val2, val3, val4, cs, EOF_BYTE};
 
       Serial.print(F("\n[PC SIMULATOR] Publishing `/cmd_vel` topic..."));
       Serial.println(F("\n--- Transmitting Binary Packet over UART ---"));
