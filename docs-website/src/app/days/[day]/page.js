@@ -4,6 +4,7 @@ import TableOfContents from '@/components/TableOfContents';
 import Pagination from '@/components/Pagination';
 import MarkCompleteButton from '@/components/MarkCompleteButton';
 import ViewSourceButton from '@/components/ViewSourceButton';
+import TwitterShareButton from '@/components/TwitterShareButton';
 
 export async function generateStaticParams() {
   const days = get100DaysLogs();
@@ -36,7 +37,13 @@ export default async function DayPage({ params }) {
           <ViewSourceButton dayId={day.slug} />
         </div>
         <MarkdownRenderer content={day.content} />
-        <MarkCompleteButton dayId={day.slug} />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-zinc-800">
+          <MarkCompleteButton dayId={day.slug} />
+          <TwitterShareButton 
+            text={`I just built ${day.title} from the 100 Days of Arduino Masterclass! 🛠️⚡`}
+            url={`https://github.com/paneendrakumar0/100-Projects-with-Arduino/tree/main/${day.slug}`}
+          />
+        </div>
         <Pagination prev={prev} next={next} />
       </article>
       <TableOfContents />

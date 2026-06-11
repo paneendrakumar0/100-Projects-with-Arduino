@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Award, Printer, Lock } from 'lucide-react';
 import Link from 'next/link';
+import TwitterShareButton from '@/components/TwitterShareButton';
 
 export default function CertificatePage() {
   const [completedDays, setCompletedDays] = useState([]);
@@ -72,6 +73,13 @@ export default function CertificatePage() {
                 <Printer size={18} />
                 Print Certificate
               </button>
+            </div>
+            <div className="mt-6 flex items-center gap-4 border-t border-zinc-800 pt-6">
+              <span className="text-zinc-400 text-sm">Show off your achievement:</span>
+              <TwitterShareButton 
+                text="I just completed the epic 100 Days of Arduino Masterclass! 🎉 100 hardware projects built from scratch."
+                url="https://github.com/paneendrakumar0/100-Projects-with-Arduino"
+              />
             </div>
           </div>
 
