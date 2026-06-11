@@ -1,0 +1,29 @@
+{
+  "name": "Arduino 100 Days Masterclass",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "arduino.path": "/usr/local/bin",
+        "arduino.commandPath": "arduino-cli",
+        "arduino.useArduinoCli": true,
+        "C_Cpp.intelliSenseEngine": "default",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "vsciot-vscode.vscode-arduino",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}
