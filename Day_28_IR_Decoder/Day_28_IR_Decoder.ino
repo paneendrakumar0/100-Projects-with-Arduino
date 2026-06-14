@@ -81,8 +81,8 @@ void loop() {
   // Non-blocking check for incoming IR signals
   if (IrReceiver.decode()) {
     // Check if the received data is valid and not corrupted
-    if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_CORRUPT) {
-      Serial.println("[WARNING] Corrupted signal received. Retrying...");
+    if (IrReceiver.decodedIRData.protocol == UNKNOWN) {
+      Serial.println("[WARNING] Unknown or corrupted signal received. Retrying...");
     } else {
       // Check if this is a repeat signal (user holding button down)
       bool isRepeat = (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_REPEAT);

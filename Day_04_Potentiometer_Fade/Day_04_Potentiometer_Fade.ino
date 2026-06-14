@@ -29,8 +29,13 @@
  */
 
 // --- PIN DEFINITIONS ---
+#if defined(ESP32)
+const int POT_PIN = 34;  // Analog input pin on ESP32
+const int LED_PIN = 16;  // PWM capable pin on ESP32
+#else
 const int POT_PIN = A0;  // Analog input pin connected to the potentiometer wiper
 const int LED_PIN = 9;   // Digital PWM output pin connected to the LED anode
+#endif
 
 // --- TIMING VARIABLES ---
 unsigned long lastLogTime = 0;  // Stores the last time we printed to the Serial Monitor

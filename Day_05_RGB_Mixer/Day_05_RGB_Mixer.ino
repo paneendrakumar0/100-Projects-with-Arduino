@@ -42,9 +42,15 @@
  */
 
 // --- PIN DEFINITIONS ---
+#if defined(ESP32)
+const int RED_PIN = 25;    // PWM Pin for Red channel
+const int GREEN_PIN = 26;  // PWM Pin for Green channel
+const int BLUE_PIN = 27;   // PWM Pin for Blue channel
+#else
 const int RED_PIN = 9;     // PWM Pin for Red channel
 const int GREEN_PIN = 10;  // PWM Pin for Green channel
 const int BLUE_PIN = 11;   // PWM Pin for Blue channel
+#endif
 
 // --- COLOR CYCLE PARAMETERS ---
 float angle = 0.0;                  // Current angle for the sine wave cycle (in radians)

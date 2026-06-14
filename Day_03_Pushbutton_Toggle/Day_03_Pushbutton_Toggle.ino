@@ -33,8 +33,13 @@
  */
 
 // --- PIN DEFINITIONS ---
+#if defined(ESP32)
+const int BUTTON_PIN = 4;  // Pin connected to the pushbutton
+const int LED_PIN = 2;     // Pin connected to the onboard LED
+#else
 const int BUTTON_PIN = 2;  // Pin connected to the pushbutton
 const int LED_PIN = 13;    // Pin connected to the onboard LED
+#endif
 
 // --- STATE VARIABLES ---
 bool ledState = LOW;         // Tracks the current state of the LED (ON or OFF)

@@ -10,8 +10,14 @@
  *    and set the baud rate to 9600 to see the output!
  */
 
-// We define our LED pin here. Pin 13 is standard for the onboard LED.
-const int ledPin = 13;
+// We define our LED pin here.
+#if defined(ESP32)
+const int ledPin = 2; // Common built-in LED on ESP32
+#elif defined(LED_BUILTIN)
+const int ledPin = LED_BUILTIN; // Standard for most Arduino boards
+#else
+const int ledPin = 13; // Fallback
+#endif
 
 // --- TIMING VARIABLES ---
 // We use 'unsigned long' instead of 'int' because millis() gets very large.

@@ -56,8 +56,8 @@ bool currentFixValid = false;
 
 // Earth radius in meters
 const float EARTH_RADIUS_M = 6371000.0f;
-const float DEG_TO_RAD = PI / 180.0f;
-const float RAD_TO_DEG = 180.0f / PI;
+// const float DEG_TO_RAD = PI / 180.0f; // Already defined in Arduino.h
+// const float RAD_TO_DEG = 180.0f / PI; // Already defined in Arduino.h
 
 void setup() {
   Serial.begin(9600);

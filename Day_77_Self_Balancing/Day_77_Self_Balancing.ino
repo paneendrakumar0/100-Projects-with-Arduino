@@ -42,7 +42,7 @@ const uint8_t REG_ACCEL_XOUT_H = 0x3B;
 const uint8_t REG_PWR_MGMT_1 = 0x6B;
 const float ACCEL_SCALE_FACTOR = 16384.0f;
 const float GYRO_SCALE_FACTOR = 131.0f;
-const float RAD_TO_DEG = 180.0f / PI;
+// const float RAD_TO_DEG = 180.0f / PI; // Already defined in Arduino.h
 
 // --- MOTOR CONTROLLER PIN DEFINITIONS ---
 const int ENA = 5;  // Left Motor Enable (PWM)

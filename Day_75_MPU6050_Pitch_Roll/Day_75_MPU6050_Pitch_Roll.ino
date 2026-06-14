@@ -48,7 +48,7 @@ const uint8_t REG_PWR_MGMT_1 = 0x6B;
 // --- SENSITIVITY SCALE FACTORS ---
 const float ACCEL_SCALE_FACTOR = 16384.0f;  // ±2g sensitivity
 const float GYRO_SCALE_FACTOR = 131.0f;     // ±250°/s sensitivity
-const float RAD_TO_DEG = 180.0f / PI;
+// const float RAD_TO_DEG = 180.0f / PI; // Already defined in Arduino.h
 
 // --- TIMING CONFIGURATION ---
 unsigned long lastLoopTime = 0;
