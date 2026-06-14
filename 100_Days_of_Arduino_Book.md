@@ -2,6 +2,129 @@
 
 *Compiled dynamically from the master repository*
 
+## Table of Contents
+
+### Part 1: Arduino Theory & Foundations
+- [Chapter 1: What is Arduino?](#chapter-1-what-is-arduino)
+- [Chapter 2: The Arduino Family](#chapter-2-the-arduino-family)
+- [Chapter 3: Setting Up Your Environment](#chapter-3-setting-up-your-environment)
+- [Chapter 4: Basic Electronics Crash Course](#chapter-4-basic-electronics-crash-course)
+- [Chapter 5: Arduino Programming Basics](#chapter-5-arduino-programming-basics)
+- [Chapter 6: Digital and Analog I/O](#chapter-6-digital-and-analog-i-o)
+- [Chapter 06: Troubleshooting](#chapter-06-troubleshooting)
+- [Chapter 7: Control Flow](#chapter-7-control-flow)
+- [Chapter 8: Serial Communication](#chapter-8-serial-communication)
+- [Chapter 9: Libraries and Sensors](#chapter-9-libraries-and-sensors)
+- [Chapter 10: Best Practices](#chapter-10-best-practices)
+- [Chapter 11: Component Visual Glossary](#chapter-11-component-visual-glossary)
+- [Chapter 12: Troubleshooting & Common Errors](#chapter-12-troubleshooting-common-errors)
+- [Chapter 13: Powering Your Projects](#chapter-13-powering-your-projects)
+- [Chapter 14: Reading Schematics and Wiring Diagrams](#chapter-14-reading-schematics-and-wiring-diagrams)
+- [Chapter 15: Communication Protocols (I2C, SPI, UART)](#chapter-15-communication-protocols-i2c-spi-uart)
+- [Chapter 16: The Secret to Multitasking (`millis()` vs `delay()`)](#chapter-16-the-secret-to-multitasking-millis-vs-delay)
+
+### Part 2: The 100 Days Projects
+- [Day 1: The Non-Blocking Blink (Ditch the delay!)](#day-1-the-non-blocking-blink-ditch-the-delay)
+- [Day 2: SOS Morse Code Generator (Functions & Timing)](#day-2-sos-morse-code-generator-functions-timing)
+- [Day 3: Pushbutton State Toggle (Debouncing Logic)](#day-3-pushbutton-state-toggle-debouncing-logic)
+- [Day 4: Potentiometer to LED Fade (Analog In / Out)](#day-4-potentiometer-to-led-fade-analog-in-out)
+- [Day 5: RGB LED Color Mixer (PWM Additive Mixing)](#day-5-rgb-led-color-mixer-pwm-additive-mixing)
+- [Day 6: Photoresistor (LDR) Automatic Night Light](#day-6-photoresistor-ldr-automatic-night-light)
+- [Day 7: Ultrasonic Sensor Distance Measurer (HC-SR04)](#day-7-ultrasonic-sensor-distance-measurer-hc-sr04)
+- [Day 8: PIR Motion Sensor Alarm System](#day-8-pir-motion-sensor-alarm-system)
+- [Day 9: Temperature & Humidity Logger (DHT11 Interfacing)](#day-9-temperature-humidity-logger-dht11-interfacing)
+- [Day 10: Active vs. Passive Buzzer Melody & Rhythm Player](#day-10-active-vs-passive-buzzer-melody-rhythm-player)
+- [Day 11: Servo Motor Sweep (PPM Control)](#day-11-servo-motor-sweep-ppm-control)
+- [Day 12: Potentiometer-Controlled Servo Motor (Deadband Filtering)](#day-12-potentiometer-controlled-servo-motor-deadband-filtering)
+- [Day 13: Joystick Module Value Mapper](#day-13-joystick-module-value-mapper)
+- [Day 14: 4x4 Membrane Keypad Interfacing (Matrix Multiplexing)](#day-14-4x4-membrane-keypad-interfacing-matrix-multiplexing)
+- [Day 15: Password-Protected Door Lock (FSM Control)](#day-15-password-protected-door-lock-fsm-control)
+- [Day 16: Relay Module Control (High Power Switching)](#day-16-relay-module-control-high-power-switching)
+- [Day 17: Sound Sensor Clap Switch (Anti-Echo Filter)](#day-17-sound-sensor-clap-switch-anti-echo-filter)
+- [Day 18: Water Level Detection (Corrosion Gating)](#day-18-water-level-detection-corrosion-gating)
+- [Day 19: Soil Moisture Monitor (Electrolysis Mitigation)](#day-19-soil-moisture-monitor-electrolysis-mitigation)
+- [Day 20: Flame Sensor Fire Alarm System](#day-20-flame-sensor-fire-alarm-system)
+- [Day 21: 16x2 LCD Hello World (I2C)](#day-21-16x2-lcd-hello-world-i2c)
+- [Day 22: LCD Stopwatch (FSM & I2C Performance Tuning)](#day-22-lcd-stopwatch-fsm-i2c-performance-tuning)
+- [Day 23: Scrolling Text Marquee on LCD](#day-23-scrolling-text-marquee-on-lcd)
+- [Day 24: 7-Segment Display Counter (Bit-Masking)](#day-24-7-segment-display-counter-bit-masking)
+- [Day 25: 4-Digit 7-Segment Clock (TM1637)](#day-25-4-digit-7-segment-clock-tm1637)
+- [Day 26: OLED Display (SSD1306) Graphics](#day-26-oled-display-ssd1306-graphics)
+- [Day 27: OLED Bouncing Ball Animation (2D Physics & Frame Rate Control)](#day-27-oled-bouncing-ball-animation-2d-physics-frame-rate-control)
+- [Day 28: Infrared (IR) Remote Control Decoder (NEC Protocol)](#day-28-infrared-ir-remote-control-decoder-nec-protocol)
+- [Day 29: DS3231 Real-Time Clock (RTC) (Direct I2C Register Programming)](#day-29-ds3231-real-time-clock-rtc-direct-i2c-register-programming)
+- [Day 30: EEPROM Data Logger (Wear-Leveling Ring Buffer)](#day-30-eeprom-data-logger-wear-leveling-ring-buffer)
+- [Day 31: MFRC522 RFID Card Reader (SPI Access Control)](#day-31-mfrc522-rfid-card-reader-spi-access-control)
+- [Day 32: Quadrature Rotary Encoder (KY-040 HMI Controller)](#day-32-quadrature-rotary-encoder-ky-040-hmi-controller)
+- [Day 33: DC Motor Speed & Direction Control (L298N H-Bridge)](#day-33-dc-motor-speed-direction-control-l298n-h-bridge)
+- [Day 34: Stepper Motor Control (ULN2003 / 28BYJ-48)](#day-34-stepper-motor-control-uln2003-28byj-48)
+- [Day 35: High-Performance Bipolar Stepper Control (A4988 & Trapezoidal Ramping)](#day-35-high-performance-bipolar-stepper-control-a4988-trapezoidal-ramping)
+- [Day 36: DC Motor Encoder Feedback (RPM & Odometry)](#day-36-dc-motor-encoder-feedback-rpm-odometry)
+- [Day 37: Closed-Loop PID Motor Speed Control (Feedback Controller)](#day-37-closed-loop-pid-motor-speed-control-feedback-controller)
+- [Day 38: Ultrasonic Radar Sweep (Servo + Range Finder)](#day-38-ultrasonic-radar-sweep-servo-range-finder)
+- [Day 39: HC-05 Bluetooth Module (UART Control)](#day-39-hc-05-bluetooth-module-uart-control)
+- [Day 40: nRF24L01+ 2.4GHz RF Transceiver (SPI Packet Link)](#day-40-nrf24l01-2-4ghz-rf-transceiver-spi-packet-link)
+- [Day 41: MPU6050 6-Axis IMU (Direct I2C Register Reading)](#day-41-mpu6050-6-axis-imu-direct-i2c-register-reading)
+- [Day 42: IMU Sensor Fusion via Complementary Filter](#day-42-imu-sensor-fusion-via-complementary-filter)
+- [Day 43: Autonomous Obstacle-Avoidance Robot](#day-43-autonomous-obstacle-avoidance-robot)
+- [Day 44: Basic Line-Following Robot (2-Sensor Differential)](#day-44-basic-line-following-robot-2-sensor-differential)
+- [Day 45: Calibrated 5-Sensor IR Array (Centroid Math)](#day-45-calibrated-5-sensor-ir-array-centroid-math)
+- [Day 46: PD-Controlled Line Follower (Proportional-Derivative Feedback Steering)](#day-46-pd-controlled-line-follower-proportional-derivative-feedback-steering)
+- [Day 47: Self-Balancing Robot Controller (Stabilization Loop)](#day-47-self-balancing-robot-controller-stabilization-loop)
+- [Day 48: Maze Solving Robot (Left-Hand Rule & Path Optimization)](#day-48-maze-solving-robot-left-hand-rule-path-optimization)
+- [Day 49: GPS Telemetry Decoder (Raw NMEA Parser)](#day-49-gps-telemetry-decoder-raw-nmea-parser)
+- [Day 50: Digital Compass Heading Lock (Magnetometer Navigation)](#day-50-digital-compass-heading-lock-magnetometer-navigation)
+- [Day 51: Industrial Modbus RTU Slave Node (RS485)](#day-51-industrial-modbus-rtu-slave-node-rs485)
+- [Day 52: CAN Bus Controller (MCP2515 SPI Node)](#day-52-can-bus-controller-mcp2515-spi-node)
+- [Day 53: SPI Flash Memory Logger (Winbond W25QXX)](#day-53-spi-flash-memory-logger-winbond-w25qxx)
+- [Day 54: Addressable RGB LED Strip (Bit-Banged Assembly)](#day-54-addressable-rgb-led-strip-bit-banged-assembly)
+- [Day 55: Parallel HD44780 LCD (Direct 8-Bit Interface)](#day-55-parallel-hd44780-lcd-direct-8-bit-interface)
+- [Day 56: Ultrasonic 2D Spatial Positioning Scanner](#day-56-ultrasonic-2d-spatial-positioning-scanner)
+- [Day 57: FFT Audio Spectrum Analyzer](#day-57-fft-audio-spectrum-analyzer)
+- [Day 58: Hardware Timer1 PWM Generator (Direct AVR Registers)](#day-58-hardware-timer1-pwm-generator-direct-avr-registers)
+- [Day 59: Precision Voltage & Current Monitor (INA219 + ADC Resistor Divider)](#day-59-precision-voltage-current-monitor-ina219-adc-resistor-divider)
+- [Day 60: OLED Oscilloscope (Real-Time Waveform on SSD1306 128×64)](#day-60-oled-oscilloscope-real-time-waveform-on-ssd1306-128-64)
+- [Day 61: Robotic Arm Inverse Kinematics (2-DOF Geometric IK Solver)](#day-61-robotic-arm-inverse-kinematics-2-dof-geometric-ik-solver)
+- [Day 62: Cooperative Task Scheduler (Round-Robin Kernel from Scratch)](#day-62-cooperative-task-scheduler-round-robin-kernel-from-scratch)
+- [Day 63: DS18B20 1-Wire Temperature Sensor (1-Wire Protocol from Scratch)](#day-63-ds18b20-1-wire-temperature-sensor-1-wire-protocol-from-scratch)
+- [Day 64: Capacitive Touch Sensor (RC Charge-Time Measurement — No Library)](#day-64-capacitive-touch-sensor-rc-charge-time-measurement-no-library)
+- [Day 65: EEPROM Servo Motion Recorder & Playback (Non-Volatile Motion Capture)](#day-65-eeprom-servo-motion-recorder-playback-non-volatile-motion-capture)
+- [Day 66: MAX7219 8×8 LED Matrix Driver (SPI Register Control)](#day-66-max7219-8-8-led-matrix-driver-spi-register-control)
+- [Day 67: Hall Effect RPM Tachometer (Timer1 Input Capture Unit)](#day-67-hall-effect-rpm-tachometer-timer1-input-capture-unit)
+- [Day 68: Stepper Motor Microstepping (A4988 Driver — All Step Resolutions)](#day-68-stepper-motor-microstepping-a4988-driver-all-step-resolutions)
+- [Day 69: DHT22 Temperature & Humidity Sensor (Custom Single-Wire Bit-Bang Parser)](#day-69-dht22-temperature-humidity-sensor-custom-single-wire-bit-bang-parser)
+- [Day 70: RFID Access Control Logging System (MFRC522 + DS3231 RTC + EEPROM)](#day-70-rfid-access-control-logging-system-mfrc522-ds3231-rtc-eeprom)
+- [Day 71: SD Card Module File Writing (SPI Datalogger Basics)](#day-71-sd-card-module-file-writing-spi-datalogger-basics)
+- [Day 72: CSV Datalogger (Sensors to SD Card with Safe Toggle/Eject)](#day-72-csv-datalogger-sensors-to-sd-card-with-safe-toggle-eject)
+- [Day 73: MPU6050 Accelerometer Raw Data (Direct I2C Register Programming)](#day-73-mpu6050-accelerometer-raw-data-direct-i2c-register-programming)
+- [Day 74: MPU6050 Gyroscope Angles & Integration (Direct I2C Registers)](#day-74-mpu6050-gyroscope-angles-integration-direct-i2c-registers)
+- [Day 75: MPU6050 Pitch & Roll Sensor Fusion (Complementary Filter)](#day-75-mpu6050-pitch-roll-sensor-fusion-complementary-filter)
+- [Day 76: Fall Detection System (MPU6050 FSM Delineation)](#day-76-fall-detection-system-mpu6050-fsm-delineation)
+- [Day 77: Self-Balancing Robot Logic (Stabilization Loop & PID Tuning)](#day-77-self-balancing-robot-logic-stabilization-loop-pid-tuning)
+- [Day 78: GPS Module (NEO-6M) Parsing (Raw NMEA Parser)](#day-78-gps-module-neo-6m-parsing-raw-nmea-parser)
+- [Day 79: Calculating Distance between GPS coordinates (Haversine Formula)](#day-79-calculating-distance-between-gps-coordinates-haversine-formula)
+- [Day 80: I2C Multi-Master/Slave Network (Wire Callback Architecture)](#day-80-i2c-multi-master-slave-network-wire-callback-architecture)
+- [Day 81: FreeRTOS Blink (Preemptive Multitasking on Arduino)](#day-81-freertos-blink-preemptive-multitasking-on-arduino)
+- [Day 82: FreeRTOS Sensor Reading vs Display Updates (Task Synchronization)](#day-82-freertos-sensor-reading-vs-display-updates-task-synchronization)
+- [Day 83: Watchdog Timer (WDT) Implementation (System Recovery & MCUSR Diagnostics)](#day-83-watchdog-timer-wdt-implementation-system-recovery-mcusr-diagnostics)
+- [Day 84: Deep Sleep and Power Saving Modes (AVR Sleep Manager)](#day-84-deep-sleep-and-power-saving-modes-avr-sleep-manager)
+- [Day 85: EEPROM Memory Reading/Writing (Persistent Configuration Manager)](#day-85-eeprom-memory-reading-writing-persistent-configuration-manager)
+- [Day 86: Persistent Sensor Calibration Manager (MPU6050 Boot-trigger Calibration & EEPROM Storage)](#day-86-persistent-sensor-calibration-manager-mpu6050-boot-trigger-calibration-eeprom-storage)
+- [Day 87: Creating a Custom Arduino Library (Exponential Moving Average Filter)](#day-87-creating-a-custom-arduino-library-exponential-moving-average-filter)
+- [Day 88: Hardware Interrupts & Software Debouncing (E-Stop and Pin Loopback Simulation)](#day-88-hardware-interrupts-software-debouncing-e-stop-and-pin-loopback-simulation)
+- [Day 89: Timer Interrupts for Precise Sampling (CTC Mode & Dynamic Prescaling)](#day-89-timer-interrupts-for-precise-sampling-ctc-mode-dynamic-prescaling)
+- [Day 90: Arduino as a USB HID (Keyboard/Mouse Emulation using ATmega32U4)](#day-90-arduino-as-a-usb-hid-keyboard-mouse-emulation-using-atmega32u4)
+- [Day 91: Custom PC Volume Knob (Rotary Encoder + USB HID Media Controller)](#day-91-custom-pc-volume-knob-rotary-encoder-usb-hid-media-controller)
+- [Day 92: Macro Pad with Cherry MX Switches (Diode Matrix Scanning & USB HID Macros)](#day-92-macro-pad-with-cherry-mx-switches-diode-matrix-scanning-usb-hid-macros)
+- [Day 93: Sim Racing Pedals & Shifter Controller (Deadzones & Dynamic Calibration)](#day-93-sim-racing-pedals-shifter-controller-deadzones-dynamic-calibration)
+- [Day 94: Parsing Serial Telemetry from a PC (FSM Packet Framing & Checksum Validation)](#day-94-parsing-serial-telemetry-from-a-pc-fsm-packet-framing-checksum-validation)
+- [Day 95: 3-DOF Robotic Arm Inverse Kinematics (Trigonometric & Geometric Solver)](#day-95-3-dof-robotic-arm-inverse-kinematics-trigonometric-geometric-solver)
+- [Day 96: Differential Drive Robot Odometry (Forward Kinematics from Wheel Encoders)](#day-96-differential-drive-robot-odometry-forward-kinematics-from-wheel-encoders)
+- [Day 97: Stepper Motor S-Curve Speed Profile (Jerk Minimization & LUT Ramping)](#day-97-stepper-motor-s-curve-speed-profile-jerk-minimization-lut-ramping)
+- [Day 98: Kalman Filter (1D Sensor Fusion & Bias Estimation)](#day-98-kalman-filter-1d-sensor-fusion-bias-estimation)
+- [Day 99: Autonomous Path Tracking (The Pure Pursuit Algorithm)](#day-99-autonomous-path-tracking-the-pure-pursuit-algorithm)
+- [Day 100: Micro-ROS / Serial ROS Bridge (The Capstone Integration Node)](#day-100-micro-ros-serial-ros-bridge-the-capstone-integration-node)
+
 ---
 
 # Part 1: Arduino Theory & Foundations
@@ -20,7 +143,17 @@ When people say "Arduino", they are usually talking about three things at once:
 
 In short, **Arduino is a platform that allows you to read inputs (like a finger on a button, or light on a sensor) and turn it into an output (like activating a motor, turning on an LED, or publishing something online).**
 
+---
 
+## The Brains of the Operation: The Microcontroller
+
+An Arduino board is not a full computer like a Raspberry Pi. You can't run Windows on it, and you can't plug a monitor into it to browse the web.
+
+Instead, an Arduino is built around a **Microcontroller**. Think of a microcontroller as a tiny, highly specialized, very simple computer. It only does exactly what you tell it to do, over and over again, incredibly fast. 
+
+The most common Arduino board, the **Arduino Uno**, uses a microcontroller chip called the **ATmega328P**.
+
+---
 
 ## Anatomy of the Arduino Uno
 
@@ -53,7 +186,16 @@ TX stands for Transmit, and RX stands for Receive. These tiny lights flash whene
 ### 6. The Built-in LED (Pin 13)
 The Arduino has a tiny LED built right onto the board, connected internally to Digital Pin 13. This is incredibly useful for testing if your board is alive without having to wire up a single thing.
 
+---
 
+## Why use Arduino?
+
+- **It's Inexpensive:** Genuine boards are affordable, and because it's open-source, clone boards (which work just as well) can be bought for a few dollars.
+- **Cross-Platform:** The Arduino software runs on Windows, Mac, and Linux.
+- **Simple, clear programming environment:** It's easy for beginners but flexible enough for advanced users to take advantage of.
+- **Massive Community:** If you want to build something, chances are someone else has already built it, documented it, and provided code for it online.
+
+---
 
 Now that you know what an Arduino is and what its parts are, it's time to look at the different types of boards available.
 
@@ -225,7 +367,21 @@ If you have a 5V supply, and you want to lower the current (I), you must increas
 > Electricity MUST have a complete path from a power source (Voltage) back to the ground (GND) to flow. If there is no complete path, nothing happens.
 > **BUT**, if that path has **ZERO resistance**, infinite current will try to flow instantly, causing a **Short Circuit**. This will fry your Arduino or start a fire. Never connect 5V directly to GND with just a wire!
 
+---
 
+## How to use a Breadboard
+
+When we build circuits, we don't want to permanently solder everything together right away. We use a **Breadboard** to quickly plug and unplug components.
+
+![Breadboard wiring](./images/Breadboard.png)
+*(Image Credit: Wikimedia Commons)*
+
+Look at the image above. The holes in a breadboard are connected underneath by metal strips:
+1. **Power Rails (The sides):** The long red and blue lines running vertically down the sides. All the holes next to the red line are connected together, and all the holes next to the blue line are connected together. We usually connect the Arduino's `5V` pin to the red rail, and the `GND` pin to the blue rail.
+2. **Terminal Strips (The middle):** The rows in the middle are connected **horizontally** (usually in sets of 5 holes). If you plug a wire into hole A1, it is electrically connected to holes B1, C1, D1, and E1.
+3. **The Center Divider:** The trench in the middle separates the left half from the right half.
+
+---
 
 ## Basic Components
 
@@ -304,7 +460,16 @@ We use this area to configure the Arduino. (e.g., "Set pin 13 as an output", "St
 Immediately after `setup()` finishes, the Arduino jumps into the `loop()` function. It reads the code line by line, top to bottom. When it reaches the bottom `}`, it immediately jumps back to the top and does it again. 
 It will do this millions of times a second until you unplug the power.
 
+---
 
+## Syntax Rules (The Grammar of Code)
+
+1. **Case Sensitivity:** `digitalwrite` is NOT the same as `digitalWrite`. Arduino code is case-sensitive. Most built-in functions use "camelCase" (the first word is lowercase, the second word is capitalized).
+2. **Semicolons `;`:** Almost every single line of instruction must end with a semicolon. Think of it as a period at the end of a sentence.
+3. **Curly Braces `{ }`:** These group lines of code together. Every open brace `{` must have a closing brace `}`.
+4. **Comments `//`:** If you type `//`, the Arduino will ignore everything after it on that line. This is used to leave notes for humans to read.
+
+---
 
 ## Variables and Data Types
 
@@ -372,7 +537,26 @@ Before writing code, we need to understand the difference between Digital and An
 - **Digital:** Think of a simple light switch. It is either completely ON or completely OFF. There is no in-between. In Arduino terms, this is `HIGH` (5V) or `LOW` (0V).
 - **Analog:** Think of a volume knob or a dimmer switch. It can be anywhere from 0 to 100%. In Arduino terms, it can read a smooth curve of voltages anywhere between 0V and 5V.
 
+---
 
+## 1. Setting the Pin Mode: `pinMode()`
+
+Before you can read or write to a pin, you MUST tell the Arduino what you plan to do with it. You do this inside the `setup()` function using `pinMode()`.
+
+```cpp
+void setup() {
+  pinMode(13, OUTPUT); // Tells the Arduino we want to send voltage OUT of pin 13
+  pinMode(2, INPUT);   // Tells the Arduino we want to read voltage coming IN to pin 2
+}
+```
+
+### The Magic of `INPUT_PULLUP`
+If you connect a push-button to pin 2 and ground, what is the voltage on pin 2 when the button is NOT pressed? It's not 0V, it's actually "floating" (picking up random static electricity from the air). 
+To fix this, we need a pull-up resistor. The Arduino has them built-in! Just use:
+`pinMode(2, INPUT_PULLUP);`
+This forces the pin to read `HIGH` until you press the button, connecting it to ground and making it read `LOW`.
+
+---
 
 ## 2. Digital Output: `digitalWrite()`
 
@@ -388,7 +572,27 @@ void loop() {
 ```
 *Note: `delay()` stops the Arduino from doing anything else for that amount of time. In the 100 Days of Arduino challenge, you will learn why professionals rarely use `delay()`!*
 
+---
 
+## 3. Digital Input: `digitalRead()`
+
+Use this to see if a button is pressed, or if a digital sensor has triggered.
+
+```cpp
+int buttonPin = 2; // We connected a button to pin 2
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);
+}
+
+void loop() {
+  int buttonState = digitalRead(buttonPin); // Check the voltage on pin 2
+  
+  // buttonState will be HIGH if not pressed, and LOW if pressed
+}
+```
+
+---
 
 ## 4. Analog Input: `analogRead()`
 
@@ -444,7 +648,19 @@ Even the most experienced engineers encounter bugs, compilation failures, and ha
 
 This guide covers the most common errors you will see during your 100-day journey and how to solve them permanently.
 
+---
 
+## 1. Upload Errors: `avrdude: stk500_getsync()`
+
+This is the most notorious error in the Arduino ecosystem. It means the Arduino IDE (or `arduino-cli`) is trying to talk to the board over USB, but the board isn't responding.
+
+### The Fix:
+1. **Check your COM Port:** Go to **Tools > Port**. Make sure a port is selected. If no ports appear, you likely have a driver issue (see section 2).
+2. **Check the Board Type:** Go to **Tools > Board** and ensure you have the correct board selected. An Arduino Nano requires `Arduino Nano`, and sometimes requires selecting the **Old Bootloader** under **Tools > Processor**.
+3. **Unplug Pins 0 and 1:** Pins 0 (RX) and 1 (TX) are used for USB communication. If you have anything wired to these pins (like a Bluetooth module or GPS), the upload will fail. **Unplug them, upload the code, and plug them back in.**
+4. **Bad Cable:** Some micro-USB cables are "charge-only" and do not have data lines. Try a different cable.
+
+---
 
 ## 2. Missing COM Ports / CH340 Driver Issues
 
@@ -456,7 +672,26 @@ Most cheap, third-party Arduino clones use the **CH340** serial chip instead of 
 - **Windows:** Download and install the [CH340 Driver](https://sparks.gogo.co.nz/ch340.html). Restart your IDE.
 - **Mac:** Install the CH340 driver for macOS. On modern macOS versions, this is often handled automatically, but you may need to allow the extension in System Settings -> Privacy & Security.
 
+---
 
+## 3. Compilation Error: `No such file or directory`
+
+You will see this error if your code tries to `#include <LibraryName.h>`, but the Arduino IDE cannot find it.
+
+```cpp
+fatal error: Adafruit_GFX.h: No such file or directory
+```
+
+### The Fix:
+1. Open the Arduino IDE.
+2. Go to **Sketch > Include Library > Manage Libraries...** (or press `Ctrl+Shift+I`).
+3. Search for the exact name of the missing library (e.g., `Adafruit GFX`).
+4. Click **Install**.
+5. Compile again.
+
+*Note: If you are using our Devcontainer/Codespaces environment, all libraries are pre-installed automatically!*
+
+---
 
 ## 4. I2C Devices Not Responding
 
@@ -467,7 +702,16 @@ You wired up an LCD or an OLED screen, but it's completely blank, or the code ha
 2. **Check the Address:** Not all I2C devices use the same address. Your LCD might be `0x27` or `0x3F`. Your OLED might be `0x3C` or `0x3D`.
 3. **Run an I2C Scanner:** If you aren't sure, run an I2C Scanner sketch (like the one we build in Day 24). It will ping every address and print the correct one to the Serial Monitor.
 
+---
 
+## 5. Gibberish in the Serial Monitor
+
+If you open the Serial Monitor and see reverse question marks (``) or random characters, you have a baud rate mismatch.
+
+### The Fix:
+Look at your `setup()` function. If you wrote `Serial.begin(9600);`, you must ensure the dropdown menu in the bottom-right corner of the Serial Monitor is also set to **9600 baud**. If it's set to 115200, you will see gibberish.
+
+---
 
 ## Keep Going!
 Hardware debugging can be frustrating, but every error you solve makes you a better engineer. If you get stuck, take a break, double-check your jumper wires, and read the error message carefully!
@@ -765,7 +1009,40 @@ You now have the foundation required to start building. But before you dive into
 
 If you follow these rules, you will write professional-level code. If you ignore them, your projects will eventually become buggy, tangled messes.
 
+---
 
+## 1. The `delay()` Function is Evil
+
+When you write `delay(1000);`, you are telling the microcontroller: "Stop everything you are doing, stare at a wall, and ignore the entire world for 1 second."
+If a user presses a button during that 1 second, the Arduino will not register it. If a robot is driving towards a wall during that 1 second, it will crash.
+
+**The Solution: Non-Blocking Code with `millis()`**
+
+`millis()` is a built-in stopwatch that starts counting up from 0 the moment the Arduino turns on. Instead of pausing the whole program, we just check the stopwatch!
+
+```cpp
+unsigned long previousTime = 0;
+const long interval = 1000; // 1 second
+
+void loop() {
+  unsigned long currentTime = millis();
+
+  // If 1 second has passed...
+  if (currentTime - previousTime >= interval) {
+    previousTime = currentTime; // Reset the timer
+    
+    // Do the thing you want to do!
+    blinkLED();
+  }
+  
+  // The Arduino immediately continues doing other things here!
+  // It never stopped to wait.
+  readButtons();
+}
+```
+*Note: You will master this exact concept in **Day 1** of the challenge!*
+
+---
 
 ## 2. Magic Numbers are Bad
 
@@ -789,7 +1066,17 @@ void loop() {
 ```
 Now, if you move the LED, you only have to change the number in **one place**.
 
+---
 
+## 3. Formatting and Commenting
+
+A messy codebase is impossible to debug.
+- **Indent your code!** Everything inside `{ }` brackets should be pushed in by 2 or 4 spaces. (The Arduino IDE can do this automatically for you: Press `Ctrl + T` or `Cmd + T`).
+- **Comment the "Why", not the "What".**
+  - Bad comment: `digitalWrite(13, HIGH); // Turns pin 13 HIGH` (We already know that from reading the code).
+  - Good comment: `digitalWrite(VALVE_PIN, HIGH); // Open the water valve to start irrigation` (This explains the *intent* of the code).
+
+---
 
 ## 4. State Machines
 
@@ -1258,6 +1545,17 @@ In our code, we constantly check this stopwatch: _"Has one second passed since I
 
 This allows the Arduino's `loop()` to run thousands of times a second without ever stopping! Upload the code below to see it in action.
 
+## ⚠️ Safety Note
+- Always ensure your Arduino is unplugged from your computer when wiring components on the breadboard.
+- Never connect an LED directly to 5V without a current-limiting resistor, or it will burn out instantly.
+
+## 🔍 Troubleshooting Tips
+* **The LED doesn't blink:**
+  - Make sure the LED is inserted in the correct orientation (long leg to Pin 13, short leg to resistor/GND).
+  - Verify your resistor is correctly connecting the LED cathode to the Ground rail.
+* **The board is not recognized:**
+  - Ensure you have the correct COM port selected in `Tools > Port`.
+
 ## 🧠 Code Explanation
 
 Let's break down the actual code used in this project line-by-line:
@@ -1306,7 +1604,34 @@ Welcome to Day 2 of the 100-Day Arduino Masterclass! Yesterday, we learned how t
 
 We will build an SOS Morse Code generator (••• ——— •••) using both light (LED) and sound (Active Piezo Buzzer). In doing so, we will learn a critical programming concept: **Modular Timing Sequences**. Instead of freezing the controller with blocking code, we will structure our program using arrays and a non-blocking sequence loop powered by `millis()`.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🧠 Hardware Theory: How Do These Components Work?
+
+Before we wire anything, let's understand the physics of our actuators.
+
+### 1. The Light Emitting Diode (LED)
+An LED is not a tiny lightbulb; there is no filament burning inside. It is a semiconductor diode. It consists of two types of materials pressed together: P-type (positive, containing "holes") and N-type (negative, containing extra electrons).
+
+When voltage is applied in the correct direction (Anode to Cathode), electrons from the N-type side rush across the P-N junction to fill the holes in the P-type side. As they fall into these holes, they drop to a lower energy state. This lost energy is released in the form of a photon (light).
+
+### 2. The Active Piezo Buzzer
+A piezo buzzer relies on the **Piezoelectric Effect**. Inside the plastic housing is a thin ceramic disk bonded to a metal plate. When you apply a voltage to this ceramic material, it physically deforms and bends. When you remove the voltage, it snaps back.
+
+An "Active" buzzer has a small oscillator circuit built inside it. When you give it a steady 5V DC signal from the Arduino, that internal circuit rapidly turns the voltage on and off, causing the ceramic disk to flex thousands of times a second. This rapid flexing pushes the air, creating a sound wave we hear as a loud beep.
+
+---
 
 ## ⏱️ The Rules of Morse Code Timing
 
@@ -1318,17 +1643,41 @@ To make real Morse Code, timing is everything. We will base our timing on one "u
 - **Gap between letters:** 3 units long.
 - **Gap between words (repeating the SOS):** 7 units long.
 
- | : | : |
+---
+
+## 🔄 Alternatives: Active vs. Passive Buzzers
+
+| Actuator Type | How It Works | Advantages | Disadvantages | Why We Chose It |
+| :--- | :--- | :--- | :--- | :--- |
 | **Active Buzzer** | Has an internal oscillator. Beeps automatically when given 5V DC. | Simple to use. No complex audio frequencies to generate in code. | Can only play one fixed tone frequency. | **Chosen** for this project to keep the focus on timing and sequence logic. |
 | **Passive Buzzer** | Requires an AC signal (square wave) from the Arduino using PWM or `tone()` function to vibrate. | Can play different musical notes and melodies (adjustable pitch). | Requires more code and timer resources to generate audio frequencies. | Better for music, but adds unnecessary complexity for basic SOS warning signals. |
 | **Magnetic Speaker** | Uses an electromagnet coil to vibrate a paper/plastic cone. | Can play voice clips, rich sound effects, and music. | Needs an audio amplifier circuit; high power draw can damage Arduino pins directly. | Too complex for a simple day-to-day warning indicator. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega** (or compatible).
+2. **Active Piezo Buzzer** (5V).
+3. **LED** (Red or green).
+4. **220Ω Resistor** (for the LED).
+5. **Half-size Breadboard**.
+6. **Jumper Wires** (4 male-to-male wires).
+7. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 | Component | Component Pin | Arduino Pin | Wire Color (Recommended) | Description |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Buzzer** | positive (+) / Long leg | **Pin 8** | Red | Active buzzer control line |
+| **Buzzer** | negative (-) / Short leg | **GND** | Black | System ground |
+| **LED** | Anode (+) / Long leg | **Pin 13** | Yellow | Onboard/External LED control |
+| **LED** | Cathode (-) / Short leg | **220Ω Resistor** to **GND** | Black | Current limiting circuit to ground |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -1358,6 +1707,10 @@ Follow these steps to upload, run, and verify the SOS Morse Code generator:
   - A short pause.
   - Three quick beeps (S).
   - A long pause (7 units = 1400ms) before the cycle starts again.
+
+### ⚠️ Safety Note
+- Active buzzers can be loud. Do not hold them directly next to your ear while testing.
+- Ensure the buzzer's polarity is correct; wiring it backward can damage the component.
 
 ### 🔍 Troubleshooting Tips
 * **The buzzer clicking instead of beeping:**
@@ -1413,7 +1766,29 @@ Welcome to Day 3 of the 100-Day Arduino Masterclass! Today, we move from purely 
 
 Interfacing a button seems simple, but in physical computing, mechanical buttons introduce electrical noise called **switch bounce**. Today, you will learn the physics behind this bounce and how to write professional, non-blocking software to filter it out using a technique called **debouncing**.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how mechanical switches work and why they "bounce" electrically.
+2. Master the difference between pull-up and pull-down resistor configurations.
+3. Use the Arduino's internal `INPUT_PULLUP` resistor to simplify wiring.
+4. Implement a robust, non-blocking software debounce filter using `millis()`.
+5. Learn how to verify, test, and debug digital inputs.
+
+---
 
 ## 🧠 The "Why" and "What": Pushbuttons in Robotics
 
@@ -1427,9 +1802,24 @@ In robotics and mechatronics, tactile pushbuttons and similar mechanical contact
 - **Bump Sensors:** Autonomous mobile robots use bumper switches to detect when they run into obstacles, triggering obstacle-avoidance maneuvers.
 - **Homing and Calibration:** Defining the "home" or "zero" coordinate of an actuator by driving it until it hits a limit switch.
 
-+   ++
+---
+
+## ⚡ The Physics & Hardware Theory
+
+To understand how to read a button, we must look at the electronics and the mechanical reality of physical switches.
+
+### 1. Mechanical Contact Bounce (Switch Bounce)
+When you press a tactile button, you are pushing two metal contacts together. On a microscopic scale, these metal contacts do not make clean, instantaneous contact. Instead, because of the elasticity of the metal and the spring mechanism, the contacts collide and rebound (bounce) several times before settling into a solid connection.
+
+This bouncing lasts anywhere from **1 to 10 milliseconds**. 
+
+```
+Button Pressed
+   |
+   v
+   +---+   +---+       +---+
    |   |   |   |       |   |
-+   +-+   +===================== (Pressed / LOW)
+---+   +---+   +-+   +===================== (Pressed / LOW)
    <-- Bouncing Period -->
    <- (approx. 5 - 10ms) ->
 ```
@@ -1454,12 +1844,33 @@ To solve this, we must use a resistor to "pull" the pin's voltage to a known sta
                    |                                              |
                  [10k] (Resistor)                               [20k] (Internal Resistor)
                    |                                              |
-  Pin 2 <
+  Pin 2 <----+                               Pin 2 <--+
+                   |                                              |
+                [Button]                                       [Button]
+                   |                                              |
+                  GND                                            GND
+```
+
+### 3. Arduino's Internal Pull-Up Resistors
+To minimize part count, circuit complexity, and breadboard clutter, the Arduino ATmega328P microcontroller has built-in internal pull-up resistors (typically 20kΩ to 50kΩ) connected to every digital I/O pin. 
+
+By using `pinMode(pin, INPUT_PULLUP)`, we enable this internal resistor. This means:
+- We do **not** need to use an external resistor on our breadboard.
+- The default, idle state of the pin is `HIGH` (5V).
+- When the button is pressed, it connects the pin to GND, pulling the signal down to `LOW` (0V).
+- Therefore, our code logic must look for a `LOW` signal to detect a button press.
+
+---
 
 ## 🔄 Alternatives: How Else Can We Do This?
 
 | Alternative Sensor / Circuit | How It Works | Advantages | Disadvantages | Why We Chose Pushbutton |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Capacitive Touch Sensor** | Measures change in capacitance when a human finger (conductive) alters the electric field. | No moving parts, zero mechanical wear, completely waterproof. | Can be triggered by moisture or proximity without direct physical contact. | We chose tactile buttons because they provide physical, tactile feedback, which is crucial for mechanical interfaces and limit switches. |
+| **Rotary Encoder Button** | A rotary encoder that also has a push-down shaft switch. | Combines value adjustment (rotation) and selection (button) in one pin-saving package. | Expensive, complex to program, requires more pins. | Pushbutton is simpler, cheaper, and standard for isolated input actions. |
+| **Hardware Debouncer (RC Filter + Schmitt Trigger)** | An analog resistor-capacitor (RC) circuit that smooths out the voltage spikes, followed by an IC like a Schmitt trigger to create a clean square wave. | Filters noise in hardware; completely eliminates the need for software debouncing code. | Requires extra components (resistor, capacitor, logic IC), increasing cost and size. | Software debouncing is free, flexible, and lets us modify debounce delays without changing physical components. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -1471,7 +1882,27 @@ To build this circuit, you will need:
 5. **USB Cable** (to connect Arduino to PC).
 6. *Optional:* An external LED and a 220Ω resistor (though we use the built-in LED on Pin 13 in the code).
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Since we are utilizing the internal pull-up resistor of the ATmega328P chip, our wiring is incredibly simple. We only need to connect the button between the input pin and Ground (GND).
+
+| Button Terminal | Arduino Pin | Wire Color (Recommended) | Description |
+| :--- | :--- | :--- | :--- |
+| **Pin A** (Left side of switch) | **Pin 2** | Green / Yellow | Digital Input Pin (configured as `INPUT_PULLUP`) |
+| **Pin B** (Right side of switch) | **GND** | Black | System ground reference |
+
+### Wiring steps:
+1. Place the tactile pushbutton across the center divider channel of the breadboard.
+2. Connect a jumper wire from **Pin 2** of the Arduino to one of the active legs on the button.
+3. Connect another jumper wire from the opposite diagonally-paired leg of the button to one of the **GND** pins on the Arduino.
+4. Keep the USB cable connected to power the board.
+
+> [!NOTE]
+> Tactile pushbuttons typically have 4 legs. Inside, the legs are connected in pairs. Leg 1 is connected to Leg 2 (on the same side), and Leg 3 is connected to Leg 4. Pressing the button connects Leg 1/2 to Leg 3/4. Connecting your wires diagonally ensures you are connecting across the switch contact, preventing a short-circuit configuration.
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -1499,6 +1930,9 @@ Once you have wired the circuit and uploaded the code from `Day_03_Pushbutton_To
   [DEBOUNCED] Button Pressed! LED is now: OFF
   ```
 - **Crucial check:** There should be exactly **one** log message per physical button press. If you press the button once and see multiple lines printed rapidly, your debounce delay in code (`debounceDelay = 50`) is too low or your hardware connection is loose.
+
+### ⚠️ Safety Note
+- Avoid shorting 5V directly to GND when wiring the button. Always verify your diagonal button connections before powering the board.
 
 ### 🔍 Troubleshooting Tips
 * **LED is always ON or flickers rapidly:**
@@ -1556,7 +1990,31 @@ Welcome to Day 4 of the 100-Day Arduino Masterclass! Today, we bridge the gap be
 
 You will learn how to interface a rotary potentiometer to read variable analog voltages and map that input to control the brightness of an LED using Pulse Width Modulation (PWM).
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how potentiometers act as mechanical voltage dividers.
+2. Learn how the Arduino's 10-bit Analog-to-Digital Converter (ADC) works.
+3. Master Pulse Width Modulation (PWM) duty cycles for power regulation.
+4. Use the `map()` function to calibrate and scale inputs.
+5. Implement non-blocking telemetry logging to trace input-output relationships.
+
+---
 
 ## 🧠 The "Why" and "What": Potentiometers in Robotics
 
@@ -1569,7 +2027,19 @@ In robotics and control engineering, potentiometers are widely used for human-ma
 - **Control Joysticks:** Dual-axis joysticks (like those on gamepad controllers) contain two micro-potentiometers mounted orthogonally to measure the X and Y movement of the stick.
 - **Setpoints & Tuning:** Setting control parameters (such as the threshold speed of a motor, the target temperature of a chamber, or the sensitivity of a sensor) on the fly without rewriting the code.
 
-- Wiper Output (Vout to Pin A0)
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Voltage Divider Circuit
+The potentiometer works on the principle of the **voltage divider**. If you connect the outer terminals of a potentiometer to 5V and GND, a steady current flows through the resistive strip.
+
+```
+       VCC (+5V)
+         |
+       [ R1 ] (Resistance from terminal 1 to wiper)
+         |
+         +---- Wiper Output (Vout to Pin A0)
          |
        [ R2 ] (Resistance from wiper to terminal 3)
          |
@@ -1592,7 +2062,7 @@ The ATmega328P microcontroller cannot understand a continuous voltage directly. 
 $$ADC\text{ Value} = \text{round}\left( \frac{V_{in}}{V_{ref}} \times 1023 \right)$$
 
 | Physical Input Voltage | digital ADC Reading |
-| :: |
+| :---: | :---: |
 | 0.0V | 0 |
 | 1.25V | 256 |
 | 2.5V | 512 |
@@ -1613,24 +2083,53 @@ PWM Duty Cycles (analogWrite):
 
  0% (Value 0):    ________________________________________
 
-25% (Value 64):   ||_||_||_|--|_____|--|_____|
+25% (Value 64):   |---|_|---|_|---|_|---|_|---|_|---|_|---|_|
+
+50% (Value 127):  |-----|_____|-----|_____|-----|_____|-----|
+
+100% (Value 255): |========================================
+```
+
+On Arduino Uno, pins 3, 5, 6, 9, 10, and 11 support PWM.
+
+---
 
 ## 🔄 Alternatives: Analog Inputs vs. Rotary Encoders
 
 | Device | Type | Resolution | Range of Motion | Noise Sensitivity | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Potentiometer** | Analog | Infinite physical resolution (limited by 10-bit ADC to 1024 steps) | Limited (usually 270° or 300°) | High (electrical noise can cause jitter in values) | **Chosen** for joystick control, absolute joint tracking, and analog tuning. |
 | **Rotary Encoder** | Digital | Discrete pulses per rotation (usually 20-30 PPR) | Infinite (turns forever in both directions) | Zero (digital pulses are noise-immune) | Menu navigation, scrolling parameters, motor speed measurement. |
 | **Digital Potentiometer (MCP4131)** | Integrated Circuit | Set steps (e.g. 128 or 256 steps) via SPI or I2C | None (Solid state, controlled digitally) | Zero (digital communication) | Controlling analog amplifier gains or filtering coefficients programmatically. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this circuit, you will need:
+1. **Arduino Uno or Mega**.
+2. **10kΩ Rotary Potentiometer** (linear taper).
+3. **LED** (any standard color).
+4. **220Ω Resistor** (for the LED).
+5. **Breadboard**.
+6. **Jumper Wires** (5 male-to-male wires).
+7. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 Ensure your potentiometer's three pins are placed in separate, vertical rows of the breadboard.
 
 | Component | Pin Number/Label | Arduino Pin | Wire Color (Recommended) | Description |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Potentiometer** | Pin 1 (Left Terminal) | **5V** | Red | Power rail connection |
+| **Potentiometer** | Pin 2 (Middle Wiper) | **A0** | Yellow | Analog signal output |
+| **Potentiometer** | Pin 3 (Right Terminal) | **GND** | Black | Ground connection |
+| **LED** | Anode (+) / Long Leg | **Pin 9** | Blue | PWM channel (through resistor) |
+| **Resistor** | Inline with LED cathode | **GND** | Black | Return path to ground |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -1653,6 +2152,9 @@ Follow these steps to upload, run, and verify the analog-to-PWM translation:
 - **Verify Calibration Boundaries:**
   - Turn completely counterclockwise: It must read `Raw ADC: 0 | Voltage: 0.00 V | PWM Duty: 0 (0.0%)`.
   - Turn completely clockwise: It must read `Raw ADC: 1023 | Voltage: 5.00 V | PWM Duty: 255 (100.0%)`.
+
+### ⚠️ Safety Note
+- Ensure you do not swap the 5V and GND wires on the potentiometer with the middle wiper pin, as this can create a direct short circuit when turned to the extremes.
 
 ### 🔍 Troubleshooting Tips
 * **The LED turns OFF suddenly or turns on in step-like jumps:**
@@ -1703,7 +2205,28 @@ Welcome to Day 5 of the 100-Day Arduino Masterclass! Today, we will explore **ad
 
 Instead of hardcoding single colors, you will learn how to write a mathematically elegant program that uses three phase-shifted sine waves to sweep through the color wheel continuously, creating a smooth rainbow transition.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/WS2812B.jpg" alt="WS2812B" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the internal structure and pinout of Common Cathode RGB LEDs.
+2. Master the principles of additive color mixing (Red + Green + Blue = White).
+3. Learn how to calculate resistor sizes based on LED forward voltages ($V_f$).
+4. Implement a phase-shifted sinusoidal color cycling algorithm.
+5. Setup multi-channel PWM outputs on the Arduino.
+
+---
 
 ## 🧠 The "Why" and "What": RGB LEDs in Robotics
 
@@ -1717,12 +2240,72 @@ In robotics and automation systems, RGB LEDs are primary visual feedback indicat
 - **Sensor Alignment & State Feedback:** In line-following robots, an RGB LED can change color depending on which sensor is currently detecting the black line, aiding in manual calibration.
 - **Esthetics & Lighting:** Custom illumination for styling, headlamps on robotic platforms, or safety warning strobes.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Physics of Semiconductor Bandgaps (LED Colors)
+Why do Red, Green, and Blue LEDs emit different colors? It comes down to the semiconductor materials used in their P-N junctions. 
+
+Different materials have different **bandgaps** (the energy gap electrons must cross to release light). The size of this bandgap ($E_g$) dictates the energy level of the released photon, which in turn determines the wavelength ($\lambda$) and color of the light:
+
+$$E_g = \frac{h \cdot c}{\lambda}$$
+
+Where:
+* $h$ is Planck's constant.
+* $c$ is the speed of light.
+* $\lambda$ is the wavelength.
+
+* **Red LED (Gallium Arsenide Phosphide - GaAsP):** Small bandgap ($\approx 1.8\text{ to }2.0\text{ eV}$), emitting long wavelengths ($\approx 620\text{ to }750\text{ nm}$).
+* **Green LED (Indium Gallium Nitride - InGaN):** Medium bandgap ($\approx 2.2\text{ to }2.5\text{ eV}$), emitting medium wavelengths ($\approx 495\text{ to }570\text{ nm}$).
+* **Blue LED (Gallium Nitride - GaN):** Large bandgap ($\approx 2.7\text{ to }3.2\text{ eV}$), emitting short wavelengths ($\approx 450\text{ to }495\text{ nm}$).
+
+### 2. Common Cathode vs. Common Anode Configurations
+RGB LEDs come in two internal wiring configurations:
+* **Common Cathode (Used in this project):** The negative terminals (cathodes) of all three LEDs are tied together internally and connected to a single ground (GND) pin. To light up a color, you write a `HIGH` voltage to its corresponding anode pin.
+* **Common Anode:** The positive terminals (anodes) of all three LEDs are tied together internally and connected to 5V (VCC). To light up a color, you must write a `LOW` voltage (GND) to its cathode pin (Active-Low).
+
+```
+         Common Cathode (GND)                       Common Anode (5V)
+         
+               GND                                        +5V
+                |                                          |
+        +-+-+                          +-+-+
+        |       |       |                          |       |       |
+      |   |   |   |   |   |                      |   |   |   |   |   |
+      | R |   | G |   | B |                      | R |   | G |   | B |
+      V___V   V___V   V___V                      V___V   V___V   V___V
+        |       |       |                          |       |       |
+        R_Pin   G_Pin   B_Pin                      R_Pin   G_Pin   B_Pin
+```
+
+### 3. Calculating Current-Limiting Resistors
+Because the three color channels are made of different materials, they have different **Forward Voltages ($V_f$)** (the voltage required to light them). 
+* Red $V_f \approx 1.8\text{V}$ to $2.0\text{V}$
+* Green $V_f \approx 3.0\text{V}$ to $3.2\text{V}$
+* Blue $V_f \approx 3.0\text{V}$ to $3.2\text{V}$
+
+We must calculate the ideal resistor ($R$) for each channel using Ohm's Law ($V = I \cdot R$) assuming a standard safe operating current of $I = 15\text{mA}$ ($0.015\text{A}$):
+
+$$R = \frac{V_{in} - V_f}{I}$$
+
+* **For Red:** $R = \frac{5\text{V} - 2.0\text{V}}{0.015\text{A}} = 200\Omega$ (Standard value: **220Ω**)
+* **For Green & Blue:** $R = \frac{5\text{V} - 3.2\text{V}}{0.015\text{A}} = 120\Omega$ (Standard value: **150Ω** or **220Ω**)
+
+> [!CAUTION]
+> **Never use a single resistor on the common pin** instead of three separate resistors. Because of the different forward voltages, the Red channel (lowest $V_f$) will hog all the current, preventing Green and Blue from lighting up properly and potentially burning out the Red channel.
+
+---
 
 ## 🔄 Alternatives: RGB LEDs vs. NeoPixels
 
 | Device | Type | Communication | Max Colors | Pin Count | Cost | Best Use Case |
-| : | : | : | :
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Standard RGB LED** | Analog Multi-channel | Direct PWM (1 pin per channel) | Infinite (continuous analog mixing) | 4 pins (needs 3 Arduino PWM pins) | Very Low | Basic state indication, learning PWM basics, high speed updates. |
+| **Addressable RGB LED (WS2812B / NeoPixel)** | Digital Smart LED | One-wire High-speed Serial | $2^{24} = 16.7$ million (8-bit digital) | 3 pins total (VCC, GND, Data) for **daisy-chained chains of hundreds of LEDs** | Moderate | Multi-LED matrices, custom light strips, complex robotic notification rigs. |
+| **Separated LEDs** | Isolated discretes | Single digital output per LED | 3 distinct colors | 2 pins per LED | Very Low | Simple indicators where space is not a premium and color mixing isn't required. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -1734,7 +2317,14 @@ To build this circuit, you will need:
 5. **Jumper Wires** (4 male-to-male wires).
 6. **USB Cable**.
 
- | : | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Look at your RGB LED. Typically, the pins are ordered as: **Red, Common Cathode (longest pin), Green, Blue**.
+
+| RGB Pin | Function | Connect To | Wire Color | Description |
+| :--- | :--- | :--- | :--- | :--- |
 | **Pin 1** (Short outer) | Red Anode | **220Ω Resistor** ➡️ Arduino **Pin 9** | Red | PWM control for Red |
 | **Pin 2** (Longest pin) | Common Cathode | Arduino **GND** | Black | Common Ground |
 | **Pin 3** (Short inner) | Green Anode | **220Ω Resistor** ➡️ Arduino **Pin 10** | Green | PWM control for Green |
@@ -1766,6 +2356,9 @@ Follow these steps to upload, run, and verify the color mixer:
   - At Angle 0° (or 360°), Red should be near maximum (255), Green and Blue should be equal and low.
   - At Angle 120°, Green should be near maximum (255), Red and Blue low.
   - At Angle 240°, Blue should be near maximum (255), Red and Green low.
+
+### ⚠️ Safety Note
+- **CRITICAL:** You MUST use current-limiting resistors on the Red, Green, and Blue anodes. Connecting them directly to 5V will burn out the LED and can damage your Arduino pins!
 
 ### 🔍 Troubleshooting Tips
 * **The colors are jumping abruptly instead of shifting smoothly:**
@@ -1813,7 +2406,30 @@ Welcome to Day 6 of the 100-Day Arduino Masterclass! Today, we explore optical s
 
 To prepare you for professional engineering, we will also implement **hysteresis** in our logic—a critical software design pattern used to eliminate digital chatter and noise in control systems.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the physics of photoresistive materials and electron mobility.
+2. Design and wire an LDR voltage divider circuit.
+3. Master the concept of hysteresis and understand why single-threshold comparisons fail.
+4. Implement a dual-threshold control loop.
+5. Log ambient light telemetry for system calibration.
+
+---
 
 ## 🧠 The "Why" and "What": LDRs in Robotics
 
@@ -1827,7 +2443,71 @@ In robotics and smart environments, light sensing is key for reacting to ambient
 - **Obstacle/Edge Detection:** Simple mobile robots can use an LDR pointing downward next to an LED to detect changes in surface reflectivity (like the edge of a table or a dark line).
 - **Light-seeking Robots (Phototaxis):** Small vehicles that navigate toward light sources or escape into the shadows (photophobia).
 
-+-- OFF Threshold
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Photoresistive Physics (How the LDR Works)
+An LDR is made of a high-resistance semiconductor. When the LDR is in darkness, very few free charge carriers (electrons and holes) exist in the material. The valence electrons are bound within the crystal lattice, resulting in an extremely high resistance (often $> 1\text{ M}\Omega$).
+
+```
+        Darkness (High Resistance)                  Light (Low Resistance)
+        
+         [Valence Band]  (Bound)                    [Valence Band]
+             O   O   O   O                             O       O
+          -                       -o- (Photons free electrons)
+             |   |   |   | (Bandgap)                       |       |
+          -                       -o-
+             o   o   o   o                             o   o   o   o
+        [Conduction Band] (Empty)                   [Conduction Band] (Conducting!)
+```
+
+When light (photons) strikes the semiconductor material, the photons transfer their energy to the bound valence electrons. If the energy of the incident photons is greater than the **bandgap energy** of the material, the electrons absorb the energy and break free from their bonds, jumping into the **conduction band**. 
+
+These newly freed electrons are now capable of carrying an electric current. As light intensity increases, more electrons jump to the conduction band, and the electrical resistance of the LDR drops dramatically (down to a few hundred ohms in bright sunlight).
+
+### 2. The LDR Voltage Divider
+Just like the potentiometer on Day 4, the Arduino cannot read resistance directly; it can only measure voltage. To convert the variable resistance of the LDR into a variable voltage, we place it in a voltage divider circuit with a fixed $10\text{k}\Omega$ resistor.
+
+```
+                  +5V
+                   |
+                [ LDR ]  (Variable Resistance, R_LDR)
+                   |
+  Pin A0 <---+---- (Junction Pin)
+                   |
+                [ 10k ]  (Fixed Resistance, R_fixed)
+                   |
+                  GND
+```
+
+The output voltage at the junction ($V_{out}$, connected to Pin A0) is calculated as:
+
+$$V_{out} = V_{in} \times \left( \frac{R_{fixed}}{R_{LDR} + R_{fixed}} \right)$$
+
+* **In Bright Light:** $R_{LDR}$ is very low (e.g., $500\Omega$).
+  $$V_{out} = 5\text{V} \times \left( \frac{10\text{k}\Omega}{500\Omega + 10\text{k}\Omega} \right) \approx 4.76\text{V} \implies \text{High ADC value (approx. 975)}$$
+* **In Complete Darkness:** $R_{LDR}$ is very high (e.g., $500\text{k}\Omega$).
+  $$V_{out} = 5\text{V} \times \left( \frac{10\text{k}\Omega}{500\text{k}\Omega + 10\text{k}\Omega} \right) \approx 0.098\text{V} \implies \text{Low ADC value (approx. 20)}$$
+
+### 3. What is Hysteresis and Why is it Essential?
+If we write a simple comparison loop:
+`if (light < 400) digitalWrite(LED, HIGH); else digitalWrite(LED, LOW);`
+We run into a major problem when the ambient light sits exactly at **400**. Because of tiny thermal fluctuations in the ADC, electrical noise, or the light from the LED itself bleeding back into the LDR, the reading will bounce between 399 and 401.
+
+This causes the LED to flicker on and off hundreds of times a second. In high-power systems, this causes rapid "chattering" of relays and switches, which quickly burns out contacts and damages motors.
+
+**Hysteresis** solves this by establishing two distinct thresholds:
+1. **Dark Threshold (e.g., 350):** The level below which we turn the LED **ON**.
+2. **Light Threshold (e.g., 450):** The level above which we turn the LED **OFF**.
+
+```
+Light Level
+ (ADC Value)
+     |
+ 500 |============================================ LED is OFF
+     |            \
+ 450 |-\----- OFF Threshold
      |              \   [Hysteresis Zone]
  350 |- ON Threshold
      |                \__________________________
@@ -1837,7 +2517,17 @@ In robotics and smart environments, light sensing is key for reacting to ambient
 
 Once the LED turns ON, the light level must cross all the way back up over **450** to turn it off. This creates a "dead band" that filters out noise and stabilizes the system.
 
- | : | : | :
+---
+
+## 🔄 Alternatives: LDRs vs. Active Sensors
+
+| Sensor Type | How It Works | Spectral Response | Response Time | Noise Immunity | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **LDR (Photoresistor)** | CdS semiconductor resistance change. | Broad (similar to human eye, peak green/yellow). | Slow ($\approx 10\text{ to }50\text{ ms}$). | High (slow response naturally filters high-frequency light noise). | **Chosen** for night lights, solar tracking, and general light-dark sensing. |
+| **Photodiode** | A P-N junction that generates a small current when photons hit it (photovoltaic). | Narrow (often infrared optimized). | Extremely Fast (nanoseconds). | Low (requires amplification). | Optical communication, remote controls, laser tripwires. |
+| **Digital Ambient Light Sensor (BH1750)** | Integrated silicon photodiode and ADC. Communicates via I2C. | Human eye response. Outputs directly in Lux. | Fast. | High (digital transmission). | Smartphone screen brightness control, professional lux meters. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -1850,7 +2540,12 @@ To build this project, you will need:
 6. **Breadboard & Jumper Wires**.
 7. **USB Cable**.
 
- | : | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+| Component | Pin / Terminal | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- | :--- |
 | **LDR** | Terminal A | **5V** | Red | Divider supply voltage |
 | **LDR** | Terminal B | **A0** (Junction) | Yellow | Divider voltage output |
 | **10kΩ Resistor** | Terminal A | **A0** (Junction) | Yellow | Ground reference path |
@@ -1938,7 +2633,28 @@ Welcome to Day 7 of the 100-Day Arduino Masterclass! Today, we explore distance 
 
 You will master the physics of sound propagation, learn how to derive distance from time-of-flight measurements, and write robust code that prevents microcontroller lockups using timeout limits.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the working principle of ultrasonic transducers and echolocation.
+2. Master the physics of the speed of sound in air and its temperature dependence.
+3. Wire the HC-SR04 sensor and trigger it with sub-millisecond precision.
+4. Implement a time-of-flight calculation in C++.
+5. Prevent CPU blocking by configuring `pulseIn()` timeouts.
+
+---
 
 ## 🧠 The "Why" and "What": Ultrasonic Sensors in Robotics
 
@@ -1952,12 +2668,75 @@ In robotics, measuring the distance to objects is fundamental for spatial awaren
 - **Tank Level Sensing:** Measuring the distance from the top of a tank to the surface of liquid or grain inside to track volume.
 - **Parking Sensors:** Back-up alarm systems that beep faster as a vehicle approaches a wall.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Physics of Sound Waves
+Sound is a mechanical wave that travels through a medium (like air) by compressing and expanding air molecules. 
+
+The speed of sound ($v$) is not constant; it depends primarily on the temperature ($T$) of the air. At sea level, the speed of sound can be calculated using the formula:
+
+$$v = 331.3 + 0.6 \cdot T \quad (\text{in m/s})$$
+
+Where $T$ is the temperature in degrees Celsius (°C).
+* At **0°C (Freezing):** $v = 331.3\text{ m/s}$ (or $0.03313\text{ cm/µs}$)
+* At **20°C (Room Temp):** $v = 331.3 + 0.6(20) = 343.3\text{ m/s}$ (or $0.03433\text{ cm/µs}$)
+
+### 2. Time-of-Flight Derivation
+The HC-SR04 measures the **round-trip time-of-flight** ($\Delta t$). The sound wave is sent from the transmitter, travels to the obstacle, bounces off it, and travels back to the receiver.
+
+```
+                  =============================================
+                  |              HC-SR04 Sensor               |
+                  |   [Transmitter]             [Receiver]    |
+                  =============================================
+                           \                         /
+                            \                       /
+                             \                     /
+    Outbound Sound Wave (40kHz) \                   / Inbound Echo Wave
+                                 \                 /
+                                  v               /
+                             ===========================
+                             |     Obstacle Target     |
+                             ===========================
+```
+
+Therefore, the distance ($d$) to the target is exactly **half** of the total distance traveled by the sound wave:
+
+$$\text{Distance } (d) = \frac{\text{Speed } (v) \times \text{Time } (\Delta t)}{2}$$
+
+Using the speed of sound at 20°C ($0.03433\text{ cm/\mu s}$):
+
+$$d = \frac{0.03433 \times \Delta t}{2} = \frac{\Delta t}{2 / 0.03433} = \frac{\Delta t}{58.26} \quad (\text{in cm})$$
+
+To convert to inches, knowing that $1\text{ inch} = 2.54\text{ cm}$:
+
+$$d = \frac{\Delta t}{58.26 \times 2.54} = \frac{\Delta t}{148.0} \quad (\text{in inches})$$
+
+### 3. Preventing Microcontroller Lockups
+The Arduino uses the built-in function `pulseIn(pin, HIGH)` to measure how long the Echo pin stays high. 
+By default, `pulseIn()` has a timeout of **1 second**. If you point the sensor into empty space where there is no obstacle, the sound wave will travel forever and never bounce back. 
+
+Without a custom timeout, the Arduino will freeze and wait for 1 full second on every loop iteration, halting all motor controls and other sensors.
+
+To prevent this, we calculate the maximum duration we care about. The HC-SR04 has a maximum reliable range of about **4 meters**. A round trip of 4.5 meters (450 cm) takes:
+
+$$\Delta t_{max} = 450\text{ cm} \times 58.3 \approx 26,235\text{ µs}$$
+
+By passing **26000** as the third parameter to `pulseIn(ECHO_PIN, HIGH, 26000)`, we limit the wait time to 26 milliseconds. If no echo returns in that time, the function immediately returns `0`, and the loop continues running smoothly.
+
+---
 
 ## 🔄 Alternatives: Sonar vs. Infrared vs. LiDAR
 
 | Sensor Type | Technology | Measuring Range | Accuracy | Effect of Ambient Light / Color | Cost | Best Use Case |
-| : | : | : | :
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **HC-SR04 Sonar** | Ultrasonic sound waves. | $2\text{ cm to }400\text{ cm}$ | $\approx 3\text{ mm}$ | None. Works in complete darkness; color/transparency of target does not matter. | Very Low | **Chosen** for obstacle detection, tank level sensing, and cost-effective mobile robotics. |
+| **Sharp GP2Y0A21 IR** | Infrared light triangulation. | $10\text{ cm to }80\text{ cm}$ | Moderate | High. Dark targets absorb the IR light, giving faulty readings. Ambient sunlight degrades performance. | Moderate | Short-range proximity detection in indoor-only systems. |
+| **VL53L0X LiDAR** | Laser Time-of-Flight (light speed). | $3\text{ cm to }200\text{ cm}$ | $\approx 1\text{ mm}$ | Low. Laser light is highly focused, giving millimeter-precision. | High | Precision mapping, height sensors for drones, exact positioning. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -1967,7 +2746,18 @@ To build this project, you will need:
 3. **Breadboard & Jumper Wires**.
 4. **USB Cable**.
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+| Sensor Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** | Red | Power supply (+5V) |
+| **Trig** | **Pin 3** | Green / Yellow | Trigger input pulse line |
+| **Echo** | **Pin 4** | Blue | Echo output pulse line |
+| **GND** | **GND** | Black | Ground reference |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -2038,7 +2828,30 @@ Welcome to Day 8 of the 100-Day Arduino Masterclass! Today, we explore motion de
 
 You will learn the physics of thermal radiation, how pyroelectric crystals sense motion, how to calibrate these sensors, and how to write edge-triggered code for clean alert logging.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/PIR_Motion_Sensor.jpg" alt="PIR Motion Sensor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how pyroelectric sensors detect infrared radiation (thermal energy).
+2. Learn how a Fresnel lens divides physical space into passive detection zones.
+3. Configure the hardware settings (Sensitivity, Time Delay, Trigger Mode) on the PIR module.
+4. Program a startup calibration loop to warm up the sensor.
+5. Implement edge-triggered state logging.
+
+---
 
 ## 🧠 The "Why" and "What": PIR Sensors in Robotics
 
@@ -2052,7 +2865,22 @@ Motion detection is a primary sensor input for power saving, safety, and securit
 - **Human-Robot Interaction:** Enabling a stationary robot to turn its head (servo) toward a person when they walk into the room.
 - **Safety Interlocks:** Disabling robotic arms or machinery if a human breaks the safety perimeter.
 
-+ ++ +->     +-+ +-+
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Physics of Pyroelectricity
+All objects with a temperature above absolute zero (0 Kelvin or -273.15°C) emit thermal energy in the form of electromagnetic radiation. At room temperatures, this radiation falls in the **infrared spectrum** (wavelengths of $8\text{ to }14\text{ µm}$). Humans, with a body temperature of around 37°C, emit peak infrared light at roughly $9.4\text{ µm}$.
+
+Inside the metal casing of the PIR sensor (the window) is a **pyroelectric sensor**. This sensor is made of crystalline materials (such as lithium tantalate) that generate a temporary electrical charge when heated or cooled.
+
+```
+       Dual-Slot Pyroelectric Crystal                    Walking Past the Sensor
+       
+               Slot 1      Slot 2                            Slot 1    Slot 2
+             +---+ +---+                        +-+ +-+
+  IR Light ➡️ | Crystal | | Crystal |             Warm Body  | (Hot) | |(Cold) | ➡️ Differential Voltage
+             +---+ +---+              ---->     +-+ +-+
                   \           /
                    V_1 - V_2 (Differential Amplifier)
 ```
@@ -2096,19 +2924,36 @@ On the back of the HC-SR501 PIR module, you will find three hardware adjustment 
   - **Single Trigger ('L'):** When motion is detected, the output goes `HIGH` for the set delay time. Even if the person keeps moving, the output drops back `LOW` when the timer expires, then retriggers.
   - **Repeat Trigger ('H' - Recommended & Default):** The output remains `HIGH` continuously as long as movement is detected within the zone. The delay timer resets with every movement.
 
- | : | : | : |
+---
+
+## 🔄 Alternatives: PIR vs. Radar vs. Active IR
+
+| Sensor Type | Technology | Detection Range | Angle of View | Detection Type | Cost | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **PIR Sensor (HC-SR501)** | Passive Pyroelectric (infrared). | $3\text{ to }7\text{ m}$ | $\approx 110^{\circ}$ | Detects movement of warm bodies relative to background. | Low | **Chosen** for smart home lighting, security alarms, and human presence detection. |
 | **Microwave Radar (RCWL-0516)** | Doppler Effect (electromagnetic waves). | $5\text{ to }9\text{ m}$ | $360^{\circ}$ (Omni) | Detects movement of any physical mass. Can see through walls/wood. | Low | Hidden sensors inside enclosures, tracking motion through physical barriers. |
 | **Active IR Sensor / Beam** | Emits IR light from a transmitter to a receiver. | Line-of-sight | Narrow Beam | Detects interruption of the light beam. | Moderate | Conveyor belt product counters, safety tripwires on garage doors. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **PIR Motion Sensor Module** (HC-SR501 or similar).
+3. **Active Piezo Buzzer** (5V).
+4. **LED & 220Ω Resistor**.
+5. **Breadboard & Jumper Wires**.
+6. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 Remove the white dome cover of the PIR module temporarily to check the label under the pins. Typically, looking at the board with the pins at the bottom: **VCC (Left), OUT (Middle), GND (Right)**.
 
 | Sensor Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** (PIR) | **5V** | Red | Sensor power supply (5V) |
 | **OUT** (PIR) | **Pin 2** | Green / Yellow | Digital output (Trigger line) |
 | **GND** (PIR) | **GND** | Black | System ground |
@@ -2200,7 +3045,29 @@ Welcome to Day 9 of the 100-Day Arduino Masterclass! Today, we focus on environm
 
 You will learn the physics behind relative humidity and thermal resistances, study the DHT11's proprietary single-wire serial communication protocol, and implement a robust logging system.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how capacitive elements measure relative humidity.
+2. Study the behavior of Negative Temperature Coefficient (NTC) thermistors.
+3. Decipher the 40-bit single-bus serial data protocol used by DHT sensors.
+4. Wire the DHT11 and implement an external pull-up resistor configuration if needed.
+5. Use Adafruit's DHT library and write non-blocking validation routines.
+
+---
 
 ## 🧠 The "Why" and "What": Temperature & Humidity in Robotics
 
@@ -2214,12 +3081,76 @@ Environmental factors directly affect mechanical systems, electronics, and algor
 - **HVAC Smart Automation:** Regulating air conditioners and humidifiers based on the calculated **Heat Index** (how hot it actually feels to humans, incorporating moisture levels).
 - **Sensor Drift Calibration:** High-precision gas sensors or optical sensors drift as temperature changes. Readings from a DHT11 are used as calibration parameters to mathematically correct sensor drift.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. Capacitive Relative Humidity (RH) Sensing
+To measure humidity, the DHT11 uses a **capacitive humidity sensor**. This sensor consists of a thin polymer substrate (dielectric layer) sandwiched between two conductive electrodes.
+
+```
+       Capacitive Humidity Sensor Structure
+       
+            [ Electrode 1 (Gold/Platinum grid) ]
+       --
+            Polymer Substrate (Moisture Absorbing)  ⬅️ Water Molecules (H2O)
+       --
+            [ Electrode 2 (Glass substrate) ]
+```
+
+Water vapor ($\text{H}_2\text{O}$) in the air is absorbed by the polymer layer. Because water molecules have a very high dielectric constant ($\approx 80$ at room temperature) compared to the dry polymer, the capacitance ($C$) of the sensor increases proportionally as more water vapor is absorbed:
+
+$$C = \epsilon_r \cdot \epsilon_0 \cdot \frac{A}{d}$$
+
+Where:
+* $\epsilon_r$ is the relative permittivity (dielectric constant) of the polymer/moisture mix.
+* $\epsilon_0$ is the vacuum permittivity.
+* $A$ is the area of the electrodes.
+* $d$ is the distance between electrodes.
+
+The DHT11's internal chip measures this capacitance change and maps it to Relative Humidity ($0\%\text{ to }100\%\text{ RH}$).
+
+### 2. The NTC Thermistor (Temperature Sensing)
+Temperature is measured using a **Negative Temperature Coefficient (NTC) thermistor**. This is a thermal resistor made of sintered metal oxides. 
+
+As temperature increases, thermal energy excites electrons, freeing them to jump from the valence band to the conduction band. The density of charge carriers increases, causing the electrical resistance ($R$) of the thermistor to drop exponentially. This behavior is modeled by the Steinhart-Hart equation:
+
+$$\frac{1}{T} = A + B\ln(R) + C(\ln(R))^3$$
+
+Where $T$ is temperature in Kelvin, $R$ is resistance, and $A, B, C$ are material constants.
+
+### 3. The DHT11 40-Bit Single-Bus Protocol
+Unlike standard I2C or SPI digital protocols, the DHT11 communicates using a custom single-wire handshake protocol over a single data line.
+
+```
+DHT11 Data Line Handshake:
+
+            Host Start                                 Sensor Response
+    5V _____            ___________                 ________          ________
+            \          /           \               /        \        /        \
+  Data       \________/             \_____________/          \______/          \=== 40-Bit Data
+    0V         18ms                     80µs          80µs
+```
+
+1. **Host Start Pulse:** The Arduino pulls the data line `LOW` for at least 18 milliseconds, then pulls it `HIGH` and waits 20-40 microseconds for the sensor to respond.
+2. **Sensor Handshake:** The DHT11 pulls the line `LOW` for 80 microseconds, then lets it fly `HIGH` for 80 microseconds to indicate it is ready.
+3. **Data Transmission:** The sensor transmits 40 bits (5 bytes) of data. Each bit begins with a 50µs `LOW` phase. The length of the subsequent `HIGH` phase determines if the bit is a 0 or a 1:
+   - **Bit '0':** 26 to 28 microseconds `HIGH`.
+   - **Bit '1':** 70 microseconds `HIGH`.
+4. **Checksum Validation:** The 5th byte transmitted is the checksum. The Arduino verifies that:
+   $$\text{Byte 1} + \text{Byte 2} + \text{Byte 3} + \text{Byte 4} = \text{Checksum (Byte 5)}$$
+
+---
 
 ## 🔄 Alternatives: DHT11 vs. DHT22 vs. High-Precision Sensors
 
 | Sensor Module | Temperature Range | Humidity Range | Accuracy (Temp/Humidity) | Sample Rate | Cost | Best Use Case |
-| : | : | : | :
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **DHT11** | $0\text{ to }50^{\circ}\text{C}$ | $20\text{ to }90\%\text{ RH}$ | $\pm 2.0^{\circ}\text{C} \ / \ \pm 5\%$ | $1\text{ Hz}$ (1 sec) | Very Low | **Chosen** for basic logging, educational setups, and indoor home monitoring. |
+| **DHT22 (AM2302)** | $-40\text{ to }80^{\circ}\text{C}$ | $0\text{ to }100\%\text{ RH}$ | $\pm 0.5^{\circ}\text{C} \ / \ \pm 2\%$ | $0.5\text{ Hz}$ (2 sec) | Low | Outdoor logging, greenhouses, and mid-range weather tracking. |
+| **BME280** | $-40\text{ to }85^{\circ}\text{C}$ | $0\text{ to }100\%\text{ RH}$ | $\pm 1.0^{\circ}\text{C} \ / \ \pm 3\%$ | Up to $100\text{ Hz}$ (I2C) | Moderate | Altmeters, drones, pressure tracking, and professional meteorological stations. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -2229,7 +3160,20 @@ To build this project, you will need:
 3. **Breadboard & Jumper Wires**.
 4. **USB Cable**.
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+> [!NOTE]
+> If you are using a raw 4-pin DHT11 sensor, Pin 3 is empty and not used. Connect Pin 1 to 5V, Pin 4 to GND, and Pin 2 to Arduino Pin 2. You **MUST** connect a 10kΩ pull-up resistor between Pin 2 (Data) and Pin 1 (5V). If using a 3-pin breakout module (recommended), the resistor is pre-soldered.
+
+| Breakout Module Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** / (+) | **5V** | Red | Power supply (+5V) |
+| **DATA** / OUT / S | **Pin 2** | Green / Yellow | Serial data line |
+| **GND** / (-) | **GND** | Black | Ground reference |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -2303,7 +3247,26 @@ Welcome to Day 10 of the 100-Day Arduino Masterclass! Today, we explore electro-
 
 You will master the converse piezoelectric effect, learn how pitch and rhythm are generated mathematically, and test both active and passive configurations.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Differentiate between Active and Passive buzzers at an electronic level.
+2. Master the physics of the converse piezoelectric effect.
+3. Understand sound waves, frequencies ($f$), and periods ($T$).
+4. Wire a buzzer safely with a current-limiting resistor to protect I/O pins.
+5. Implement a non-blocking sequence player for both pitches (`tone()`) and rhythms.
+
+---
 
 ## 🧠 The "Why" and "What": Buzzers in Robotics
 
@@ -2317,7 +3280,18 @@ Robotic systems must communicate alerts and telemetry to operators:
 - **Audio Feedback:** A click sound when a button on a control panel is pressed.
 - **Melodies:** Retro game sound effects and success/failure musical cues.
 
-- Piezo Ceramic       \________/ Piezo Ceramic (Contracted)
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Converse Piezoelectric Effect
+At the heart of a piezo buzzer is a thin circular disc of piezoelectric ceramic material (typically lead zirconate titanate, PZT) bonded to a brass or stainless steel plate.
+
+```
+   No Voltage Applied                     Voltage Applied (Converse Effect)
+   
+      ================ Brass               ======\________/====== Brass (Bent)
+      ---- Piezo Ceramic       \________/ Piezo Ceramic (Contracted)
 ```
 
 * **Direct Piezoelectric Effect:** Applying mechanical stress (compressing the ceramic) generates a voltage. (Used in knock sensors and BBQ grill igniters).
@@ -2361,7 +3335,17 @@ Different frequencies correspond to different musical pitches:
 
 The Arduino `tone(pin, frequency, duration)` function uses an internal 8-bit timer to generate a $50\%$ duty cycle square wave at the target frequency on the pin.
 
- | : | : | :
+---
+
+## 🔄 Alternatives: Piezo Buzzers vs. Magnetic Speakers
+
+| Transducer | Technology | Frequency Range | Power Consumption | Drive Circuitry | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Piezo Buzzer** | Piezoelectric crystal flexing. | High pitch ($1\text{ kHz to }5\text{ kHz}$). | Very Low ($\approx 10\text{ to }20\text{ mA}$). | Direct Arduino pin (with safety resistor). | **Chosen** for loud alarms, clickers, boot sounds, and low-power microcontrollers. |
+| **Magnetic Speaker** | Voice coil moving in a permanent magnetic field. | Broad ($20\text{ Hz to }20\text{ kHz}$). | High ($\approx 100\text{ to }500\text{ mA}$ at 8Ω). | Requires transistor amplifier or audio amp IC. | Playing voice clips, sound effects, and rich music. |
+| **Magnetic Buzzer** | Electromagnet vibrating a metal diaphragm. | Mid pitch ($\approx 1.5\text{ kHz to }3\text{ kHz}$). | Moderate ($\approx 30\text{ to }80\text{ mA}$). | Transistor driver. | Industrial equipment alarm horns. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -2372,7 +3356,18 @@ To build this project, you will need:
 4. **Breadboard & Jumper Wires**.
 5. **USB Cable**.
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Look at your buzzer. The positive pin (+) is typically marked on the top sticker and has a **longer leg**. The negative pin (-) is the shorter leg.
+
+| Buzzer Pin | Connect To | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **Positive (+)** (Long leg) | **100Ω Resistor** ➡️ Arduino **Pin 8** | Red / Orange | Signal line (digital/tone output) |
+| **Negative (-)** (Short leg) | Arduino **GND** | Black | Ground reference |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -2453,7 +3448,31 @@ Welcome to Day 11 of the 100-Day Arduino Masterclass! Today, we enter the world 
 
 You will master closed-loop control systems, study Pulse Position Modulation (PPM) waveforms, learn how to prevent board brownouts under heavy inductive loads, and write a completely non-blocking sweep algorithm.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the difference between open-loop and closed-loop control systems.
+2. Master Pulse Position Modulation (PPM) timing constraints (50 Hz, 1-2ms pulse width).
+3. Identify the internal mechanics of a hobby servo (DC motor, gears, feedback pot, error amp).
+4. Wire a servo safely and learn when to isolate power lines.
+5. Program a non-blocking angle updates sweep using `millis()`.
+
+---
 
 ## 🧠 The "Why" and "What": Servos in Robotics
 
@@ -2468,13 +3487,44 @@ Servos are the primary muscle behind joints and steerage in mechatronics:
 - **Camera Pan-Tilt Gimbal Systems:** Steering camera angles to track objects or stabilize footage.
 - **Grippers:** Opening and closing claws to grab and release objects.
 
-+   Actual Position
-       ➡️ | Error | -➡️ |  Motor  | +         |
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Open-Loop vs. Closed-Loop Control
+To understand a servo, we must understand control theory.
+* **Open-Loop Control:** You send a command to an actuator, but you have no sensor to confirm if the actuator actually moved. 
+  - *Example:* A standard DC motor. If you write `analogWrite(pin, 128)`, you expect it to spin at half speed, but if it gets stuck, the controller does not know.
+* **Closed-Loop Control (The Servo):** You send a command (e.g., go to $90^{\circ}$). The actuator moves, measures its actual position using an internal sensor (potentiometer), compares the actual position to the commanded position (error calculation), and automatically drives the motor until the error is zero.
+
+```
+       Closed-Loop Servo System Block Diagram
+       
+       Target Angle  +-+  Motor Drive  +---+   Actual Position
+       ➡️ | Error | -➡️ |  Motor  | -----➡️ Output Shaft
+         (Signal)    |  Amp  |                +---+         |
                      +-+                             |
                          ^                                 v
-                         |->
+                         |--- [Feedback] (Internal Pot)
+```
+
+### 2. Pulse Position Modulation (PPM) Control Timing
+Servos are controlled by sending a specific pulse train. This is technically **Pulse Position Modulation (PPM)** rather than standard duty-cycle PWM.
+
+The Arduino sends a pulse every **20 milliseconds** ($50\text{ Hz}$ frequency). The width of the high pulse (ON time) determines the target shaft position:
+* **1.0 millisecond (1000 µs) Pulse:** Target is **$0^{\circ}$**.
+* **1.5 millisecond (1500 µs) Pulse:** Target is **$90^{\circ}$** (Center/Neutral).
+* **2.0 millisecond (2000 µs) Pulse:** Target is **$180^{\circ}$**.
+
+```
+PPM Servo Timing Waves:
+
+   0° (1.0ms):     |--|__________________||--|__________________||--| (Repeat 50Hz)
+                   < 20ms Frame ---->
                    
-  90° (1.5ms):     ||_________________||-|________________||-|
+  90° (1.5ms):     |---|_________________||---|_________________||---|
+  
+ 180° (2.0ms):     |----|________________||----|________________||----|
 ```
 
 If you send a pulse width outside the 1.0ms - 2.0ms range, the servo will try to rotate past its physical limits, hitting mechanical endstops, drawing maximum stall current, and stripping its gears.
@@ -2492,19 +3542,39 @@ However, standard and high-torque servos (like the MG996R) draw **$1.0\text{ to 
 > [!IMPORTANT]
 > **Safety Rule:** For any project using more than one servo or using servos larger than an SG90, you **must** use an external 5V - 6V battery pack or power supply. Connect the external power positive wire to the servo VCC, and connect the external power Ground to BOTH the servo GND and the Arduino GND. This common ground is essential so the PPM signal has a reference path.
 
- | : | : | : |
+---
+
+## 🔄 Alternatives: Servos vs. Steppers vs. DC Motors
+
+| Motor Type | Control Type | Speed | Torque | Rotation Limits | Feedback | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Servo Motor** | Closed-Loop | Moderate | High | Limited ($0\text{ to }180^{\circ}$ standard) | Yes (internal potentiometer). | **Chosen** for robotic joints, steering linkages, and pan-tilt systems. |
 | **Stepper Motor** | Open-Loop | Low to Moderate | High | Infinite rotation | No (requires homing sensor). | 3D printer axes, CNC machines, and precision positioning. |
 | **Standard DC Motor** | Open-Loop | Very High | Low | Infinite rotation | No (requires external encoder). | Wheel drive shafts on rovers, fans, propellers. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **SG90 Micro Servo Motor** (standard 9g analog hobby servo).
+3. **Breadboard & Jumper Wires**.
+4. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 Look at your servo cable. It consists of three colored wires. Most hobby servos follow one of these color schemes:
 
 | Connection Type | Servo Wire Color (Standard) | Servo Wire Color (Alt) | Connect To | Description |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Signal (PPM)** | **Orange** | Yellow | Arduino **Pin 9** | PPM pulse command line |
+| **VCC (+5V)** | **Red** | Red | Arduino **5V** (or external 5V) | Motor power supply |
+| **GND (0V)** | **Brown** | Black | Arduino **GND** (shared GND) | Ground reference |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -2579,7 +3649,33 @@ Welcome to Day 12 of the 100-Day Arduino Masterclass! Today, we combine our know
 
 We will create a control interface where rotating a potentiometer dial directly steers the angle of a servo motor. Most importantly, you will master **deadband noise filtering**—a professional coding technique used to eliminate electrical jitter, stop servo buzzing, and extend the lifespan of mechanical gears.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Interface a potentiometer and servo motor on a single breadboard.
+2. Understand the concept of ADC jitter and electrical noise propagation.
+3. Master the mathematics of a **deadband filter** using absolute differences.
+4. Learn how decoupling capacitors stabilize voltage rails in mechatronic systems.
+5. Calibrate the analog-to-angle travel limits.
+
+---
 
 ## 🧠 The "Why" and "What": Potentiometer-Servo Control
 
@@ -2593,28 +3689,96 @@ This master-slave positioning concept is the foundation of robotic teleoperation
 - **Manual Camera Gimbals:** Adjusting camera tilt angle using a dial on a control panel.
 - **Prototyping Joint Kinematics:** Testing joint ranges and checking mechanical clearances by manually driving a joint with a dial before writing automated path trajectories.
 
--+-+➡️ Servo VCC (Red)
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Physics of ADC Jitter and Electrical Noise
+Why do servos buzz when connected to basic potentiometer codes?
+Analog signals are vulnerable to electrical noise. Even if a potentiometer shaft is held completely still, the voltage measured at Pin A0 will fluctuate slightly due to:
+* Electromagnetic interference (EMI) from nearby laptop power bricks or wires.
+* Fluctuations in the Arduino's 5V reference voltage caused by the servo's own current draw.
+* Thermal noise in the ADC.
+
+This noise causes the 10-bit ADC reading to fluctuate by 1 or 2 steps (e.g., bouncing between `512` and `513`). Without a filter, this is mapped to a change in servo target angle. The servo's internal controller tries to correct this micro-step, driving the internal DC motor back and forth thousands of times a minute. This results in the high-pitched **buzzing** or humming sound, wastes battery, generates heat, and wears down the plastic gear teeth.
+
+### 2. The Deadband Filter Algorithm
+A **deadband** (or dead zone) is a range of input values where no action is taken. In our code, we define a deadband threshold of `4` (out of 1023, which is about $0.4\%$ of the total range).
+
+```
+                     The Deadband Filter Loop
+                     
+       New Sample (potValue) ➡️ [ Calculate abs(potValue - lastPotValue) ]
+                                             |
+                            +----+----+
+                            |                                 |
+                     Difference > DEADBAND            Difference <= DEADBAND
+                            |                                 |
+                            v                                 v
+                 Update lastPotValue &                     [Ignore]
+                  Write to Servo Motor                   Do nothing!
+```
+
+We calculate the absolute difference between the new raw reading and the last recorded stable reading using the `abs()` function:
+
+$$\text{Difference} = | \text{potValue} - \text{lastPotValue} |$$
+
+* If the difference is **$\le 4$**: We assume it is noise. We discard the reading and make no changes. The servo remains silent.
+* If the difference is **$> 4$**: We assume it is a real human movement. We update `lastPotValue = potValue`, map the angle, and drive the servo.
+
+### 3. Decoupling Capacitors (Hardware Filtering)
+To further clean up the electrical noise caused by the servo motor's inductive spikes, we can place a **decoupling capacitor** ($10\text{ to }100\text{ µF}$) across the 5V and GND power rails on the breadboard.
+
+```
+       5V Rail ----+➡️ Servo VCC (Red)
                                |
                             [=] 100µF Capacitor (Electrolytic)
                                |
-      GND Rail 
+      GND Rail ----+➡️ Servo GND (Brown)
+```
+
+The capacitor acts as a tiny local reservoir of electrical charge. When the servo motor starts moving and draws a quick spike of current, the capacitor discharges to supply that current, preventing the 5V rail voltage from sagging. When the motor stops, the capacitor recharges. This stabilizes the reference voltage, leading to clean ADC readings.
+
+---
 
 ## 🔄 Alternatives: Potentiometers vs. Encoders vs. Joysticks
 
 | Control Input | Output Type | Rotation Limits | Jitter Sensitivity | Programming Complexity | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Potentiometer** | Analog (0-5V) | Limited (usually 270°) | High (needs deadband filter) | Low | **Chosen** for absolute angle tracking and simple steering dials. |
 | **Rotary Encoder** | Digital (pulses) | Infinite rotation | Zero | Moderate (needs interrupt loops) | Stepper motor target adjusters, infinite menu wheels. |
 | **2-Axis Joystick** | Analog (X and Y voltages) | Self-centering spring | High | Low | Game controllers, steering mobile rovers, pan-tilt gimbals. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **SG90 Micro Servo Motor**.
+3. **10kΩ Rotary Potentiometer**.
+4. **100µF Electrolytic Capacitor** (*Optional but recommended for stability*).
+5. **Breadboard & Jumper Wires**.
+6. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 Ensure the potentiometer and the servo do not share breadboard rows except for the common power rails.
 
 | Component | Pin Label | Arduino Pin | Wire Color | Description |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Potentiometer** | Pin 1 (Left Terminal) | **5V** | Red | Power rail connection |
+| **Potentiometer** | Pin 2 (Middle Wiper) | **A0** | Yellow | Analog voltage output |
+| **Potentiometer** | Pin 3 (Right Terminal) | **GND** | Black | Ground rail connection |
+| **Servo** | Signal (Orange/Yellow) | **Pin 9** | Orange | PPM control line |
+| **Servo** | VCC (+) (Red) | **5V** | Red | Power supply |
+| **Servo** | GND (-) (Brown/Black) | **GND** | Black | Ground connection |
+
+*Optional Capacitor:* Connect the longer leg (+) of a $100\text{µF}$ capacitor to the breadboard 5V rail, and the shorter marked leg (-) to the GND rail.
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -2676,7 +3840,29 @@ Welcome to Day 13 of the 100-Day Arduino Masterclass! Today, we explore multi-di
 
 You will master sensor calibration math, learn how to handle center spring tolerances using software filters, and map signals into coordinate formats suitable for driving robotic vehicles.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the electrical layout of dual-axis potentiometric joysticks.
+2. Master the physics of mechanical spring tolerances and center drift.
+3. Write an auto-calibration boot routine to zero out sensor offsets.
+4. Implement a two-dimensional deadband filter to eliminate signal drift at rest.
+5. Map raw 10-bit analog signals to Cartesian coordinate frames ($-100\text{ to }+100$).
+
+---
 
 ## 🧠 The "Why" and "What": Joysticks in Robotics
 
@@ -2690,22 +3876,89 @@ In robotics, dual-axis inputs are essential for manual vehicle piloting and join
 - **Robotic Arm Steering:** Driving the tool-center point of a robotic claw in 2D space (e.g., forward-back, left-right).
 - **Industrial Remote Controls:** Operating cranes, excavators, and heavy machinery with tactile precision.
 
- Deadband Range 
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Orthogonal Potentiometer Layout
+Inside the joystick assembly, a plastic gimbal pivot mechanical structure is connected to two independent potentiometers:
+* **X-Axis Potentiometer:** Measures horizontal rotation.
+* **Y-Axis Potentiometer:** Measures vertical rotation.
+
+```
+       Joystick Internals (Gimbal Mechanism)
+       
+                     [Y-Axis Pot]  (Vertical)
+                          |
+                          v
+                   +--+
+                   |  Pivot Shaft |
+                   +--+
+                          ^
+                          |
+      [X-Axis Pot] ➡️ [Gimbal Cup]
+      (Horizontal)
+```
+
+When you move the thumbstick, it rotates the pivot shaft. The gimbal cup translates this 2D diagonal motion into separate rotation components, adjusting the wiper position of both potentiometers simultaneously.
+
+### 2. Spring Tolerances and Center Drift
+A mechanical spring returns the joystick to its center position when released. In an ideal world, this center resting position would output exactly $2.5\text{V}$, translating to an ADC value of `512`.
+
+However, due to manufacturing tolerances:
+* The spring might not return the wiper to the exact center.
+* The resistive track inside the pots is not perfectly linear.
+* The center resistance drifts over time as the switch is used and carbon tracks wear.
+
+A resting joystick will typically read values like `505` or `522` instead of `512`. If you map this directly to motor control speeds, a resting rover will drift or creep slowly in one direction.
+
+### 3. Auto-Calibration and Deadband Math
+To solve center drift, we implement two software solutions:
+1. **Auto-Calibration:** During the first second of startup, the Arduino averages 10 readings from the resting joystick to measure the actual resting values ($centerX$ and $centerY$).
+2. **Subtraction Offset:** We subtract this center offset from subsequent readings:
+   $$\text{calX} = \text{rawX} - \text{centerX}$$
+3. **Deadband Filter:** We establish a deadband threshold (e.g., $15$ units). If the calibrated value falls inside this threshold ($-\text{DEADBAND} \le \text{cal} \le \text{DEADBAND}$), we force it to zero.
+
+```
+              Joystick ADC Readings Scale (0 - 1023)
+              
+   0 ___________________[--- Deadband Range ---]___________________ 1023
+   |                     -15     0    +15                          |
+   (Left/Down)                 (Center)                     (Right/Up)
+                        Reading forced to 0
+```
+
+### 4. Cartesian Mapping
+Once we confirm the stick is pushed past the deadband, we map the values:
+- Left / Down motions are mapped from $0\text{ to }center$ ➡️ $-100\text{ to }0$.
+- Right / Up motions are mapped from $center\text{ to }1023$ ➡️ $0\text{ to }+100$.
+
+---
 
 ## 🔄 Alternatives: Joysticks vs. Trackballs vs. Touch pads
 
 | Input Device | Technology | Degrees of Freedom | Durability | Noise Vulnerability | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Potentiometric Joystick** | Dual analog variable resistors. | 2 Axis + 1 Button | Moderate (mechanical carbon tracks wear). | Moderate (analog lines). | **Chosen** for budget RC controllers, rover navigation, and joint steering. |
 | **Hall Effect Joystick** | Magnets and Hall-effect magnetic field sensors. | 2 Axis + 1 Button | Extremely High (contactless, zero physical wear). | Zero | Professional aviation controllers, heavy industrial equipment, high-end gamepads. |
 | **Trackball** | Optical scanning of a rotating ball. | 2 Axis | High | Low | Precision mouse interfaces, marine console navigation. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **Dual-Axis Joystick Module** (KY-023 or standard breakout).
+3. **Breadboard & Jumper Wires**.
+4. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 | Joystick Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **+5V** / VCC | **5V** | Red | Power supply (+5V) |
 | **GND** | **GND** | Black | Ground reference |
 | **VRx** / X-Out | **A0** | Yellow | X-axis analog output |
@@ -2797,7 +4050,27 @@ Welcome to Day 14 of the 100-Day Arduino Masterclass! Today, we explore matrix i
 
 You will master row-column multiplexing mathematics, understand the internal layout of membrane switch arrays, and scan digital pin state matrices using library abstractions.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the pin-saving math of row-column matrix multiplexing.
+2. Master the mechanical and electrical composition of membrane switches.
+3. Trace the sequence of active row scanning and column reading.
+4. Wire a 4x4 keypad to the digital I/O header of an Arduino.
+5. Install the standard Keypad library and parse keypress events.
+
+---
 
 ## 🧠 The "Why" and "What": Keypads in Robotics
 
@@ -2811,8 +4084,51 @@ Matrix keypads are standard interfaces for user authorization, configuration, an
 - **Coordinate Inputs:** Punching in target coordinate positions ($X, Y, Z$) for pick-and-place robotic gantry systems.
 - **Arming Codes:** Arming/disarming mobile robotic rovers.
 
-- Flexible plastic with printed key graphic & upper contact pads
-      -
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Pin-Saving Multiplexing Mathematics
+If we wired 16 buttons to the Arduino individually using standard pull-ups, we would consume **16 digital pins**. 
+By organizing them in a matrix, we tie row pins together and column pins together:
+
+```
+        Pin-Saving Math:
+        - Individual: Pins = N * M (For 4x4: 4 * 4 = 16 Pins)
+        - Multiplexed: Pins = N + M (For 4x4: 4 + 4 = 8 Pins)
+```
+
+This saves 8 precious pins for motors, LCDs, and communication modules.
+
+### 2. Active Matrix Scanning Sequence
+The keypad has no internal chip; it is just wires. To detect which button is pressed, the Arduino performs a constant digital scan:
+
+```
+                  Active Scanning Loop
+                  
+      Step 1: Set Cols to INPUT_PULLUP (Default: HIGH / 5V)
+      
+      Step 2: Pull Row 1 LOW (0V) | Keep Rows 2, 3, 4 HIGH (5V)
+              - Check columns. If Col 2 reads LOW: Row 1 + Col 2 = '2' key.
+              
+      Step 3: Pull Row 2 LOW (0V) | Keep Rows 1, 3, 4 HIGH (5V)
+              - Check columns. If Col 4 reads LOW: Row 2 + Col 4 = 'B' key.
+              
+      Step 4: Repeat for all rows...
+```
+
+When a key is pressed, it completes the physical contact between that row wire and column wire. Since the column pin has an internal pull-up, it is normally `HIGH`. When the row goes `LOW` (GND), the current flows from the column pin into the low row pin, pulling the column reading down to `LOW` (GND), registering the keypress.
+
+### 3. Membrane Switch Anatomy
+A membrane switch consists of three primary layers pressed together:
+
+```
+      Membrane Switch Layers Profile
+      
+      [ Top Layer ] ---- Flexible plastic with printed key graphic & upper contact pads
+      ----
+      [ Spacer ] - Plastic sheet with holes under each key (air gap)
+      ----
       [ Bottom Layer ] - Rigid sheet with lower contact pads & bus lines
 ```
 
@@ -2821,7 +4137,17 @@ Matrix keypads are standard interfaces for user authorization, configuration, an
 * **Bottom Layer:** A rigid sheet with printed silver traces forming the row/column buses.
 * **Mechanism:** When you press a key, you deform the top layer. The conductive silver pad travels through the spacer gap, colliding with the bottom pad, completing the electrical circuit.
 
- | : | : | :
+---
+
+## 🔄 Alternatives: Matrix Keypads vs. Resistor Ladders
+
+| Keypad Type | Pin Requirement | Communication Type | Durability | Dust/Water Protection | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Membrane Matrix Keypad** | 8 Digital Pins | Digital Scan Matrix | High (flexible, no moving parts). | Excellent (sealed surface, wash-down proof). | **Chosen** for outdoor locks, industrial machinery panels, and standard inputs. |
+| **Analog Resistor Ladder Keypad** | **1 Analog Pin** | Analog voltage division | Low (requires clicky tactile switches). | Poor (tactile contacts can get dirty). | Small microcontroller systems short on digital pins. |
+| **I2C Keypad Expander (PCF8574)** | **2 Pins (SDA/SCL)** | I2C Digital Serial | Depends on keypad. | Depends on keypad. | Complex control hubs with I2C networks. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -2831,7 +4157,14 @@ To build this project, you will need:
 3. **Male-to-Male Jumper Wires** (8 wires).
 4. **USB Cable**.
 
-: | :: | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Plug the 8-pin female header of the keypad cable into your breadboard or directly into the Arduino header using jumper wires. Looking at the keypad from the front (key labels upright), the pins correspond to **Row 1-4** then **Col 1-4** from left to right.
+
+| Keypad Pin (Left to Right) | Function | Arduino Pin | Wire Color (Recommended) | Description |
+| :---: | :--- | :---: | :--- | :--- |
 | **Pin 1** (Far Left) | Row 1 | **Pin 9** | Red | Top row control line |
 | **Pin 2** | Row 2 | **Pin 8** | Orange | Second row control line |
 | **Pin 3** | Row 3 | **Pin 7** | Yellow | Third row control line |
@@ -2917,7 +4250,30 @@ Welcome to Day 15 of the 100-Day Arduino Masterclass! Today, we combine inputs a
 
 Most importantly, you will master **Finite State Machine (FSM)** architecture—the standard design pattern for building reliable, bug-free, and complex event-driven logic in robotics and aerospace systems.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand Finite State Machine (FSM) architecture and state transitions.
+2. Master string buffer manipulation (`strcmp`, `memset`, null terminators `\0`).
+3. Coordinate multiple outputs (servo latch, green/red status LEDs, buzzer tones).
+4. Implement an automatic timeout window for unlocking.
+5. Apply security programming standards (passcode masking and denial alarms).
+
+---
 
 ## 🧠 The "Why" and "What": Door Locks in Mechatronics
 
@@ -2930,24 +4286,89 @@ FSM architecture is the foundation of robotic autonomy:
 - **Factory Automation:** A pick-and-place gantry operates on states: `STATE_HOME`, `STATE_PICK`, `STATE_MOVE`, `STATE_PLACE`.
 - **Security Access Terminals:** Standard hotel keycard locks, vaults, and numeric safes.
 
-+ ++ ++
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Finite State Machine (FSM) Architecture
+If you try to write a complex project like a passcode lock using standard, linear `if/else` statements, you will create bugs. For example, the user might press a button while the door is unlocked, or the door might get stuck open. 
+
+An FSM defines clean boundaries. We define four states for our lock:
+
+```mermaid
+stateDiagram-v2
+    [*] --> STATE_LOCKED
+    
+    STATE_LOCKED --> STATE_ENTERING : Press any key
+    
+    STATE_ENTERING --> STATE_LOCKED : Press '*' (Cancel)
+    STATE_ENTERING --> STATE_UNLOCKED : Press '#' (PIN Correct)
+    STATE_ENTERING --> STATE_DENIED : Press '#' (PIN Incorrect)
+    
+    STATE_UNLOCKED --> STATE_LOCKED : 5-second timer expires
+    
+    STATE_DENIED --> STATE_LOCKED : 1.5-second buzzer alarm completes
+```
+
+* **Transition Conditions:** A state change occurs only when a specific event is triggered (e.g., timer expires or correct key entered). Inside each state, only relevant actions are processed.
+
+### 2. C-String Buffer Manipulation
+Because the passcode is entered digit-by-digit, we must store the inputs in a **character buffer** (an array of characters) and compare it to our secret passcode:
+
+```
+           C-Style String Buffer in Memory (PIN "1234")
+           
+             index 0     index 1     index 2     index 3     index 4
+           +---+ +---+ +---+ +---+ +---+
    Memory  |   '1'   | |   '2'   | |   '3'   | |   '4'   | |  '\0'   |
-           ++ ++ +
+           +---+ +---+ +---+ +---+ +---+
+                                                               ^
+                                                        Null Terminator
+```
+
+* **Null Termination (`\0`):** In C/C++, strings are character arrays. To compare strings, the compiler must know where the string ends. We insert a special character called a null terminator (`\0`, binary zero) at the end of the input buffer.
+* **String Comparison (`strcmp`):** We use the standard library function `strcmp(str1, str2)`. It compares characters index-by-index. It returns `0` if the strings are identical, and non-zero if they differ.
+* **Memory Reset (`memset`):** When the user clears input or after a validation check, we erase the buffer. `memset(inputBuffer, 0, sizeof(inputBuffer))` fills the entire array with zeros (clearing out all old characters).
+
+---
 
 ## 🔄 Alternatives: Servo Latches vs. Solenoids vs. Mag Locks
 
 | Lock Mechanism | Operating Physics | Current / Power Draw | Driving Circuitry | Failure Mode (No Power) | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Servo Latch** | DC motor driving a mechanical locking pin or deadbolt via gears. | Low ($100\text{ to }250\text{ mA}$). | Direct Arduino Pin (low-load). | **Fail-Secure** (stays in last position). | **Chosen** for educational prototypes, light-duty lockboxes, and robotic joints. |
 | **Solenoid Deadbolt** | Electromagnet pulling a spring-loaded metal plunger. | Very High ($800\text{ to }1500\text{ mA}$ at 12V). | Requires relay/transistor switch + flyback diode. | **Fail-Safe** (spring pushes plunger open, or vice versa). | Commercial door release latches, vending machine lock doors. |
 | **Magnetic Lock** | Large electromagnet holding onto a steel strike plate. | High ($500\text{ to }800\text{ mA}$ at 12V continuously). | Requires relay/transistor switch + high power supply. | **Fail-Safe** (immediately releases when power is lost). | High-traffic double doors, emergency exit firescapes. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **4x4 Membrane Keypad**.
+3. **SG90 Micro Servo Motor**.
+4. **One Red LED & One Green LED**.
+5. **Two 220Ω Resistors** (for LEDs).
+6. **Passive Piezo Buzzer** (and one 100Ω resistor).
+7. **Breadboard & Jumper Wires**.
+8. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 | Component | Pin Label | Arduino Pin | Wire Color | Description |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Keypad** | Pins 1-8 | **Pins 9, 8, 7, 6, 5, 4, 3, 2** | Rainbow | Rows 1-4 then Columns 1-4 |
+| **Servo** | Signal (Orange/Yellow) | **Pin 10** | Orange | PPM lock control |
+| **Servo** | VCC / GND | **5V / GND** | Red / Black | Power supply |
+| **Red LED** | Anode (+) | **220Ω Resistor** ➡️ **Pin 11** | Red | Locked indicator |
+| **Green LED** | Anode (+) | **220Ω Resistor** ➡️ **Pin 12** | Green | Unlocked indicator |
+| **Buzzer** | Positive (+) | **100Ω Resistor** ➡️ **Pin A0** | Blue | Key clicks & sound alarms |
+| **All GNDs** | Cathodes (-) / GND | **GND** | Black | Shared system ground |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -3057,7 +4478,28 @@ Welcome to Day 16 of the 100-Day Arduino Masterclass! Today, we explore power el
 
 You will master galvanic isolation, study electromagnetic induction physics, learn why inductive coils require flyback diode protection, and configure opto-isolated active-low triggers.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand galvanic isolation and why it is critical for microcontroller safety.
+2. Master the physics of electromagnetism and inductances ($V = L \frac{di}{dt}$).
+3. Understand the role of flyback diodes and optocouplers in circuit protection.
+4. Learn the difference between COM, Normally Open (NO), and Normally Closed (NC) terminals.
+5. Control a high-power DC load (like a motor or lamp) safely using a relay module.
+
+---
 
 ## 🧠 The "Why" and "What": Relays in Robotics
 
@@ -3071,7 +4513,21 @@ Microcontrollers are low-power brains. Relays act as the heavy-duty switches for
 - **Pneumatic / Hydraulic Solenoids:** Controlling fluid and air valves in soft robotics and pneumatic cylinders.
 - **Emergency E-Stop Isolation:** Disabling main motor power buses when a safety limit is breached.
 
--- Load Pin (NC)
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Electromagnetic Induction Physics
+Inside the relay's plastic casing are a coil of copper wire wrapped around an iron core, a return spring, and a set of contacts. 
+
+```
+               Mechanical Relay Construction Layout
+               
+           Control Pin (GND)                      Load Pin (NO)
+                  |                                     |
+               [Coil] (Electromagnet)         / Armature Contact (COM)
+                  |                          /
+           Control Pin (+5V)                o----- Load Pin (NC)
 ```
 
 When current flows through the coil, it generates a magnetic field (magnetic flux $\Phi$). This field magnetizes the iron core, which pulls down on a pivoting metal lever called the **armature**. The armature moves the contact terminals, disconnecting **Common (COM)** from the **Normally Closed (NC)** contact and closing it onto the **Normally Open (NO)** contact. When power to the coil is cut, the magnetic field collapses, and a spring snaps the armature back to the NC position.
@@ -3090,7 +4546,11 @@ To prevent this, relay modules include a **Flyback Diode** (also called a freewh
 ```
                    Flyback Diode Protection Loop
                    
-                     +5V +--+
+                     +5V +-----+
+                                     |           |
+                                   [Coil]      [ |V| ] (Flyback Diode, e.g. 1N4148)
+                                     |           |
+                     IN +-----+
 ```
 
 ### 3. Optocoupled Isolation
@@ -3104,7 +4564,17 @@ Professional relay modules include an **Optocoupler IC** (e.g., PC817). Inside t
 
 The Arduino drives only the IR LED. When the LED shines, the phototransistor turns on and conducts current from a separate power supply to drive the relay coil. Because the only link between the Arduino and the relay coil is a beam of light, **there is complete electrical isolation**. Noise, spikes, or short circuits on the relay side cannot reach the Arduino.
 
- | : | : | :
+---
+
+## 🔄 Alternatives: Relays vs. MOSFETs vs. SSRs
+
+| Switch Type | Technology | Max Switching Speed | Silent Operation | Voltage Load Type | Safety Isolation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Mechanical Relay** | Electromagnetic contacts. | Slow ($\approx 10\text{ ms}$). | No (audible click). | AC or DC | Yes (air gap). |
+| **Solid State Relay (SSR)** | Phototriac / Optocoupled thyristors. | Fast ($\approx 1\text{ ms}$). | Yes | AC Only (standard models). | Yes (opto-isolated). |
+| **N-Channel MOSFET** | Silicon field-effect transistor. | Extremely Fast (nanoseconds, PWM capable). | Yes | DC Only | No (requires external driver for isolation). |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -3116,7 +4586,24 @@ To build this project, you will need:
 5. **Breadboard & Jumper Wires**.
 6. **USB Cable**.
 
- | : | : | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+### 1. Control Side (Low-Voltage Isolation)
+Connect the Arduino to the input pins of the relay module.
+
+| Relay Module Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** | Red | Opto-LED positive supply |
+| **IN** | **Pin 7** | Yellow | Control signal input |
+| **GND** | **GND** | Black | Ground reference |
+
+### 2. Load Side (High-Power Switch)
+Wire a small test load (like a 9V battery and motor) through the relay contacts.
+
+| Relay Terminal | Connection Path | Description |
+| :--- | :--- | :--- |
 | **COM** | Connect to **9V Battery Positive (+)** | Central supply terminal |
 | **NO** | Connect to **DC Motor Wire 1** | Contact closed only when energized |
 | **NC** | *Leave Empty* (Not used for this test) | Contact closed when de-energized |
@@ -3198,7 +4685,28 @@ Welcome to Day 17 of the 100-Day Arduino Masterclass! Today, we explore acoustic
 
 You will master the capacitive physics of condenser microphones, study the operation of comparator operational amplifiers (LM393), and write an **echo lockout filter** to eliminate digital double-triggering caused by sound wave decay.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how electret microphones convert sound pressure waves into voltage.
+2. Study the threshold comparator logic of the LM393 operational amplifier.
+3. Learn how sound waves propagate, decay, and echo in closed spaces.
+4. Program a non-blocking sound lockout window to prevent false triggers.
+5. Calibrate the hardware sensitivity potentiometer.
+
+---
 
 ## 🧠 The "Why" and "What": Sound Sensors in Robotics
 
@@ -3212,26 +4720,101 @@ Acoustic triggers are simple, hands-free interfaces:
 - **Acoustic Navigation (Sonar/Localization):** Mobile robots using multi-microphone arrays to calculate the Time Difference of Arrival (TDOA) of a sound, steering the robot to face the speaker.
 - **Voice Activation Triggers:** Waking up a smart voice assistant from sleep mode upon hearing a loud sound.
 
--
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Electret Condenser Microphone Physics
+An electret microphone capsule is a type of capacitor (condenser) sensor. It consists of a thin, metallized polymer diaphragm placed close to a rigid metal backplate. The polymer layer has a permanent electrical charge (electret) embedded in it.
+
+```
+       Electret Condenser Microphone Capsule
+       
+         Sound Wave (Pressure)
+            )   )   )
+            )   )   )   [ Flexible Diaphragm ] (Conductive)
+                        ----
                             Air Gap (d)        ⬅️ Distance changes as sound vibrates
-                        +
+                        ----
+                        [ Metal Backplate ] (Rigid)
+```
+
+The capacitance ($C$) of the plates is defined by the distance ($d$) between them:
+
+$$C = \epsilon_0 \cdot \epsilon_r \cdot \frac{A}{d}$$
+
+When a sound wave (a longitudinal wave of alternating high and low air pressure) hits the flexible diaphragm, it vibrates. This changes the distance ($d$) between the plates, which changes the capacitance ($C$). Since the electrical charge ($Q$) on the electret is constant, the voltage ($V$) across the capacitor changes in proportion to the sound wave according to the charge equation:
+
+$$V = \frac{Q}{C}$$
+
+This tiny AC voltage is amplified by an internal JFET transistor inside the microphone capsule.
+
+### 2. The LM393 Comparator Circuit
+The tiny AC signal from the microphone is sent to the **LM393 Comparator Operational Amplifier**. The comparator compares the microphone voltage ($V_{mic}$) to a reference voltage ($V_{ref}$) set by adjusting the blue multi-turn potentiometer on the module:
+
+* **Quiet Environment ($V_{mic} < V_{ref}$):** The comparator output (OUT / DO pin) is pulled `HIGH` (5V) by a pull-up resistor.
+* **Loud Sound ($V_{mic} > V_{ref}$):** The comparator switches, pulling the OUT pin down to `LOW` (0V).
+
+```
+         LM393 Comparator Schematics
+         
+  V_mic (Mic Pin)  ➡️ [ + ] (Non-Inverting)
+                         \
+                          \ ➡️ OUT (LOW when V_mic > V_ref)
+                          /
+  V_ref (Pot Pin)  ➡️ [ - ] (Inverting)
+```
+
+### 3. Sound Wave Decay and the Lockout Window
+A physical hand clap is not a single clean spike. It is a messy burst of acoustic energy containing multiple shockwaves, reflections, and room echoes that decays over **50 to 150 milliseconds**.
+
+```
+    Acoustic Wave of a Single Clap
+    
+     Vol
+      ^      |
+      |     /|\   |
+      |    / | \ /|\   |
+      |   /  |  V | \ /|\   |  |
+    --+--/---+----+--V-+-V-/|\/|\- quiet threshold
+      | /    |    |  | | |  V  V
+      v
+      <- 100ms Clap Duration ->
+```
+
+To the Arduino, this single clap looks like the DO pin toggles `LOW`, `HIGH`, `LOW`, `HIGH` 10 to 30 times in a row. A basic code loop will register dozens of claps and toggle the light randomly.
+
+To solve this, we write a **Lockout Window**. When the Arduino detects the first transition to `LOW`, it toggles the LED and records the timestamp (`lastClapTime = millis()`). For the next **250 milliseconds**, the code ignores all inputs from the sound sensor. By the time the lockout window expires, the clap has completely decayed, ensuring exactly one toggle per clap!
+
+---
 
 ## 🔄 Alternatives: Digital vs. Analog Sound Sensors
 
 | Sensor Type | Output | Signal Output | CPU Overhead | Debouncing / Processing | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Digital Sound Sensor (LM393)** | Digital (DO) | Binary (Loud = `LOW`, Quiet = `HIGH`). | Extremely Low | **Chosen** for simple clap switches, noise triggers, and sound alarms. |
 | **Analog Sound Sensor (MAX4466)** | Analog (AO) | Continuous AC voltage mirroring the acoustic waveform. | Very High (requires continuous ADC sampling at $> 10\text{ kHz}$). | Needs Fourier Transforms (FFT) or signal envelope math in code. | Voice recording, frequency spectrum analyzers, beat detectors. |
 | **Piezoceramic Vibration Sensor** | Analog/Digital | Voltage spikes generated when physically tapped. | Low | Lockout window. | Detecting physical taps or knock sequences on walls/doors. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **Digital Sound Sensor Module** (LM393 based, e.g., KY-038 or standard 3/4 pin sound module).
+3. **LED & 220Ω Resistor**.
+4. **Breadboard & Jumper Wires**.
+5. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 Ensure your sound module's digital output pin (labeled **OUT, DO, or D0**) is used. (Do not connect to AO for this digital project).
 
 | Sensor Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** / (+) | **5V** | Red | Power supply (+5V) |
 | **GND** / (-) | **GND** | Black | Ground reference |
 | **OUT** / DO / D0 | **Pin 3** | Yellow | Digital output (active low trigger) |
@@ -3303,7 +4886,28 @@ Welcome to Day 18 of the 100-Day Arduino Masterclass! Today, we explore liquid s
 
 You will master the physical chemistry of electrochemical corrosion, study voltage divider resistance sweeps in conductive liquids, and configure safe analog sampling routines.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how water level modules translate depth into analog resistance changes.
+2. Master the chemistry of galvanic electrolysis corrosion in conductive liquids.
+3. Program a gated power-switching sequence to reduce sensor wear by $99\%$.
+4. Establish custom calibration thresholds for local tap water conductivity.
+5. Identify alternative liquid depth sensing systems for industrial environments.
+
+---
 
 ## 🧠 The "Why" and "What": Water Level Sensors in Robotics
 
@@ -3317,7 +4921,49 @@ Liquid tracking is essential for resource management, safety, and closed-loop co
 - **Sump Pump Systems:** Monitoring water accumulation in basements and automatically turning on discharge pumps.
 - **Robotic Cocktail Dispensers / Baristas:** Monitoring liquid levels in supply bottles.
 
--➡️           0V+--+➡️ Time
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. Liquid Resistivity and Exposed Traces
+Pure water ($\text{H}_2\text{O}$) is actually an excellent electrical insulator. However, standard tap water, rain, and environmental water contain dissolved minerals, salts, and metal ions (like $\text{Na}^+$, $\text{Cl}^-$, $\text{Ca}^{2+}$). These free ions act as charge carriers, making the water electrically conductive.
+
+```
+       Exposed Traces (Untouched)                Water Bridges Traces (Conductive)
+       
+         VCC Trace    Signal Trace                 VCC Trace    Signal Trace
+            |             |                           |   Ion Flow  |
+            |   (Air Gap) |                           |==➡️===➡️====|
+            | (Insulator) |                           |  (Conductive) |
+            v             v                           v  (Water)    v
+```
+
+The sensor contains alternating traces. 
+* **Dry State:** The air gap between the VCC trace and the Signal trace has infinite resistance. The signal line is pulled to GND by a pre-soldered resistor on the sensor board, reading `0` on A0.
+* **Wet State:** As the sensor is submerged, water bridges the gaps between the traces. The water acts as a variable resistor. The deeper the sensor is submerged, the more surface area of the copper traces is in contact with the water, effectively placing multiple water resistors in parallel. According to parallel resistance math:
+
+$$\frac{1}{R_{total}} = \frac{1}{R_1} + \frac{1}{R_2} + \dots + \frac{1}{R_n}$$
+
+This causes the overall electrical resistance between the VCC and Signal lines to decrease, raising the junction voltage which is read on analog Pin A0.
+
+### 2. The Chemistry of Electrolysis and Corrosion Gating
+If you connect the water level sensor's VCC pin directly to the Arduino's continuous 5V power line and submerge it in water, you create an **electrolytic cell**. 
+
+Passing a direct current (DC) through water containing ions causes **electrolysis** and galvanic oxidation of the metal contacts:
+* **Anode (Positive Trace):** The copper metal ($\text{Cu}$) undergoes oxidation, losing electrons and dissolving into the water as copper ions:
+  $$\text{Cu}_{(s)} \rightarrow \text{Cu}^{2+}_{(aq)} + 2e^-$$
+* **Result:** Within 24 to 48 hours of continuous powering, the positive copper traces on the sensor will completely dissolve, rendering the sensor useless and leaving copper oxide sludge in the water.
+
+```
+        Corrosion Gating Power Graph:
+
+       Continuous Power (Bad)               Gated Power (Day 18 standard)
+       
+       Volt                                 Volt
+        ^                                    ^   Pulse 10ms
+       5V|======================            5V|  |  
+         |                                    |  |  
+       0V+----➡️           0V+--+➡️ Time
          (Corrodes in 48 hours)               (Lasts for years!)
 ```
 
@@ -3326,7 +4972,18 @@ Liquid tracking is essential for resource management, safety, and closed-loop co
   $$\text{Duty Cycle} = \frac{10\text{ ms}}{1000\text{ ms}} = 1\%$$
 * This decreases the active electrical current duration by **$99\%$**, extending the sensor's physical life from 2 days to years!
 
- | : | : | :
+---
+
+## 🔄 Alternatives: Resistive vs. Non-Contact Sensors
+
+| Sensor Type | Operating Physics | Liquid Contact | Corrosion Risk | Cost | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Resistive Sensor** | Alternating traces conducting through liquid. | Yes | High (unless gated). | Very Low | **Chosen** for low-cost student projects and shallow containment basins. |
+| **Ultrasonic Sensor (Day 7)** | Measures time-of-flight of sound from top of tank to liquid surface. | **No** (Non-contact). | Zero | Low | Deep water tanks, acid containers, and heavy industrial vats. |
+| **Float Switch** | A magnet inside a floating collar triggers an internal reed switch. | Yes | Low (contacts sealed inside plastic tube). | Low | Simple high/low emergency overflow cutoff triggers. |
+| **Capacitive Level Sensor** | Measures change in capacitance through container walls. | **No** (Mounted outside plastic pipe). | Zero | Moderate | Medical equipment tubes, high-purity chemical lines. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -3337,7 +4994,17 @@ To build this project, you will need:
 4. **Breadboard & Jumper Wires**.
 5. **USB Cable**.
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+| Sensor Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** / (+) | **Pin 7** | Red | Gated digital power line (not 5V!) |
+| **GND** / (-) | **GND** | Black | Ground reference |
+| **Signal** / S | **A0** | Yellow | Analog voltage signal |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -3414,7 +5081,27 @@ Welcome to Day 19 of the 100-Day Arduino Masterclass! Today, we study soil elect
 
 You will master soil electrical resistivity physics, study the design of capacitive vs. resistive probes, and calibrate soil moisture thresholds.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Soil_Moisture.jpg" alt="Soil Moisture" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how soil moisture probes measure volumetric water content.
+2. Study the physics of soil resistivity and moisture conduction.
+3. Master the difference between resistive and corrosion-free capacitive soil sensors.
+4. Program a non-blocking gated power loop to prevent probe dissolution.
+5. Calibrate dry, moist, and wet boundaries using constrain and map functions.
+
+---
 
 ## 🧠 The "Why" and "What": Soil Moisture in Robotics
 
@@ -3427,24 +5114,80 @@ Automating agriculture is a major branch of mechatronics:
 - **Agricultural Rovers:** Mobile autonomous robots that drive through crop fields, insert sensor probes into the soil, log coordinates (GPS) and moisture levels, and compile soil maps.
 - **Landslide Prediction Systems:** Monitoring soil saturation on steep hillsides to warn of mudslides.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Physics of Soil Resistivity
+Dry soil (silicon dioxide, clay, organic matter) is an excellent electrical insulator with very high resistance. 
+However, when water is added, it fills the microscopic pockets of air between the soil particles. Tap water contains dissolved minerals and salts, creating an electrolytic path. 
+
+```
+         Dry Soil (Insulating)                      Wet Soil (Conductive)
+         
+          [Soil]   [Soil]   [Soil]                  [Soil] ~~~ [Soil] ~~~ [Soil]
+            (Air Gap = Open Circuit)                   (Water Bridges Gaps)
+         
+          Resistance: Megaohms                      Resistance: Kiloohms
+```
+
+As soil moisture content increases:
+* The cross-sectional area of the water paths between the probe prongs increases.
+* The electrical resistance ($R_{soil}$) between the two fork prongs drops exponentially.
+* By measuring the resistance, we can estimate the relative moisture percentage.
+
+### 2. The Electrolysis Problem in Soil
+Resistive soil probes are highly vulnerable to **galvanic corrosion**. Because soil is damp and contains mineral acids/salts, applying a continuous 5V DC voltage across the prongs triggers rapid electrolysis. 
+
+* The positive copper prong acts as an anode, dissolving into the soil. 
+* The negative prong accumulates hydrogen bubbles.
+* Within a few days of continuous operation, the copper plating is completely stripped off the probe, leaving bare fiberglass and ruining the sensor.
+
+**The Solution:** Just like the water level sensor (Day 18), we connect the sensor's VCC pin to an Arduino digital pin (e.g. Pin 7) and write it `HIGH` only during a 10ms read window once every 2 seconds. This reduces probe degradation by **$99.5\%$**.
+
+### 3. Alternative: Capacitive Soil Moisture Sensors
+To solve the corrosion problem entirely in commercial systems, engineers use **Capacitive Soil Moisture Sensors**.
+
+```
+    Resistive Probe (Exposed Copper)             Capacitive Probe (Insulated Lacquer)
+    
+           |  Current  |                                 |             |
+           |===➡️===➡️====| (Direct Current)              | [Plate] [Plate] | (AC Field)
+           | (Corrosion) |                               |     (No Direct Contact)
+```
+
+* **Resistive:** Exposed copper electrodes. Current passes directly through the soil. High corrosion risk.
+* **Capacitive:** The electrodes are laminated inside the PCB under a protective solder mask layer. No copper touches the soil. It acts as a capacitor, measuring the soil's **dielectric permittivity** (which changes with water content). Since no current flows through the soil, it **never corrodes**.
+
+---
 
 ## 🔄 Alternatives: Resistive vs. Capacitive Probes
 
 | Sensor Type | Operating Physics | Probe Exposure | Corrosion | Cost | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Resistive Probe (YL-69)** | Soil resistance. | Exposed copper contacts. | High | Very Low | **Chosen** for basic tutoring, cheap garden monitors, and learning power gating. |
 | **Capacitive Probe (v1.2)** | Soil dielectric capacitance. | Insulated (laminated). | None | Low | Long-term smart gardens, agricultural monitoring nodes. |
 | **TDR/FDR Probe** | High-frequency electromagnetic pulse propagation. | Metal rods. | None | Very High | Scientific research, professional crop management. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **Resistive Soil Moisture Probe & Comparator Board** (YL-69 / YL-38 combo).
+3. **Potted Plant with dry soil** (or cup of dry dirt + water).
+4. **Breadboard & Jumper Wires**.
+5. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 First, connect the two pins of the fork probe to the two pins on the driver module (polarity does not matter here). Then connect the driver module to the Arduino:
 
 | Module Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** / (+) | **Pin 7** | Red | Gated digital power line |
 | **GND** / (-) | **GND** | Black | Ground reference |
 | **AO** (Analog Out) | **A0** | Yellow | Analog signal output |
@@ -3530,7 +5273,28 @@ Welcome to Day 20 of the 100-Day Arduino Masterclass! Today, we explore optical 
 
 You will master photodiode semiconductor depletion layer physics, study how optical casings filter ambient noise, and write adaptive telemetry logging loops that adjust rates during emergency alerts.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand how photodiodes measure specific infrared wavelengths of fire.
+2. Master the physics of reverse-bias leakage currents in light-sensitive semiconductors.
+3. Understand the role of black epoxy casing in filtering visible light.
+4. Program an adaptive non-blocking scheduler that increases logging speeds during alarms.
+5. Coordinate alarm sirens and flashing status indicators safely.
+
+---
 
 ## 🧠 The "Why" and "What": Flame Sensors in Robotics
 
@@ -3543,22 +5307,66 @@ Fire detection is a critical safety interlock for autonomous machinery and conta
 - **Factory Safety Interlocks:** Halting CNC lasers, plasma cutters, or high-power motors instantly if an open spark or flame is detected in the workspace.
 - **Robotic Fuel Burners:** Monitoring the ignition pilot flame in furnaces to confirm fuel is burning, preventing dangerous gas build-ups if the flame goes out.
 
--- Flame Sensor Band 
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Optical Wavelengths of Combustion
+When organic hydrocarbons (wax, paper, gas, wood) combust, the chemical reaction releases energy as heat and light. The hot carbon particles (soot) and gases emit high-intensity radiation in the **near-infrared spectrum**, peaking between **760 nanometers and 1100 nanometers**.
+
+```
+                Electromagnetic Spectrum Wavelengths
+                
+   Visible Light (400 - 700nm)            Near-Infrared (760 - 1100nm)
+  [Violet ... Orange ... Red]  |  [----- Flame Sensor Band -----]
+                                ^
+                           Black Epoxy Cutoff
+```
+
+### 2. Photodiode Reverse-Bias Physics
+A photodiode is a P-N junction diode designed to operate in **reverse-bias** configuration.
+* **No Light (Dark State):** In reverse-bias, the applied voltage expands the **depletion layer** (the insulating zone between P and N materials), preventing current from flowing. The only current is a microscopic leakage current (known as the *dark current*).
+* **Light Striking (Flame State):** When infrared photons within the 760nm-1100nm range strike the depletion layer, they transfer their energy to valence electrons. This excites them into the conduction band, generating **electron-hole pairs**. Under the influence of the internal electric field, these charge carriers are swept across the junction, creating a photogenerated current that flows in the reverse direction.
+
+$$\text{Photocurrent } (I_p) \propto \text{Light Intensity } (E_e)$$
+
+The sensor board routes this current through a resistor to output a voltage:
+- Under bright IR (fire): Resistance drops, and Analog Output voltage **decreases toward 0V** (low ADC).
+- Under dark conditions: Resistance is high, and Analog Output voltage **increases toward 5V** (high ADC).
+
+### 3. Black Epoxy Optical Filter
+Why doesn't room lighting trigger the fire alarm?
+The photodiode is housed inside a dark black epoxy bulb. This black dye acts as a physical bandpass filter. It absorbs and blocks short visible light wavelengths (400nm to 700nm) from standard lightbulbs or sunlight, while remaining completely transparent to long near-infrared wavelengths (760nm to 1100nm), minimizing false triggers.
+
+---
 
 ## 🔄 Alternatives: Flame Sensors vs. Thermal Probes
 
 | Sensor Type | Operating Physics | Detection Speed | Angle of View | Ambient Light Sensitivity | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **IR Photodiode** | Photon-electron excitation. | **Instantaneous** (microseconds). | $\approx 60^{\circ}$ (directional). | Low (filtered by dark epoxy). | **Chosen** for fast fire alarms, fire-fighting rovers, and spark detectors. |
 | **Thermocouple / Thermistor** | Heat-induced resistance or voltage generation. | Very Slow (seconds/minutes, requires physical heat conduction). | Contact only. | Zero. | Stove burner flame verification, industrial kiln temperature logs. |
 | **UV Flame Detector** | Detects UV-C light (185nm - 260nm) from gas discharge. | Instantaneous | Wide | Zero (solar-blind). | Petrochemical facilities, hydrogen refueling stations. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **IR Flame Sensor Module** (5-Pin or 4-Pin breakout with photodiode).
+3. **Passive Piezo Buzzer** (and 100Ω resistor).
+4. **Red LED** (and 220Ω resistor).
+5. **Flame Source** (e.g., a lighter or candle) — **Use caution during tests!**
+6. **Breadboard & Jumper Wires**.
+7. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 | Sensor Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** / (+) | **5V** | Red | Power supply (+5V) |
 | **GND** / (-) | **GND** | Black | Ground reference |
 | **AO** | **A0** | Yellow | Analog intensity output |
@@ -3660,7 +5468,29 @@ Welcome to Day 21 of the 100-Day Arduino Masterclass! Today, we start **Phase 2:
 
 You will master the physical mechanics of liquid crystal polarization, study the I2C bus serial protocol, learn how to configure expander addresses, and write code to update displays non-blockingly.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/7-Segment_Display.jpg" alt="7-Segment Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/OLED_Display.jpg" alt="OLED Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the optical physics of liquid crystals and polarizers.
+2. Master the I2C bus serial communication protocol (SDA, SCL lines).
+3. Study the role of the PCF8574 chip in converting serial I2C data to parallel LCD lines.
+4. Calculate I2C addresses using the A0, A1, and A2 hardware pads.
+5. Program non-blocking character positioning and screen clearing.
+
+---
 
 ## 🧠 The "Why" and "What": Displays in Robotics
 
@@ -3674,12 +5504,65 @@ Robots need to display real-time sensor values and status updates without being 
 - **User Interface (Menus):** Displaying adjustable parameter menus (such as motor speed limits or PID gains) that can be selected using keypads or encoders.
 - **Error Warning Screens:** Printing direct warnings during system faults: `OVERHEAT ERROR!`, `ESTOP ENGAGED`.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. The Physics of Liquid Crystals (LCD Operation)
+At the core of an LCD is a layer of liquid crystal molecules sandwiched between two transparent electrodes and two perpendicular polarizing filters.
+
+```
+       Liquid Crystal Polarization Light Gate
+       
+    Backlight  ➡️ [ Polarizer 1 ]  ➡️ [ Twisted Liquid Crystal ]  ➡️ [ Polarizer 2 ]  ➡️ Display (Light)
+                    (Vertical)             (Rotates Light 90°)          (Horizontal)
+                    
+    Backlight  ➡️ [ Polarizer 1 ]  ➡️ [ Untwisted LC (Charged) ] ➡️ [ Polarizer 2 ]  ➡️ Dark Spot (Blocked)
+                    (Vertical)             (No Light Rotation)          (Horizontal)
+```
+
+* **Polarization:** Light from the backlight passes through Polarizer 1, which aligns the light waves vertically.
+* **The Liquid Crystals (Resting):** Liquid crystal molecules are physically twisted by $90^{\circ}$. As the polarized light passes through the crystal layer, the twisted structure acts as a waveguide, rotating the light waves' polarization axis by $90^{\circ}$. The light is now aligned horizontally and passes cleanly through Polarizer 2 (horizontal), lighting up the screen.
+* **Applying Voltage (Charged):** When the HD44780 chip applies a small AC voltage to a specific pixel grid segment, the electric field forces the liquid crystal molecules to untwist. The vertical polarized light passes straight through without rotating. When it hits Polarizer 2 (horizontal), it is **completely blocked**, creating a dark spot on the screen that we see as a text character.
+
+### 2. The PCF8574 I2C Backpack (Pin Saving)
+Driving a standard HD44780 LCD requires at least 6 digital I/O pins (RS, EN, D4, D5, D6, D7) in 4-bit mode, plus VCC, GND, and contrast lines. This consumes too many pins.
+
+To save pins, we use an I2C backpack board soldered to the LCD. This board contains a **PCF8574 8-bit I/O Expander chip**.
+* The PCF8574 acts as a bridge. It listens to the Arduino's Inter-Integrated Circuit (I2C) serial bus over just **2 wires (SDA and SCL)**.
+* It parses the serial data packets and outputs the corresponding parallel signals to the LCD's 8 pins, reducing pin usage from 6 digital pins down to 2 shared I2C bus pins.
+
+```
+           I2C Serial Communication Bus Layout
+           
+                       +-+  SDA (Serial Data)  +-+
+        Arduino Uno    |       |--➡️ | I2C Backpack | ➡️ Parallel LCD Pins
+          (Master)     |       |  SCL (Serial Clock) | (PCF8574)   |
+                       |       |--➡️ |   (Slave)   |
+                       +-+                     +-+
+```
+
+### 3. PCF8574 Hardware Address Selection
+Because multiple devices share the same I2C bus wires, each device must have a unique address.
+The PCF8574 chip has three address pins (A0, A1, A2). On the back of the backpack module, you will see three open solder pads: A0, A1, and A2.
+* By default (unbridged/open), these pins are pulled `HIGH`.
+* The address formula for the standard PCF8574 (Texas Instruments) is:
+  $$\text{Address} = 0100 \ [\text{A2}] \ [\text{A1}] \ [\text{A0}] \ \text{in binary}$$
+* With A0-A2 open (HIGH = 1): `0100111` in binary, which is **`0x27`** in hex.
+* If you solder a bridge across A0 (pulling it LOW = 0): `0100110`, which is **`0x26`**.
+* The alternative PCF8574A chip (NXP) uses base address `0111`, yielding **`0x3F`** when all pins are open.
+
+---
 
 ## 🔄 Alternatives: LCDs vs. OLEDs vs. 7-Segments
 
 | Display Type | Technology | Communication | Text Resolution | Graphical Support | Current Draw | Best Use Case |
-| : | : | : | :
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Character LCD (16x2)** | Liquid crystal light gate + LED backlight. | I2C (2 pins). | 16 chars $\times$ 2 lines. | Custom characters only. | Low ($\approx 20\text{ mA}$). | **Chosen** for general telemetry, diagnostics, and parameters menus. |
+| **OLED (SSD1306)** | Organic Light Emitting Diode (self-lit pixels). | I2C or SPI. | Variable (e.g. 128 $\times$ 64 pixel grid). | Full graphical rendering. | Very Low ($\approx 10\text{ mA}$). | Detailed graphs, clean micro-fonts, and high-end animations. |
+| **7-Segment Display** | Discrete LED segments. | Parallel or Shift Register | Numeric only. | None. | High (up to $80\text{ mA}$). | Outdoor clocks, digital scales, high-visibility distance displays. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -3689,7 +5572,14 @@ To build this project, you will need:
 3. **Breadboard & Jumper Wires**.
 4. **USB Cable**.
 
-: | :: | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Verify your Arduino model's I2C pinout. On the Uno, SDA is Pin A4 and SCL is Pin A5. On Mega, SDA is 20 and SCL is 21.
+
+| LCD Backpack Pin | Arduino Pin (Uno/Nano) | Arduino Pin (Mega) | Wire Color | Description |
+| :---: | :---: | :---: | :--- | :--- |
 | **VCC** | **5V** | **5V** | Red | Power supply (+5V) |
 | **GND** | **GND** | **GND** | Black | Ground reference |
 | **SDA** | **A4** | **20** | Yellow | Serial Data Line |
@@ -3754,7 +5644,30 @@ Welcome to Day 22 of the 100-Day Arduino Masterclass! Today, we progress in UI d
 
 You will master FSM user interfaces, study the electrical bandwidth limits of I2C buses, calculate transmission delays to prevent screen flickering, and write formatted centisecond time conversions.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/7-Segment_Display.jpg" alt="7-Segment Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/OLED_Display.jpg" alt="OLED Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Design an FSM UI with three states: Reset, Running, and Paused.
+2. Master the transmission speed math of the $100\text{ kHz}$ I2C clock.
+3. Program a display refresh limiter ($20\text{ Hz}$) to prevent I2C bus congestion.
+4. Convert absolute `millis()` variables into minutes, seconds, and centiseconds.
+5. Coordinate multiple asynchronous debounced button triggers.
+
+---
 
 ## 🧠 The "Why" and "What": Stopwatches in Mechatronics
 
@@ -3769,24 +5682,92 @@ Stopwatches and elapsed time calculations are core tools for performance logging
 - **Fail-Safe Timers:** Disabling an actuator if it does not reach its limit switch within a set timeout limit.
 - **Lap Timers:** Automatic timers for line-following racers.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. The FSM Stopwatch States
+To coordinate buttons, we use a Finite State Machine (FSM):
+
+```mermaid
+stateDiagram-v2
+    [*] --> STATE_RESET
+    
+    STATE_RESET --> STATE_RUNNING : Press Start/Stop
+    
+    STATE_RUNNING --> STATE_PAUSED : Press Start/Stop
+    
+    STATE_PAUSED --> STATE_RUNNING : Press Start/Stop
+    STATE_PAUSED --> STATE_RESET : Press Reset
+```
+
+Inside `loop()`, the code accumulates time based on whether we are in the `STATE_RUNNING` phase or not, keeping the buttons responsive.
+
+### 2. I2C Bus Bandwidth & LCD Refresh Bottlenecks
+Why do we need a display refresh limiter?
+Standard I2C communication on the Arduino Uno runs at a clock frequency of **$100\text{ kHz}$** ($100,000\text{ bits per second}$). 
+
+Let's calculate the transmission time for a single character on the I2C LCD backpack:
+1. To write one character, the PCF8574 expander must receive an address byte, a command control byte, and the ASCII data byte.
+2. Including START/STOP bits and ACKs, this requires sending roughly **27 bits** of data over the bus.
+3. At $100\text{ kHz}$, transmitting 27 bits takes:
+   $$t_{char} = \frac{27\text{ bits}}{100,000\text{ bps}} = 270\text{ µs} \ (0.27\text{ ms})$$
+4. To update our 8-character time string (`00:00.00`) and position the cursor, we must transmit 9 characters:
+   $$t_{update} = 9 \times 0.27\text{ ms} \approx 2.43\text{ ms}$$
+
+If we do not limit updates and write to the LCD on every single loop iteration (thousands of times a second):
+* The I2C bus will saturate.
+* The loop duration will spike from $50\text{ µs}$ to **$2.43\text{ ms}$**, causing severe clock skew and lags in button debouncing.
+* The LCD pixels will not have time to settle, creating a faded, blurry, and flickering screen.
+
+**The Solution:** We restrict display updates to **20 Hz (every 50ms)**. Centiseconds only change every 10ms, and human eyes cannot read changes faster than 20 Hz anyway. The loop runs at full speed, and we write to the LCD only when needed.
+
+### 3. Centisecond Mathematics
+To display centiseconds (hundredths of a second), we extract values from the raw millisecond time ($msTime$):
+- **Minutes:** `(msTime / 60000) % 60`
+- **Seconds:** `(msTime / 1000) % 60`
+- **Centiseconds:** `(msTime % 1000) / 10`
+- **Padding:** We pad single digits (values $< 10$) with a leading `'0'` character to maintain a fixed alignment on the screen.
+
+---
 
 ## 🔄 Alternatives: Character LCDs vs. 7-Segments vs. OLEDs
 
 | Display Interface | Resolution | Display Brightness | Refresh Speed | I2C Bus Overhead | Best Use Case |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **I2C 16x2 LCD** | 32 characters. | Moderate (LED backlight). | Slow ($\approx 10\text{ ms}$ update). | Moderate | **Chosen** for stopwatches, diagnostic panels, and menus. |
 | **7-Segment Display (MAX7219)** | 8 numeric digits. | Very High (LEDs). | Fast (SPI bus runs at $4\text{ MHz}$). | Very Low | Outdoor sports lap timers, industrial clocks. |
 | **OLED (SSD1306)** | $128 \times 64$ pixels. | High contrast (self-lit). | Moderate | High (requires updating $1024$ bytes of page memory). | Small smartwatches, detailed graphical graphs. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **16x2 LCD with I2C Backpack**.
+3. **Two Tactile Pushbuttons**.
+4. **Breadboard & Jumper Wires**.
+5. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 Ensure both buttons are connected to Ground. We configure digital pins 2 and 3 as `INPUT_PULLUP` to eliminate external resistors.
 
 | Component | Pin Label | Arduino Pin | Wire Color | Description |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **LCD** | VCC | **5V** | Red | Screen power supply |
+| **LCD** | GND | **GND** | Black | Ground reference |
+| **LCD** | SDA | **A4** | Yellow | Serial Data Line |
+| **LCD** | SCL | **A5** | Green | Serial Clock Line |
+| **Start/Stop Button** | Pin A | **Pin 2** | Blue | Debounced start/stop input |
+| **Start/Stop Button** | Pin B | **GND** | Black | Ground return |
+| **Reset Button** | Pin A | **Pin 3** | White | Debounced reset input |
+| **Reset Button** | Pin B | **GND** | Black | Ground return |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -3854,7 +5835,28 @@ Welcome to Day 23 of the 100-Day Arduino Masterclass! Today, we explore dynamic 
 
 You will master the internal memory structure of the HD44780 controller, study circular buffer indexing using modular mathematics, and implement string slicing algorithms in C++.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Differentiate between hardware-level and software-level display scrolling.
+2. Master the memory map of HD44780 DDRAM (Display Data RAM).
+3. Use modular arithmetic ($index \pmod{length}$) to build circular wrapping strings.
+4. Program a non-blocking substring sliding-window slicer.
+5. Calibrate character scrolling speeds for human readability.
+
+---
 
 ## 🧠 The "Why" and "What": Marquees in Robotics
 
@@ -3867,9 +5869,24 @@ Robots use marquees to show long status messages, logs, or help instructions wit
 - **Instruction Tickers:** Scrolling user guide messages on vending machines or terminals (e.g., `Enter PIN code to unlock safe or press * to clear input...`).
 - **Interactive Telemetry:** Scanning through multiple sensor outputs sequentially on a single line.
 
- Hidden Buffer (scrolls in)
+---
+
+## ⚡ The Physics & Hardware Theory
+
+### 1. HD44780 Display Data RAM (DDRAM) Memory Map
+The HD44780 chip on the LCD has a built-in memory bank called **Display Data RAM (DDRAM)**. This memory holds the ASCII characters currently rendered on screen.
+* For a 16x2 LCD, the DDRAM has **80 bytes** of memory (40 bytes per row).
+* Only the first 16 bytes of each row are physically visible on the glass panel.
+* **Row 1 Addresses:** `0x00` to `0x27` (Hex). Visible: `0x00` to `0x0F`.
+* **Row 2 Addresses:** `0x40` to `0x67` (Hex). Visible: `0x40` to `0x4F`.
+
+```
+                    HD44780 Visible vs Hidden DDRAM Map
+                    
+          Col:  1   2   3  ...  16   17   18  ...  40
+         Row 1: [00][01][02]...[0F]  [10][11]...[27]  <--- Hidden Buffer (scrolls in)
          Row 2: [40][41][42]...[4F]  [50][51]...[67]
-                <->  <>
+                <---- VISIBLE ---->  <--- HIDDEN --->
 ```
 
 ### 2. Hardware Scrolling vs. Software Slicing
@@ -3900,7 +5917,17 @@ $$\text{Character Index} = (S + i) \pmod L$$
 
 This creates a seamless loop where the beginning of the message chases the tail, preventing string boundary exceptions.
 
- | : | : | :
+---
+
+## 🔄 Alternatives: Software Marquees vs. Dot-Matrix Panels
+
+| Method | Resolution / Size | Pin Requirement | CPU Overhead | Layout Flexibility | Best Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Software LCD Marquee** | $16 \times 2$ characters. | I2C (2 pins). | Low (slicing runs in microseconds). | High (each row acts independently). | **Chosen** for character LCDs displaying descriptive text logs. |
+| **Hardware LCD Marquee** | $16 \times 2$ characters. | I2C (2 pins). | Extremely Low | None (both rows locked in sync). | Full-screen scrolling banners. |
+| **MAX7219 Dot-Matrix Panel** | $32 \times 8$ LED grid. | SPI (3 pins). | Moderate | High (custom pixel fonts). | Large moving billboard signs, tickers. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -3910,7 +5937,12 @@ To build this project, you will need:
 3. **Breadboard & Jumper Wires**.
 4. **USB Cable**.
 
-: | :: | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+| LCD Backpack Pin | Arduino Pin (Uno/Nano) | Arduino Pin (Mega) | Wire Color | Description |
+| :---: | :---: | :---: | :--- | :--- |
 | **VCC** | **5V** | **5V** | Red | Power supply (+5V) |
 | **GND** | **GND** | **GND** | Black | Ground reference |
 | **SDA** | **A4** | **20** | Yellow | Serial Data Line |
@@ -3963,7 +5995,28 @@ Welcome to Day 24 of the 100-Day Arduino Masterclass! Today, we study basic LED 
 
 You will master common cathode/anode electrical layouts, calculate current-limiting resistor loads, and implement **binary bit-mask parsing** in code to steer digital output headers.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/7-Segment_Display.jpg" alt="7-Segment Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Identify the pinout and segment structure of 7-segment displays.
+2. Master the electrical differences between Common Cathode and Common Anode displays.
+3. Calculate current-limiting resistor values for individual LED segments.
+4. Program a binary bit-mask lookup table.
+5. Use bitwise operations (`bitRead`) to drive multiple pins in loop routines.
+
+---
 
 ## 🧠 The "Why" and "What": 7-Segments in Robotics
 
@@ -3991,12 +6044,68 @@ While LCD screens (Day 21) are great for detailed text, 7-segment displays are c
 - **Diagnostics Codes:** Showing simple error codes (like `E1` for motor fault, `E2` for sensor disconnect) on small, low-cost microcontrollers.
 - **Timer / Countdown Clocks:** Visual indicators for autonomous task windows.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. Common Cathode vs. Common Anode Configurations
+Because a 7-segment display contains 8 separate LEDs, they share a common connection pin to reduce the overall pin count from 16 to 9 or 10.
+
+* **Common Cathode (Used by default in code):** The negative terminals (cathodes) of all 8 segment LEDs are tied together internally and connected to Ground (GND). 
+  - *Triggering:* You write `HIGH` (5V) to the individual segment anode pin to turn it ON.
+* **Common Anode:** The positive terminals (anodes) of all 8 segment LEDs are tied together internally and connected to 5V (VCC). 
+  - *Triggering:* You write `LOW` (GND) to the individual segment cathode pin to turn it ON (Active-Low).
+
+```
+         Common Cathode (GND shared)                Common Anode (5V shared)
+         
+                     GND                                        +5V
+                      |                                          |
+             +--+--+                        +--+--+
+             |        |        |                        |        |        |
+           |   |    |   |    |   |                    |   |    |   |    |   |
+           | A |    | B |    | C |                    | A |    | B |    | C |
+           V___V    V___V    V___V                    V___V    V___V    V___V
+             |        |        |                        |        |        |
+           Anode A  Anode B  Anode C                  Cath A   Cath B   Cath C
+          (Pin 2)   (Pin 3)  (Pin 4)                 (Pin 2)  (Pin 3)  (Pin 4)
+```
+
+### 2. Resistor Calculations (Why 7 Resistors are Required)
+Each segment is a single LED. Standard red LEDs have a forward voltage ($V_f \approx 2.0\text{V}$) and a safe current ($I \approx 15\text{mA}$). Using the resistor formula:
+
+$$R = \frac{5\text{V} - 2.0\text{V}}{0.015\text{A}} = 200\Omega \implies \text{Standard Value: } 220\Omega$$
+
+> [!CAUTION]
+> **Do not use a single resistor on the common pin** instead of seven separate resistors. If you use one resistor on the GND common pin, the current is shared. If only one segment (like B in number '1') is ON, it gets the full current and shines brightly. If all 7 segments are ON (number '8'), they must share the current, causing the numbers to look extremely dim and fluctuating as numbers change. It can also exceed the current limit of a single LED segment if not calculated correctly.
+
+### 3. Bit-Masking Math
+To represent numbers, we use a single byte (8 bits) as a digital map. 
+* We map the pins: `Pins = {A, B, C, D, E, F, G}`
+* We map the bits: `0b0GFEDCBA` (Bit 0 is A, Bit 6 is G)
+* **Number '3':** Needs segments A, B, C, D, G to be ON, E, F to be OFF.
+  - Bit 0 (A) = 1
+  - Bit 1 (B) = 1
+  - Bit 2 (C) = 1
+  - Bit 3 (D) = 1
+  - Bit 4 (E) = 0
+  - Bit 5 (F) = 0
+  - Bit 6 (G) = 1
+  - Bit 7 (DP)= 0
+  - Result: `0b01001111` binary (or `0x4F` in hex).
+* In code, the `bitRead(pattern, i)` function extracts the value of bit $i$ ($0$ or $1$) from the pattern, which we write directly to Pin $i$.
+
+---
 
 ## 🔄 Alternatives: Single-Digit vs. Multi-Digit Multiplexers
 
 | Display Type | Pin Count | Digits | Drive Complexity | Best Use Case |
-| :: | : | :
+| :--- | :---: | :---: | :--- | :--- |
+| **Single-Digit 7-Segment** | 9 pins | 1 | Low (Direct mapping). | **Chosen** for learning segment physics, error numbers, and basic counts. |
+| **Multi-Digit 7-Segment** | 12 pins | 4 | High (Requires rapid scanning multiplexing). | Digital clocks, stopwatches, counters. |
+| **I2C 4-Digit (TM1637)** | **2 pins** (CLK/DIO) | 4 | Low (Handled by IC library). | Displaying clock times and distance readouts without wasting pins. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -4007,7 +6116,24 @@ To build this project, you will need:
 4. **Breadboard & Jumper Wires**.
 5. **USB Cable**.
 
-: | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Look at your display's pinout. Typically, a 10-pin single-digit display has 5 pins on the top and 5 pins on the bottom. The **middle pin** on both top and bottom is the **Common Pin (GND)**.
+
+| Display Segment Pin | Arduino Connection (through 220Ω Resistor) | Wire Color | Description |
+| :---: | :---: | :--- | :--- |
+| **A** (Top segment) | Arduino **Pin 2** | Red | Segment A drive line |
+| **B** (Top-right) | Arduino **Pin 3** | Orange | Segment B drive line |
+| **C** (Bottom-right) | Arduino **Pin 4** | Yellow | Segment C drive line |
+| **D** (Bottom segment) | Arduino **Pin 5** | Green | Segment D drive line |
+| **E** (Bottom-left) | Arduino **Pin 6** | Blue | Segment E drive line |
+| **F** (Top-left) | Arduino **Pin 7** | Purple | Segment F drive line |
+| **G** (Middle segment) | Arduino **Pin 8** | Grey | Segment G drive line |
+| **Common** (Middle pin) | Arduino **GND** | Black | Common Ground |
+
+---
 
 ## 🧪 How to Test and Validate
 
@@ -4079,7 +6205,28 @@ Welcome to Day 25 of the 100-Day Arduino Masterclass! Today, we expand our segme
 
 You will master the concept of Persistence of Vision (POV) digit multiplexing, study the TM1637 synchronous 2-wire serial protocol, and cascade clock variables in C++.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/7-Segment_Display.jpg" alt="7-Segment Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand Persistence of Vision (POV) digit multiplexing.
+2. Master the synchronous 2-wire serial protocol of the TM1637 driver chip.
+3. Wire the TM1637 module and understand CLK and DIO lines.
+4. Program a software clock accumulator using `millis()`.
+5. Implement a non-blocking 500ms flashing colon chime.
+
+---
 
 ## 🧠 The "Why" and "What": Clocks in Robotics
 
@@ -4093,22 +6240,86 @@ Clocks and elapsed timers are crucial indicators:
 - **Lap Timers:** Displaying race track lap times in millisecond resolution.
 - **Wall Clocks:** Basic digital clocks, alarms, and timers.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. Persistence of Vision (POV) Digit Multiplexing
+If you wanted to display `12:34` on a 4-digit display directly, you would run into a problem: the 7 segment pins (A-G) are connected in parallel to all four digits. If you write `1` to segment pins, all four digits will display `1` at the same time.
+
+To display different numbers, we must use **Time-Division Multiplexing**:
+1. Turn ON Digit 1, write pattern for `1`. Wait 2ms. Turn OFF Digit 1.
+2. Turn ON Digit 2, write pattern for `2`. Wait 2ms. Turn OFF Digit 2.
+3. Turn ON Digit 3, write pattern for `3`. Wait 2ms. Turn OFF Digit 3.
+4. Turn ON Digit 4, write pattern for `4`. Wait 2ms. Turn OFF Digit 4.
+5. Repeat this loop continuously.
+
+```
+       Digit Multiplexing Sequence (POV)
+       
+       Frame 1:  [ 1 ] [   ] [   ] [   ]  <-- Digit 1 active for 2ms
+       Frame 2:  [   ] [ 2 ] [   ] [   ]  <-- Digit 2 active for 2ms
+       Frame 3:  [   ] [   ] [ 3 ] [   ]  <-- Digit 3 active for 2ms
+       Frame 4:  [   ] [   ] [   ] [ 4 ]  <-- Digit 4 active for 2ms
+       
+       Scan Rate: > 60 Hz ➡️ Brain perceives solid text "1234" (POV)
+```
+
+Because of **Persistence of Vision (POV)** (the human eye retains an image for roughly $1/16^{\text{th}}$ of a second), scanning the digits faster than **$60\text{ Hz}$** blends the flashes together. To the human brain, all four digits look solid.
+
+However, running this high-speed scanning loop on the Arduino consumes up to $30\%$ of the CPU cycles. If your code halts for a sensor read (like DHT11, Day 9), the multiplexing stops, and the display starts flickering or goes dark.
+
+### 2. The TM1637 Dedicated Driver Chip
+The TM1637 chip solves this by acting as an autonomous display co-processor.
+* It contains internal static RAM to store the digit values.
+* It handles the high-speed multiplexing scanning internally using its own hardware timers.
+* Once the Arduino tells the TM1637 "write 1234," the Arduino can go to sleep or run heavy algorithms. The TM1637 maintains a perfectly solid, flicker-free display.
+
+### 3. TM1637 2-Wire Serial Protocol
+The TM1637 communicates using a custom synchronous serial protocol that resembles I2C but lacks addressing (since it is a point-to-point connection):
+* **CLK (Clock):** Driven by the Arduino. Tells the TM1637 when to read a bit.
+* **DIO (Data Input/Output):** Bidirectional data line. Data is transferred LSB-first (Least Significant Bit).
+* **Data Byte Packet Structure:**
+  - **Start Bit:** DIO pulled LOW while CLK is HIGH.
+  - **8-bit Command/Data Byte:** Transmitted bit-by-bit on the rising edge of CLK.
+  - **ACK (Acknowledge):** The TM1637 pulls the DIO line LOW on the 9th clock pulse to confirm it received the byte.
+  - **Stop Bit:** DIO pulled HIGH while CLK is HIGH.
+
+```
+TM1637 2-Wire Byte Packet:
+
+          START             LSB                 MSB      ACK      STOP
+  CLK  ______|‾‾‾|   |‾‾‾|   |‾‾‾|   ...   |‾‾‾|   |‾‾‾|  |‾‾‾|   |‾‾‾|____
+  DIO  ____\_____/   \___/   \___/   ...   \___/   \___/  \___/   /________
+            (Data bits latched on rising edge)
+```
+
+---
 
 ## 🔄 Alternatives: TM1637 vs. RTC Modules vs. MAX7219
 
 | Display Interface | Communication | Pin Count | Onboard Timekeeper | Accuracy | Best Use Case |
-| : | : | : |
+| :--- | :--- | :---: | :--- | :--- | :--- |
 | **TM1637 4-Digit Display** | 2-Wire Serial (CLK/DIO) | 4 pins | No (requires software clock). | Moderate (limited by Arduino crystal drift). | **Chosen** for budget clocks, timers, and simple numeric displays. |
 | **DS3231 I2C RTC Module** | I2C (2 pins) | 4 pins | Yes (integrated battery & TCXO crystal). | Extremely High (drift $< 1\text{ min/year}$). | Real-time clocks that must remember time when powered off. |
 | **MAX7219 8-Digit Driver** | SPI (CS, CLK, DIN) | 5 pins | No | Moderate | Driving up to 8 digits, large control panel indicators. |
 
+---
 
+## 🛠️ Components Needed
+
+To build this project, you will need:
+1. **Arduino Uno or Mega**.
+2. **TM1637 4-Digit 7-Segment Display Module** (usually has a colon ':' in the middle).
+3. **Breadboard & Jumper Wires**.
+4. **USB Cable**.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring Instructions
 
 | TM1637 Module Pin | Arduino Pin | Wire Color | Description |
-| :: | : |
+| :---: | :---: | :--- | :--- |
 | **VCC** | **5V** | Red | Power supply (+5V) |
 | **GND** | **GND** | Black | Ground reference |
 | **CLK** | **Pin 2** | Yellow | Synchronous clock line |
@@ -4180,7 +6391,28 @@ Welcome to Day 26 of the 100-Day Arduino Masterclass! Today, we explore graphica
 
 You will master organic self-luminous semiconductor physics, study the geometry of pixel-mapped coordinate spaces, and optimize serial bus operations using local SRAM framebuffers.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/OLED_Display.jpg" alt="OLED Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 Today's Learning Goals
+1. Understand the working physics of Organic Light Emitting Diodes (OLEDs).
+2. Master the coordinate system geometry of $128 \times 64$ pixel screens.
+3. Understand local SRAM framebuffer allocation and I2C write cycles.
+4. Program line, circle, rectangle, and triangle vector drawing functions.
+5. Cycle multiple graphic scenes at non-blocking intervals.
+
+---
 
 ## 🧠 The "Why" and "What": OLEDs in Robotics
 
@@ -4194,12 +6426,69 @@ Unlike character LCDs (Day 21) which are locked to rigid grids of letters, graph
 - **Custom Fonts:** Rendering tiny micro-fonts to pack lots of telemetry onto a small screen, or giant fonts for high-visibility distance readouts.
 - **Visual Animations:** Bouncing balls, progress loading wheels, or robotic eyes that move and blink.
 
+---
 
+## ⚡ The Physics & Hardware Theory
+
+### 1. Organic Light Emitting Diode Physics
+Unlike standard liquid crystal displays (LCDs) which require an LED backlight to shine through liquid crystal polarization gates (Day 21), an OLED has no backlight. 
+
+Each individual pixel is a sub-millimeter organic light-emitting diode. It consists of thin organic carbon-based semiconductor films sandwiched between two conductive electrodes:
+
+```
+            OLED Pixel Cross-Section
+            
+         [ Cathode ] (Metal layer, injects electrons)
+       --
+         Emissive Layer (Organic polymer, e.g. Alq3)  ⬅️ Recombination creates photons
+       --
+         Conductive Layer (Organic hole transport)
+       --
+         [ Anode ] (Indium Tin Oxide, injects holes)
+```
+
+* **How It Works:** When a voltage is applied, the cathode injects electrons, and the anode injects holes (positive charges) into the organic layers. The charges travel toward each other. When an electron and a hole recombine inside the **emissive layer**, the electron drops to a lower energy state, releasing its excess energy as a photon (light).
+* **Self-Emission Advantages:** Because black pixels are completely powered OFF, they emit no light. This yields a theoretical contrast ratio of infinity (perfect blacks), wide viewing angles ($> 160^{\circ}$), and extremely high power efficiency compared to backlit LCDs.
+
+### 2. The 128x64 Coordinate Space
+The OLED screen contains an array of 8,192 pixels. The coordinates are mapped to a Cartesian grid, but with the **origin (0,0) located at the top-left corner**:
+
+```
+        OLED Coordinate Mapping System
+        
+       (0,0)  ================================= (127,0)
+         |                                         |
+         |         X -> (Horizontal Axis)          |
+         |                                         |
+         |         Y | (Vertical Axis)             |
+         |           v                             |
+       (0,63) ================================= (127,63)
+```
+
+* X-axis extends horizontally from **0 to 127** (columns).
+* Y-axis extends vertically downward from **0 to 63** (rows).
+* Drawing operations (e.g. `drawLine(0, 0, 127, 63)`) require converting geometric equations into active pixel coordinate arrays.
+
+### 3. The 1024-Byte Local Framebuffer
+Because the Arduino cannot read pixels from the SSD1306's internal memory easily, the Adafruit library allocates a local copy of the display memory—a **framebuffer**—inside the Arduino's SRAM:
+
+$$\text{Buffer Size} = \frac{128 \times 64\text{ pixels}}{8\text{ bits per byte}} = 1024\text{ bytes (1 Kilobyte)}$$
+
+When you call `drawCircle(32, 32, 20)`, the code does not send commands over I2C immediately. It simply flips bits inside the Arduino's local 1kB RAM array.
+* **The `display.display()` Command:** When you call `display()`, the Arduino initiates an I2C transaction and transmits the entire 1kB buffer to the SSD1306. 
+* At $400\text{ kHz}$ Fast-Mode I2C: transmitting 1kB takes about **$25\text{ milliseconds}$**. Therefore, you must call `display.display()` only after you have finished drawing the entire scene to prevent excessive frame-rate drop.
+
+---
 
 ## 🔄 Alternatives: OLEDs vs. TFTs vs. E-Paper
 
 | Display Type | Technology | Colors | Refresh Speed | Power Draw | Sunlight Readability | Best Use Case |
-| : | : | : | :
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **SSD1306 OLED** | Organic light-emitting pixels. | Monochrome (Blue/White/Yellow). | Fast ($\approx 30\text{ fps}$). | Very Low | Moderate | **Chosen** for onboard telemetry, menus, and low-power robot nodes. |
+| **TFT LCD (ST7735)** | Color LCD with active transistor backlight. | 16-bit Color ($65\text{k}$ colors). | Fast | High (due to backlight). | Poor | Rich graphical user interfaces, video playback. |
+| **E-Paper Display** | Electrophoretic microcapsules (physical ink particles). | B/W/Red | Extremely Slow ($\approx 2\text{ to }15\text{ seconds}$). | Zero (only draws power during changes). | Excellent (reflective). | E-readers, static price tags, low-power weather stations. |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -4209,7 +6498,14 @@ To build this project, you will need:
 3. **Breadboard & Jumper Wires**.
 4. **USB Cable**.
 
-: | :: | : |
+---
+
+## 🔌 Pin-to-Pin Wiring Instructions
+
+Verify your OLED operating voltage. Most modules run safely on 5V, but some are strictly 3.3V. The connections are identical to the I2C LCD on Day 21.
+
+| OLED Module Pin | Arduino Pin (Uno/Nano) | Arduino Pin (Mega) | Wire Color | Description |
+| :---: | :---: | :---: | :--- | :--- |
 | **VCC** | **5V** (or 3.3V) | **5V** (or 3.3V) | Red | Power supply |
 | **GND** | **GND** | **GND** | Black | Ground reference |
 | **SDA** | **A4** | **20** | Yellow | Serial Data Line |
@@ -4270,7 +6566,32 @@ display.display();
 
 Welcome to Day 27 of the 100-Day Arduino Masterclass! Today, we progress from static vector drawing (Day 26) to a real-time **2D physics simulation** on our SSD1306 OLED display. We will learn how to write a simple game-loop engine featuring kinematic vector translation, wall collision detection, penetration resolution, and frame-rate gating.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/OLED_Display.jpg" alt="OLED Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In robotics and mechatronics, rendering animations or real-time simulation displays is crucial for human-machine interfaces (HMIs). For example, autonomous mobile robots (AMRs) might display scanning lasers (LiDAR sweeps), robotic arms might show live kinematic trajectories, and industrial controllers might display state machines.
+
+Implementing an animation requires:
+1. **Dynamic updates** to coordinates inside a loop.
+2. **Deterministic timing** to ensure that movement looks identical regardless of how fast the main CPU is processing instructions.
+3. **Collision boundaries** representing mechanical workspace limits or sensor thresholds.
+
+Today's project simulates a bouncing ball in a closed boundary, serving as a blueprint for path planning, obstacle avoidance math, and custom animated UI screens.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4307,18 +6628,34 @@ Without timing controls, the Arduino would compute physics and write to the disp
 We lock the simulation to a target **30 FPS (Frames Per Second)**. The loop calculates if at least $33.3\text{ ms}$ have passed before advancing the physics and redraw cycle:
 $$\text{Frame Interval} = \frac{1000\text{ ms}}{30\text{ FPS}} \approx 33.3\text{ ms}$$
 
- | : | : | : |
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting displays for real-time graphics and animation, developers must balance bus interface speed, controller RAM overhead, and power:
+
+| Display Type | Controller | Interface | Color / Tech | Framerate / Performance | Memory Overhead | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **0.96" OLED** | **SSD1306** | **I2C ($400\text{ kHz}$)** | **Monochrome Self-lit** | **Medium ($\sim30$ FPS)** | **Low (1024 Bytes)** | **Compact diagnostics, vector animations, portable HMIs (Our choice)** |
 | **0.96" OLED** | **SSD1306** | **SPI ($8\text{ MHz}$)** | **Monochrome Self-lit** | **High ($>60$ FPS)** | **Low (1024 Bytes)** | **High-speed UI animations, games** |
 | **16x2 Character LCD** | **HD44780** | **Parallel / I2C** | **LCD (Backlit)** | **Extremely Low ($\sim5\text{Hz}$)** | **None** | **Static text readouts, simple status logging** |
 | **1.8" TFT Color LCD** | **ST7735** | **SPI** | **18-bit Color TFT** | **Medium-High** | **High (20k+ Bytes)** | **Color menus, data plotting, complex graphics** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno (or Mega/Nano)
+* 1x 0.96" I2C SSD1306 OLED Display (128x64 pixels)
+* 1x Breadboard
+* 4x M-F jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | OLED Module Pin | Arduino Uno Pin | Wire Color (Recommended) | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** | **5V** or **3.3V** (Verify module spec) | Red | Power Input |
 | **GND** | **GND** | Black | Ground |
 | **SDA** | **A4** (or dedicated SDA pin) | Green | I2C Serial Data |
@@ -4327,7 +6664,21 @@ $$\text{Frame Interval} = \frac{1000\text{ ms}}{30\text{ FPS}} \approx 33.3\text
 > [!IMPORTANT]
 > Some cheap 0.96" OLED modules run strictly on 3.3V, while others have onboard regulators and are 5V-tolerant. Check the markings on the back of your module before connecting VCC to avoid burning out the driver IC.
 
+---
 
+## 💻 How to Test & Validate
+
+1. Connect the hardware according to the wiring table.
+2. Install the **Adafruit SSD1306** and **Adafruit GFX Library** from the Arduino IDE Library Manager.
+3. Open `Day_27_OLED_Animation.ino` in the Arduino IDE.
+4. Select your Board (Arduino Uno) and COM Port, then click **Upload**.
+5. Observe the OLED display:
+   * A boundary box will be drawn.
+   * A circular ball will bounce smoothly off all sides of the box.
+   * A top dashboard header will display the live actual frame rate (FPS) and coordinates ($X$ and $Y$).
+6. Open the **Serial Monitor** at **9600 Baud** to inspect real-time position vectors and performance logs.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -4371,7 +6722,30 @@ if (ballX - ballRadius <= PLAY_X_MIN) {
 
 Welcome to Day 28 of the 100-Day Arduino Masterclass! Today, we explore wireless communication by interfacing a 38 kHz Infrared (IR) receiver to capture and decode signals from common handheld remotes. We will program a non-blocking wireless state toggle system using the modern `IRremote` library (v4.x) and learn how to extract command codes from unknown remotes.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Bluetooth_Module.jpg" alt="Bluetooth Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Infrared communication is a staple of short-range, line-of-sight wireless control in consumer electronics (TVs, air conditioners) and robotics. In robotics, IR remotes are used to:
+1. Trigger autonomous modes (e.g., Line-Following vs Obstacle Avoidance).
+2. Override system controls manually.
+3. Transmit state parameters wirelessly over a short distance.
+
+By using an active IR receiver (like the TSOP38238/VS1838B), we can convert raw optical pulses into digital hexadecimal codes, enabling multi-channel remote execution.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4387,14 +6761,32 @@ Remote:    Pulse [|||||]   Space [     ]   Pulse [|||||]
 Receiver:   Output LOW      Output HIGH      Output LOW
 ```
 
+---
 
+### 2. The NEC Transmission Protocol
+The most common coding protocol in hobbyist electronics is the **NEC Protocol**. It uses **Pulse-Distance Modulation** to represent bits:
+* **Start Frame:** A $9\text{ ms}$ burst of carrier signal followed by a $4.5\text{ ms}$ space. This alerts the receiver to prepare for data.
+* **Logic '0':** A $562.5\text{ µs}$ pulse burst followed by a $562.5\text{ µs}$ space (total time $1.125\text{ ms}$).
+* **Logic '1':** A $562.5\text{ µs}$ pulse burst followed by a $1.6875\text{ ms}$ space (total time $2.25\text{ ms}$).
+* **Repeat Code:** If a button is held down, the remote sends a $9\text{ ms}$ pulse, a $2.25\text{ ms}$ space, and a $562.5\text{ µs}$ pulse. This tells the microcontroller to ignore repeated clicks or implement acceleration.
+
+A standard transmission contains **32 bits**:
+$$\text{Frame Structure} = [8\text{-bit Address}] + [8\text{-bit Inverted Address}] + [8\text{-bit Command}] + [8\text{-bit Inverted Command}]$$
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When selecting wireless interfaces for robotics, developers select based on range, data bandwidth, and line-of-sight constraints:
 
 | Protocol / Module | Frequency | Range | Line of Sight? | Power Consumption | Complexity | Best Used For |
-| : | : | : | :
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Infrared (VS1838B)** | **Infrared Light** | **$5\text{m} - 10\text{m}$** | **Yes (Strict)** | **Very Low ($<5\text{mA}$)** | **Low** | **Simple commands, short-range controllers (Our choice)** |
+| **RF (HC-12 / NRF24)** | **$433\text{MHz} / 2.4\text{GHz}$** | **$100\text{m} - 1\text{km}$** | **No** | **Medium ($15\text{mA} - 100\text{mA}$)** | **Medium** | **Long-range telemetry, RC cars, sensor nodes** |
+| **Bluetooth (HC-05)** | **$2.4\text{ GHz}$** | **$10\text{m}$** | **No** | **Medium ($\sim 40\text{mA}$)** | **Medium** | **Smartphone-to-robot telemetry, configuration interfaces** |
+| **Wi-Fi (ESP8266/ESP32)** | **$2.4\text{ GHz}$** | **$50\text{m} - 100\text{m}$** | **No** | **High ($80\text{mA} - 250\text{mA}$)** | **High** | **IoT logging, web dashboards, video streaming** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -4406,7 +6798,28 @@ When selecting wireless interfaces for robotics, developers select based on rang
 * 1x Breadboard
 * Jumper wires
 
- | : | : | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+### 1. IR Receiver Sensor Pins
+Ensure you locate the correct pinout for your module. Standard VS1838B units looking at the rounded bulb face (left to right):
+
+| IR Receiver Pin | Arduino Uno Pin | Wire Color (Recommended) | Description |
+| :--- | :--- | :--- | :--- |
+| **Pin 1 (OUT)** | **D11** | Green | Demodulated Signal Output |
+| **Pin 2 (GND)** | **GND** | Black | Ground |
+| **Pin 3 (VCC)** | **5V** | Red | Power Input ($5\text{V}$ or $3.3\text{V}$) |
+
+### 2. LED Outputs
+| LED Indicator | Arduino Pin | Resistor | Description |
+| :--- | :--- | :--- | :--- |
+| **Red LED Anode** | **D5** | 220 Ohm to GND | Red Subsystem Toggle |
+| **Green LED Anode** | **D6** | 220 Ohm to GND | Green Subsystem Toggle |
+| **Blue LED Anode** | **D7** | 220 Ohm to GND | Blue Subsystem Toggle |
+| **LED Cathodes** | **GND** | Direct | Ground rail |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -4471,7 +6884,29 @@ if (IrReceiver.decode()) {
 
 Welcome to Day 29 of the 100-Day Arduino Masterclass! Today, we interface the high-precision **DS3231 Real-Time Clock (RTC)**. Instead of using a pre-packaged library, we will write our own driver using raw I2C (`Wire.h`) register transactions. This teaches us the mechanics of I2C device register maps, Binary Coded Decimal (BCD) number systems, and signed fractional temperature decoding.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robotics and embedded systems often require absolute time-stamps that remain accurate even when the main system power is completely disconnected. Examples include:
+1. **Environmental Data Loggers:** Storing sensor readings with precise timestamps (Year-Month-Day Hour:Minute:Second).
+2. **Scheduling Systems:** Performing periodic events (e.g., watering plants or executing maintenance sweeps at midnight).
+3. **Black-box Flight Loggers:** Recording drone flight states or diagnostic logs against real-world timelines.
+
+While the Arduino has internal timers (like `millis()`), they resetting back to zero on power cycles. They also lack absolute time awareness and drift significantly. An RTC runs independently on a tiny coin-cell backup battery, maintaining the time for years without external power.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4484,7 +6919,28 @@ The DS3231 is a **TCXO (Temperature-Compensated Crystal Oscillator)**:
 * Every 64 seconds, it measures the temperature and adjusts the load capacitance of the crystal to offset thermal frequency shifts.
 * This limits drift to $\pm 2\text{ ppm}$ (parts per million), which equates to **less than 60 seconds of drift per year** across a temperature range of $-40^{\circ}\text{C}$ to $+85^{\circ}\text{C}$.
 
+---
 
+### 2. Binary Coded Decimal (BCD) Formatting
+The DS3231's internal memory stores time variables in **Binary Coded Decimal (BCD)** format. 
+* In BCD, each decimal digit (0-9) is mapped to its own 4-bit binary nibble (0000 to 1001).
+* A single byte stores two digits (tens digit in bits 7-4, units digit in bits 3-0).
+* For example:
+  * Decimal value `45` is written as `0100 0101` in binary (represented as hexadecimal `0x45`).
+  * In standard binary, `45` is written as `0010 1101`.
+
+To program or read time, we write converters to transition numbers back and forth between Decimal and BCD formats:
+
+```cpp
+byte decToBcd(byte val) {
+  return ((val / 10) << 4) | (val % 10);
+}
+byte bcdToDec(byte val) {
+  return ((val >> 4) * 10) + (val & 0x0F);
+}
+```
+
+---
 
 ### 3. Registers and Address Pointers
 To communicate with an I2C device, the master:
@@ -4492,7 +6948,20 @@ To communicate with an I2C device, the master:
 2. Sends the **register address pointer** (e.g. `0x00` for seconds, `0x11` for temperature).
 3. Executes a restart or read/write command to transfer data starting from that point. The address pointer auto-increments after each read/write transaction.
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting timekeepers for embedded designs:
+
+| Timekeeping Method | Accuracy | Power Source | Battery Backup? | Complexity | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **DS3231 RTC** | **Very High ($\pm 2$ ppm)** | **System / Coin Cell** | **Yes** | **Medium** | **Long-term timestamps, logging, scheduling (Our choice)** |
+| **DS1307 RTC** | **Low ($\pm 50$ ppm)** | **System / Coin Cell** | **Yes** | **Medium** | **Low-cost clock projects without temperature fluctuations** |
+| **Software RTC (`millis()`)** | **Extremely Low** | **Main Board** | **No** | **Very Low** | **Short-term relative intervals; resets on reboot** |
+| **NTP Client (WiFi ESP32)** | **Extremely High (NTP synchronized)** | **Main Board / WiFi network** | **No (Relies on internet)** | **High** | **Connected IoT systems with active internet access** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -4502,7 +6971,18 @@ To communicate with an I2C device, the master:
 * 1x Breadboard
 * Jumper wires
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| DS3231 Module Pin | Arduino Uno Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** | Red | Power input |
+| **GND** | **GND** | Black | Ground |
+| **SDA** | **A4** (or SDA dedicated) | Green | I2C Data Line |
+| **SCL** | **A5** (or SCL dedicated) | Yellow | I2C Clock Line |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -4572,7 +7052,28 @@ dt->minute = bcdToDec(Wire.read());
 
 Welcome to Day 30 of the 100-Day Arduino Masterclass! Today, we study non-volatile memory management on microcontrollers. We will interface the Arduino's internal **EEPROM** (Electrically Erasable Programmable Read-Only Memory) to build a data logger. Because EEPROM has a limited write life, we will design and implement a professional **Wear-Leveling Ring Buffer** with **Integrity Checksums** to maximize the lifespan of the hardware.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In robotics and automation systems, critical parameters (like calibration offsets, network configurations, serial numbers, error states, and history logs) must survive system power cycles. 
+* **The Problem:** Writing data to the same memory cell repeatedly degrades it. If we log sensor values directly to address `0x00` every few seconds, the memory gate will wear out and fail in less than 2 weeks!
+* **The Solution:** A **Wear-Leveling Ring Buffer** distributes writes sequentially across the entire 1024-byte space of the EEPROM. Instead of burning one memory location, we cycle through all 128 available memory slots, increasing the operational lifetime of the device by $128 \times$ (from days to years).
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4583,32 +7084,79 @@ EEPROM is made of arrays of **Floating Gate Transistors**.
 * **Erasing:** Reversing the voltage pulls the trapped electrons back out of the floating gate, registering as a logic `1` (erased state).
 * **The Limit:** Each write/erase cycle forces electrons through the silicon dioxide barrier. Over time, the oxide breaks down, trapping permanent charges or creating leaks. This limits standard microchip EEPROMs to **$\approx 100,000$ write cycles** per byte before the memory cell fails.
 
+---
 
+### 2. Wear-Leveling Algorithm
+Instead of writing to a single address:
+1. We segment the 1024-byte EEPROM into 128 slots of 8 bytes each.
+2. Each slot contains a structured packet: `[4-byte LogID] + [2-byte SensorValue] + [2-byte Checksum]`.
+3. To write a new entry, we locate the slot with the highest `LogID`, move to the next slot index:
+   $$\text{Next Slot} = (\text{Newest Slot} + 1) \pmod{128}$$
+4. If we reach the end of the memory boundary (Slot 127), the index wraps back to Slot 0, overwriting the oldest logs.
+5. On boot, the system scans the entire memory block. It verifies the checksum of each slot to skip blank/corrupt fields and automatically re-points to the newest entry.
+
+```
+EEPROM Address Map:
+[ Slot 00 ] -> LogID: 101 | Val: 452 | Checksum: OK
+[ Slot 01 ] -> LogID: 102 | Val: 461 | Checksum: OK  <-- Newest Active Log
+[ Slot 02 ] -> LogID: 000 | Val: 000 | Checksum: Invalid (Erased 0xFF)
+[ Slot 03 ] -> LogID: 000 | Val: 000 | Checksum: Invalid (Erased 0xFF)
+...
+[ Slot 127 ] -> LogID: 100 | Val: 432 | Checksum: OK
+```
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When choosing non-volatile memory for data loggers:
 
 | Storage Type | Capacity | Write Endurance | Interface | Hardware Cost | Best Used For |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Internal EEPROM** | **$1\text{ KB}$ (Uno)** | **$100\text{k}$ cycles** | **Internal Register** | **$0.00 (Built-in)** | **Calibration coefficients, system states, small log files (Our choice)** |
 | **External EEPROM (24LC256)** | **$32\text{ KB}$** | **$1\text{M}$ cycles** | **I2C ($400\text{ kHz}$)** | **Low ($\approx \$1$)** | **Extended configurations, calibration tables** |
 | **SPI Flash (W25Q32)** | **$4\text{ MB}$** | **$100\text{k}$ cycles** | **SPI ($104\text{ MHz}$)** | **Low-Medium ($\approx \$1.50$)** | **Storing graphics/audio, firmware updates** |
 | **SD Card Module** | **$4\text{ GB} - 32\text{ GB}$** | **Millions (FAT controllers)**| **SPI** | **Medium ($\approx \$3$)** | **Massive data streams, high-frequency logging** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x Potentiometer or Photoresistor (optional, used to feed changing values into the analog logging pin A0)
+* Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 No external components are strictly required. If you want to connect a Potentiometer to A0 for simulated sensor logging:
 
 | Potentiometer Pin | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **Pin 1 (GND)** | **GND** | Black | Ground Reference |
 | **Pin 2 (Wiper)** | **A0** | Green | Analog Output Voltage |
 | **Pin 3 (VCC)** | **5V** | Red | Power |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload `Day_30_EEPROM_Logger.ino` to the Arduino Uno.
+2. Open the **Serial Monitor** at **9600 Baud**.
+3. The setup routine will scan the memory. If the EEPROM is brand new, you will see:
+   `[SYSTEM] Boot scan finished. No valid records found (EEPROM empty or cleared).`
+4. Interact using the **Serial Command Input Bar**:
+   * **Write Log:** Type `w` and press Enter.
+     * The console outputs: `[LOG] Saved to Slot 0 (Address: 0) | ID: 1 | Value: 345`.
+     * Type `w` again to write another. It will write sequentially to Slot 1, then Slot 2.
+   * **Read Logs:** Type `r` and press Enter.
+     * This scans the EEPROM and prints out all valid logged entries chronologically.
+   * **Wipe EEPROM:** Type `c` and press Enter.
+     * This runs `EEPROM.update()` across the address space, resetting the cells to `0xFF`.
+   * **Test Persistence:** Write 3 logs, then press the physical Reset button on your Arduino (or unplug the USB). Open the Serial Monitor again. The boot scan will find your logs, identify the newest slot, and set the write head to the next slot (Slot 3)!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -4647,7 +7195,29 @@ entry.checksum = calculateChecksum(entry.logID, entry.sensorValue);
 
 Welcome to Day 31 of the 100-Day Arduino Masterclass! Today, we introduce wireless RFID (Radio Frequency Identification) tracking and the high-speed **SPI (Serial Peripheral Interface)** communication protocol. We will interface the standard **MFRC522 RFID Reader** to read passive card UIDs and build an access control verification system.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/RFID.jpg" alt="RFID" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+RFID is a fundamental technology in tracking, inventory, logistics, and security systems. In robotics and automation, RFID is used for:
+1. **Tool Identification:** Robotic cells automatically verifying which gripper or end-effector is attached before executing tasks.
+2. **AGV Path Landmarks:** Automated Guided Vehicles (AGVs) reading RFID tags embedded in warehouse floors to identify locations and execute path changes.
+3. **Security Access Control:** Locking and unlocking mechanical mechanisms (doors, robot cabinets) using RFID key fobs.
+
+We will write a non-blocking program that polls the MFRC522 chip over the SPI bus, parses card UIDs, and cross-references them against an authorized credential list.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4656,22 +7226,53 @@ The MFRC522 reader operates at a high frequency of **$13.56\text{ MHz}$**.
 * **Energy Harvesting:** The reader's PCB antenna emits an alternating electromagnetic field. When a passive RFID tag is brought near ($<5\text{cm}$), its internal loop antenna crosses these magnetic field lines. This induces an alternating current (AC) in the tag's coil via **magnetic induction (Faraday's Law of Induction)**.
 * **Bootup & Modulation:** The induced current is rectified to DC to power the tag's integrated circuit (IC). Once powered, the IC transmits its data (including its unique 4-byte or 7-byte serial number) back by varying the electrical load on its coil (a technique known as **Load Modulation**). The reader detects these tiny load drops and demodulates them.
 
--->|MOSI               |
-    |             MISO 12|<-->|SCK                |
-    |               SS 10|
+---
+
+### 2. SPI (Serial Peripheral Interface) Bus
+Unlike I2C, which uses device addresses and a shared two-wire line, SPI is a **synchronous, full-duplex, master-slave** interface that uses four main signals:
+* **MOSI (Master Out Slave In):** The line carrying data from the Arduino (Master) to the MFRC522 (Slave).
+* **MISO (Master In Slave Out):** The line carrying data from the MFRC522 back to the Arduino.
+* **SCK (Serial Clock):** Clock pulses generated by the Master to synchronize bit transfers.
+* **SDA / SS (Slave Select / Chip Select):** A dedicated line pulled **LOW** by the Master to notify a specific slave chip to listen to the bus.
+
+SPI is much faster than I2C, running at clock frequencies of $4\text{ MHz}$ to $10\text{ MHz}+$ on standard microcontrollers, making it ideal for rapid sensor readings and display frames.
+
+```
+       Arduino (Master)                  MFRC522 (Slave)
+    +--+            +-+
+    |             MOSI 11|----->|MOSI               |
+    |             MISO 12|<-----|MISO               |
+    |              SCK 13|----->|SCK                |
+    |               SS 10|----->|SDA (Slave Select) |
+    +--+            +-+
+```
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When selecting authentication systems for mechatronic setups:
 
 | System Type | Range | Data Rate | Security Level | Hardware Cost | Best Used For |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **RFID (MFRC522)** | **$< 5\text{cm}$** | **Medium** | **Medium (Clonable without encryption)** | **Low ($\approx \$2$)** | **Industrial tools, keycards, path markers (Our choice)** |
 | **QR Code / Barcode** | **$10\text{cm} - 2\text{m}$** | **None (Static)** | **Very Low (Photocopyable)** | **None (Paper print)** | **Package tracking, inventory systems** |
 | **BLE (Bluetooth)** | **$10\text{m} - 50\text{m}$** | **High** | **High (Encrypted)** | **Medium ($\approx \$5$)** | **User localization, smartphone pairing** |
 | **Biometric (Fingerprint)** | **Touch** | **Low** | **Very High** | **High ($\approx \$15$)** | **High-security gates, user verification** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x MFRC522 RFID Reader Module (13.56 MHz)
+* 1x Passive RFID Card (13.56 MHz MIFARE format)
+* 1x Passive RFID Key Fob (13.56 MHz MIFARE format)
+* 1x Red LED & 1x Green LED
+* 2x 220 Ohm current-limiting resistors
+* Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -4679,7 +7280,7 @@ When selecting authentication systems for mechatronic setups:
 > The MFRC522 chip is powered strictly by **3.3V**. Connecting the module's 3.3V pin to the Arduino's 5V pin will destroy the chip's RF stage. Double check your power connection before turning on the board!
 
 | MFRC522 Pin | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **3.3V** | **3.3V** | Red | Power Input ($3.3\text{V}$ only!) |
 | **RST** | **D9** | Brown | Reset Line |
 | **GND** | **GND** | Black | Ground Reference |
@@ -4689,12 +7290,34 @@ When selecting authentication systems for mechatronic setups:
 | **SDA (SS)** | **D10** | Orange | SPI Chip Select (Slave Select) |
 
 | LED Indicator | Arduino Pin | Resistor | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **Green LED Anode** | **D5** | 220 Ohm to GND | Access Granted indicator |
 | **Red LED Anode** | **D6** | 220 Ohm to GND | Access Denied indicator |
 | **LED Cathodes** | **GND** | Direct | Common Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up the MFRC522 module to the Arduino Uno exactly as listed in the wiring diagram. **Ensure you use the 3.3V rail!**
+2. Install the **MFRC522** library by Miguel Balboa via the Library Manager.
+3. Open `Day_31_RFID_Reader.ino` and upload it.
+4. Open the **Serial Monitor** at **9600 Baud**.
+5. Take your RFID Card or Key Fob and place it close to the MFRC522 PCB antenna:
+   * The Serial Monitor will print: `[RFID] Scanned Tag UID: XX XX XX XX`.
+   * Since this UID won't match the placeholder authorized key (`DE AD BE EF`), you will see:
+     `[ACCESS CONTROL] -> WARNING: UNAUTHORIZED KEY SCANNED. Access Denied!`
+   * The Red LED will flash 3 times.
+6. **Program your Authorized Key:**
+   * Read the printed hex bytes from the Serial Monitor (e.g. `4A D2 F3 8B`).
+   * Modify the byte array constant in the code:
+     `const byte AUTHORIZED_UID[] = {0x4A, 0xD2, 0xF3, 0x8B};`
+   * Upload the modified code to the Arduino.
+7. Scan the authorized card again:
+   * The Green LED will light up for 2 seconds.
+   * The Serial Monitor will print: `[ACCESS CONTROL] -> AUTHORIZED MASTER KEY SCANNED. Access Granted!`.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -4741,7 +7364,28 @@ if (mfrc522.uid.uidByte[i] != AUTHORIZED_UID[i]) {
 
 Welcome to Day 32 of the 100-Day Arduino Masterclass! Today, we study human-machine interface (HMI) design and external hardware interrupts. We will interface the **KY-040 Quadrature Rotary Encoder** to build a dynamic, interactive selection menu. We will learn how to decode quadrature wave phase shifts in an Interrupt Service Routine (ISR) and implement microsecond-level software debounce filters.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robotics and industrial machines require reliable user input interfaces to configure parameters, select modes, and navigate settings.
+* **The Problem:** Using standard pushbuttons for a menu with dozens of parameters is slow and takes up too many pins. Potentiometers can map values but lack infinite rotation and digital feedback (clicks).
+* **The Solution:** A **Rotary Encoder** provides infinite, bi-directional rotation with detent feedback (physical clicks) and an integrated push-button switch. It can scroll through long menus and adjust numeric values with single-pin interrupt responsiveness.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4770,7 +7414,18 @@ By reading the state of Channel B (DT) at the exact instant Channel A (CLK) fall
 * If `DT == HIGH`, it is rotating **Clockwise (CW)**.
 * If `DT == LOW`, it is rotating **Counter-Clockwise (CCW)**.
 
+---
 
+### 2. External Hardware Interrupts
+Standard microcontrollers check pin states by reading them repeatedly in the `loop()` function (polling). If the processor is busy executing code, a user spinning the encoder quickly will cause the board to miss transitions, resulting in menu lag.
+
+An **External Interrupt** bypasses this:
+* We wire the CLK pin to Pin 2 (which supports hardware interrupt `INT0` on the ATmega328P).
+* We configure the interrupt to run on a `FALLING` edge:
+  `attachInterrupt(digitalPinToInterrupt(CLK_PIN), handleEncoderISR, FALLING);`
+* When Pin 2 drops from HIGH to LOW, the CPU halts its current instruction, jumps to the **Interrupt Service Routine (ISR)** `handleEncoderISR()`, increments/decrements the position counter, and returns to normal execution. This guarantees zero missed steps.
+
+---
 
 ### 3. Mechanical Contact Bounce & ISR Debouncing
 Mechanical switches contain small metal plates that vibrate (bounce) rapidly when closing. This bounce generates a train of high-frequency pulses for up to $2 - 5\text{ ms}$.
@@ -4778,7 +7433,20 @@ Mechanical switches contain small metal plates that vibrate (bounce) rapidly whe
 * **In ISRs, delays are forbidden!** The microsecond timer `micros()` continues to run, but `delay()` will lock the system since it relies on timers that require interrupts.
 * **The Solution:** We implement a **microsecond lockout timer** in the ISR. If the current time is within $2000\text{ µs}$ ($2\text{ ms}$) of the last interrupt, the CPU discards the pulse as noise.
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting input devices for control menus:
+
+| Control Device | Rotation Limit | Pins Required | Interface Speed / Lag | Software Complexity | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Rotary Encoder** | **Infinite** | **3 (CLK, DT, SW)** | **Interrupt-Instant** | **Medium (Requires ISR/Debounce)** | **Menu navigation, volume/speed knobs, parameter settings (Our choice)** |
+| **Potentiometer** | **$270^{\circ} - 300^{\circ}$** | **1 (Analog)** | **Polled ADC** | **Low** | **Tuning volumes, setting speeds, simple analog mapping** |
+| **Pushbuttons (x3)** | **N/A** | **3 (Up, Down, Enter)** | **Polled / Interrupt** | **Low** | **Simple settings adjustments** |
+| **Analog Joystick** | **Spring-centered** | **3 (X, Y, SW)** | **Polled ADC** | **Medium** | **Manual motor steering, 2D cursor controls** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -4787,7 +7455,19 @@ Mechanical switches contain small metal plates that vibrate (bounce) rapidly whe
 * 1x Breadboard
 * Jumper wires
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| KY-040 Pin | Arduino Uno Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **CLK** | **D2** | Green | Channel A (External Interrupt Pin) |
+| **DT** | **D4** | Yellow | Channel B (Direction Data Pin) |
+| **SW** | **D3** | Orange | Push Button Switch Pin |
+| **+** (VCC) | **5V** | Red | Power Input |
+| **GND** | **GND** | Black | Ground Reference |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -4855,7 +7535,28 @@ if (currentTime - lastISRTime > 2000) {
 
 Welcome to Day 33 of the 100-Day Arduino Masterclass! Today, we transition to high-power actuators. We will interface a brushed DC motor using the industry-standard **L298N Dual H-Bridge Driver module**. We will implement a non-blocking speed ramp state machine and explore the physics of H-bridges, Pulse Width Modulation (PWM), and inductive back-EMF suppression.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Brushed DC motors are the workhorses of mobile robotics, driving wheels, tracks, and mechanical pulleys.
+* **The Problem:** DC motors draw high currents ($100\text{ mA}$ to several Amps) and require bidirectional voltage to change direction. Microcontrollers pins can output at most $40\text{ mA}$ at $5\text{V}$, and reversing voltage polarity directly from digital pins is electronically impossible.
+* **The Solution:** The **L298N H-Bridge Driver** acts as a high-power routing switch. It takes low-power control signals from the Arduino and routes high-current power from an external battery pack to the motor.
+
+In this project, we write a non-blocking program that accelerates, cruises, decelerates, and electronically brakes a DC motor in both forward and reverse directions.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4880,7 +7581,16 @@ To reverse a DC motor, we must swap the positive and negative terminals of the p
 > [!CAUTION]
 > If **S1** and **S3** (or S2 and S4) are closed at the same time, it creates a direct short circuit between Power and Ground. This is called **Shoot-Through** and will immediately destroy the H-bridge transistors. The L298N internal logic gates protect against this.
 
+---
 
+### 2. Inductive Spikes & Flyback Diodes (Back-EMF)
+A DC motor consists of coils of copper wire (inductors) rotating inside a magnetic field. Inductors store energy in a magnetic field. 
+When the H-bridge switches open to stop the motor, the current cannot instantly drop to zero. The collapsing magnetic field forces current to continue flowing, creating a massive voltage spike:
+$$V = L \cdot \frac{di}{dt}$$
+
+These spikes can easily exceed $100\text{ V}$ and punch through the sensitive silicon junctions of the transistors. The L298N module contains **Flyback Diodes** (also called freewheeling diodes) connected in parallel with the transistors to route these high-voltage spikes safely back into the power rails.
+
+---
 
 ### 3. PWM Speed Regulation
 Instead of supplying a constant voltage (which would keep the motor running at full speed), we pulse the voltage at high frequency ($490\text{ Hz}$ on standard Arduino pins) using **Pulse Width Modulation (PWM)**. 
@@ -4889,7 +7599,20 @@ $$V_{\text{average}} = V_{\text{source}} \times \left( \frac{t_{\text{ON}}}{t_{\
 
 By altering the duty cycle via `analogWrite(pin, value)` (from 0 to 255), we regulate the average current and magnetic field strength, controlling the motor speed.
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting motor drivers for mobile robots:
+
+| Driver IC / Module | Transistor Type | Continuous Current | Peak Current | Efficiency / Heat | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **L298N H-Bridge** | **BJT (Bipolar Junction)**| **$2.0\text{ A}$** | **$3.0\text{ A}$** | **Low (Drains up to $2\text{V}$ internally; runs hot)** | **Low-cost hobby robots, medium DC motors (Our choice)** |
+| **TB6612FNG** | **MOSFET** | **$1.2\text{ A}$** | **$3.2\text{ A}$** | **High (Minimal internal resistance; runs cool)** | **Small, high-efficiency micro-metal gearmotor robots** |
+| **L293D** | **BJT** | **$600\text{ mA}$** | **$1.2\text{ A}$** | **Low** | **Tiny, low-current DC motors or solenoid valves** |
+| **BTS7960** | **High-power MOSFET** | **$43\text{ A}$** | **$60\text{ A}$** | **Extremely High** | **Heavy-duty industrial motors, combat robots** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -4900,7 +7623,37 @@ By altering the duty cycle via `analogWrite(pin, value)` (from 0 to 255), we reg
 * 1x Breadboard
 * Jumper wires
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+> [!IMPORTANT]
+> **Common Ground Rule:** You MUST connect the negative (-) terminal of your external motor battery to the Arduino's **GND** pin. Without this shared ground reference, the control signals from the Arduino will float erratically, and the motor driver will not function.
+
+```
+                  +--+
+                  |       L298N Module       |
+                  |                          |
+    Arduino Pin 9 |[ENA]             [OUT1]  |====== Motor Terminal 1
+    Arduino Pin 7 |[IN1]             [OUT2]  |====== Motor Terminal 2
+    Arduino Pin 8 |[IN2]                     |
+                  |                  [12V]   |====== Battery Positive (+)
+    Arduino GND   |[GND]             [GND]   |====== Battery Negative (-)
+                  +--+
+```
+
+| L298N Driver Pin | Arduino Uno Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **ENA** | **D9** (PWM pin) | Green | Speed Control (PWM) |
+| **IN1** | **D7** | Orange | Direction Control Input 1 |
+| **IN2** | **D8** | Yellow | Direction Control Input 2 |
+| **GND** | **GND** | Black | Common Ground connection |
+| **12V Screw Terminal** | **Battery (+) Pos** | Red | External power input ($6\text{V} - 12\text{V}$) |
+| **GND Screw Terminal** | **Battery (-) Neg** | Black | Power return ground |
+| **OUT1 Terminal** | **Motor Lead 1** | Blue | Motor power output A |
+| **OUT2 Terminal** | **Motor Lead 2** | Blue | Motor power output B |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -4962,7 +7715,31 @@ analogWrite(ENA_PIN, motorSpeedPWM);
 
 Welcome to Day 34 of the 100-Day Arduino Masterclass! Today, we study open-loop positioning actuators by interfacing a unipolar **28BYJ-48 Stepper Motor** with a **ULN2003 Darlington Transistor Array driver**. Instead of using standard libraries, we will write our own step scheduler from scratch to understand step sequences (Half-Step), gear reduction math, and power conservation coil gating.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Unlike DC motors which rotate continuously when powered (Day 33), stepper motors move in discrete, precise angular increments called **steps**. This makes them essential in robotics and automation for:
+1. **3D Printers & CNC Machines:** Drawing precise coordinates on X, Y, and Z axes.
+2. **Robotic Grippers/Arms:** Moving joints to specific, repeatable angles without encoders.
+3. **Camera Gimbals:** Smoothly panning and tilting sensor payloads.
+
+The 28BYJ-48 unipolar stepper is a low-cost, high-torque geared motor ideal for learning stepper kinematics.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -4971,7 +7748,29 @@ A unipolar stepper motor contains a permanent magnet rotor surrounded by electro
 * Unipolar motors have two center-tapped coils. This splits them electrically into **four phases (A, B, C, D)**.
 * The center taps are connected to VCC ($5\text{V} - 12\text{V}$), and the microcontroller rotates the shaft by grounding the four phases in a specific sequence to pull the magnet rotor toward the active coil.
 
+---
 
+### 2. Step Sequencing Modes
+By controlling which phases are grounded at any instant, we alter step step configurations:
+
+```
+Wave Drive (1-Phase):   [Coil A] -> [Coil B] -> [Coil C] -> [Coil D]
+Full-Step (2-Phase):    [A+B]    -> [B+C]    -> [C+D]    -> [D+A]
+Half-Step (1&2-Phase):  [A] -> [A+B] -> [B] -> [B+C] -> [C] -> [C+D] -> [D] -> [D+A]
+```
+
+* **Wave Drive:** Lowest power, lowest torque. Only one phase is active at a time.
+* **Full-Step:** High torque, but coarse resolution. Two phases are active at a time.
+* **Half-Step:** Alternates between energizing one and two phases. This **doubles the angular resolution** (halving step size) and creates significantly smoother motion with less vibration.
+
+Our sketch implements an 8-state Half-Step sequence to achieve maximum resolution and smooth motion:
+```cpp
+const byte halfStepSequence[8] = {
+  0b1000, 0b1100, 0b0100, 0b0110, 0b0010, 0b0011, 0b0001, 0b1001
+};
+```
+
+---
 
 ### 3. Gear Reduction Math
 The 28BYJ-48's internal rotor has 32 magnetic poles. In Half-Step mode (8 states), one rotor revolution requires:
@@ -4981,19 +7780,36 @@ To increase torque, the motor incorporates an internal reduction gearbox with a 
 Thus, to calculate the number of steps required to rotate the output shaft by a full $360^{\circ}$:
 $$\text{Steps per Revolution} = 64 \text{ (rotor steps)} \times 64 \text{ (gear ratio)} = 4096 \text{ steps}$$
 
+---
 
+### 4. ULN2003 Darlington Transistor Array
+Because the motor coils require hundreds of milliamps, the Arduino pins cannot drive them directly. The **ULN2003 driver** houses 7 Darlington transistor pairs acting as low-side switches:
+* Pulling an input pin (e.g. IN1) **HIGH** on the Arduino saturates the Darlington transistor.
+* This connects the corresponding motor lead to **Ground**, completing the circuit and energizing the coil.
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When selecting rotary actuators:
 
 | Motor Class | Control Type | Feedback Required? | Cost | Precision / Resolution | Best Used For |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Stepper Motor** | **Open-Loop Positioning** | **No** | **Low** | **High ($<1.8^{\circ}$ steps)** | **Precision positioning, CNCs, 3D printers (Our choice)** |
 | **DC Gearmotor** | **Open-Loop Speed** | **Yes (Encoder needed)** | **Very Low** | **None (Without feedback)** | **Mobile robot drive wheels** |
 | **RC Servo** | **Closed-Loop Position** | **Internal Potentiometer** | **Medium** | **Medium (Jittery at bounds)**| **Robotic arm joints, steering linkages** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x 28BYJ-48 Unipolar Stepper Motor (5-wire)
+* 1x ULN2003 Driver Board
+* 1x External 5V DC Power Source (e.g., 4x AA battery holder or DC bench supply)
+* Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -5001,7 +7817,7 @@ When selecting rotary actuators:
 > Do not attempt to run the stepper motor using the Arduino's 5V pin. The high current switching will inject electrical noise into the Arduino's supply lines, causing board resets or thermal damage. Always power the ULN2003 board via an external 5V supply and tie the Ground terminals together.
 
 | ULN2003 Driver Input | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **IN1** | **D4** | Orange | Phase A Trigger |
 | **IN2** | **D5** | Yellow | Phase B Trigger |
 | **IN3** | **D6** | Green | Phase C Trigger |
@@ -5010,7 +7826,23 @@ When selecting rotary actuators:
 | **+** (VCC screw terminal) | **Ext. Power (+5V)** | Red | External positive supply |
 | **-** (GND screw terminal) | **Ext. Power (GND)** | Black | External power return ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Connect the components as detailed in the wiring table. Leave the external 5V power disconnected initially.
+2. Upload `Day_34_Stepper_ULN2003.ino` to the Arduino.
+3. Open the **Serial Monitor** at **9600 Baud**.
+4. Turn on the external 5V motor power source.
+5. Inspect the output shaft:
+   * The motor will spin Clockwise. The Serial Monitor will output progress:
+     `[MOTION] CW Sweep: 90 degrees completed.`
+   * After exactly 4096 steps ($360^{\circ}$ rotation), the motor will stop.
+   * The coils will de-energize (the red LEDs on the ULN2003 board will turn off), preventing overheating.
+   * After a 2-second pause, the motor will execute a full 360-degree sweep Counter-Clockwise.
+6. Verify coil temperature: The motor should remain cool to the touch during the pause state.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -5056,14 +7888,45 @@ void writeCoils(byte pinMask) {
 
 Welcome to Day 35 of the 100-Day Arduino Masterclass! Today, we transition to high-precision motion control by interfacing a **NEMA 17 Bipolar Stepper Motor** with the **A4988 microstepping driver**. We will write a custom step generator implementing **Trapezoidal Velocity Profiles** (linear acceleration and deceleration ramps) using microsecond-level non-blocking timers. We will also learn how to calibrate the driver's current-limit potentiometer ($V_{\text{ref}}$).
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Bipolar stepper motors (like the NEMA 17) are the industry standard for high-performance positioning systems, including 3D printers, CNC routers, robotic joints, and linear actuators.
+* **The Problem:** Stepper motors have significant rotor inertia. If you try to start a motor at maximum speed instantly, the magnetic poles of the stator will rotate faster than the rotor can follow, causing the motor to lock up, vibrate, and stall (slip steps).
+* **The Solution:** We implement a **Trapezoidal Velocity Profile** that gradually ramps speed (steps per second) on a linear slope during starting (acceleration) and stopping (deceleration) phases. 
+
+We will write a non-blocking program that sweeps a bipolar stepper back and forth, managing velocity slopes and utilizing the A4988 driver's enable state to save power.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
 ### 1. Bipolar Motor Phase Drive
 Unlike unipolar motors (Day 34) which use center-tapped coils to pull current in one direction, bipolar motors have **two independent coils (no center tap)**. Reversing direction requires reversing the current flow inside the entire coil. This is accomplished using a dual H-bridge driver.
 
+---
 
+### 2. A4988 Current Chopping & Microstepping
+The A4988 is a dedicated microstepping driver with translator indexer control:
+* **Current Chopping:** Stepper motor coils are inductive. When voltage is applied, current takes time to build up. To get current flowing quickly, we apply a high voltage (e.g. $12\text{V}-24\text{V}$) to a $3.3\text{V}$ coil. Once the current reaches a safe limit, the A4988 chops (switches OFF) the voltage, maintaining a constant current level.
+* **Microstepping:** Instead of turning phases completely ON and OFF (full step), the A4988 feeds varying proportions of sinusoidal currents into both coils simultaneously. This creates intermediate magnetic steps, allowing the rotor to balance between poles. This divides a standard $1.8^{\circ}$ step into 1/2, 1/4, 1/8, or 1/16 microsteps, resolving vibrations and increasing step count:
+$$\text{Steps per Revolution (1/16 mode)} = 200 \text{ full steps} \times 16 = 3200 \text{ steps}$$
+
+---
 
 ### 3. Current-Limit Calibration ($V_{\text{ref}}$ Formula)
 Before powering your motor, you must calibrate the onboard trimpot (potentiometer) on the A4988. If the current limit is set too high, the A4988 or the motor will burn out. If set too low, the motor will skip steps.
@@ -5076,20 +7939,56 @@ $$V_{\text{ref}} = I_{\text{limit}} \times 8 \times R_{\text{sense}}$$
 * For example, for a $1.0\text{ A}$ motor on a board with R100 ($0.1\ \Omega$) sense resistors:
   $$V_{\text{ref}} = 1.0\text{ A} \times 8 \times 0.1\ \Omega = 0.8\text{ V}$$
 
+---
 
+### 4. Trapezoidal Acceleration Profile
+A trapezoidal speed profile consists of three distinct phases:
+
+```
+ Speed (SPS)
+     ▲          Cruise Phase (constant speed)
+     │            ┌──────────────┐
+Max  │           /                \
+Speed│          /                  \
+     │         /                    \
+     │        /                      \
+Min  │       /                        \
+Speed│______/                          \______ Standstill
+     │   Accel Phase                Decel Phase
+     └────────────────────────────────────────► Time
+```
+
+1. **Acceleration Phase:** Speed increases linearly over time: $v(t) = v_0 + a \cdot t$.
+2. **Cruise Phase:** Speed clamps at maximum target velocity.
+3. **Deceleration Phase:** Speed decreases linearly: $v(t) = v_{\text{cruise}} - a \cdot t$. The deceleration trigger point is calculated dynamically based on remaining distance.
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When selecting stepper motor drivers:
 
 | Driver Chip | Microstep Options | Max Current | Interface | Protection features | Best Used For |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **A4988** | **Full, 1/2, 1/4, 1/8, 1/16** | **$2.0\text{ A}$** | **Step / Dir** | **Thermal Shutdown** | **Standard 3D printers, low-cost CNCs (Our choice)** |
 | **DRV8825** | **Down to 1/32** | **$2.5\text{ A}$** | **Step / Dir** | **Thermal & Overcurrent**| **Higher torque stepper applications ($24\text{V}$ systems)** |
 | **TMC2209** | **Down to 1/256 (Interpolated)** | **$2.8\text{ A}$** | **UART / Step-Dir**| **SilentStepStick, StallGuard** | **Whisper-quiet operations, sensorless homing printers** |
 | **L298N** | **Full step only (Manual)** | **$2.0\text{ A}$** | **4-wire interface**| **None** | **Basic educational unipolar/bipolar sweeps (Inefficient)** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x NEMA 17 Bipolar Stepper Motor
+* 1x A4988 Driver Board (with heatsink attached)
+* 1x External DC Power Source (e.g. $12\text{V}$ battery or power supply)
+* 1x Breadboard
+* 1x 100 µF decoupling electrolytic capacitor (critical to protect driver from voltage spikes)
+* Jumper wires
+* Multimeter and small screwdriver (for $V_{\text{ref}}$ tuning)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -5098,7 +7997,7 @@ When selecting stepper motor drivers:
 > 2. **Never connect or disconnect a stepper motor while the driver is energized.** Doing so will blow the A4988 output stages instantly.
 
 | A4988 Driver Pin | Arduino / Power Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **STEP** | **D5** | Yellow | Step trigger pulses |
 | **DIR** | **D6** | Green | Rotation direction state |
 | **ENABLE** | **D7** | Orange | Enable/disable motor coils |
@@ -5110,7 +8009,30 @@ When selecting stepper motor drivers:
 | **1A & 1B** | **Coil A Leads** | Red / Blue | Connect to Stepper Coil A |
 | **2A & 2B** | **Coil B Leads** | Black / Green | Connect to Stepper Coil B |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up the components on the breadboard. Keep the $12\text{V}$ power supply unplugged. **Ensure the $100\ \mu\text{F}$ capacitor is connected across VMOT and GND!**
+2. **Current-Limit Setup:**
+   * Plug in the Arduino USB (5V logic active, VMOT inactive).
+   * Put your multimeter in DC Voltage mode ($2\text{V}$ scale). Connect the black probe to Arduino GND. Touch the metal tip of the red probe to the metal screw of the trimpot on the A4988.
+   * Adjust the screw slowly with a screwdriver until the voltage reads your calculated $V_{\text{ref}}$ (e.g. $0.6\text{V} - 0.8\text{V}$ depending on motor).
+3. Upload `Day_35_Stepper_A4988.ino` to the Arduino.
+4. Connect the external $12\text{V}$ power source.
+5. Observe the motor:
+   * The motor will start accelerating smoothly, cruise at $0.5$ rev/sec, and then decelerate to a stop.
+   * The coils will de-energize, and the motor will enter a 2-second pause.
+   * The cycle repeats in the reverse direction.
+6. Open the **Serial Monitor** at **9600 Baud** to verify state transition logs:
+   ```
+   [MOTION] Commanded 6400 steps | Direction: CW
+   [RAMP] Cruise Speed Reached: 1600 SPS (Steps taken to accel: 1045)
+   [RAMP] Deceleration Phase Initiated.
+   [MOTION] Target reached. Coils disabled. Entering 2s standstill...
+   ```
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -5153,7 +8075,27 @@ if (currentMicros - lastStepMicros >= stepPeriodUs) {
 
 Welcome to Day 36 of the 100-Day Arduino Masterclass! Today, we study sensor feedback loops in mechatronics. We will interface a **digital optical slot encoder** (or magnetic Hall-effect encoder) with our Arduino Uno. We will write an **interrupt-driven pulse counter** and implement a non-blocking velocity calculator to measure motor shaft speed (RPM) and angular velocity ($\text{rad/s}$) in real-time.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Open-loop systems (like Days 33 and 34) send commands to actuators but have no way of verifying if the motor actually moved. If a robot wheel gets stuck in sand, or carrying a heavy payload uphill, open-loop PWM duty cycles will fail to maintain speed.
+* **The Solution:** We introduce **Encoder Feedback**. Encoders generate digital pulses as the motor rotates, allowing the microcontroller to:
+  1. **Measure Speed (RPM):** Verify how fast the motor is spinning.
+  2. **Calculate Distance (Odometry):** Track how far a robot has traveled by counting wheel revolutions.
+  3. **PID Close-Loop Control (Day 37):** Automatically adjust PWM power to maintain a constant speed under variable mechanical loads.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -5161,7 +8103,22 @@ Welcome to Day 36 of the 100-Day Arduino Masterclass! Today, we study sensor fee
 * **Optical Encoders:** Contain an infrared emitting diode and a photo-transistor receiver separated by a slotted disk attached to the motor shaft. As the disk rotates, the solid portions block the light, and the slots allow it to pass. This generates a digital square wave pulse train.
 * **Magnetic Encoders:** Use a multi-pole magnetized ring attached to the shaft. A Hall-effect sensor detects changes in magnetic flux (North vs. South pole) and outputs digital pulses.
 
+---
 
+### 2. Velocity Math (RPM and $\text{rad/s}$ Calculations)
+The number of pulses generated during one full revolution of the disk is the **PPR (Pulses Per Revolution)**.
+If the Arduino records $N$ pulses during a time window $\Delta t$ (in milliseconds):
+$$\text{Revolutions} = \frac{N}{\text{PPR}}$$
+$$\text{Time in Minutes} = \frac{\Delta t}{60,000}$$
+$$\text{RPM} = \frac{\text{Revolutions}}{\text{Time in Minutes}} = \frac{N \times 60,000}{\text{PPR} \times \Delta t}$$
+
+For our code's configuration ($\Delta t = 200\text{ ms}$, $\text{PPR} = 20$):
+$$\text{RPM} = \frac{N \times 60,000}{20 \times 200} = N \times 15$$
+
+To convert RPM to angular velocity $\omega$ in **Radians Per Second** (used in robotics kinematic equations):
+$$\omega = \text{RPM} \times \frac{2\pi}{60}$$
+
+---
 
 ### 3. Data Tearing and Atomic Register Reads
 The Arduino Uno uses an 8-bit microcontroller (ATmega328P). A `long` variable occupies 4 bytes (32 bits). 
@@ -5175,7 +8132,20 @@ interrupts();
 ```
 This minimizes the time interrupts are disabled ($<1\text{ microsecond}$), ensuring we never miss incoming pulse edges.
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When measuring rotational feedback:
+
+| Feedback Sensor | Sensor Type | Output Interface | Measured Parameter | Cost | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Optical Slot Encoder** | **Optical Interrupt** | **Single Digital Pulse** | **Speed (RPM)** | **Low ($\approx \$1.50$)** | **Basic speed regulation, wheel tachometers (Our choice)** |
+| **Quadrature Encoder** | **Dual Hall / Optical** | **Dual Channel (A & B)**| **Speed & Direction** | **Medium ($\approx \$3 - \$5$)** | **Robot wheel odometry, joint angles, servo loops** |
+| **Analog Tachometer** | **DC Generator** | **Analog Voltage** | **Speed (RPM)** | **High** | **Legacy industrial analog control loops** |
+| **Sensorless Back-EMF**| **Algorithmic** | **Phase Voltage ADC** | **Speed** | **None** | **High-speed Brushless DC (BLDC) motor ESC controllers** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -5186,7 +8156,19 @@ This minimizes the time interrupts are disabled ($<1\text{ microsecond}$), ensur
 * 1x External Battery Pack for the motor
 * Jumper wires
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Sensor/Driver Pin | Arduino Uno Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **Encoder VCC** | **5V** | Red | Sensor logic power |
+| **Encoder GND** | **GND** | Black | Sensor ground return |
+| **Encoder OUT** | **D2** (Interrupt 0) | Green | Sensor square wave pulse output |
+| **Driver PWM / ENA** | **D9** (PWM pin) | Orange | Motor speed control signal |
+| **Driver GND** | **GND** | Black | Common Ground connection |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -5246,7 +8228,29 @@ calculatedRPM = (float)(pulsesCaptured * 60000.0) / (ENCODER_PPR * timeElapsed);
 
 Welcome to Day 37 of the 100-Day Arduino Masterclass! Today, we combine our motor driver (Day 33) and encoder sensor feedback (Day 36) to build a **Closed-Loop Proportional-Integral-Derivative (PID) controller**. We will write our own discrete PID regulator from scratch to adjust PWM outputs dynamically, keeping a DC motor spinning at a precise target speed (RPM) even when mechanical load is added or voltage changes.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In robotics and automation, motors must maintain constant speeds under varying loads:
+1. **Mobile Robots:** A robot must drive straight, which requires left and right wheels to rotate at the exact same RPM regardless of changes in carpet friction, slope, or battery level.
+2. **Conveyor Belts:** Must transport loads at a constant speed, whether carrying a heavy box or running completely empty.
+3. **Robotic Arms:** Joint actuators must lock onto precise trajectories under variable gravitational forces.
+
+An **open-loop controller** (where we write static PWM outputs) cannot correct for external disturbances. A **closed-loop PID controller** constantly monitors system speed, calculates the offset error from the target setpoint, and adjusts the power automatically to keep the motor running on target.
+
+---
 
 ## 🔬 Physics & Control Loop Theory
 
@@ -5274,7 +8278,17 @@ Setpoint ──┼──>│   Integral   │ (Ki * ∫e)  Sum  u(t)
     └──────┴───────── Measurement ◄──────┴ Sensor (Encoder)
 ```
 
+---
 
+### 2. The PID Terms Explained
+* **Proportional (P):** $K_p \cdot e(t)$. Generates an output proportional to the current error. If the motor is far below target speed, P drives the motor hard. If speed is close to target, P pushes gently.
+  * *Tuning Effect:* Increasing $K_p$ speeds up rise time, but setting it too high causes the motor to overshoot the setpoint and oscillate wildly.
+* **Integral (I):** $K_i \cdot \int e(t) dt$. Integrates (accumulates) error over time. If a constant error remains (steady-state error) due to friction, the integral sum will grow larger and larger, adding extra voltage to force the motor to the target.
+  * *Tuning Effect:* Eliminates steady-state error, but can increase overshoot and system instability.
+* **Derivative (D):** $K_d \cdot \frac{de(t)}{dt}$. Measures the rate of change (slope) of the error. It predicts future behavior, applying a "brake" to the controller to slow it down as the actual speed approaches the setpoint.
+  * *Tuning Effect:* Dampens oscillations and reduces overshoot.
+
+---
 
 ### 3. Integral Saturation (Anti-Windup)
 If the motor is physically blocked (stalled), the speed remains at 0, and the error remains high. The integral term will continue summing the error, growing towards infinity. When the motor is released, this massive accumulated sum will drive the motor at maximum voltage for a long time, causing it to overshoot the target setpoint dangerously.
@@ -5284,18 +8298,36 @@ integralAccumulator += error * dt;
 integralAccumulator = constrain(integralAccumulator, -integralMaxLimit, integralMaxLimit);
 ```
 
- | : | : | : |
+---
+
+## 🔄 Alternatives Comparison
+
+When choosing control architectures for mechatronic feedback loops:
+
+| Controller Type | Output Type | Stability | Rise Time | Steady-State Error | Complexity | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **PID Control** | **Analog / PWM** | **High (If tuned)** | **Fast** | **Zero** | **Medium** | **Motor speed regulation, temperature chambers, flight dynamics (Our choice)** |
 | **Bang-Bang (On-Off)**| **Digital (On/Off)**| **Low (Constant oscillation)**| **Fast** | **High** | **Very Low** | **Home thermostats, simple fluid level systems** |
 | **Feedforward** | **Calculated Estimate**| **High** | **Instant** | **High (No correction)** | **High** | **Predictive robotics, path planning combined with feedback** |
 | **Fuzzy Logic** | **Rule-Based (IF/THEN)**| **High** | **Medium** | **Low** | **High** | **Automotive cruise control, complex non-linear thermal systems** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x Brushed DC Motor (with slot disk or magnetic encoder attached)
+* 1x Optical Slot Encoder Module (LM393)
+* 1x L298N Dual H-Bridge Driver
+* 1x External Battery Pack for motor power ($6\text{V}-12\text{V}$)
+* Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | Component Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **Encoder VCC** | **5V** | Red | Sensor logic power |
 | **Encoder GND** | **GND** | Black | Sensor ground |
 | **Encoder OUT** | **D2** (Interrupt 0) | Green | Sensor speed pulse output |
@@ -5306,7 +8338,28 @@ integralAccumulator = constrain(integralAccumulator, -integralMaxLimit, integral
 | **L298N 12V** | **Battery (+)** | Red | External battery positive |
 | **Battery (-)** | **GND** | Black | Shared Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up the system according to the pin connections table. Attach the external battery to the L298N driver.
+2. Upload `Day_37_PID_Speed_Control.ino` to the Arduino.
+3. **Open the Serial Plotter:**
+   * Go to **Tools -> Serial Plotter** (or press `Ctrl+Shift+L` in Arduino IDE).
+   * Ensure the baud rate is set to **9600 Baud**.
+4. Observe the plot in real-time:
+   * **Blue Line:** The Setpoint RPM (target speed). It will step: `0 -> 100 -> 220 -> 140 -> 0`.
+   * **Red Line:** The Actual RPM measured from the encoder.
+   * **Green Line:** The PWM control value written to the motor driver.
+5. **Interactive Test (Disturbance Rejection):**
+   * While the setpoint is steady at `140 RPM` or `220 RPM`, carefully pinch the spinning motor axle with your fingers to add friction (simulating mechanical load).
+   * Watch the Plotter:
+     * The actual speed (Red) will drop briefly.
+     * The PID controller detects this error and immediately ramps up the PWM output (Green) to feed more voltage to the motor.
+     * The actual speed (Red) rises back up, locking onto the Setpoint line even though you are applying braking friction!
+   * Release the axle: The actual speed will rise briefly, the PID will drop the PWM, and the speed will quickly settle back onto the Setpoint.
+
+---
 
 ## 🛠️ Tuning Guide (Trial & Error Heuristics)
 
@@ -5346,7 +8399,29 @@ integralAccumulator = constrain(integralAccumulator, -integralMaxLimit, integral
 
 Welcome to Day 38 of the 100-Day Arduino Masterclass! Today, we combine two key mechatronic components—a **servo motor** and an **HC-SR04 ultrasonic sensor**—to build a sweeping **2D Radar (Sonar) Obstacle Mapper**. We will write a non-blocking angle sweep scheduler, explore the physics of acoustic speed of sound propagation, and study Polar-to-Cartesian coordinate mapping.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robots need to build maps of their surroundings to navigate autonomously without colliding with obstacles. 
+* **The Problem:** A fixed distance sensor only detects obstacles directly in front of the robot. Placing multiple stationary sensors around the chassis is expensive and uses many pins.
+* **The Solution:** We mount a single ultrasonic sensor on top of a servo motor. By rotating (sweeping) the servo back and forth while taking range readings, we scan a $150^{\circ}$ field of view, simulating a marine radar or LiDAR system.
+
+The telemetry output is formatted as comma-separated values (`Angle,Distance`), which can be parsed by computer scripts to render a graphical radar scan sweep in real-time.
+
+---
 
 ## 🔬 Physics & Sensing Theory
 
@@ -5359,7 +8434,13 @@ The HC-SR04 uses active acoustic ranging.
 The speed of sound in dry air at sea level at $20^{\circ}\text{C}$ is approximately $343\text{ m/s}$ ($0.0343\text{ cm/\mu s}$). Since the sound wave must travel to the target and back, the distance to the target is:
 $$\text{Distance (cm)} = \frac{\text{Time of Flight (µs)} \times 0.0343}{2}$$
 
+---
 
+### 2. Time-of-Flight Timeout Gating
+If no obstacle is in range, or the acoustic wave bounces off a wall at an angle and never returns, the `pulseIn()` function would wait indefinitely, blocking program execution. 
+To prevent this, we specify a **gated timeout of $20\text{ ms}$ ($20,000\text{ µs}$)**. If no pulse returns in $20\text{ ms}$, the function aborts and returns `0`, which we map to `-1.0` (out of range).
+
+---
 
 ### 3. Polar to Cartesian Coordinate Mapping
 The radar sweeps in a rotational path, generating data points in **Polar Coordinates**:
@@ -5381,13 +8462,31 @@ $$y = r \cdot \sin(\theta)$$
                       (0,0)
 ```
 
- | : | : | : |
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting spatial mapping sensors for robots:
+
+| Sensor Type | Technology | Field of View | Max Range | Resolution / Detail | Hardware Cost | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Acoustic Sonar (HC-SR04)** | **$40\text{ kHz}$ Ultrasound** | **$15^{\circ}$ cone** | **$4\text{m}$** | **Low (Wide beam spread)** | **Very Low ($\approx \$2$)** | **Basic obstacle detection, flat walls (Our choice)** |
 | **Infrared ToF (VL53L0X)** | **$940\text{nm}$ Laser** | **$25^{\circ}$ cone** | **$2\text{m}$** | **High (Focused beam)** | **Medium ($\approx \$5$)** | **Precision proximity, color-independent ranging** |
 | **Rotary LiDAR (RPLIDAR)** | **Spinning Laser** | **$360^{\circ}$ plane** | **$12\text{m} - 25\text{m}$** | **Extremely High** | **Very High ($>\$100$)** | **SLAM navigation, 2D mapping, ROS robots** |
 | **Stereo Depth Camera** | **Dual Cameras** | **$90^{\circ} \times 60^{\circ}$** | **$10\text{m}$** | **Extremely High** | **Very High ($>\$150$)** | **3D point clouds, object classification** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x HC-SR04 Ultrasonic Sensor Module
+* 1x SG90 Micro Servo Motor (with plastic horns/mounts)
+* 1x Breadboard
+* Jumper wires
+* Hot glue/tape (to temporarily mount the ultrasonic sensor onto the servo horn)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -5397,7 +8496,7 @@ Make sure your servo connections match:
 * GND -> Brown/Black wire
 
 | Component Pin | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **Servo Signal** | **D9** (PWM-capable) | Orange | Servo angular positioning PWM |
 | **Servo VCC** | **5V** | Red | Servo power supply |
 | **Servo GND** | **GND** | Black | Servo ground return |
@@ -5406,7 +8505,29 @@ Make sure your servo connections match:
 | **HC-SR04 TRIG** | **D11** | Green | Trigger start pulse signal |
 | **HC-SR04 ECHO** | **D12** | Yellow | Echo return duration signal |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up the components as detailed in the wiring table. Mount the HC-SR04 sensor onto the top of the servo motor shaft using tape or hot glue, ensuring the sensor wires do not tangle when rotating.
+2. Upload `Day_38_Ultrasonic_Radar.ino` to your Arduino.
+3. Open the **Serial Monitor** at **9600 Baud**.
+4. You will observe the servo motor begin sweeping back and forth.
+5. The Serial Monitor will output a rapid stream of data in `Angle,Distance` format:
+   ```
+   15,24.5
+   16,24.8
+   17,25.2
+   ...
+   90,-1.0   <-- Target out of range
+   91,35.2
+   ```
+6. Place an object (like a mug or box) $20\text{ cm}$ in front of the sweep arc and watch the distance values drop at the angles pointing toward the object.
+7. **Mapping Visualization:**
+   * This output format is directly compatible with the classic **Processing IDE Radar sketch**.
+   * By writing a simple script in Processing, you can capture this COM port data to draw a visual green radar display with sweeping sector trails on your computer screen!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -5447,7 +8568,29 @@ float distCm = (float)pulseDuration * 0.0343 / 2.0;
 
 Welcome to Day 39 of the 100-Day Arduino Masterclass! Today, we study wireless remote control systems. We will interface the popular **HC-05 Bluetooth Classic Module** using standard **UART serial communication**. We will write a SoftwareSerial interface, build a packet-parsing character buffer with end-of-packet terminators, and learn how to construct a voltage divider to protect 3.3V logic inputs.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Bluetooth_Module.jpg" alt="Bluetooth Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robotics systems require wireless telemetry and manual control.
+* **The Problem:** The standard Arduino is tied to the computer via a USB cable. Polling controls over USB prevents the robot from driving around untethered.
+* **The Solution:** The **HC-05 Bluetooth Module** behaves as a **wireless serial bridge (SPP - Serial Port Profile)**. It establishes a wireless connection to a smartphone or computer, transparently passing serial ASCII text commands over the air to the Arduino.
+
+We will write a non-blocking parser that receives commands (e.g. `F;` for Forward, `S;` for Stop) to control simulated robot chassis motor outputs.
+
+---
 
 ## 🔬 Physics & Communication Theory
 
@@ -5465,7 +8608,14 @@ Idle (HIGH)  ──┐   ┌───DATA BITS (8 bits)───┐   ┌──�
              Start Bit                     Stop Bit
 ```
 
+---
 
+### 2. SoftwareSerial Emulation
+The Arduino Uno has only one hardware UART port (connected to pins 0 and 1, which route through the USB chip to your PC). 
+* To preserve pins 0 and 1 for compiling, uploading, and debug printing to the Arduino Serial Monitor, we use **SoftwareSerial**.
+* SoftwareSerial uses software interrupts to emulate UART timing, allowing us to turn normal digital pins (Pin 10 and 11) into TX/RX serial ports.
+
+---
 
 ### 3. Logic Level Translation (Resistor Voltage Divider)
 The Arduino Uno runs on **5V logic** (logic HIGH = 5V). The HC-05 chip runs strictly on **3.3V logic** (logic HIGH = 3.3V).
@@ -5483,7 +8633,20 @@ The Arduino Uno runs on **5V logic** (logic HIGH = 5V). The HC-05 chip runs stri
 
 $$\text{Voltage Out} = 5\text{V} \times \left( \frac{2\text{ k}\Omega}{1\text{ k}\Omega + 2\text{ k}\Omega} \right) = 3.33\text{V}$$
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting wireless protocols for mechatronics:
+
+| Communication Module | Range | Power Consumption | Bandwidth | Protocol / Setup | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **HC-05 Bluetooth Classic** | **$10\text{m}$** | **Medium ($30\text{mA}$)** | **Medium (SPP)** | **Very Low (Standard Serial)**| **Untethered robot controls, basic smartphone interfaces (Our choice)** |
+| **HM-10 (BLE)** | **$10\text{m} - 50\text{m}$** | **Extremely Low ($<5\text{mA}$)** | **Low** | **Medium (GATT services)** | **Battery-sensitive IoT, iOS app connections** |
+| **nRF24L01+ RF** | **$100\text{m} - 1\text{km}$**| **Medium ($15\text{mA}$)** | **High (Custom packets)**| **High (SPI registers)** | **RC transmitters/receivers, drone telemetry** |
+| **ESP8266 Wi-Fi** | **$50\text{m} - 100\text{m}$**| **High ($100\text{mA}-250\text{mA}$)**| **Very High** | **Very High (TCP/IP stacks)** | **Web interfaces, video feeds, massive data streams** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -5497,7 +8660,30 @@ $$\text{Voltage Out} = 5\text{V} \times \left( \frac{2\text{ k}\Omega}{1\text{ k
 * Jumper wires
 * An Android Smartphone or PC with Bluetooth capability
 
- | : | : | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+Ensure the RX/TX lines cross correctly:
+* Arduino TX (Pin 11) goes to HC-05 RX (via the voltage divider).
+* Arduino RX (Pin 10) goes directly to HC-05 TX.
+
+| HC-05 Pin | Arduino Uno Pin | Wire Connection Details | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** | Direct | Module power |
+| **GND** | **GND** | Direct | Common Ground reference |
+| **TXD** | **D10** | Direct | HC-05 Transmit to Arduino Software RX |
+| **RXD** | **D11** | **Through 1kΩ / 2kΩ Voltage Divider!** | Arduino Software TX to HC-05 Receive |
+
+| Motor Simulator LED | Arduino Pin | Resistor | Description |
+| :--- | :--- | :--- | :--- |
+| **L_FWD Anode** | **D5** | 220 Ohm to GND | Left Motor Forward Indicator |
+| **L_REV Anode** | **D6** | 220 Ohm to GND | Left Motor Reverse Indicator |
+| **R_FWD Anode** | **D7** | 220 Ohm to GND | Right Motor Forward Indicator |
+| **R_REV Anode** | **D8** | 220 Ohm to GND | Right Motor Reverse Indicator |
+| **LED Cathodes** | **GND** | Direct | Common Ground |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -5567,7 +8753,28 @@ if (c == ';') {
 
 Welcome to Day 40 of the 100-Day Arduino Masterclass! Today, we study advanced multi-node radio communication using the **nRF24L01+ 2.4 GHz RF Transceiver module**. We will write a **dual-role firmware** (the exact same code functions as a Transmitter or Receiver depending on a boot jumper pin), implement binary packet serialization over the SPI bus, and configure hardware-level Auto-Acknowledgment (Auto-ACK) loops.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Point-to-point wireless serial bridges (like Bluetooth on Day 39) are limited by range ($10\text{m}$) and require pairing overhead, which prevents multi-device meshes.
+* **The Solution:** The **nRF24L01+ Transceiver** allows peer-to-peer and star-topology meshes. It operates on the 2.4 GHz band, supporting high data transfer speeds (up to $2\text{ Mbps}$) and ranges up to $100\text{m}$ (or up to $1\text{km}$ for modules with external antennas).
+* **Mechatronics Applications:** Drone remote controls, distributed wireless sensor nodes, industrial swarm robotics, and automated warehouse AGV telemetry.
+
+We will write a unified sketch that transmits a telemetry struct (`TelemetryPacket`) containing sequencing IDs, sensor data, and system timestamps, verifying delivery via Auto-ACK.
+
+---
 
 ## 🔬 Physics & RF Theory
 
@@ -5576,20 +8783,58 @@ The nRF24L01+ operates in the **$2.400\text{ GHz} - 2.525\text{ GHz}$ ISM (Indus
 * **GFSK Modulation (Gaussian Frequency Shift Keying):** Represents binary data by shifting the carrier frequency. A logic `1` shifts frequency up, and `0` shifts it down. A Gaussian filter smooths these transitions, narrowing the signal bandwidth to reduce interference.
 * **RF Channels:** The band is divided into 125 channels spaced 1 MHz apart. The default channel used by the RF24 library is channel 76 ($2.476\text{ GHz}$), which sits safely above standard home Wi-Fi channel overlaps.
 
+---
 
+### 2. Enhanced ShockBurst Protocol (Hardware Auto-ACK)
+Typical RF modules require the microcontroller to handle packet formatting, checksum calculations, and retransmission if a packet drops.
+The nRF24L01+ features an onboard hardware protocol engine called **Enhanced ShockBurst**:
+
+```
+Transmitter                  Receiver
+   │                            │
+   │─── [Telemetry Packet] ────>│ (Receives packet & checks CRC)
+   │                            │─── (Acoustic loop generates ACK)
+   │◄─────── [Auto-ACK] ────────│
+   │                            
+(TX Success)
+```
+
+1. **Auto-Packet Assembly:** The chip automatically adds a preamble, synchronization address, packet payload length, and a 1 or 2-byte CRC checksum.
+2. **Auto-Acknowledgment (Auto-ACK):** As soon as the receiver captures a valid packet, it automatically switches to transmit mode for a fraction of a millisecond and beams back an ACK packet.
+3. **Auto-Retransmit:** If the transmitter does not receive this ACK within a set time, it automatically re-sends the packet (up to 15 times), offloading this loop from the Arduino CPU.
+
+---
 
 ### 3. SPI Hardware Configuration
 The nRF24L01+ is a high-speed peripheral requiring standard SPI pins (MOSI, MISO, SCK). 
 * **CE (Chip Enable):** Digital output pin that switches the module between Standby, Transmit (TX), and Receive (RX) active radio states.
 * **CSN (Chip Select Not):** Digital output pin pulled LOW to initiate SPI serial transaction registers access.
 
- | : | : | : |
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting wireless transceivers:
+
+| RF Module | Operating Frequency | Range | Protocol / Packet Style | Network Layout | Hardware Cost | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **nRF24L01+** | **$2.4\text{ GHz}$** | **$100\text{m} - 1\text{km}$** | **SPI Binary Packets (32B)** | **P2P, Star (6 pipes)** | **Low ($\approx \$2$)** | **Swarm robots, drone telemetry, custom RC controllers (Our choice)** |
 | **HC-12** | **$433\text{ MHz}$** | **$1\text{ km} - 1.8\text{ km}$** | **UART Serial Bridge** | **Broadcast Mesh** | **Medium ($\approx \$5$)** | **Long-range serial links, remote telemetry** |
 | **ESP-NOW (ESP32)** | **$2.4\text{ GHz}$** | **$200\text{m}$** | **WiFi MAC Packets** | **P2P, Mesh** | **Low (Built-in ESP)** | **ESP32 mesh arrays, high-speed telemetry** |
 | **LoRa SX1278** | **$433\text{MHz} / 915\text{MHz}$**| **$5\text{km} - 15\text{km}$** | **SPI packet (Spread spectrum)**| **Point-to-Point, LoRaWAN**| **High ($\approx \$8 - \$10$)**| **Long-range agriculture sensors, remote IoT** |
 
+---
 
+## 🛠️ Components Needed
+
+* 2x Arduino Uno (or Mega/Nano)
+* 2x nRF24L01+ Transceiver Modules (Standard 8-pin package)
+* 2x **$10\ \mu\text{F}$ decoupling capacitors** (electrolytic or tantalum - critical for power filtration)
+* 1x Jumper wire (for role configuration pin)
+* 2x Breadboards
+* Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -5597,7 +8842,7 @@ The nRF24L01+ is a high-speed peripheral requiring standard SPI pins (MOSI, MISO
 > The nRF24L01+ operates strictly on **3.3V**. Connecting the module's VCC pin to the Arduino's 5V pin will destroy the radio transceiver chip immediately. However, the data pins (CE, CSN, SCK, MOSI, MISO) are 5V-tolerant on standard modules, allowing direct connection to the Arduino's digital pins.
 
 | nRF24L01 Pin | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** | **3.3V** | Red | Power Input (3.3V strictly!) |
 | **GND** | **GND** | Black | Ground reference |
 | **CE** | **D9** | Orange | Chip Enable (Active TX/RX) |
@@ -5611,7 +8856,29 @@ The nRF24L01+ is a high-speed peripheral requiring standard SPI pins (MOSI, MISO
 * **Transmitter Node:** Connect **Pin 8** directly to **GND** on the breadboard.
 * **Receiver Node:** Leave **Pin 8** completely disconnected (open).
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up two separate Arduinos on separate breadboards with an nRF24L01+ module each.
+2. **Power Stability Hack:** Solder or insert a **$10\ \mu\text{F}$ capacitor** directly across the VCC and GND pins of the nRF24L01+ module on the breadboard. The nRF24L01 draws high current bursts when transmitting; without a decoupling capacitor, the voltage rail drops, crashing the radio module.
+3. Install the **RF24** library by TMRh20 via the Library Manager.
+4. **Setup Node 1 (Transmitter):**
+   * Connect **Pin 8** to **GND** with a jumper wire.
+   * Connect the Arduino to your PC. Select the correct COM port and upload `Day_40_nRF24L01_Wireless.ino`.
+   * Open the **Serial Monitor** at **9600 Baud**.
+   * It should print: `[BOOT] Role configured: TRANSMITTER`.
+5. **Setup Node 2 (Receiver):**
+   * Disconnect Pin 8 (leave open).
+   * Connect the second Arduino to a separate USB port (or a USB power bank/battery).
+   * Select the receiver's COM port in the IDE and upload the exact same `Day_40_nRF24L01_Wireless.ino`.
+   * Open its **Serial Monitor**:
+     * It should print: `[BOOT] Role configured: RECEIVER`.
+     * It will start printing incoming packets:
+       `[RX] Telemetry Received -> Packet ID: 12 | Sensor A0: 489 | Sender Uptime: 12.0s`
+6. **ACK Test:** Watch the Transmitter's console. It should print `Status: ACK Received OK` every second. Unplug the power from the Receiver; the Transmitter's console will immediately switch to displaying `Status: TX Failed (No ACK)`.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -5658,7 +8925,30 @@ radio.write(&packet, sizeof(TelemetryPacket));
 
 Welcome to Day 41 of the 100-Day Arduino Masterclass! Today, we explore inertial navigation and study how to program an **Inertial Measurement Unit (IMU)** at the register level. We will interface the standard **MPU6050 6-Axis IMU** over the **I2C bus** using raw register transactions with `Wire.h`, configure device power registers, record gyroscope calibration biases, and translate binary sensor data into physical units.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+An IMU is the sensory core of any self-balancing or flight controller. Examples include:
+1. **Drones & Quadcopters:** Measuring pitch, roll, and yaw angles at high speed to maintain flight stability.
+2. **Self-Balancing Robots:** Detecting tilt angles so the robot can drive its wheels to stay upright.
+3. **VR/AR Headsets:** Tracking user head rotation in 3D space.
+4. **Autonomous Vehicles:** Integrating acceleration and angular rates to estimate vehicle position (Dead Reckoning).
+
+The MPU6050 is a low-cost, high-precision MEMS sensor containing a **3-axis accelerometer** and a **3-axis gyroscope** in a single package.
+
+---
 
 ## 🔬 Physics & Sensor Register Theory
 
@@ -5666,7 +8956,22 @@ Welcome to Day 41 of the 100-Day Arduino Masterclass! Today, we explore inertial
 * **Capacitive MEMS Accelerometer:** Inside the chip are micro-machined silicon structures suspended by spring-like beams. When the chip accelerates (or tilts under gravity), the structures shift position, changing the electrical capacitance between fixed fingers and the moving masses. The chip converts this change in capacitance into a digital voltage.
 * **Coriolis-Force MEMS Gyroscope:** Contains micro-machined masses kept in constant vibration. When the chip rotates, the Coriolis effect forces the vibrating mass to shift sideways. The chip measures this lateral displacement capacitively to determine angular rate (degrees per second).
 
+---
 
+### 2. Register Pointer Addressing
+We access the MPU6050 registers by:
+1. Establishing I2C connection to device address `0x68`.
+2. Writing the starting register pointer (e.g. `0x3B` for Accelerometer data start).
+3. Sending a "Repeated Start" command and requesting the target number of bytes. The MPU6050's internal memory pointer auto-increments after each read, allowing us to read X, Y, and Z axes in a single burst:
+
+```cpp
+Wire.beginTransmission(0x68);
+Wire.write(0x3B); // Point to Accel X High Register
+Wire.endTransmission(false); // Repeated start
+Wire.requestFrom(0x68, 6); // Read 6 sequential bytes (X_H, X_L, Y_H, Y_L, Z_H, Z_L)
+```
+
+---
 
 ### 3. Signed 16-bit Two's Complement Reassembly
 The ADC converts physical readings into signed 16-bit integers stored across two separate bytes (High Byte and Low Byte). We reassemble these bytes using bitwise shift and OR operations:
@@ -5674,32 +8979,66 @@ The ADC converts physical readings into signed 16-bit integers stored across two
 int16_t rawValue = (highByte << 8) | lowByte;
 ```
 
+---
 
+### 4. Scaling Factors & Sensor Calibrations
+* **Accelerometer Sensitivity:** By default, the accelerometer is configured for the $\pm 2g$ scale. This maps the 16-bit ADC steps to a resolution of **$16384\text{ LSB}/g$**:
+  $$\text{Acceleration }(g) = \frac{\text{Raw Reading}}{16,384}$$
+* **Gyroscope Sensitivity:** By default, the gyroscope is configured for $\pm 250^{\circ}/\text{s}$. This maps to a resolution of **$131\text{ LSB}/(^{\circ}/\text{s})$**:
+  $$\text{Angular Velocity }(^{\circ}/\text{s}) = \frac{\text{Raw Reading}}{131}$$
+* **Gyro Offset Calibration:** Gyroscopes suffer from stationary bias (constant non-zero readings even when completely still). On setup, the sketch captures 50 samples while stationary to calculate these bias values, subtracting them from active loops.
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When selecting IMUs for autonomous projects:
 
 | Sensor Chip | Degrees of Freedom (DOF) | Bus Interface | Onboard Fusion? | Calibration Complexity | Best Used For |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **MPU6050** | **6-Axis (Accel + Gyro)** | **I2C ($400\text{ kHz}$)** | **DMP (Digital Motion Processor)**| **Medium (Needs software filtering)** | **Self-balancing bots, camera gimbals (Our choice)** |
 | **MPU9250** | **9-Axis (Accel + Gyro + Mag)**| **SPI ($20\text{ MHz}$) / I2C** | **DMP** | **High (Compass requires hard/soft iron calibration)** | **Autonomous drones, heading reference systems (AHRS)** |
 | **LSM6DS3** | **6-Axis (Accel + Gyro)** | **SPI / I2C** | **Interrupt Engine** | **Medium** | **Wearable devices, low-power step counting** |
 | **BNO055** | **9-Axis (Accel + Gyro + Mag)**| **I2C** | **Yes (Internal ARM Cortex-M0)**| **Very Low (Calculated on-chip)** | **High-level robotics, rapid prototyping (Expensive)** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x MPU6050 Breakout Board (GY-521)
+* 1x Breadboard
+* Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | MPU6050 Pin | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** | **5V** or **3.3V** (Most breakout boards have regulator) | Red | Power input |
 | **GND** | **GND** | Black | Ground reference |
 | **SCL** | **A5** (or dedicated SCL) | Yellow | I2C Serial Clock |
 | **SDA** | **A4** (or dedicated SDA) | Green | I2C Serial Data |
 | **AD0** | **Not Connected** | - | Address Select (Default: Address 0x68) |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Connect the MPU6050 module to the Arduino using the wiring table. Place the sensor flat and perfectly still on a desk.
+2. Upload `Day_41_MPU6050_IMU.ino` to your Arduino.
+3. Open the **Serial Monitor** at **9600 Baud**.
+4. You will see calibration logs start:
+   `[IMU] Calibrating Gyroscope. DO NOT MOVE SENSOR...`
+   Once complete, it prints offset biases (e.g. `X: -1.24 Y: 0.85 Z: -0.12`).
+5. Observe the live data readout:
+   * **Gravity Check:** If the sensor lies flat, the Z-axis acceleration should read $\approx 1.00g$, while X and Y read close to $0.00g$.
+   * **Accelerometer Test:** Tilt the sensor forward. The X-axis acceleration will change towards $+1.00g$ or $-1.00g$ depending on tilt direction, as gravity acts on the axis.
+   * **Gyroscope Test:** Rotate the sensor quickly. You will see the gyroscope readings spike to hundreds of degrees per second, returning back to zero as rotation stops.
+   * **Temperature Test:** Place your finger on the sensor chip. The temperature reading will begin rising.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -5747,7 +9086,29 @@ Wire.requestFrom(MPU_ADDRESS, 6);
 
 Welcome to Day 42 of the 100-Day Arduino Masterclass! Today, we study **Sensor Fusion**, one of the most critical topics in robotics control systems. We will learn how to write a **Complementary Filter** from scratch using raw I2C data from the MPU6050. This algorithm blends gyroscope integrations and accelerometer gravity vectors to compute noise-free, drift-free Pitch and Roll angles in real-time, preparing us to build self-balancing systems.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Measuring absolute angles (like pitch and roll) is crucial for quadcopters, self-balancing personal transporters (Segways), and walking robots.
+* **The Accelerometer Problem:** Accelerometers measure gravity vectors to determine absolute tilt. However, they are highly sensitive to linear motion and vibration. If a robot drives over a bump, the accelerometer outputs spike wildly, making raw angle readings extremely noisy.
+* **The Gyroscope Problem:** Gyroscopes measure the speed of rotation (angular rate). We can integrate this speed over time to track angles. However, gyroscopes have small bias errors. Integrating these errors continuously causes the calculated angle to **drift** over time, wandering away from the real angle even when stationary.
+* **The Sensor Fusion Solution:** A **Complementary Filter** mathematically blends both sensors:
+  * Applies a **Low-Pass Filter** to the accelerometer to trust its long-term stability (gravity alignment) while filtering out high-frequency vibrations.
+  * Applies a **High-Pass Filter** to the gyroscope to trust its short-term changes (rotation speed) while filtering out low-frequency drift.
+
+---
 
 ## 🔬 Physics & Sensor Fusion Mathematics
 
@@ -5758,7 +9119,14 @@ $$\theta_{\text{gyro}}(k) = \theta_{\text{fused}}(k-1) + \omega \cdot dt$$
 Because the sensor contains tiny biases, integrating over thousands of loops results in drift:
 $$\text{Drift Error} = \text{Bias} \times \text{Total Time}$$
 
+---
 
+### 2. Accelerometer Tilt Calculation (Long-Term Reference)
+Using the gravity vector ($1g = 9.81\text{ m/s}^2$), we calculate absolute pitch and roll using trigonometry:
+$$\theta_{\text{accel, roll}} = \text{atan2}(a_y, a_z) \times \frac{180}{\pi}$$
+$$\theta_{\text{accel, pitch}} = \text{atan2}(-a_x, \sqrt{a_y^2 + a_z^2}) \times \frac{180}{\pi}$$
+
+---
 
 ### 3. The Complementary Filter Blend
 The filter blends these estimates using a scaling coefficient $\alpha$ (typically $\alpha \in [0.95, 0.99]$):
@@ -5768,7 +9136,20 @@ If we set **$\alpha = 0.98$**:
 * **$98\%$ of the angle update** is taken from the integrated gyroscope (maintaining fast, vibration-free response).
 * **$2\%$ of the angle update** is taken from the accelerometer (slowly pulling the gyro integration back to gravity, completely correcting long-term drift).
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting sensor fusion algorithms for mechatronic navigation:
+
+| Fusion Algorithm | Math Complexity | CPU Overhead | Noise Rejection | Dynamic Drift Correction | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Complementary Filter**| **Very Low** | **Minimal ($<1\text{ms}$)** | **High** | **Excellent** | **Arduino Uno balancing bots, camera stabilization (Our choice)** |
+| **Kalman Filter (Linear)** | **High** | **Medium** | **Very High** | **Excellent (Optimal)** | **Linear systems with Gaussian noise characteristics** |
+| **Extended Kalman (EKF)**| **Extremely High** | **Very High** | **Outstanding** | **Outstanding** | **High-power drone flight controllers, self-driving cars (ROS)** |
+| **Madgwick Filter** | **High (Quaternions)** | **High** | **Very High** | **Outstanding** | **9-axis IMUs, tracking absolute orientations without gimbal lock** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -5777,7 +9158,18 @@ If we set **$\alpha = 0.98$**:
 * 1x Breadboard
 * Jumper wires
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| MPU6050 Pin | Arduino Uno Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** | Red | Power input |
+| **GND** | **GND** | Black | Ground reference |
+| **SCL** | **A5** | Yellow | I2C Clock |
+| **SDA** | **A4** | Green | I2C Data |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -5841,7 +9233,34 @@ fusedRoll = ALPHA * (fusedRoll + gx * dt) + (1.0 - ALPHA) * rollAccel;
 
 Welcome to Day 43 of the 100-Day Arduino Masterclass! Today, we combine our motor driver (Day 33), ultrasonic range finder (Day 38), and servo sweeps (Day 38) to construct a fully autonomous **Mobile Obstacle-Avoidance Robot**. We will design a **non-blocking state machine** navigation router, study differential drive steering kinematics, and analyze spatial clearance mapping.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Differential_Drive.jpg" alt="Differential Drive" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Autonomous mobile robots (like warehouse AMRs, vacuum cleaners, and planetary rovers) must navigate unknown, dynamic environments without getting stuck.
+* **The Problem:** A simple forward-facing distance sensor can only tell if an obstacle is directly in front. It cannot tell which side (left or right) is clear to turn toward. Stopping and blindly turning in a hardcoded direction can lead the robot into corners or traps.
+* **The Solution:** We mount the ultrasonic sensor onto a servo. When the robot detects an obstacle blocking its path:
+  1. It halts both wheels.
+  2. It rotates the servo to scan left and right, measuring the distance to surrounding walls.
+  3. It evaluates both paths, choosing the direction with the maximum clearance.
+  4. It rotates in place to align with the clear path and resumes driving.
+
+We implement this sequence using a **non-blocking state machine** to ensure that sensor pulses and servo settling delays are managed without halting the processor.
+
+---
 
 ## 🔬 Physics & Robotics Kinematics
 
@@ -5859,7 +9278,15 @@ A differential drive robot consists of two independent drive wheels located on a
         Wheel       Wheel                     Wheel       Wheel
 ```
 
+---
 
+### 2. Servo Settling and Sonar Gating
+Mechanical servo motors cannot jump to an angle instantly.
+* When the code executes `sensorServo.write(angle)`, it takes roughly **$200\text{ ms} - 300\text{ ms}$** for the servo gear train to physically rotate the sensor to that position.
+* If we trigger a sonar ping immediately after writing the angle, we will take a reading while the sensor is still swinging. This smears the acoustic beam, yielding incorrect distance measurements.
+* We implement a **settling delay window ($350\text{ ms}$)** using non-blocking timestamps to ensure the sensor has completely stopped moving before taking a distance ping.
+
+---
 
 ### 3. State Machine Navigation Architecture
 The robot operates under a State Machine containing seven discrete driving states:
@@ -5886,7 +9313,20 @@ stateDiagram-v2
     STATE_ESCAPE_SPIN --> STATE_DRIVE_FORWARD : Spin Done (Wait 1200ms)
 ```
 
- | : | : | :
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting obstacle avoidance architectures for mobile robots:
+
+| Navigation Architecture | Sensor Overhead | Processing Cost | Corner Recovery | Cost | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Servo-Swept Sonar** | **1 Servo + 1 Sonar** | **Low (State machine)** | **High (Selects max clearance) (Our choice)** | **Low ($\approx \$4$)** | **Compact 2WD/4WD wheeled educational robots** |
+| **Fixed Multi-Sonar** | **3 Sonars (Left, Front, Right)**| **Low (GPIO pooling)** | **Medium (Coarse directional resolution)** | **Medium ($\approx \$6$)** | **Wide industrial AGV bases with fixed fields of view** |
+| **Bumper Microswitches** | **2-4 Tactile bump switches**| **Extremely Low** | **Low (Must collide to detect)** | **Very Low ($\approx \$1$)**| **Low-cost vacuum robots, backup mechanical safeties** |
+| **LiDAR SLAM** | **1 Spinning Laser Scanner** | **Very High (Requires ROS / Pi)** | **Outstanding (360° point cloud)** | **Very High ($>\$100$)**| **Autonomous warehouse robots, indoor navigation mapping** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -5899,7 +9339,28 @@ stateDiagram-v2
 * 1x Breadboard
 * Jumper wires
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+> [!IMPORTANT]
+> **Common Ground:** The negative (-) terminal of your external motor battery MUST connect to both the L298N GND screw terminal and the Arduino's **GND** pin. Without this connection, the H-bridge control signals will fail to toggle.
+
+| Component Pin | Arduino Uno Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **L298N ENA** | **D5** (PWM) | Green | Left Motor Speed PWM |
+| **L298N IN1** | **D4** | Orange | Left Motor Direction 1 |
+| **L298N IN2** | **D3** | Yellow | Left Motor Direction 2 |
+| **L298N ENB** | **D6** (PWM) | Violet | Right Motor Speed PWM |
+| **L298N IN3** | **D7** | Grey | Right Motor Direction 1 |
+| **L298N IN4** | **D8** | White | Right Motor Direction 2 |
+| **Servo Signal** | **D9** | Blue | Sonar sweep servo PWM |
+| **HC-SR04 TRIG** | **D11** | Green | Ultrasonic trigger output |
+| **HC-SR04 ECHO** | **D12** | Yellow | Ultrasonic echo input |
+| **System VCC (Logic)**| **5V** | Red | Logic power to sensor & servo |
+| **System GND** | **GND** | Black | Shared logic and power Ground |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -5966,7 +9427,31 @@ if (currentMillis - stateTimerStart >= 300) {
 
 Welcome to Day 44 of the 100-Day Arduino Masterclass! Today, we study our first autonomous path-tracking mobile robot. We will interface a two-sensor **TCRT5000 Infrared (IR) reflection array** with our Arduino and use analog signals to steer a differential drive robot chassis along a black track on a white floor. We will learn about infrared absorption physics, software-defined hysteresis thresholds, and differential steering kinematics.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Differential_Drive.jpg" alt="Differential Drive" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Line-following is the classic entry point for autonomous ground vehicle navigation. In industrial mechatronics, line-following is a highly reliable way to guide **Automated Guided Vehicles (AGVs)**:
+1. **Warehouse Logistics:** AGVs carrying heavy pallets along designated pathways marked with magnetic or colored tape.
+2. **Hospital Delivery Robots:** Delivering food and medicine to patient wards along preset tracks.
+
+Using two IR sensors, we build a closed-loop system where the motor power is dynamically routed to keep the black track centered between the two sensors.
+
+---
 
 ## 🔬 Physics & Sensing Theory
 
@@ -5990,37 +9475,64 @@ The TCRT5000 sensor contains a paired transmitter and receiver:
              White Board                            Black Carbon Tape
 ```
 
+---
 
+### 2. Software vs. Hardware Threshold Gating
+Typical cheap sensor modules have an onboard potentiometer connected to an LM393 voltage comparator. This outputs a simple digital HIGH/LOW signal:
+* **The Problem:** Calibrating two separate hardware potentiometers to behave identically is tedious and highly sensitive to ambient room lighting.
+* **The Solution:** We bypass the digital outputs and wire the **Analog outputs (AOUT)** directly to the Arduino's ADC pins (A1 and A2). This allows us to define a single software threshold (`LINE_THRESHOLD = 500`) in code. It also lets us implement **hysteresis** (offset filters) to prevent rapid output chattering at the boundaries of the line.
+
+---
 
 ### 3. Differential Steering State Space
 For a two-sensor robot tracking a black line on a white floor, the steering kinematics resolve into four logical states:
 
 | Left Sensor | Right Sensor | Track Alignment | Motor Left | Motor Right | Navigation Action |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **White ($<500$)** | **White ($<500$)** | Line is centered | Forward | Forward | **Drive Straight** |
 | **Black ($>500$)** | **White ($<500$)** | Robot drifted right | Stop / Rev | Forward | **Pivot Left** |
 | **White ($<500$)** | **Black ($>500$)** | Robot drifted left | Forward | Stop / Rev | **Pivot Right** |
 | **Black ($>500$)** | **Black ($>500$)** | Junction or Stop Line| Stop | Stop | **Halt Robot** |
 
- | : | : |
+---
+
+## 🔄 Alternatives Comparison
+
+When selecting line tracking sensors for autonomous mobile robots:
+
+| Sensing Technology | Sensor Count | Steering Smoothness | Software Complexity | Best Used For |
+| :--- | :--- | :--- | :--- | :--- |
 | **2-Sensor IR Array** | **2 Sensors** | **Low (Sinuous wobble)** | **Very Low** | **Basic toy cars, simple paths (Our choice)** |
 | **5-Sensor IR Array** | **5+ Sensors** | **High (Calculated offset)**| **Medium** | **High-speed line followers, grid maze solvers** |
 | **Magnetic Tape Sensor** | **1-2 Hall arrays** | **Medium** | **Low** | **Heavy warehouse AGVs tracking magnetic floor strips** |
 | **Camera Vision (OpenCV)**| **1 Camera** | **Extremely High** | **Very High** | **Self-driving cars tracking lane markers** |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x 2WD Robot Chassis (2 DC motors + wheels + caster)
+* 1x L298N Dual H-Bridge Driver Module
+* 2x TCRT5000 IR Proximity Sensors (or a 2-channel line tracking board)
+* 1x External Battery Pack (e.g. 2s LiPo or 6x AA battery holder to power motors)
+* 1x Breadboard
+* Jumper wires
+* Black electrical tape (to build a track)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | TCRT5000 Pin | Arduino Uno Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **Left Sensor AOUT** | **A1** | Yellow | Left reflection analog voltage |
 | **Right Sensor AOUT**| **A2** | Green | Right reflection analog voltage |
 | **VCC (Sensors)** | **5V** | Red | Sensor logic power |
 | **GND (Sensors)** | **GND** | Black | Sensor ground |
 
 | L298N Driver Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **ENA** | **D5** (PWM) | Green | Left Motor Speed |
 | **IN1** | **D4** | Orange | Left Motor Direction 1 |
 | **IN2** | **D3** | Yellow | Left Motor Direction 2 |
@@ -6029,7 +9541,25 @@ For a two-sensor robot tracking a black line on a white floor, the steering kine
 | **IN4** | **D8** | White | Right Motor Direction 2 |
 | **GND** | **GND** | Black | Shared logic and power Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Assemble the 2WD chassis. Mount the two TCRT5000 sensors side-by-side at the front of the robot.
+   * **Sensor Gap:** The distance between the sensors should be slightly wider than the width of your black electrical tape (typically $1.9\text{ cm}$). This ensures that when centered, both sensors see white.
+   * **Sensor Height:** Mount the sensors roughly **$5\text{mm} - 10\text{mm}$** above the floor. If they are too high, they will fail to register the reflection.
+2. Wire up the components according to the wiring table. Keep the motor battery disconnected.
+3. Upload `Day_44_Line_Follower_2Sensor.ino` to the Arduino.
+4. **Bench Diagnostic:**
+   * Open the **Serial Monitor** at **9600 Baud**.
+   * Hold a piece of white paper in front of both sensors: Raw analog values should drop below `300`. The console will print: `State: STRAIGHT`.
+   * Slide a piece of black tape under the Left Sensor: The raw left reading will rise above `700`. The right motor will spin forward, and the left motor stops. The console prints: `State: TURN_LEFT`.
+   * Slide black tape under both sensors: Both readings go high, and both motors stop. The console prints: `State: STOP_LINE`.
+5. **Track Testing:**
+   * Build a smooth track on a light-colored floor using black electrical tape (avoid sharp $90^{\circ}$ turns for now; keep corners curved).
+   * Place the robot on the track, connect the motor battery, and watch it steer along the line!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -6072,7 +9602,29 @@ else if (leftOnLine && !rightOnLine) {
 
 Welcome to Day 45 of the 100-Day Arduino Masterclass! Today, we progress to advanced mobile robotics navigation by interfacing a **5-channel TCRT5000 Infrared (IR) Reflectance Sensor Array**. We will write an **automated calibration routine** to record surface reflections, implement **Min-Max Normalization** equations, and calculate the exact position of the track using **Weighted Average Centroid Math**.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Basic 2-sensor line followers (Day 44) suffer from continuous left/right wobble. They only know if they are completely ON or completely OFF the line, creating an unstable, oscillating trajectory.
+* **The Problem:** Sensor heights, surface colors, and battery voltages vary. Hardcoded static analog thresholds fail if ambient lighting changes or the floor surface becomes slightly dirtier.
+* **The Solution:** A 5-sensor array spanning the track allows the robot to read a gradient of reflection:
+  1. **Auto-Calibration:** On boot, the robot pivots back and forth, recording the exact white and black limits for all five sensors.
+  2. **Centroid Math:** Calculates a weighted average center-of-mass, producing a continuous position offset float ($-2.0$ to $+2.0$). 
+  3. **Proportional Steering:** Motor speed is adjusted proportionally to the offset, allowing the robot to make micro-adjustments on straight tracks and smooth pivots on sharp corners.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6083,14 +9635,42 @@ $$\text{Normalized Value } (W) = \text{constrain}\left( \frac{\text{Raw Reading}
 
 This filters out differences in sensor alignment and ambient lighting.
 
+---
 
+### 2. Weighted Centroid Math (Line Position)
+We assign each sensor a physical coordinate representing its position on the horizontal array (relative to the robot's center axis):
+
+```
+       S0 (Far L)   S1 (Mid L)   S2 (Center)   S3 (Mid R)   S4 (Far R)
+         -2.0         -1.0           0.0          +1.0         +2.0
+```
+
+Let $W_i$ be the normalized weight of sensor $i$ ($0 - 1000$). The **Centroid Position** ($X_c$) is calculated as:
+$$X_c = \frac{\sum_{i=0}^{4} (W_i \times x_i)}{\sum_{i=0}^{4} W_i} = \frac{W_0(-2.0) + W_1(-1.0) + W_2(0.0) + W_3(1.0) + W_4(2.0)}{W_0 + W_1 + W_2 + W_3 + W_4}$$
+
+* **Example A (Centered):** Only Center sensor (S2) sees the line ($W_2 = 1000$, others 0):
+  $$X_c = \frac{1000 \times 0}{1000} = 0.0$$
+* **Example B (Slightly Right):** Line is between center and mid-right ($W_2 = 800, W_3 = 800$, others 0):
+  $$X_c = \frac{(800 \times 0) + (800 \times 1)}{1600} = 0.5$$
+* **Example C (Far Left):** Line is under S0 ($W_0 = 1000$, others 0):
+  $$X_c = \frac{1000 \times (-2)}{1000} = -2.0$$
+
+This yields a smooth, continuous position float, allowing precision tracking.
+
+---
 
 ## 🔄 Alternatives Comparison
 
 When selecting line-tracking sensors:
 
 | System Config | Calibration Requirements | Line Position Output | Steering Smoothness | Best Used For |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **5-Sensor Analog Array** | **Yes (Auto-Calibration sweep)** | **Continuous Float ($-2.0$ to $+2.0$)** | **High (Proportional drive) (Our choice)** | **High-speed line followers, robotic maze solving** |
+| **2-Sensor Analog Array** | **No (Static threshold)** | **Discrete states (3 options)** | **Low (Sinuous oscillation)** | **Low-cost educational toys** |
+| **8-Sensor SPI Array (QTR-8D)** | **Yes (Calibration registers)** | **High-precision byte maps** | **Extremely High** | **Micromouse maze solvers, fast competition robots** |
+| **OpenCV Camera** | **High (Color masking)** | **Pixel centroid vector** | **Extremely High** | **ROS-based automated forklift guidance** |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -6103,14 +9683,50 @@ When selecting line-tracking sensors:
 * Jumper wires
 * Black electrical tape (to build a track)
 
- | : | : | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Sensor Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **OUT1 (Far Left)** | **A0** | Grey | Sensor 0 analog voltage |
+| **OUT2 (Mid Left)** | **A1** | Blue | Sensor 1 analog voltage |
+| **OUT3 (Center)** | **A2** | Purple | Sensor 2 analog voltage |
+| **OUT4 (Mid Right)**| **A3** | Yellow | Sensor 3 analog voltage |
+| **OUT5 (Far Right)**| **A4** | Orange | Sensor 4 analog voltage |
+| **VCC (Array)** | **5V** | Red | Array logic power |
+| **GND (Array)** | **GND** | Black | Array ground |
+
+| L298N Driver Pin | Arduino Pin | Description |
+| :--- | :--- | :--- |
 | **ENA** | **D5** (PWM) | Left Motor Speed |
 | **IN1 / IN2** | **D4 / D3** | Left Motor Direction |
 | **ENB** | **D6** (PWM) | Right Motor Speed |
 | **IN3 / IN4** | **D7 / D8** | Right Motor Direction |
 | **GND** | **GND** | Shared logic/power Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the components as detailed in the wiring table. Mount the 5-sensor array at the front of the robot.
+   * **Sensor Height:** Mount the array **$5\text{mm} - 8\text{mm}$** above the floor.
+   * **Sensor Position:** Align the center sensor (A2) exactly with the chassis's center axis.
+2. Build a black tape track on a light floor.
+3. Place the robot **centered directly on the black line**.
+4. Upload `Day_45_Line_Array_Calibrated.ino` to the Arduino.
+5. **Observe Auto-Calibration:**
+   * On boot, the onboard Pin 13 LED will light up.
+   * The robot will slowly pivot back and forth in place for 5 seconds to sweep the sensors across the line.
+   * Make sure the sensors cross the black line and white floor completely during this sweep.
+   * Once finished, the LED turns off, and the robot halts. The Serial Monitor will print the recorded min/max values.
+6. **Telemetry & Tracking:**
+   * Open the **Serial Monitor** at **9600 Baud**.
+   * It will display the normalized weight arrays and line offset:
+     `[WEIGHTS] 1000 120 0 0 0 | Offset: -1.869`
+   * Place the robot on the track; it will follow the line smoothly by making micro-speed adjustments!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -6151,7 +9767,27 @@ lineCentroid = coordinateSum / weightSum;
 
 Welcome to Day 46 of the 100-Day Arduino Masterclass! Today, we transition from open-loop and simple proportional control to a classic closed-loop control system: a **Proportional-Derivative (PD) Controller**. By applying mathematical feedback to our differential-drive robot, we will achieve smooth, high-speed line tracking, eliminating the classic "wobble" associated with basic line-following systems.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Differential_Drive.jpg" alt="Differential Drive" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Simple line followers make steering adjustments based solely on whether they are left or right of the line (bang-bang control) or how far they are from the line (proportional-only control). 
+* **The Problem:** A proportional controller ($P$) responds to current error. If the robot drifts far to the left, it applies maximum right steer. By the time the robot returns to the center line, its angular momentum causes it to overshoot to the right. This creates a continuous, unstable snake-like wobble (oscillation) that gets worse at higher speeds.
+* **The Solution:** We add a **Derivative ($D$)** term. The derivative term measures the *rate of change* of the error (how fast the robot is heading towards or away from the line). It acts as an **active software damper**. If the robot is rapidly returning to the center line, the $D$ term recognizes the fast-changing error and applies a braking force to the steering, slowing down the angular rotation *before* the robot overshoots. 
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6192,7 +9828,12 @@ $$V_{\text{right}} = V_{\text{cruise}} - u(t)$$
   * Error is positive, making $u(t)$ positive.
   * $V_{\text{left}}$ increases, and $V_{\text{right}}$ decreases, causing the robot to turn to the Left.
 
- | : | : |
+---
+
+## 🔄 Alternatives Comparison
+
+| Control Algorithm | Steering Action | Overshoot / Oscillation | Max Speed Capability | Tuning Complexity |
+| :--- | :--- | :--- | :--- | :--- |
 | **PD Control (Our choice)** | **Smooth, predictive damping** | **Very low (damped by D-term)** | **High ($> 1\,\text{m/s}$)** | **Medium (Must tune $K_p$ and $K_d$)** |
 | **Bang-Bang Control (2-sensor)** | Sudden on/off switching | Extremely high | Low ($< 0.3\,\text{m/s}$) | None |
 | **Proportional (P) Control** | Gradual steering | High (continuous wobble) | Medium ($< 0.5\,\text{m/s}$) | Low (Tune $K_p$) |
@@ -6201,13 +9842,25 @@ $$V_{\text{right}} = V_{\text{cruise}} - u(t)$$
 > [!NOTE]
 > We omit the Integral ($I$) term in standard line following because steady-state offset error is negligible on a moving track, and integrating historic line errors leads to overshoot and windup issues around sharp curves.
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x 2WD Robot Chassis (2 DC motors + wheels + caster)
+* 1x L298N Dual H-Bridge Driver Module
+* 1x 5-Channel TCRT5000 IR Sensor Array Module (analog outputs)
+* 1x External Battery Pack (e.g. 2s LiPo or 6x AA battery holder to power motors)
+* 1x Breadboard & Jumper wires
+* Black electrical tape (to build a track)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 ### 1. Sensor Array to Arduino Uno
 | Sensor Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **OUT1 (Far Left)** | **A0** | Grey | Sensor 0 analog voltage |
 | **OUT2 (Mid Left)** | **A1** | Blue | Sensor 1 analog voltage |
 | **OUT3 (Center)** | **A2** | Purple | Sensor 2 analog voltage |
@@ -6218,7 +9871,16 @@ $$V_{\text{right}} = V_{\text{cruise}} - u(t)$$
 
 ### 2. L298N Driver to Arduino Uno & Power
 | L298N Driver Pin | Arduino Pin / Battery | Description |
-| : | :
+| :--- | :--- | :--- |
+| **ENA** | **D5** (PWM) | Left Motor Speed |
+| **IN1 / IN2** | **D4 / D3** | Left Motor Direction |
+| **ENB** | **D6** (PWM) | Right Motor Speed |
+| **IN3 / IN4** | **D7 / D8** | Right Motor Direction |
+| **12V (or VMS)** | **Battery positive (+)** | High-voltage motor power |
+| **GND** | **GND (Arduino & Battery -)** | Shared logic and power Ground |
+| **5V Output** | **Arduino Vin** (Optional) | Power Arduino from driver's regulator |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -6282,7 +9944,30 @@ lastError = error;
 
 Welcome to Day 47 of the 100-Day Arduino Masterclass! Today, we combine all the advanced systems we have built so far—**direct I2C register communication**, **Complementary Filter sensor fusion**, and **closed-loop feedback systems**—to create the core control software for a **Two-Wheeled Self-Balancing Robot**. 
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+A self-balancing robot is a classic mechatronics demonstration of an **inverted pendulum**. 
+* **The Problem:** Inverted pendulums are inherently unstable. Gravity acts as a positive feedback force: if the robot tilts forward by even a fraction of a degree, gravity pulls it further down, causing it to fall.
+* **The Solution:** We must drive the wheels in the direction of the fall to keep the wheels directly underneath the robot's center of mass.
+  1. We read the MPU6050 IMU to measure the tilt angle (Pitch) at a high-speed **100 Hz** rate.
+  2. We apply a **PID (Proportional-Integral-Derivative) controller** to calculate the restoring motor torque needed.
+  3. We drive the H-Bridge motors to active positions, correcting the center of gravity dynamically.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6308,7 +9993,17 @@ graph TD
     Deadband --> Motors[L298N Motor Driver]
 ```
 
+---
 
+### 2. The PID Control Terms
+The PID loop runs every $10\,\text{ms}$ ($dt = 0.01\,\text{s}$).
+
+1. **Proportional ($K_p \cdot e$):** Creates a restoring torque proportional to the angle offset. If the robot leans forward, it drives forward.
+2. **Integral ($K_i \cdot \int e \, dt$):** Corrects for physical asymmetries in the robot (e.g. if the battery makes one side heavier or the structural center of gravity is not perfectly aligned with the sensor). It ramps up voltage to force the robot to upright center. To prevent **integral windup** (where the robot over-corrects after falling), the error sum is constrained:
+   $$\text{errorSum} = \text{constrain}(\text{errorSum}, -150, 150)$$
+3. **Derivative ($K_d \cdot \frac{de}{dt}$):** Predicts future behavior by measuring the speed of the tilt. It dampens the restoring force when the robot is moving back towards vertical, preventing overshoot.
+
+---
 
 ### 3. Motor Deadband Compensation
 Small DC motors cannot spin below a certain voltage threshold due to static friction (stiction). If the PID output is small (e.g., $10$ out of $255$), the motors hum but do not spin, causing the robot to fall.
@@ -6317,19 +10012,35 @@ $$\text{Output PWM} = \text{map}(\text{PID Output}, \; 0, \; 255, \; MIN\_MOTOR\
 
 This ensures that any non-zero control effort immediately translates to wheel movement.
 
- | : | : |
+---
+
+## 🔄 Control Strategy Comparison
+
+| Control Method | Implementation Complexity | Stabilization Quality | Robustness to Disturbance | Sensor Requirements |
+| :--- | :--- | :--- | :--- | :--- |
 | **PID Control (Our choice)** | **Medium (Self-written algorithms)** | **High (With correct tuning)** | **Medium** | **IMU (6-Axis)** |
 | **PD Control** | Low (No integral term) | Medium (Prone to static leaning) | Low | IMU (6-Axis) |
 | **State-Space (LQR)** | High (Requires physical system matrices) | Extremely High | High | IMU + Wheel Encoders |
 | **Neural Network / RL** | Very High (Edge computing required) | High | Medium to High | IMU + Encoders + Camera |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x Self-Balancing Robot Chassis (vertical frame, 2 DC motors, brackets)
+* 1x L298N Dual H-Bridge Motor Driver Module
+* 1x MPU6050 6-Axis IMU Module
+* 1x High-discharge Battery Pack (e.g. 2S 7.4V LiPo battery for high torque responsiveness)
+* 1x Breadboard & Jumper wires
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 ### 1. MPU6050 IMU to Arduino Uno
 | MPU6050 Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** | **5V** | Red | Logic power |
 | **GND** | **GND** | Black | Shared ground |
 | **SDA** | **A4** | Blue | I2C Data line |
@@ -6337,7 +10048,15 @@ This ensures that any non-zero control effort immediately translates to wheel mo
 
 ### 2. L298N Driver to Arduino Uno & Power
 | L298N Driver Pin | Arduino Pin / Battery | Description |
-| : | :
+| :--- | :--- | :--- |
+| **ENA** | **D5** (PWM) | Left Motor Speed |
+| **IN1 / IN2** | **D4 / D3** | Left Motor Direction |
+| **ENB** | **D6** (PWM) | Right Motor Speed |
+| **IN3 / IN4** | **D7 / D8** | Right Motor Direction |
+| **12V / VMS** | **Battery positive (+)** | High-voltage motor power |
+| **GND** | **GND (Arduino & Battery -)** | Shared logic/power Ground |
+
+---
 
 ## 💻 How to Tune & Validate
 
@@ -6406,7 +10125,28 @@ motorPWM = map(motorPWM, 0, 255, MIN_MOTOR_PWM, 255);
 
 Welcome to Day 48 of the 100-Day Arduino Masterclass! Today, we elevate our mobile robotics platform into a smart **autonomous agent** capable of exploring, mapping, and optimizing a route through a grid-based maze. We will implement the classic **Left-Hand-On-Wall** maze navigation rule, log decision states, and apply a **coordinate substitution algorithm** to simplify paths and find the absolute shortest route.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Basic line followers blindly track lines. If a line branches into a grid of intersections, the robot has no way to choose a path or learn from dead ends.
+* **The Problem:** Exploring a maze by trial and error is inefficient. If a robot encounters dead ends, it must remember them so it doesn't repeat those paths in subsequent runs.
+* **The Solution:** A two-pass maze-solving architecture:
+  1. **Pass 1 (Exploration)**: The robot navigates the maze using a fixed wall-following heuristic (Left-Hand Rule). Every time it makes a decision at an intersection (Left, Right, Straight, or U-turn), it saves that decision in a char array.
+  2. **Pass 2 (Optimization)**: When the robot reaches the maze's end, it executes a path reduction algorithm to compress all dead-end paths out of its memory. This yields a single, direct, optimized list of instructions for the shortest route.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6426,7 +10166,27 @@ graph TD
     RightPath -- No --> TurnU[Turn Back / U-Turn]
 ```
 
- | : |
+---
+
+### 2. Path Optimization Math (Dead-End Reduction)
+Whenever the robot enters a dead end, it must make a U-turn (`U`). This means the turn before the dead-end and the turn after the dead-end were wasted actions. We can mathematically reduce these three moves.
+
+Consider a junction where the robot turns Left (`L`), hits a dead end, turns back (`U`), and turns Left (`L`) again. Geometrically, turning left at a T-junction, realizing it is a dead end, returning, and going left again is equivalent to just **going straight** through the junction:
+
+```
+        Dead End (U)
+             |
+             |
+   L <-J->
+             |
+             ^
+          Start
+```
+By substituting `L + U + L` with `S` (Straight), we eliminate the dead-end excursion entirely.
+
+#### Algebraic Turn Substitution Table
+| Excursion Sequence | Optimized Direct Move | Description |
+| :--- | :--- | :--- |
 | **L U L** | **S** | Left, U-turn, Left $\equiv$ Straight |
 | **L U S** | **R** | Left, U-turn, Straight $\equiv$ Right |
 | **R U L** | **U** | Right, U-turn, Left $\equiv$ U-turn (deeper reduction needed) |
@@ -6443,12 +10203,31 @@ graph TD
 * **Step 3 (Reduce `S U` / deeper recursive check):**
   - If we exit the maze now, the final optimized path is mathematically minimal.
 
- | : | : |
+---
+
+## 🔄 Heuristic Heuristic Comparison
+
+When designing autonomous maze-solvers:
+
+| Algorithm | Maze Types Solved | Memory Usage | Implementation Complexity | Best Used For |
+| :--- | :--- | :--- | :--- | :--- |
 | **Left-Hand Rule (LHR)** | **Simple (No loops/islands)** | **Low (Saves decision list only)** | **Medium (Our choice)** | **Line-grid competition mazes** |
 | **Flood Fill** | Any (Loops, open fields) | High (Requires full grid map) | High | Micromouse competitions |
 | **Dijkstra's / A*** | Any (Grid/graph) | Very High (Requires full graph) | Very High | Heavy ROS-based platforms |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x 2WD Robot Chassis (2 DC motors + wheels + caster)
+* 1x L298N Dual H-Bridge Driver Module
+* 1x 5-Channel TCRT5000 IR Sensor Array Module
+* 1x Battery Pack (e.g. 2s LiPo or 6x AA battery holder to power motors)
+* 1x Breadboard & Jumper wires
+* Black electrical tape (to build a grid maze)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -6456,7 +10235,16 @@ We preserve the **exact wiring layout** of Day 46 to make this a drop-in softwar
 
 ### 1. Sensor Array to Arduino Uno
 | Sensor Pin | Arduino Pin | Description |
-| : | : | : |
+| :--- | :--- | :--- |
+| **OUT1 (Far Left)** | **A0** | Sensor 0 (Left branch detector) |
+| **OUT2 (Mid Left)** | **A1** | Sensor 1 |
+| **OUT3 (Center)** | **A2** | Sensor 2 (Center line follower) |
+| **OUT4 (Mid Right)**| **A3** | Sensor 3 |
+| **OUT5 (Far Right)**| **A4** | Sensor 4 (Right branch detector) |
+
+### 2. L298N Driver to Arduino Uno & Power
+| L298N Driver Pin | Arduino Pin / Battery | Description |
+| :--- | :--- | :--- |
 | **ENA** | **D5** (PWM) | Left Motor Speed |
 | **IN1 / IN2** | **D4 / D3** | Left Motor Direction |
 | **ENB** | **D6** (PWM) | Right Motor Speed |
@@ -6464,7 +10252,30 @@ We preserve the **exact wiring layout** of Day 46 to make this a drop-in softwar
 | **12V** | **Battery positive (+)** | High-voltage motor power |
 | **GND** | **GND (Arduino & Battery -)** | Common Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. **Build a Tape Grid**:
+   * Use black electrical tape on a light floor.
+   * Make a grid with $90^\circ$ turns, T-junctions, cross-roads, and dead ends.
+   * Create a **thick black block** (e.g., a $10\,\text{cm} \times 10\,\text{cm}$ tape patch) at the end of the maze to represent the endpoint target.
+2. **Upload & Calibrate**:
+   * Upload [Day_48_Maze_Solver.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_48_Maze_Solver/Day_48_Maze_Solver.ino).
+   * Put the robot on the track; it will execute the 5-second swing calibration.
+3. **Exploration & Logging**:
+   * Open the **Serial Monitor** at **9600 Baud**.
+   * Watch the robot navigate the maze using LHR. Every time it enters a junction, it will log its decision: `[LOGGED]: L`
+4. **Optimization Telemetry**:
+   * Once the robot reaches the thick endpoint patch, it halts and lights up the LED.
+   * The Serial Monitor will print the logs:
+     ```
+     [MAZE] Endpoint Reached!
+     [PATH] Explored Path: L L U L S L U R 
+     [PATH] Optimized Path: S S U
+     ```
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -6509,7 +10320,27 @@ else if (prev == 'L' && next == 'S') replacement = 'R';
 
 Welcome to Day 49 of the 100-Day Arduino Masterclass! Today, we transition to absolute positioning systems by interfacing a **NEO-6M GPS Receiver Module**. To build a deep understanding of standard geospatial telemetry protocols, we will write a **raw NMEA-0183 protocol parsing engine from scratch** (no external GPS libraries), implement a **hardware XOR checksum verifier**, and convert raw coordinate strings into standard decimal degrees.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/GPS_Module.jpg" alt="GPS Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robots using wheel encoders or IMUs suffer from cumulative drift over time (dead reckoning error). 
+* **The Problem:** To travel long distances or navigate outdoor courses, a robot needs an absolute coordinate frame. While GPS modules process satellite signals internally and output standard coordinates, they transmit this data as a continuous, dense stream of ASCII text characters (NMEA sentences). We must parse this stream in real-time, non-blockingly, and verify its integrity before using it for steering.
+* **The Solution:** We interface the GPS over a software serial port and build a byte-level state machine. The parser scans the incoming data stream, matches headers (`$GPRMC` and `$GPGGA`), calculates and verifies the checksum, and performs coordinate conversions to extract real-world decimal coordinates.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6519,7 +10350,22 @@ $$\text{Distance}_i = c \cdot (t_{\text{receive}} - t_{\text{transmit}})$$
 
 Using the known coordinates of the satellites, the receiver solves a set of sphere equations (trilateration) to find its Latitude, Longitude, Altitude, and clock bias.
 
+---
 
+### 2. XOR Checksum Verification
+To prevent corrupted bits from feeding false coordinates to the navigation controller, every NMEA sentence concludes with an asterisk followed by a 2-character hexadecimal checksum (e.g., `*68`).
+The checksum is calculated by performing a bitwise Exclusive-OR (XOR) on all characters in the sentence between the starting `$` and the ending `*`:
+$$\text{Checksum} = \text{Char}_1 \oplus \text{Char}_2 \oplus \text{Char}_3 \dots \oplus \text{Char}_n$$
+
+```
+ NMEA Sentence:   $ G P R M C , 2 2 5 4 4 6 , A ... * 6 8
+                  | \___________________________/ | \_/
+                Start       Data Payload        End  Checksum
+```
+
+If the calculated XOR does not match the expected hexadecimal value converted to an integer, the packet is discarded as corrupted.
+
+---
 
 ### 3. NMEA Coordinate Math
 GPS modules output latitude and longitude in `DDMM.MMMM` (Degrees and Minutes) format. For example:
@@ -6537,13 +10383,27 @@ $$\text{Decimal Degrees} = \text{Degrees} + \frac{\text{Minutes}}{60}$$
    $$13 + 0.039093 = 13.039093^\circ$$
 4. Since direction is `N` (North), the sign remains positive. (If it were `S` (South), we would multiply by $-1.0$).
 
- | : | : |
+---
+
+## 🔄 GPS Config Comparison
+
+| Positioning Tech | Accuracy (RMS) | Update Rate | Relative/Absolute | Best Used For |
+| :--- | :--- | :--- | :--- | :--- |
 | **Standard GPS (NEO-6M)** | **$2.5\,\text{m} - 5\,\text{m}$** | **$1\,\text{Hz} - 5\,\text{Hz}$** | **Absolute (Global)** | **Standard vehicle tracking, outdoor rovers (Our choice)** |
 | **RTK GPS (Real-Time Kinematic)** | $1\,\text{cm} - 2\,\text{cm}$ | $5\,\text{Hz} - 20\,\text{Hz}$ | Absolute (Global) | Precision agriculture, autonomous mapping drones |
 | **UWB (Ultra-Wideband)** | $10\,\text{cm}$ | $50\,\text{Hz}$ | Relative (Local anchors) | Indoor warehouse robot navigation |
 | **Optical Flow / VIO** | Drift-prone | $>100\,\text{Hz}$ | Relative (Local) | GPS-denied drone flight stability |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x NEO-6M GPS Module (with external ceramic antenna)
+* 1x Breadboard & Jumper wires
+* **1x $1\,\text{k}\Omega$ Resistor** and **1x $2\,\text{k}\Omega$ Resistor** (to build a 3.3V logic shifter for the GPS Rx pin)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -6551,7 +10411,22 @@ $$\text{Decimal Degrees} = \text{Degrees} + \frac{\text{Minutes}}{60}$$
 > The NEO-6M GPS receiver operates on **3.3V logic**. The Arduino TX pin outputs 5V. To protect the GPS RX line, you **MUST** install a voltage divider to step down the TX voltage to 3.3V.
 
 ```
- Arduino D10 (TX) -+ | : | :
+ Arduino D10 (TX) ----[ 1k Ohm Resistor ]----+---- GPS RXD
+                                             |
+                                      [ 2k Ohm Resistor ]
+                                             |
+                                            GND
+```
+
+### Wiring Table
+| GPS Module Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** (or 3.3V) | Red | Power input (NEO-6M has onboard regulator) |
+| **GND** | **GND** | Black | Common Ground |
+| **TXD** | **D9** | Green | Transmit Data (5V safe for Arduino Rx) |
+| **RXD** | **D10** (via Divider) | Yellow | Receive Data (Stepped down to 3.3V) |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -6628,7 +10503,27 @@ for (int i = 0; i < asteriskIndex; i++) {
 
 Welcome to Day 50 of the 100-Day Arduino Masterclass! Today, we reach the halfway point of the masterclass by building an absolute navigation system utilizing a **QMC5883L 3-Axis Digital Magnetometer (Compass)**. We will configure the module over direct I2C, write an automated **Hard-Iron bias calibration routine**, account for local geographic declination, and implement a **closed-loop heading-lock steering controller** to drive a robot chassis along a precise compass bearing.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robots navigating with encoders or IMU gyroscopes drift over time.
+* **The Problem:** Gyroscopes drift continuously, and wheels slip on physical floor surfaces. Without an absolute global reference, a robot cannot travel in a straight line or head towards a specific cardinal direction.
+* **The Solution:** We utilize the Earth's magnetic field. By reading a magnetometer, the robot behaves like a real compass. However, metal chassis parts, batteries, and active motor coils create strong local magnetic fields that distort the sensor. We must calibrate the sensor dynamically to filter out these "Hard-Iron" distortions and write a closed-loop controller that adjusts wheel speeds to lock onto a target compass heading.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6636,7 +10531,19 @@ Welcome to Day 50 of the 100-Day Arduino Masterclass! Today, we reach the halfwa
 The Earth's magnetic field is a weak vector field (ranging from $25$ to $65\,\mu\text{T}$ or $0.25 - 0.65\,\text{Gauss}$). A magnetometer detects these magnetic vectors along three axes ($X, Y, Z$). When held horizontally flat, the heading angle ($\theta$) is calculated relative to magnetic North using trigonometry:
 $$\theta_{\text{magnetic}} = \text{atan2}(Y_{\text{calibrated}}, X_{\text{calibrated}})$$
 
+---
 
+### 2. Geographic Declination Correction
+The Magnetic North Pole does not align perfectly with the geographic True North Pole. This angular offset is called **Magnetic Declination** and changes based on your position on Earth.
+To find your local declination, consult [magnetic-declination.com](http://www.magnetic-declination.com/).
+
+$$\theta_{\text{true}} = \theta_{\text{magnetic}} + \text{Declination Angle}$$
+
+If the declination is East, it is positive. If West, it is negative.
+* Example: London has a declination of $+1.28^\circ \rightarrow +0.022\,\text{radians}$.
+* Tokyo has a declination of $-7.9^\circ \rightarrow -0.138\,\text{radians}$.
+
+---
 
 ### 3. Hard-Iron Bias Correction
 Ferrous materials on the robot frame shift the magnetometer readings by a static offset. 
@@ -6658,12 +10565,26 @@ $$X_{\text{calibrated}} = X_{\text{raw}} - X_{\text{offset}}, \quad Y_{\text{cal
              (Shifted)                               (Centered at Origin)
 ```
 
+---
 
+### 4. Heading Error & Shortest Path Navigation
+When steering, if the target is $350^\circ$ and the current heading is $10^\circ$, a simple subtraction yields an error of $340^\circ$, causing the robot to execute a wide turn in the wrong direction.
+We normalize the error to the shortest angular path within $[-180^\circ, 180^\circ]$:
+$$\text{Error} = \text{Target} - \text{Current}$$
+$$\text{If Error} > 180^\circ \Rightarrow \text{Error} = \text{Error} - 360^\circ$$
+$$\text{If Error} < -180^\circ \Rightarrow \text{Error} = \text{Error} + 360^\circ$$
+
+---
 
 ## 🔄 Magnetometer Comparison
 
 | Sensor Chip | I2C Address | Calibration Dependency | Sensor Resolution | Best Used For |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **QMC5883L (GY-271)** | **`0x0D`** | **Mandatory (Fast setup)** | **16-bit ADC (Low Noise) (Our choice)** | **Affordable robotic heading control** |
+| **HMC5883L** | `0x1E` | Mandatory | 12-bit ADC | Legacy DIY navigation systems |
+| **BNO055** | `0x28` | Onboard automatic | 16-bit (with ARM Cortex M0 fusion) | High-precision drones, advanced ROS robots |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -6674,7 +10595,21 @@ $$X_{\text{calibrated}} = X_{\text{raw}} - X_{\text{offset}}, \quad Y_{\text{cal
 * 1x Battery Pack (e.g. 2s LiPo or 6x AA battery holder to power motors)
 * 1x Breadboard & Jumper wires
 
- | : | : | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+### 1. QMC5883L to Arduino Uno (I2C)
+| Magnetometer Pin | Arduino Pin | Wire Color | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | **5V** (or 3.3V) | Red | Logic Power |
+| **GND** | **GND** | Black | Ground |
+| **SDA** | **A4** | Blue | Serial Data |
+| **SCL** | **A5** | Yellow | Serial Clock |
+
+### 2. L298N Driver to Arduino Uno & Power
+| L298N Driver Pin | Arduino Pin / Battery | Description |
+| :--- | :--- | :--- |
 | **ENA** | **D5** (PWM) | Left Motor Speed |
 | **IN1 / IN2** | **D4 / D3** | Left Motor Direction |
 | **ENB** | **D6** (PWM) | Right Motor Speed |
@@ -6682,7 +10617,27 @@ $$X_{\text{calibrated}} = X_{\text{raw}} - X_{\text{offset}}, \quad Y_{\text{cal
 | **12V** | **Battery positive (+)** | High-voltage motor power |
 | **GND** | **GND (Arduino & Battery -)** | Shared logic/power Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. **Physical Assembly (Sensor Elevation)**:
+   * > [!CAUTION]
+     > Do **NOT** mount the magnetometer directly on top of the L298N motor driver or the battery pack. The high currents running to the motors generate large magnetic fields that overwhelm the Earth's field. Mount the sensor on a stand or tower **$10\text{cm} - 15\text{cm}$** above the chassis.
+2. **Configure Declination**:
+   * Look up your geographic location declination and update the `LOCAL_DECLINATION_RAD` in [Day_50_Compass_Heading_Lock.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_50_Compass_Heading_Lock/Day_50_Compass_Heading_Lock.ino).
+3. **Upload & Calibrate**:
+   * Upload the code.
+   * On boot, the onboard Pin 13 LED lights up. Place the robot flat on the floor; it will automatically pivot in place for 6 seconds to record the X/Y magnetic limits.
+   * When finished, the LED turns off, the calculated offsets are logged to the Serial Monitor, and heading tracking starts.
+4. **Heading Lock Testing**:
+   * Set your target direction (e.g. `targetHeading = 90.0` for East) in code.
+   * Open the **Serial Plotter** at **9600 Baud**.
+   * Pick up the robot and rotate it manually. You will see the motor speeds adjust:
+     - If you point the robot North ($0^\circ$), it will spin the motors to steer Left/Right back towards East ($90^\circ$).
+     - Once aligned at $90^\circ$, the motor correction drops to zero, and the wheels drive forward symmetrically.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -6724,7 +10679,32 @@ else if (error < -180.0) error += 360.0;
 
 Welcome to Day 51 of the 100-Day Arduino Masterclass! Today, we transition to industrial automation and robust serial networks by building a **Modbus RTU Slave Node** using a **MAX485 Transceiver Module**. To understand how industrial PLCs (Programmable Logic Controllers) communicate with sensors and actuators, we will write a raw **Modbus RTU packet framing engine, silent character interval timer, and CRC-16 verifier** completely from scratch, without external Modbus libraries.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/CAN_Bus.jpg" alt="CAN Bus" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Consumer protocols like I2C, SPI, and basic TTL serial work well on breadboards over short distances. 
+* **The Problem:** In factories, long cable runs (up to hundreds of meters) pick up massive electromagnetic interference (EMI) from high-voltage motors and switches. Under these conditions, standard 5V TTL serial signals get corrupted instantly, and multi-node configurations become complex.
+* **The Solution:** We use **RS485 half-duplex differential communication** running the **Modbus RTU industrial application protocol**:
+  1. **MAX485 Transceiver**: Converts standard Arduino serial pins into differential voltages ($A$ and $B$ lines).
+  2. **Modbus RTU Parser**: Processes packets that carry a Slave ID, a Function Code, register addresses, data values, and a 16-bit Cyclic Redundancy Check (CRC-16).
+  3. **Registers Map**: Allows any master PLC or computer to read our sensors (analog registers) and write to our actuators (LED/relay registers) over a robust 2-wire bus.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6735,7 +10715,9 @@ Unlike single-ended TTL serial (which measures voltage relative to a shared Grou
 
 ```
        TTL Serial (Single-Ended)                      RS485 (Differential)
-  5V +-\___/--
+  5V +-----\                                    A +--\       /
+            \                                               \     /
+  0V +-\ (Ref to GND)               B +----\___/--
                                                    (V_A - V_B determines logic state)
 ```
 
@@ -6744,7 +10726,18 @@ $$(V_A + \text{Noise}) - (V_B + \text{Noise}) = V_A - V_B$$
 
 This provides extreme noise immunity over runs up to **$1200\,\text{meters}$**.
 
+---
 
+### 2. Silent Interval Frame Delimitation
+Modbus RTU does not use special start/stop characters (like `$` or `\n`). Instead, it detects packet boundaries by measuring the silent gap (idle time) on the serial line.
+* **The Rule**: A packet is complete when the line is silent for at least **3.5 character times**.
+* **The Mathematics**: At $9600\,\text{Baud}$, we transmit $9600\,\text{bits/second}$. A single serial frame (8N1) consists of 10 bits (1 start bit, 8 data bits, 1 stop bit).
+  $$\text{Time per character} = \frac{10\,\text{bits}}{9600\,\text{bits/sec}} = 1.04\,\text{ms}$$
+  $$\text{3.5-Character Silent Interval} = 3.5 \times 1.04\,\text{ms} = 3.64\,\text{ms}$$
+
+In our code, we use a robust **$5\,\text{ms}$** idle timer to safely detect frame completion.
+
+---
 
 ### 3. CRC-16 Generator Polynomial Math
 To verify packet integrity, Modbus RTU uses a 16-bit Cyclic Redundancy Check (CRC-16). The sender treats the data bytes as a huge binary polynomial, divides it by a standard generator polynomial ($x^{16} + x^{15} + x^2 + 1$, reflected as `0xA001`), and appends the remainder.
@@ -6762,7 +10755,18 @@ Our slave node recalculates this remainder by shifting and XORing the bytes:
 
 If the calculated CRC does not match the trailing bytes of the packet, the frame is rejected.
 
- | : | : | :
+---
+
+## 🔄 Network Protocol Comparison
+
+| Protocol | Physical Layer | Max Nodes | Duplex | Distance Limit | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Modbus RTU** | **RS485 (Twisted Pair)** | **247** | **Half-Duplex** | **$1200\,\text{m}$ (Our choice)** | **Factory automation, PLCs, industrial sensors** |
+| **Modbus TCP** | Ethernet / Wi-Fi | Unlimited | Full-Duplex | Depend on Network | Enterprise SCADA integration, smart building controllers |
+| **CAN Bus** | CAN physical bus | 110 | Half-Duplex | $40\,\text{m}$ (at 1Mbps) | Automotive networking, high-speed robotics networks |
+| **I2C** | 2-Wire (SDA/SCL) | 127 | Half-Duplex | $<3\,\text{m}$ | Short-range, onboard chip-to-chip interfaces |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -6772,7 +10776,17 @@ If the calculated CRC does not match the trailing bytes of the packet, the frame
 * 1x Breadboard & Jumper wires
 * 1x USB-to-RS485 Dongle (Optional: to interface the bus with a PC for testing)
 
---> DE + RE (Tied together)
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+> [!NOTE]
+> The MAX485 transceiver requires flow control. We tie **DE** (Driver Enable, active HIGH) and **RE** (Receiver Enable, active LOW) together. When Arduino Pin 4 is HIGH, the transceiver acts as a transmitter. When Pin 4 is LOW, it listens as a receiver.
+
+```
+ Arduino D2 (RX) <- RO (Receiver Output)
+ Arduino D3 (TX) -> DI (Driver Input)
+ Arduino D4 (Flow) -----> DE + RE (Tied together)
  
                  +--+
                  |    MAX485    | [A] <====================== RS485 Bus Line A
@@ -6782,7 +10796,16 @@ If the calculated CRC does not match the trailing bytes of the packet, the frame
 
 ### Wiring Table
 | MAX485 Pin | Arduino Pin | Description |
-| : | :
+| :--- | :--- | :--- |
+| **VCC** | **5V** | Power input |
+| **GND** | **GND** | Common ground |
+| **RO** | **D2** | SoftwareSerial RX |
+| **DI** | **D3** | SoftwareSerial TX |
+| **DE & RE** | **D4** | Flow Control (HIGH=TX, LOW=RX) |
+| **A** | **Bus line A** | Differential positive terminal |
+| **B** | **Bus line B** | Differential negative terminal |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -6851,7 +10874,29 @@ if (rxIndex > 0 && (millis() - lastCharTimeMs >= MODBUS_SILENT_INTERVAL_MS)) {
 
 Welcome to Day 52 of the 100-Day Arduino Masterclass! Today, we dive into automotive and high-reliability aerospace networks by building a **CAN Bus (Controller Area Network) Node** using an **MCP2515 CAN Controller** and a CAN transceiver. To understand the low-level bit operations of automotive networks, we will write a raw **SPI-based driver for the MCP2515 from scratch**, configuring CAN frames, timing registers, and filters without high-level library dependencies.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/CAN_Bus.jpg" alt="CAN Bus" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robotics and automotive systems require multiple controllers to share sensor data and control commands rapidly.
+* **The Problem:** Point-to-point buses like RS485/Modbus require a master node to query slave nodes, creating latency. Peer-to-peer serial lines get cluttered quickly. If two nodes transmit at the same time on standard serial, a collision corrupts the data.
+* **The Solution:** **CAN Bus**:
+  1. **Non-Destructive Bitwise Arbitration**: Allows any node to transmit immediately. If a collision occurs, the message with the higher priority (lowest ID value) continues transmitting uninterrupted, while the lower-priority node waits.
+  2. **MCP2515 Controller**: Acts as a hardware protocol coprocessor. It handles bit stuffing, frame generation, error tracking, and CRC validation, exposing standard SPI registers to the Arduino.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6863,15 +10908,31 @@ The CAN Bus uses a differential twisted pair named **CAN_H** (CAN High) and **CA
 ```
   Volt
   4.0V +
-  3.5V +        /-- (Recessive idle level)
-  1.5V +-\______/
+  3.5V +        /----\       (CAN_H)
+  2.5V +-/\----- (Recessive idle level)
+  1.5V +-\______/----- (CAN_L)
+  0.0V +--
+```
+
+To prevent electrical signal reflections from traveling back along the bus and corrupting data, a **$120\,\Omega$ termination resistor** must be placed between CAN_H and CAN_L at both ends of the network.
+
+---
 
 ### 2. Non-Destructive Bitwise Arbitration
 CAN IDs determine priority. Because a dominant bit (0) physically overrides a recessive bit (1), if two nodes transmit simultaneously, the node that outputs a dominant bit wins:
 
 ```
-  Node 1 (ID 0x244 = 010 0100 0100)   0 0 1 ... (Wins arbitration!)
-  Actual Bus State                   
+  Node 1 (ID 0x244 = 010 0100 0100)  --- 0 1 0 0 1 0 0 0 1 0 0
+  Node 2 (ID 0x100 = 001 0000 0000)  --- 0 0 1 ... (Wins arbitration!)
+  Actual Bus State                   --- 0 0 1 ...
+                                         ^
+                                  Collision point: Node 1 outputs 1 (Recessive)
+                                  but reads 0 (Dominant) from bus. Node 1 stops TX.
+```
+
+Node 2 continues transmitting without losing a single bit of data!
+
+---
 
 ### 3. Bit Timing and CNF Registers Math
 CAN bus speeds must match across all nodes. The duration of 1 bit is divided into **Time Quanta ($T_Q$)**.
@@ -6887,7 +10948,18 @@ To configure a bus speed of **$125\,\text{kbps}$** using a **$16\,\text{MHz}$ cr
    $$BRP + 1 = 8 \Rightarrow BRP = 7$$
 4. We write $7$ to the $BRP$ bits in `CNF1` (Register `0x2A`), and define segment intervals (Propagation delay, Phase Seg 1, Phase Seg 2) in `CNF2` and `CNF3` registers to total exactly $8\,T_Q$.
 
- | : | : | :
+---
+
+## 🔄 Network Bus Comparison
+
+| Protocol | Physical Layer | Max Baud Rate | Arbitration | Hardware overhead | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CAN Bus** | **Differential Pair** | **$1\,\text{Mbps}$** | **Dominant/Recessive (Arbitration)** | **High (Controller + Transceiver) (Our choice)** | **Automotive, motor controllers (VESC), high-reliability HMI** |
+| **Modbus (RS485)** | Differential Pair | $115.2\,\text{kbps}$ | Master-Slave polling (No collisions) | Low (Transceiver only) | Long-range factory automation, environmental monitoring |
+| **LIN Bus** | Single Wire | $20\,\text{kbps}$ | Master-Slave scheduling | Low (Transceiver only) | Low-cost automotive sub-systems (mirrors, seats) |
+| **Ethernet** | 4-Wire / 8-Wire | $>100\,\text{Mbps}$ | CSMA/CD (Collision detection) | Very High | Heavy data streaming, LiDAR point clouds, ROS nodes |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -6896,7 +10968,22 @@ To configure a bus speed of **$125\,\text{kbps}$** using a **$16\,\text{MHz}$ cr
 * **2x $120\,\Omega$ resistors**
 * 1x Breadboard & Jumper wires
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+Connect the MCP2515 module to the Arduino hardware SPI bus.
+
+```
+ Arduino D10 (CS)   -> CS (Chip Select)
+ Arduino D11 (MOSI) -> SI (Serial Input)
+ Arduino D12 (MISO) <- SO (Serial Output)
+ Arduino D13 (SCK)  -> SCK (Serial Clock)
+```
+
+### Wiring Table
+| MCP2515 Board Pin | Arduino Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** | Power input |
 | **GND** | **GND** | Shared ground |
 | **CS** | **D10** | Chip Select |
@@ -6905,7 +10992,32 @@ To configure a bus speed of **$125\,\text{kbps}$** using a **$16\,\text{MHz}$ cr
 | **SCK** | **D13** | SPI Clock |
 | **INT** | Pin D2 (Optional) | Interrupt line |
 
+---
 
+## 💻 How to Test & Validate
+
+To test the CAN network, you must connect **two separate Arduino nodes** together to form a bus.
+
+1. **Wire the CAN Bus**:
+   * Connect **CAN_H** of Node 1 to **CAN_H** of Node 2.
+   * Connect **CAN_L** of Node 1 to **CAN_L** of Node 2.
+   * Connect a **$120\,\Omega$ resistor** between CAN_H and CAN_L at Node 1.
+   * Connect a **$120\,\Omega$ resistor** between CAN_H and CAN_L at Node 2.
+   * Connect the **GND** pins of both Arduinos together to establish a common reference voltage.
+2. **Upload & Monitor**:
+   * Upload [Day_52_CAN_Bus.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_52_CAN_Bus/Day_52_CAN_Bus.ino) to both boards.
+   * Open the **Serial Monitor** at **9600 Baud** for one of the boards.
+   * Every 2 seconds, the node will transmit a telemetry packet and log the event:
+     `[CAN TX] Frame ID: 0x244 | DLC: 4 | Data: 0x55 0x02 0x1A 0x00`
+   * Symmetrically, it will read the packet transmitted by the other node and print it:
+     `[CAN RX] Frame ID: 0x244 | DLC: 4 | Payload: 0x55 0x02 0x18 0x00`
+3. **Test Interrupt Trigger**:
+   * Ground Pin 7 on Node 1 (using a jumper wire).
+   * Node 1 will instantly transmit a high-priority interrupt frame:
+     `[CAN TX] Frame ID: 0x100 | DLC: 2 | Data: 0xAA 0x99`
+   * Node 2 will immediately receive and log the message!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -6951,7 +11063,28 @@ digitalWrite(CAN_CS_PIN, HIGH);
 
 Welcome to Day 53 of the 100-Day Arduino Masterclass! Today, we implement a rugged, high-speed **flight-recorder data logging system** using a **Winbond W25Q64 (64 Megabit / 8 Megabyte) SPI Flash Memory Chip**. To master absolute memory architectures, we will write a raw **register-level SPI driver from scratch** to handle page programs, sector erases, status register polling, and JEDEC device identification without high-level helper libraries.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Internal Arduino Uno EEPROM is tiny (only $1\,\text{KB}$).
+* **The Problem:** Logging dense sensor data (like high-frequency IMU telemetry) will exhaust the internal EEPROM in seconds. While SD card modules provide gigabytes of storage, they require heavy library overhead (FAT32 file systems), draw high currents, and are prone to disconnecting under high vibrations (e.g., inside drones or rovers).
+* **The Solution:** We use **Winbond W25QXX SPI Flash Memory**:
+  1. **High Capacity**: W25Q64 offers $8\,\text{MB}$ of silicon storage, enough to log hours of telemetry.
+  2. **Direct Memory Control**: We communicate directly using SPI commands to write struct records onto pages and erase sectors.
+  3. **High Reliability**: The surface-mounted chip has no moving parts, low power consumption, and executes page writes in sub-milliseconds.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -6978,18 +11111,44 @@ $$\text{8 MB Chip} \rightarrow 128\,\text{Blocks (64 KB)} \rightarrow 2048\,\tex
 * **The Erase Constraint**: Flash memory cells consist of floating-gate transistors. Writing a byte can only change bits from a logic `1` to a logic `0`. To reset a bit from `0` to `1`, the memory must be **erased**. The minimum erasable unit is a **Sector ($4\,\text{KB}$)**, which fills the entire sector with `0xFF`.
 * **The Write Constraint**: Programming data (fuzzing `1`s to `0`s) is done using **Page Program** commands, which can write a maximum of **$256\,\text{bytes}$** (one page) at a time.
 
+---
 
+### 2. SPI Command Transactions & Busy Polling
+Every flash operation takes a specific amount of time to complete:
+* **Page Program**: $\approx 0.5 - 3\,\text{ms}$
+* **Sector Erase**: $\approx 40 - 200\,\text{ms}$
+
+To prevent the Arduino from sending new commands while the memory chip is executing an erase or write internally, we read **Status Register 1** (using instruction `0x05`) and poll the **BUSY bit (Bit 0)**. We must wait until BUSY drops to `0` before pulling CS low for the next operation.
+
+```
+ Arduino CS  +___\_______________________________________/~~~~~~~~+
+ Arduino SCK +    ||||||||||||||||||||||||||||||||||||||
+ Arduino MOSI+    [CMD:0x05]  [Read status byte continuously]
+ Arduino MISO+    [ 0x01 ]  [ 0x01 ]  [ 0x00 ]
+                                                   \__ BUSY drops to 0: ready!
+```
+
+---
 
 ## 🔄 Memory Hardware Comparison
 
 | Technology | Storage Capacity | Write Cycle Time | Write Endurance | Connection Interface | Best Used For |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **SPI Flash (W25Q64)** | **$8\,\text{MB}$** | **$0.8\,\text{ms}$ (per page)** | **$100,000$ cycles** | **SPI Bus (Our choice)** | **Telemetry flight recorders, black-boxes, firmware storage** |
 | **Internal EEPROM** | $1\,\text{KB}$ | $3.3\,\text{ms}$ (per byte) | $100,000$ cycles | Register API | Small configuration variables (Calibration thresholds) |
 | **FRAM (Ferroelectric RAM)** | $32\,\text{KB}$ | $<1\,\text{microsecond}$ | $10^{12}$ (Infinite) | I2C / SPI | High-frequency logging, real-time counters |
 | **MicroSD Card** | $16\,\text{GB}+$ | Variable ($>10\,\text{ms}$) | $10,000$ cycles | SPI (with FAT system) | Heavy image recording, diagnostic files |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x Winbond W25Q64 SPI Flash Module (or bare SOP-8 chip on breakout)
+* 1x Breadboard & Jumper wires
+* **1x 4-Channel Logic Level Converter** (W25QXX runs on 3.3V logic. If your board does not have onboard shifters, use dividers or a logic converter to step down the D10/D11/D13 lines).
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -6998,7 +11157,7 @@ $$\text{8 MB Chip} \rightarrow 128\,\text{Blocks (64 KB)} \rightarrow 2048\,\tex
 
 ### Wiring Table
 | W25Q64 Module Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **VCC** | **3.3V** | Red | Core power input (Must be 3.3V!) |
 | **GND** | **GND** | Black | Ground reference |
 | **CS (Chip Select)**| **D10** | Yellow | SPI Slave Select (Active Low) |
@@ -7006,13 +11165,46 @@ $$\text{8 MB Chip} \rightarrow 128\,\text{Blocks (64 KB)} \rightarrow 2048\,\tex
 | **DI (Data In)**    | **D11** (via Level Shifter) | Blue | SPI Master Out Slave In (MOSI) |
 | **CLK (Clock)**     | **D13** (via Level Shifter) | Purple | SPI Clock (SCK) |
 
+---
 
+## 💻 How to Test & Validate
+
+1. **Verify Logic Connection**:
+   * Wire the components as shown in the table, using level-shifting for MOSI/SCK/CS signals.
+   * Upload [Day_53_SPI_Flash_Logger.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_53_SPI_Flash_Logger/Day_53_SPI_Flash_Logger.ino) to the Arduino.
+2. **Examine Diagnostic Telemetry**:
+   * Open the **Serial Monitor** at **9600 Baud**.
+   * On startup, the program queries the chip's JEDEC ID. You should see:
+     ```
+     [FLASH] Initializing Winbond W25Q64 Chip...
+     [FLASH] JEDEC Identification Telemetry:
+       Manufacturer ID: 0xEF
+       Memory Type:     0x40
+       Capacity ID:     0x17
+     [FLASH] W25Q64 confirmed active. Proceeding with logging demo...
+     ```
+3. **Observe Log Output**:
+   * The program erases Sector 0, writes two structured telemetry records, reads them back, and prints the formatted values:
+     ```
+     [FLASH] Erasing 4 KB Sector at address 0x000000...
+     [FLASH] Sector Erase Complete.
+     [FLASH] Logging Record 1...
+     [FLASH] Logging Record 2...
+
+     [FLASH] Reading raw logged telemetry logs...
+     ---
        Record #1
        Timestamp:   1000 ms
        Temperature: 24.57 °C
        Event Count: 1
        Status:      OK_SYS
-     
+     ---
+       Record #2
+       Timestamp:   2000 ms
+       Temperature: 25.82 °C
+       Event Count: 2
+       Status:      ALERT
+     ---
      ```
 
 ---
@@ -7063,7 +11255,27 @@ writeBytes(writeAddr, (uint8_t*)&record1, sizeof(record1));
 
 Welcome to Day 54 of the 100-Day Arduino Masterclass! Today, we dive into **sub-microsecond timing and low-level AVR architecture** by interfacing a **WS2812B Addressable RGB LED Strip (NeoPixel)**. To understand how ultra-precise digital protocols are generated on resource-constrained microcontrollers, we will write a raw **bit-banged transmitter using inline assembly nops and direct port register manipulation** from scratch, without external LED libraries (like Adafruit_NeoPixel or FastLED).
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/WS2812B.jpg" alt="WS2812B" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Driving multiple RGB LEDs using standard analog methods requires three PWM pins and three power transistors *per LED*, leading to massive wiring bundles.
+* **The Problem:** The WS2812B solves this by integrating a control chip inside the LED package, allowing hundreds of LEDs to be daisy-chained over a **single data line**. However, this control chip uses a strict single-wire protocol running at a high frequency of **$800\,\text{kHz}$**. At this speed, the difference between a binary `0` and a binary `1` is determined by pulse widths of a few hundred nanoseconds. Standard Arduino C functions like `digitalWrite()` are too slow (taking $3-5\,\mu\text{s}$) to generate these pulses.
+* **The Solution:** We implement direct port writes to bypass the Arduino abstraction layer and combine them with inline assembly `nop` (No Operation) instructions to halt the CPU for exact fractions of a microsecond.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7080,12 +11292,31 @@ Each bit is represented by a specific ratio of HIGH to LOW time on the line:
   Bit '1' Waveform (0.8us HIGH, 0.45us LOW)
   +--\
   |              \_______________
-  <--><->
+  <----0.8us-----><----0.45us---->
 ```
 
 * **Latch/Reset**: Once all color bytes are streamed to the strip, holding the line LOW for **$\ge 300\,\mu\text{s}$** latches the color buffer and drives the physical LEDs.
 
+---
 
+### 2. AVR Clock Cycle Calculations
+The ATmega328P microcontroller on the Arduino Uno runs at a clock frequency of **$16\,\text{MHz}$**.
+The period of a single CPU clock cycle ($T_{\text{cycle}}$) is:
+$$T_{\text{cycle}} = \frac{1}{16,000,000\,\text{Hz}} = 62.5\,\text{ns}$$
+
+Let's calculate the required clock cycles for each pulse width:
+
+#### Bit '0' High Pulse:
+$$\text{Cycles} = \frac{0.40\,\mu\text{s}}{62.5\,\text{ns}} = \frac{400\,\text{ns}}{62.5\,\text{ns}} = 6.4\,\text{cycles}$$
+We target **$6$ clock cycles** of HIGH state.
+
+#### Bit '1' High Pulse:
+$$\text{Cycles} = \frac{0.80\,\mu\text{s}}{62.5\,\text{ns}} = \frac{800\,\text{ns}}{62.5\,\text{ns}} = 12.8\,\text{cycles}$$
+We target **$13$ clock cycles** of HIGH state.
+
+In our code, direct writing to a port pointer (`*port = portValHigh`) takes a few cycles to execute. We fill the remaining duration with inline `__asm__ __volatile__ ("nop\n\t")` assembly directives, each representing exactly 1 clock cycle ($62.5\,\text{ns}$).
+
+---
 
 ### 3. Interrupt Gates (Preventing Timing Corruptions)
 The Arduino executes background interrupt routines (e.g. updating the millisecond counter via Timer 0). 
@@ -7094,13 +11325,28 @@ To prevent this, we surround our bit-stream loop with **Interrupt Gates**:
 * `cli();` (Clear Global Interrupts) - Disables all interrupts during data transmission.
 * `sei();` (Set Global Interrupts) - Re-enables interrupts once the strip data is complete.
 
- | : | : |
+---
+
+## 🔄 LED Strip Protocol Comparison
+
+| LED Chip Type | Interface Interface | Timing Jitter Sensitivity | Max LED Count | Onboard Driver Logic |
+| :--- | :--- | :--- | :--- | :--- |
 | **WS2812B (NeoPixel)** | **1-Wire (Data only)** | **Extremely High (Needs Assembly) (Our choice)** | **$\approx 500$ nodes** | **GRB (8 bits per channel)** |
 | **APA102 (DotStar)** | 2-Wire (SPI: Data + Clock) | None (Clock driven) | $>2048$ nodes | BGR (plus 5-bit global brightness) |
 | **WS2811** | 1-Wire (External chip) | High | $\approx 300$ nodes | RGB (External constant-current drivers) |
 | **Analog RGB LED** | 3-Wire (R, G, B PWM) | None | Depends on Power | None (Analog voltage drive) |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 1x WS2812B Addressable LED Strip (or ring module, typically 8 or 16 LEDs)
+* 1x Breadboard & Jumper wires
+* **1x $330\,\Omega - 470\,\Omega$ resistor** (critical to absorb signal reflections on the data line)
+* **1x $1000\,\mu\text{F}$ capacitor** (to smooth out current surges on the power rails)
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -7108,14 +11354,20 @@ To prevent this, we surround our bit-stream loop with **Interrupt Gates**:
 > A single WS2812B LED draws up to **$60\,\text{mA}$** when lit at full white ($20\,\text{mA}$ each for Red, Green, and Blue). An 8-LED ring draws up to $480\,\text{mA}$, which is close to the limit of the Arduino Uno's regulator. If you connect a strip of **more than 8 LEDs**, you **MUST** power the strip from an external 5V power supply.
 
 ```
- Arduino D8 (Port B0) > DIN (LED Strip)
+ Arduino D8 (Port B0) ---[ 330 Ohm Resistor ]---> DIN (LED Strip)
  Arduino GND <> GND (LED Strip)
  Arduino 5V  <> 5V (LED Strip)
 ```
 
 If using an external power supply:
 ```
- External 5V (+) +
+ External 5V (+) ---> 5V (LED Strip)
+ External GND (-) ---+----> GND (LED Strip)
+                           |
+ Arduino GND --+
+```
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -7172,7 +11424,26 @@ Welcome to Day 55 of the 100-Day Arduino Masterclass! Today, we explore parallel
 
 To preserve the Arduino's serial hardware UART (Pins D0/D1) for debugging, we will implement a hardware/software strategy known as **Port Splitting**.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Modern sensors and displays often hide behind serial interfaces like I2C or SPI. 
+* **The Problem:** Serial buses must transmit data bit-by-bit, introducing communication latency. Parallel buses send an entire byte of data simultaneously, providing high throughput. However, an 8-bit parallel bus requires 8 data pins plus control lines. If we map this directly to Port D on the ATmega328P (Uno Pins D0 to D7), we lose the RX and TX pins, disabling the USB Serial Monitor interface for debugging.
+* **The Solution:** We implement **Port Splitting**. We map the 8 data lines across two physical port registers: Uno Pins D2 to D7 (Port D) and D8 to D9 (Port B). In software, we split, shift, and mask the data byte before sending it, preserving Pins D0 and D1 for serial diagnostics.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7181,7 +11452,16 @@ The HD44780 operates using two registers: the **Command Register** (RS Pin LOW) 
 To transmit, we write the data byte onto the data pins, then pulse the **Enable (E)** pin. The LCD controller latches the state of the data bus on the **falling edge** of the Enable signal.
 
 ```
- RS Pin     +
+ RS Pin     +---\___________________________/~~~~~~~~~
+ Data Bus   ==========[       Valid Byte          ]=========
+ Enable Pin __________/~~~~~~~~~~~~~~~~~~~~~~~~~~~\_________
+                                                  ^
+                                           Data Latched here!
+```
+
+According to the HD44780 timing specifications, the Enable pulse width ($PW_{EH}$) must be at least **$450\,\text{ns}$** to guarantee reliable data capture.
+
+---
 
 ### 2. Port Splitting Mathematics
 We must map an 8-bit byte ($\text{Value} = [b_7 \, b_6 \, b_5 \, b_4 \, b_3 \, b_2 \, b_1 \, b_0]$) to:
@@ -7200,12 +11480,25 @@ $$\text{PORTB}_{\text{new}} = (\text{PORTB}_{\text{old}} \ \& \ \text{0xFC}) \ |
 * `PORTB & 0xFC` preserves pins D10 to D13 (SPI CS/MOSI/MISO/SCK).
 * `(Value & 0xC0) >> 6` isolates the upper 2 bits of the data value and shifts them into bits 0 to 1.
 
+---
 
+### 3. CGRAM Custom Font Loading
+Character LCDs store standard alphanumeric glyphs in ROM. To display custom graphics (like progress bars or icons), we must write custom bitmaps to the **Character Generator RAM (CGRAM)**. 
+* The LCD has 64 bytes of CGRAM, which can hold up to **8 custom characters** (each $5 \times 8$ pixels).
+* We set the CGRAM start address (`0x40`) and write 8 bytes sequentially. Each byte represents a row of 5 pixels (1 = pixel ON, 0 = pixel OFF).
+
+---
 
 ## 🔄 LCD Bus Comparison
 
 | Interface Type | Pin Count | Speed / Latency | Command Overhead | Wiring Complexity |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **8-Bit Parallel** | **10 Pins** | **Ultra-Fast (Direct bus)** | **Very Low (No byte translation) (Our choice)** | **High (Requires port mapping)** |
+| **4-Bit Parallel** | 6 Pins | Medium-Fast (Bytes split) | Medium (Each byte requires two writes) | Medium |
+| **I2C (PCF8574 Backpack)**| 2 Pins | Slow (100-400 kHz) | High (Requires I2C register updates) | Low |
+| **SPI (74HC595 Shift)** | 3 Pins | Medium-Fast (8-10 MHz) | Medium (Requires shift register writes) | Medium |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -7214,9 +11507,43 @@ $$\text{PORTB}_{\text{new}} = (\text{PORTB}_{\text{old}} \ \& \ \text{0xFC}) \ |
 * 1x $10\,\text{k}\Omega$ Potentiometer (for screen contrast control)
 * 1x Breadboard & Jumper wires
 
-+
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+Make sure to hook up the data lines to the split ports exactly as shown in the table to align with the software equations.
+
+```
+                  +---+
                   |     HD44780 16x2 LCD      |
-                  + | : | :
+                  +---+
+                   |  |  |  |  |  |  |  |  |  |
+                  D0 D1 D2 D3 D4 D5 D6 D7 RS E
+                   |  |  |  |  |  |  |  |  |  |
+ Arduino Uno Pins D2 D3 D4 D5 D6 D7 D8 D9 A0 A1
+```
+
+### Wiring Table
+| LCD Pin | Arduino Pin | Port Bit | Description |
+| :--- | :--- | :--- | :--- |
+| **1 (VSS)** | **GND** | GND | Ground |
+| **2 (VDD)** | **5V** | 5V | Power supply |
+| **3 (VO)** | **Potentiometer Wiper** | - | Contrast adjustment voltage ($0 - 5\text{V}$) |
+| **4 (RS)** | **A0** | Port C0 | Register Select (0=Command, 1=Data) |
+| **5 (R/W)** | **GND** | GND | Read/Write (Permanently tied to Ground) |
+| **6 (E)** | **A1** | Port C1 | Enable Strobe signal |
+| **7 (D0)** | **D2** | Port D2 | Data Bit 0 |
+| **8 (D1)** | **D3** | Port D3 | Data Bit 1 |
+| **9 (D2)** | **D4** | Port D4 | Data Bit 2 |
+| **10 (D3)** | **D5** | Port D5 | Data Bit 3 |
+| **11 (D4)** | **D6** | Port D6 | Data Bit 4 |
+| **12 (D5)** | **D7** | Port D7 | Data Bit 5 |
+| **13 (D6)** | **D8** | Port B0 | Data Bit 6 |
+| **14 (D7)** | **D9** | Port B1 | Data Bit 7 |
+| **15 (A)** | **5V** | 5V | Backlight LED Anode |
+| **16 (K)** | **GND** | GND | Backlight LED Cathode |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -7274,7 +11601,26 @@ digitalWrite(PIN_E, LOW);
 
 Welcome to Day 56 of the 100-Day Arduino Masterclass! Today, we dive into **local spatial navigation** and **triangulation geometry** by building a **2D Spatial Positioning Scanner** using two **HC-SR04 Ultrasonic Sensors**. By resolving analytical intersection equations, we will calculate the exact coordinate position $(x, y)$ of an object in a 2D plane in real-time, completely from scratch.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Single distance sensors only tell you how far away an object is along a straight line of sight.
+* **The Problem:** A single sensor does not provide angular information. You cannot know if the object is directly in front, to the left, or to the right. 
+* **The Solution:** We mount two ultrasonic sensors along a fixed baseline distance ($d$). Both sensors measure their respective distance ($r_1$ and $r_2$) to a single target. By treating the sensors as the centers of two intersecting circles, we solve the algebraic equations representing the intersection points. This allows the system to determine the exact coordinates $(x,y)$ of the object.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7282,8 +11628,21 @@ Welcome to Day 56 of the 100-Day Arduino Masterclass! Today, we dive into **loca
 The HC-SR04 transmits high-frequency sound pulses ($40\,\text{kHz}$) that travel through the air at the speed of sound ($v_{\text{sound}} \approx 343\,\text{m/s}$ or $0.0343\,\text{cm/\mu s}$ at room temperature). The distance ($r$) is calculated from the echo round-trip travel time ($t$):
 $$r = \frac{t \cdot v_{\text{sound}}}{2}$$
 
---+ S2 (d,0)
-                  |<>|
+---
+
+### 2. 2D Trilateration Mathematics
+We place the Left Sensor (Sensor 1) at origin coordinates $(0, 0)$ and the Right Sensor (Sensor 2) at coordinates $(d, 0)$, where $d$ is the baseline distance.
+The target object lies at the intersection coordinate $(x, y)$.
+
+```
+                     Target (x, y)
+                         *
+                        / \
+                   r1  /   \ r2
+                      /     \
+                     /       \
+         (0,0) S1 +-----+ S2 (d,0)
+                  |<--- d --->|
 ```
 
 This setup yields two circle equations:
@@ -7303,19 +11662,46 @@ Now, substitute $x$ back into equation (1) to solve for $y$:
 $$y = \sqrt{r_1^2 - x^2}$$
 *(We assume $y \ge 0$, representing the space in front of the sensor bar).*
 
+---
 
+### 3. Radical Bounds Gate (NaN Protection)
+In real-world tracking, sensor noise or reflections can report distances where the circles do not physically intersect (e.g. if the object is too close to the baseline such that $r_1 + r_2 < d$, or if $r_1^2 - x^2 < 0$).
+If we pass a negative number to the square root function `sqrt()`, the processor crashes the calculation and outputs `NaN` (Not a Number).
+We implement a **Radical Bounds Gate** to check the radicand before computing:
+```cpp
+float yRadicand = r1Sq - (x * x);
+if (yRadicand >= 0.0) {
+  // Safe to calculate sqrt
+}
+```
+
+---
 
 ### 4. Cross-Talk Prevention (Sequential Timings)
 If both HC-SR04 sensors are triggered simultaneously, the ultrasonic pulse from Sensor 1 can reflect off the target and trigger the Echo pin of Sensor 2, causing massive distance errors.
 We prevent this by triggering the sensors **sequentially**, inserting a **$30\,\text{ms}$ guard delay** between readings to allow residual sound echoes to fully decay before triggering the next sensor.
 
- | : | : |
+---
+
+## 🔄 Tracking Technologies Comparison
+
+| Navigation Sensor | Tracking Dimensions | Precision | Max Range | System Cost |
+| :--- | :--- | :--- | :--- | :--- |
 | **Dual Ultrasonic Scanner** | **2D Plane $(x,y)$** | **$\approx 1\,\text{cm}$** | **$\approx 2.5\,\text{m}$ (Our choice)** | **Very Low** |
 | **LiDAR Sweep Scanner** | 2D Map (Degrees & Range) | $\approx 2\,\text{mm}$ | $\approx 10\,\text{m} - 40\,\text{m}$ | High |
 | **Stereo Camera (Visual)** | 3D Space $(x,y,z)$ | Sub-millimeter | Depends on optics | Very High (Requires PC) |
 | **Single Sonar** | 1D Vector (Range only) | $\approx 3\,\text{mm}$ | $\approx 4\,\text{m}$ | Very Low |
 
+---
 
+## 🛠️ Components Needed
+
+* 1x Arduino Uno
+* 2x HC-SR04 Ultrasonic Sensor Modules
+* 1x Breadboard & Jumper wires
+* 1x Rigid mounting bracket (e.g., a strip of cardboard, wood, or plastic to keep the sensors exactly $25\,\text{cm}$ apart).
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -7323,9 +11709,9 @@ Ensure the sensors are wired to separate digital pins to enable sequential contr
 
 ```
        S1 (Left Origin)                 S2 (Right Baseline)
-         +-+
+         +----+                      +----+
          | HC-SR04  |                      | HC-SR04  |
-         +-+
+         +----+                      +----+
           |  |  |  |                        |  |  |  |
          VCC T  E GND                      VCC T  E GND
           |  |  |  |                        |  |  |  |
@@ -7334,7 +11720,7 @@ Ensure the sensors are wired to separate digital pins to enable sequential contr
 
 ### Wiring Table
 | Sensor Pin | Arduino Pin | Wire Color | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **S1 Trig** | **D2** | Blue | Left sensor trigger pulse |
 | **S1 Echo** | **D3** | Green | Left sensor pulse return |
 | **S2 Trig** | **D4** | Yellow | Right sensor trigger pulse |
@@ -7342,7 +11728,25 @@ Ensure the sensors are wired to separate digital pins to enable sequential contr
 | **VCC (S1 & S2)**| **5V** | Red | Power rails |
 | **GND (S1 & S2)**| **GND** | Black | Shared Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. **Mount the Sensors**:
+   * Align both sensors parallel to each other on a flat baseline strip.
+   * Measure the distance from the center of Sensor 1's lens to the center of Sensor 2's lens. Update `BASELINE_D` in [Day_56_Spatial_Positioner.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_56_Spatial_Positioner/Day_56_Spatial_Positioner.ino) if it differs from $25.0\,\text{cm}$.
+2. **Observe Telemetry Output**:
+   * Upload the code and open the **Serial Monitor** at **9600 Baud**.
+   * Place an object (like a flat piece of cardboard) directly in front of the sensors.
+   * The terminal will output the raw distances and computed coordinates:
+     `R1_Dist:30.0,R2_Dist:30.0,Coord_X:12.50,Coord_Y:27.27`
+     *(Since the baseline is $25\,\text{cm}$, the center line is $X = 12.5\,\text{cm}$).*
+3. **Trace Coordinates**:
+   * Move the target object to the **Left** (closer to S1). $Coord\_X$ should decrease towards $0.0$.
+   * Move the target object to the **Right** (closer to S2). $Coord\_X$ should increase towards $25.0$.
+   * Move the target **closer** or **further**. $Coord\_Y$ should change accordingly.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -7384,7 +11788,25 @@ float y = sqrt(r1Sq - (x * x));
 
 Welcome to Day 57 of the 100-Day Arduino Masterclass! Today, we enter the domain of **digital signal processing (DSP)** by building a real-time **Audio Spectrum Analyzer**. We will write a raw **in-place Decimation-in-Time (DIT) Cooley-Tukey Radix-2 Fast Fourier Transform (FFT) algorithm** from scratch (no helper DSP libraries), parse raw analog sound waves into frequency bins, and render an active ASCII frequency spectrum bar chart directly to the Serial Monitor.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Microcontrollers read raw analog signals as a time-series voltage wave.
+* **The Problem:** Looking at a raw sound wave only tells you the overall volume at any instant. It cannot tell you what notes are being played or identify separate sound pitches. Converting a signal from the **Time Domain** to the **Frequency Domain** mathematically (Fourier Transform) normally requires massive floating-point arithmetic processors.
+* **The Solution:** We implement the highly optimized **Cooley-Tukey Radix-2 FFT**. By choosing a sample count of $N=64$ (a power of 2) and sampling at a precise, locked rate of $4000\,\text{Hz}$ using software timer gates, we compute the full frequency spectrum on the Arduino Uno in under **$7\,\text{ms}$**, displaying frequencies from $0$ to $2000\,\text{Hz}$.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7395,7 +11817,18 @@ $$f_s > 2 \cdot f_{\text{max}}$$
 With $f_s = 4000\,\text{Hz}$ ($dt = 250\,\mu\text{s}$), our detectable range (**Nyquist Frequency**) limit is:
 $$f_{\text{Nyquist}} = \frac{f_s}{2} = 2000\,\text{Hz}$$
 
+---
 
+### 2. Frequency Bin Resolution
+The FFT divides the frequency spectrum into $N/2$ positive bins. The frequency width of each individual bin ($\Delta f$) is determined by:
+$$\Delta f = \frac{f_s}{N} = \frac{4000\,\text{Hz}}{64} = 62.5\,\text{Hz}$$
+
+* Bin 1 represents: $62.5\,\text{Hz}$
+* Bin 2 represents: $125\,\text{Hz}$
+* ...
+* Bin 31 represents: $1937.5\,\text{Hz}$
+
+---
 
 ### 3. The Cooley-Tukey Radix-2 DIT FFT Algorithm
 The Discrete Fourier Transform (DFT) has a calculation complexity of $O(N^2)$. The Cooley-Tukey FFT reduces this to $O(N \log N)$ by recursively splitting the $N$-point series into even and odd parts.
@@ -7408,7 +11841,7 @@ At each stage, pairs of data points are combined with a complex weighting factor
 $$W_N^k = e^{-j \frac{2\pi k}{N}} = \cos\left(\frac{2\pi k}{N}\right) - j \sin\left(\frac{2\pi k}{N}\right)$$
 
 ```
-  x[u] -> x[u] + Temp (Upper output)
+  x[u] ----+----> x[u] + Temp (Upper output)
                   \      /
                    \    /
                     \  /
@@ -7417,12 +11850,25 @@ $$W_N^k = e^{-j \frac{2\pi k}{N}} = \cos\left(\frac{2\pi k}{N}\right) - j \sin\l
                     /  \
                    /    \
                   /      \
-  x[v] 
+  x[v] ---[ W_N^k ]-+--> x[u] - Temp (Lower output)
+```
+
+#### Step 3: Magnitude Extraction
+The output values are complex numbers ($A + jB$). To find the volume (amplitude) of a frequency bin, we calculate its vector magnitude:
+$$\text{Magnitude} = \sqrt{\text{Real}^2 + \text{Imaginary}^2}$$
+
+---
 
 ## 🔄 DSP Algorithms Comparison
 
 | DSP Algorithm | Frequency Resolution | CPU Resource Cost | Output Information | Best Used For |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Radix-2 FFT (Our choice)** | **Full Spectrum (Equal bins)** | **Medium ($O(N \log N)$)** | **Whole spectrum amplitude map** | **Spectrum visualizers, acoustic analysis, structural monitoring** |
+| **Goertzel Algorithm** | Single Target Frequency | Extremely Low ($O(N)$) | Real-time amplitude of one specific note | DTMF tone decoders, guitar tuners |
+| **Hartley Transform (FHT)** | Full Spectrum | Low (Real numbers only) | Whole spectrum map | High-speed, real-time AVR sound processing |
+| **Discrete Fourier (DFT)** | Full Spectrum | High ($O(N^2)$) | Whole spectrum map | Theoretical models, non-embedded math |
+
+---
 
 ## 🛠️ Components Needed
 
@@ -7430,9 +11876,23 @@ $$W_N^k = e^{-j \frac{2\pi k}{N}} = \cos\left(\frac{2\pi k}{N}\right) - j \sin\l
 * 1x Electret Microphone Module with Pre-amplifier (e.g., MAX4466 or KY-037/KY-038)
 * 1x Breadboard & Jumper wires
 
---+
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+> [!TIP]
+> For the cleanest analog signal, power the microphone pre-amplifier from the Arduino **3.3V pin** instead of 5V. The 5V line contains high-frequency electrical noise from the USB interface and processor clock, which distorts the audio readings.
+
+```
+       +-----+
        |   Microphone Board    |
-       +
+       +-----+
+        VCC     GND     OUT
+         |       |       |
+ Arduino 3.3V   GND     A0
+```
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -7496,7 +11956,27 @@ real[v] = real[u] - tr;
 
 Welcome to Day 58 of the 100-Day Arduino Masterclass! Today, we go deep into the AVR microcontroller's hardware peripherals and configure **Timer1 in Fast PWM Mode** using direct register manipulation. We completely bypass the Arduino `analogWrite()` abstraction to achieve precise control over both **PWM frequency** (from 100 Hz to 25 kHz) and **duty cycle** (0–100%) using a potentiometer.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Oscilloscope.jpg" alt="Oscilloscope" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Arduino's `analogWrite()` is fixed at ~490 Hz or ~980 Hz depending on the pin — you cannot change it without modifying hardware registers.
+* **The Problem:** Applications like motor speed controllers, audio signal generators, and switching power supply controllers require precise, application-specific PWM frequencies that `analogWrite()` cannot provide.
+* **The Solution:** We configure Timer1 in **Fast PWM Mode 14** (WGM = `1110`) with `ICR1` as the TOP value. This lets us set any frequency within the hardware's range by choosing ICR1, and independently set the duty cycle through OCR1A.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7524,12 +12004,23 @@ $$\text{OCR1A} = 0.25 \times 2000 = 500$$
 ### 4. Timer Register Map (Mode 14 — Fast PWM, TOP = ICR1)
 
 | Register | Bit Pattern | Description |
-| : | :
+| :--- | :--- | :--- |
+| **TCCR1A** | `COM1A1=1, WGM11=1` | Non-inverted output on OC1A (Pin 9), Mode bits |
+| **TCCR1B** | `WGM13=1, WGM12=1, CS=010` | Mode bits + Prescaler /8 |
+| **ICR1** | 16-bit TOP value | Controls PWM frequency |
+| **OCR1A** | 16-bit compare | Controls duty cycle |
+
+---
 
 ## 🔄 PWM Generation Comparison
 
 | Method | Frequency Range | Resolution | CPU Impact | Best Used For |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **Timer1 Hardware PWM (Our choice)** | **$\approx 0.24\,\text{Hz} - 2\,\text{MHz}$** | **16-bit ICR1** | **Zero (Hardware runs automatically)** | **Motor control, BLDC ESCs, power supplies** |
+| `analogWrite()` | Fixed 490 Hz or 980 Hz | 8-bit (0–255) | Zero (Hardware) | Simple LED dimming, basic motor speed |
+| Software Bit-Bang | Limited by code speed | Varies | Very High (Busy loop) | Educational demonstrations only |
+
+---
 
 ## 🛠️ Components Needed
 * 1x Arduino Uno
@@ -7537,14 +12028,29 @@ $$\text{OCR1A} = 0.25 \times 2000 = 500$$
 * 1x Breadboard & Jumper wires
 * 1x Oscilloscope or logic analyzer (optional, for waveform verification)
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Component | Arduino Pin | Description |
+| :--- | :--- | :--- |
 | **Pot 1 Wiper** | **A0** | Duty cycle control (0–100%) |
 | **Pot 2 Wiper** | **A1** | Frequency preset selector |
 | **PWM Output** | **D9 (OC1A)** | Hardware Timer1 output |
 
 Both potentiometers: outer pins to 5V and GND, middle wiper to analog input.
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload [Day_58_Timer1_PWM.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_58_Timer1_PWM/Day_58_Timer1_PWM.ino).
+2. Open the **Serial Monitor** at **9600 Baud**.
+3. Rotate **Pot 1 (A0)** to vary the duty cycle. The serial monitor prints live ICR1 and OCR1A values.
+4. Rotate **Pot 2 (A1)** to switch between frequency presets: `100 Hz → 500 Hz → 1 kHz → 5 kHz → 10 kHz → 25 kHz`.
+5. Connect an oscilloscope probe to **Pin 9** to measure the actual waveform.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
@@ -7579,7 +12085,29 @@ OCR1A = (uint16_t)((dutyCycle / 100.0) * (icr + 1));
 
 Welcome to Day 59! Today we build a **precision power monitoring station** using two complementary sensing methods: the **INA219 I2C current-sense IC** for high-accuracy bus voltage/current/power readings, and a **resistor-divider circuit** feeding the Arduino's raw 10-bit ADC for general-purpose voltage rail surveillance. We read the INA219 without any external library — directly over I2C by writing calibration values and reading measurement registers.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Monitoring power is critical for:
+* **Battery Management Systems (BMS):** Track state-of-charge and over-current faults.
+* **Switching Regulators:** Monitor load current to detect inefficiency or overload.
+* **Solar/Energy Harvest Systems:** Measure input and output power for MPPT algorithms.
+* **Lab Power Supplies:** Display live voltage and current on a monitor.
+
+Without a dedicated IC, accurate current measurement requires precise analog circuitry and differential amplifiers. The INA219 integrates a 12-bit ADC, programmable gain amplifier (PGA), and calibration-based I2C registers into a single $1 package.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7600,18 +12128,56 @@ $$\text{Cal} = \text{trunc}\left(\frac{0.04096}{0.001 \times 0.1}\right) = \text
 ### 3. Converting Raw Registers to Physical Values
 
 | Register | LSB | Conversion |
-| : | :
+| :--- | :--- | :--- |
+| **Bus Voltage** (Bits 15:3) | 4 mV | `BusV = (Raw >> 3) × 0.004` |
+| **Shunt Voltage** (Signed) | 10 µV = 0.01 mV | `ShuntV_mV = Raw × 0.01` |
+| **Current** (Signed, calibrated) | $I_{LSB}$ = 1 mA | `Current_mA = Raw × 1.0` |
+| **Power** (Unsigned, calibrated) | $20 \times I_{LSB}$ = 20 mW | `Power_mW = Raw × 20` |
+| **Load Voltage** | Derived | `LoadV = BusV + ShuntV` |
+
+### 4. Resistor Divider for High-Voltage Rail Monitoring
+To safely measure voltages above 5V, a resistor divider scales the voltage down:
+$$V_{pin} = V_{rail} \times \frac{R2}{R1 + R2} < 5\,\text{V (safe for ADC)}$$
+
+Reconstructing $V_{rail}$ from the ADC reading:
+$$V_{rail} = \frac{ADC\_count \times V_{ref}}{1023} \times \frac{R1 + R2}{R2}$$
+
+With $R1 = 47\,\text{k}\Omega$, $R2 = 5.1\,\text{k}\Omega$:
+$$\text{Ratio} = \frac{47000 + 5100}{5100} \approx 10.22$$
+$$V_{rail,max} = 5.0 \times 10.22 \approx 51\,\text{V}$$
+
+The Arduino ADC at $V_{ref} = 5\,\text{V}$ provides $\frac{5\,\text{V}}{1023} \approx 4.88\,\text{mV}$ resolution per step.
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | : | : | : |
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Main controller |
+| INA219 Breakout Module | 1 | Precision current/power sensing |
+| 0.1 Ω Shunt Resistor (1W+) | 1 | In-series current sensing |
+| 47 kΩ Resistor | 1 | Divider top (R1) |
+| 5.1 kΩ Resistor | 1 | Divider bottom (R2) |
+| Breadboard + Jumpers | 1 | Wiring |
+
+### INA219 Alternatives
+
+| Chip | Interface | Max Voltage | Max Current | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **INA219** | I2C | 26 V | ~3.2 A (with shunt) | Our choice, simple calibration |
 | INA226 | I2C | 36 V | Same | 16-bit ADC, higher accuracy |
 | INA3221 | I2C | 26 V/channel | Same | 3 channels simultaneously |
 | ACS712 | Analog | Any | 5/20/30 A | Hall-effect, no shunt needed |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+### INA219 Wiring
+
+| INA219 Pin | Connect to | Note |
+| :--- | :--- | :--- |
 | **VCC** | **3.3V or 5V** | Both logic levels supported |
 | **GND** | **GND** | |
 | **SDA** | **A4** | I2C Data |
@@ -7628,12 +12194,23 @@ Rail Voltage (+) ──── R1 (47k) ──┬──── R2 (5.1k) ───
 ```
 > ⚠️ **CAUTION:** R2 must be chosen so that $V_{pin} < 5\,\text{V}$ at **maximum** expected rail voltage. Always add a 5.1V Zener clamp across R2 for protection against voltage spikes.
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload [Day_59_Voltage_Monitor.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_59_Voltage_Monitor/Day_59_Voltage_Monitor.ino).
+2. Open **Serial Monitor** at **9600 Baud**.
+3. Connect the INA219 IN+ / IN- across a small load (e.g., LED + resistor on a 9V battery).
+4. Observe live readings: Bus Voltage, Shunt Voltage, Current (mA), Power (mW).
+5. Connect an adjustable power supply (0–30V) to the resistor divider input on A0. Observe `Rail:` column scaling correctly.
+6. Exceed the `OVERVOLTAGE_THRESHOLD` (30V default) and watch the serial monitor flag `[OVER-VOLTAGE!]` and Pin 13 LED illuminate.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Current reads negative large value | Shunt polarity reversed | Swap IN+ and IN− on INA219 |
 | BusVoltage = 0V always | I2C address wrong | Run I2C scanner sketch; confirm A0/A1 address pins |
 | Rail voltage is 10x off | Wrong R1/R2 values in code | Update `R1` and `R2` constants to match your actual resistors |
@@ -7666,7 +12243,27 @@ writeRegister16(INA219_ADDR, REG_CALIBRATION, 4096);
 
 Welcome to Day 60! Today we turn our Arduino and a tiny OLED display into a **real-time oscilloscope**. We read the analog input on A0, build a 128-column pixel framebuffer in RAM, and render a live scrolling waveform on the SSD1306 128×64 OLED — completely without external display libraries, by writing directly to the SSD1306 I2C registers.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/OLED_Display.jpg" alt="OLED Display" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Oscilloscope.jpg" alt="Oscilloscope" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **No library needed:** Understanding the SSD1306 register interface teaches you how every display driver works under the hood.
+* **Practical tool:** You can now debug sensor signals, audio waveforms, PWM outputs, and any analog signal up to ~1 kHz with just an Arduino and an $3 OLED.
+* **Framebuffer technique:** Building a local RAM framebuffer before pushing to the display is the standard technique used in embedded graphics from microcontrollers to game consoles.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7702,25 +12299,72 @@ $$T_{frame} = 128 \times \text{sampleDelayUs} \;\mu\text{s}$$
 $$f_{sample} = \frac{10^6}{\text{sampleDelayUs}} \;\text{Hz}$$
 
 | `sampleDelayUs` | Sample Rate | Max Displayable Freq (Nyquist / 2) |
-| : | :
+| :--- | :--- | :--- |
+| 500 µs | 2 kHz | ~1 kHz |
+| 100 µs | 10 kHz | ~5 kHz |
+| 50 µs | 20 kHz | ~10 kHz |
+| 10 µs | 100 kHz | ~50 kHz (limited by ADC settling time) |
+
+### 4. Rising Edge Trigger
+Before each frame, we wait for the signal to cross the `TRIGGER_LEVEL` threshold (default: 512 = 2.5V) on a **rising edge**. This synchronizes the waveform to a consistent starting phase and prevents it from "scrolling" horizontally:
+
+```
+1. Wait for ADC to go below trigger
+2. Wait for ADC to go above trigger  ← Rising edge detected
+3. Start sampling 128 columns        ← Stable display frame
+```
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | : | : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Controller + ADC |
+| SSD1306 I2C OLED (128×64) | 1 | Display |
+| Signal source (potentiometer, audio, sensor) | 1 | A0 input |
+| 4.7 kΩ Resistors | 2 | I2C pull-ups (if not on breakout board) |
+
+### SSD1306 Alternatives
+
+| Display | Interface | Resolution | Notes |
+| :--- | :--- | :--- | :--- |
+| **SSD1306 0.96" OLED** | I2C | 128×64 | Our choice, abundant |
+| SH1106 1.3" OLED | I2C | 128×64 | Compatible with small register changes |
+| SSD1351 1.5" OLED | SPI | 128×128 | 16-bit color, faster |
+| ILI9341 TFT | SPI | 320×240 | Much faster, more complex |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | SSD1306 Pin | Arduino Pin | Description |
-| : | : | : |
+| :--- | :--- | :--- |
+| **VCC** | **3.3V** | Power (some modules support 5V) |
+| **GND** | **GND** | Ground |
+| **SDA** | **A4** | I2C Data |
+| **SCL** | **A5** | I2C Clock |
+
+| Signal Source | Arduino Pin | Description |
+| :--- | :--- | :--- |
 | **Pot Wiper / Audio / Sensor OUT** | **A0** | Analog signal input |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload [Day_60_OLED_Oscilloscope.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_60_OLED_Oscilloscope/Day_60_OLED_Oscilloscope.ino).
+2. Connect a potentiometer wiper to A0. Rotate it slowly — observe the waveform rise and fall on the OLED.
+3. Connect an audio line output (with a voltage divider to clamp to 0–5V) to A0. You should see audio waveforms live.
+4. Reduce `sampleDelayUs` from 500 to 100 to observe higher-frequency signals.
+5. Toggle `TRIGGER_ENABLE = false` to see the waveform scroll vs. stable with trigger.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Blank display | I2C address wrong | Change `OLED_ADDR` to `0x3D` |
 | Display garbled / flickering | I2C too fast | Remove `Wire.setClock(400000)` line (reverts to 100kHz) |
 | Waveform scrolls horizontally | No trigger lock | Ensure `TRIGGER_ENABLE = true` |
@@ -7758,7 +12402,27 @@ for (uint8_t col = 0; col < SCREEN_W; col++) {
 
 Welcome to Day 61! Today we implement **Inverse Kinematics (IK)** — the mathematical process of computing joint angles to reach a desired end-effector position in space. Using a **joystick to control a target point in Cartesian coordinates (x, y)**, the Arduino calculates the required shoulder and elbow servo angles in real-time using the geometric method (law of cosines + atan2). This is the fundamental algorithm behind all robotic arms from industrial welders to surgical robots.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **Forward Kinematics (FK):** *"Given joint angles, where is the tip?"* — easy.
+* **Inverse Kinematics (IK):** *"Given where I want the tip, what angles do I need?"* — much harder, requires math.
+
+Without IK, a joystick would control each servo angle independently. The arm's tip would move in arcs, not straight lines, and the user would need to know "how much to rotate joint 1 AND joint 2 simultaneously to move in the X direction" — almost impossible to use intuitively. With IK, the joystick controls a **Cartesian (x, y) coordinate** and the math figures out the rest.
+
+---
 
 ## 🔬 Physics & Mathematics — Step-by-Step Derivation
 
@@ -7794,17 +12458,52 @@ The arm can only reach points within an annulus:
 $$|L_1 - L_2| \leq d \leq L_1 + L_2$$
 
 | Boundary | Condition | Pose |
-| : | :
+| :--- | :--- | :--- |
+| **Outer radius** | $d = L_1 + L_2$ | Arm fully extended (singular) |
+| **Inner radius** | $d = |L_1 - L_2|$ | Arm fully folded back (singular) |
+| **Unreachable** | $d > L_1 + L_2$ | Outside workspace |
+
+### Step 5: Elbow-Up vs Elbow-Down
+Two geometrically valid solutions exist for any non-singular point:
+* **Elbow-Up:** $\theta_2 > 0$ (elbow bends upward, like a human arm)
+* **Elbow-Down:** $\theta_2 < 0$ (elbow bends downward/behind)
+
+The joystick button toggles between both solutions at runtime.
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | : | : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | IK computation |
+| MG90S or SG90 Servo (or larger) | 2 | Shoulder + Elbow joints |
+| Analog Joystick Module | 1 | Cartesian target input |
+| 3D-printed / cardboard arm links | 2 | L1 and L2 physical linkages |
+| External 5V / 2A power supply | 1 | Servos draw too much current for USB alone |
+
+### Servo Alternatives
+
+| Servo | Torque | Speed | Best For |
+| :--- | :--- | :--- | :--- |
+| **SG90** | 1.8 kg·cm | Fast | Light cardboard arm (our choice) |
+| MG995 | 11 kg·cm | Medium | Acrylic/metal arm |
+| Dynamixel AX-12 | 16.5 kg·cm | Controlled | Professional robotics |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | Component | Arduino Pin | Description |
-| : | :
+| :--- | :--- | :--- |
+| **Joystick VRx** | **A0** | X-axis (Cartesian X control) |
+| **Joystick VRy** | **A1** | Y-axis (Cartesian Y control) |
+| **Joystick SW** | **D2** | Button (elbow-up/down toggle) |
+| **Shoulder Servo** | **D9** | Servo PWM signal |
+| **Elbow Servo** | **D10** | Servo PWM signal |
+| **Servo Power** | **External 5V** | Do NOT power both servos from Arduino 5V pin |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -7816,7 +12515,12 @@ $$|L_1 - L_2| \leq d \leq L_1 + L_2$$
 6. Move the joystick to the extreme corner. The serial monitor shows `[CLAMPED - Out of workspace]` when the target is beyond reach.
 7. Press the joystick button to toggle elbow-up/elbow-down. The arm should flip to the mirror configuration.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Servos jitter violently at startup | Power supply underrated | Use dedicated 5V 2A supply for servos |
 | `NaN` in serial output | acos receiving value outside [-1, 1] | The `constrain(cos_theta2, -1, 1)` line prevents this — if NaN occurs, the link lengths may be wrong |
 | Arm tip doesn't reach corners | `L1`/`L2` constants don't match physical links | Measure links in mm and update code constants |
@@ -7852,7 +12556,28 @@ if (d > d_max) d = d_max;
 
 Welcome to Day 62! Today we implement a **bare-metal cooperative multitasking scheduler** on the Arduino — from scratch, no library, no RTOS. We define a **Task Control Block (TCB)** struct, an array of task descriptors with function pointers, and a **round-robin dispatcher** in `loop()` that calls each task at its configured period. This is exactly how embedded RTOS systems like FreeRTOS and Zephyr work at their core.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In most Arduino projects, `loop()` contains all the logic in a single sequential flow. This creates problems when:
+* You need **different update rates** (e.g., LED at 1 Hz, sensor at 100 Hz, OLED at 5 Hz).
+* A `delay()` call **blocks everything** — the sensor can't be read, the button can't be checked.
+* The project grows beyond one concept — the code becomes spaghetti.
+
+The solution real embedded engineers use is a **scheduler** — a central piece of code that decides which task runs when. Today we build one.
+
+---
 
 ## 🔬 Architecture Deep Dive
 
@@ -7892,17 +12617,46 @@ This is an **O(N) scan per loop iteration** — for N=5 tasks, this is negligibl
 ### 3. Cooperative vs Pre-Emptive — Key Differences
 
 | Property | **Cooperative (Our Design)** | Pre-Emptive (FreeRTOS) |
-| : | :
+| :--- | :--- | :--- |
+| **Context switch trigger** | Task voluntarily finishes | Timer ISR forces switch |
+| **RAM overhead** | Zero (no context save) | ~500+ bytes per task (stack) |
+| **Race conditions** | None — only one task runs at a time | Possible — requires mutexes |
+| **Worst-case latency** | Longest single task execution time | Timer tick period (e.g., 1 ms) |
+| **Best for** | Simple embedded projects | Complex real-time systems |
+
+### 4. CPU Load Analysis (Idle Cycles)
+The `Idle_Counter` task runs at 100 Hz. In 2 seconds, if the CPU were 100% free it would run `2000 / 10 = 200` times. The heartbeat reports the actual idle count, giving a rough **CPU slack indicator**:
+
+$$\text{CPU Load} \approx 1 - \frac{\text{Idle Cycles}}{200} \times 100\%$$
+
+The Heartbeat task also prints each task's average execution time in microseconds, allowing identification of which task dominates CPU time.
+
+### 5. Timing Jitter
+Because this is cooperative, task timing has jitter equal to the **worst-case execution time of any single task**. If Task A takes 5 ms to run, Task B scheduled at 10 ms may fire at 10 ms + 5 ms = 15 ms. For audio/motor control requiring sub-millisecond precision, use a **Timer ISR** instead.
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Main controller |
+| LED | 1 | Task 0 visual output (or use built-in D13) |
+| Push Button | 1 | Task 3 input (enable/disable LED task) |
+| 10 kΩ Resistor | 1 | Button pull-down (or use INPUT_PULLUP in code) |
+| Potentiometer / Sensor | 1 | Task 1 analog input on A0 |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | Component | Arduino Pin | Description |
-| : | :
+| :--- | :--- | :--- |
+| **LED Anode** | **D13** | Task 0 output (built-in LED OK) |
+| **Button** | **D2** | Task 3 input (pull to GND when pressed) |
+| **Sensor / Pot Wiper** | **A0** | Task 1 analog input |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -7913,12 +12667,23 @@ This is an **O(N) scan per loop iteration** — for N=5 tasks, this is negligibl
 5. Press the button — the LED Blink task will be **disabled** (LED goes off, `[Button] LED Blink task: DISABLED`). Press again to re-enable.
 6. Observe the `AvgUs` column in the heartbeat — `Heartbeat` itself should be the most expensive task (Serial.print overhead). All others should be <100 µs.
 
- | :
+---
+
+## 📈 Extending the Scheduler
+
+| Feature | How to Add |
+| :--- | :--- |
+| **New task** | Add a new `Task` entry to the `tasks[]` array and write the function |
+| **One-shot task** | Set `enabled = false` inside the task function after running |
+| **Priority** | Sort tasks by period (shorter period = higher priority) |
+| **Delayed start** | Initialize `lastRunMs = millis() + delayMs` instead of 0 |
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | LED never blinks | `task_ledBlink` not enabled or period misconfigured | Check `tasks[0].enabled = true` and `periodMs = 1000` |
 | All tasks delayed | One task contains a `delay()` call | Remove all `delay()` calls from task functions — use non-blocking timing |
 | Heartbeat shows 0 idle cycles | CPU is fully saturated | Increase task periods or remove heavy tasks |
@@ -7959,7 +12724,25 @@ for (int i = 0; i < NUM_TASKS; i++) {
 
 Welcome to Day 63! Today we implement the complete **Dallas/Maxim 1-Wire protocol** in pure software — no library, just direct bit-banging with microsecond-precision timing. The DS18B20 is a digital temperature sensor that communicates over a **single data wire** (plus ground), giving us a 12-bit temperature reading accurate to ±0.5°C, complete with **CRC-8 checksum** verification to detect any data corruption.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **1-Wire Protocol** was invented by Dallas Semiconductor (now Maxim/Analog Devices) to allow multiple sensors to share a single wire — every DS18B20 has a unique 64-bit ROM address burned at the factory.
+* Unlike I2C (needs 2 wires + pull-ups) or SPI (needs 4 wires), 1-Wire needs only **1 data wire** — useful for long-distance temperature sensing in buildings or pipelines.
+* The sensor delivers a **digital result** — no ADC calibration drift, no reference voltage errors, no op-amp needed.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -7968,7 +12751,18 @@ The DS18B20 converts temperature to a **12-bit signed integer** stored in two sc
 $$T_{°C} = \frac{raw_{signed16}}{16}$$
 
 | Bit weight | Bit 3 | Bit 2 | Bit 1 | Bit 0 | Bit -1 | Bit -2 | Bit -3 | Bit -4 |
-| : | : | : | : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Value | 8 | 4 | 2 | 1 | 0.5 | 0.25 | 0.125 | **0.0625** |
+
+Resolution = **0.0625°C per LSB** (1/16).
+
+**Example:** Raw = `0x00D0` = 208 decimal → 208 / 16 = **13.0°C**  
+**Example:** Raw = `0xFF5E` = -162 signed → -162 / 16 = **-10.125°C**
+
+### 2. 1-Wire Protocol Timing (Standard Speed)
+
+| Operation | Description | Timing |
+| :--- | :--- | :--- |
 | **Reset Pulse** | Master pulls LOW | ≥ 480 µs |
 | **Presence Pulse** | DS18B20 pulls LOW | 60–240 µs after reset released |
 | **Write 1** | Pull LOW < 15 µs, release | Total slot ≥ 60 µs |
@@ -7997,7 +12791,12 @@ $$G(x) = x^8 + x^5 + x^4 + 1 \quad (\text{Polynomial } = 0x31)$$
 
 If `crc8(scratchpad[0..7]) ≠ scratchpad[8]` → data was corrupted → discard reading.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Master controller |
 | DS18B20 TO-92 (or waterproof probe) | 1+ | Temperature sensing |
 | 4.7 kΩ Resistor | 1 | Pull-up on DQ line (mandatory) |
@@ -8006,7 +12805,14 @@ If `crc8(scratchpad[0..7]) ≠ scratchpad[8]` → data was corrupted → discard
 ### DS18B20 Alternatives
 
 | Sensor | Interface | Range | Accuracy | Notes |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **DS18B20** | 1-Wire | −55 to +125°C | ±0.5°C | Our choice, digital |
+| DS18S20 | 1-Wire | Same | ±0.5°C | 9-bit only, legacy |
+| DHT22 | Single-wire (own protocol) | −40 to 80°C | ±0.5°C | Humidity too |
+| LM35 | Analog | −55 to 150°C | ±0.5°C | No protocol, needs ADC |
+| MAX31855 | SPI | −200 to 1350°C | ±2°C | For thermocouples |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -8030,12 +12836,24 @@ Pin 3 (Right) = VDD (3.0–5.5V)
 ### Parasitic Power Mode (2-wire)
 Connect Pin 1 and Pin 3 both to GND. The DS18B20 draws power from the DQ line during HIGH periods. Requires a **strong pull-up** (MOSFET or 470Ω) during the 750ms conversion window — our code uses normal mode (3-wire, simpler).
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up per the diagram above. The 4.7kΩ pull-up is critical.
+2. Upload [Day_63_DS18B20_1Wire.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_63_DS18B20_1Wire/Day_63_DS18B20_1Wire.ino).
+3. Open **Serial Monitor** at **9600 Baud**.
+4. You should see temperature readings every second: `[Temp] 25.0625 °C  |  77.11 °F`
+5. Pinch the sensor body between your fingers — temperature should rise by several degrees within 30 seconds.
+6. Touch the sensor to an ice cube — temperature should drop toward 0°C.
+7. If you see `[ERROR] No device found or CRC mismatch!` — check the pull-up resistor and wiring.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | `No device found` every reading | Missing pull-up resistor | Add 4.7kΩ between DQ and 5V |
 | `CRC mismatch` occasionally | Long wire causing signal degradation | Shorten wire or add 100nF capacitor on DQ |
 | Temperature stuck at 85°C | Sensor powers up but conversion never completes | Ensure DQ pull-up is strong enough; check 750ms delay |
@@ -8080,7 +12898,24 @@ if (mix) crc ^= 0x8C; // Reflected polynomial 0x31
 
 Welcome to Day 64! Today we build a **capacitive touch sensor from scratch** — no dedicated touch IC, no library. Using just two Arduino pins and a resistor, we detect the electrical capacitance of the human body by measuring how long it takes to charge an RC circuit. This is exactly the principle behind every modern smartphone touchscreen, laptop trackpad, and capacitive button.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **Why not a mechanical button?** Capacitive touch has no moving parts (no wear), works through glass/plastic, can sense proximity, and enables gesture detection.
+* **Why no library?** Understanding the RC charge-time method shows you exactly how the `CapacitiveSensor` library works internally — the same technique used by chips like AT42QT1010 and TTP223.
+* **The body is a capacitor:** The human body has a capacitance of roughly 100–300 pF. When you touch a metal electrode, your body adds this capacitance to the circuit, lengthening the RC charge time — which our code measures.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -8094,19 +12929,76 @@ $$t_{charge} = -R \times C \times \ln\!\left(1 - \frac{V_{IH}}{V_{CC}}\right) \a
 ### 2. Touch Effect on Charge Time
 
 | State | Capacitance | Approximate Charge Time |
-| : | :
+| :--- | :--- | :--- |
+| **No touch** | $C_{stray} \approx 10{-}50\,\text{pF}$ | Baseline count (short) |
+| **Touch** | $C_{stray} + C_{body} \approx 100{-}350\,\text{pF}$ | Baseline + Delta (longer) |
+
+With $R = 1\,\text{M}\Omega$ and $C_{body} = 200\,\text{pF}$:
+$$\Delta t = 0.693 \times 1\,\text{M}\Omega \times 200\,\text{pF} = 0.693 \times 200\,\mu\text{s} = 138.6\,\mu\text{s}$$
+
+This is easily measurable by counting Arduino loop iterations.
+
+### 3. Measurement Algorithm (Loop Counter Method)
+
+```
+DISCHARGE:  pinMode(SENSE, OUTPUT) → LOW for 10 µs  (discharge stray C)
+CHARGE:     pinMode(SENSE, INPUT)
+            digitalWrite(SEND, HIGH)
+COUNT:      While SENSE == LOW: count++          (charge-time proxy)
+RESET:      Drive SENSE LOW again
+
+Repeat N=30 times, average count → one reading
+```
+
+The raw count is proportional to RC charge time. The absolute value varies by MCU clock speed and loop overhead — that's why we use a **delta from baseline** rather than absolute values.
+
+### 4. Auto-Calibration
+At startup, 50 samples are taken with no touch to establish the baseline. Touch detection uses:
+$$\text{Delta} = \text{reading} - \text{baseline} > \text{TOUCH\_THRESHOLD}$$
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | : | : |
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Controller + measurement |
+| 1 MΩ Resistor | 1 | RC series resistor (D4 → D5) |
+| Metal foil / wire / copper tape | 1 | Touch electrode (connects to D5) |
+| 47 pF Capacitor | 1 | Optional: noise filter on D5 to GND |
+
+> 💡 **Resistor Value Guide:** Use 1 MΩ for close-proximity detection (touch required), 10 MΩ for proximity (hover 1–2 cm away), 100 kΩ for very fast response (must touch firmly).
+
+### Dedicated Touch IC Alternatives
+
+| IC | Interface | Notes |
+| :--- | :--- | :--- |
 | **Our software method** | GPIO (2 pins + R) | Free, flexible, no extra IC |
 | TTP223 | GPIO output | Single-channel, self-calibrating |
 | AT42QT1010 | GPIO output | More robust, industrial |
 | MPR121 | I2C | 12-channel, supports proximity |
 | FT5336 | I2C | Capacitive multi-touch panel IC |
 
- | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+```
+Arduino D4 ──── 1 MΩ ──── Arduino D5 ──── Touch Electrode (foil/wire)
+                                │
+                               [47 pF optional, to GND]
+Arduino D13 ──── LED ──── 220Ω ──── GND  (touch indicator)
+```
+
+| Component | Arduino Pin |
+| :--- | :--- |
+| **SEND_PIN** (driver) | **D4** |
+| **SENSE_PIN** (measurement) | **D5** |
+| **Touch LED** | **D13** |
+| Resistor | Between D4 and D5 |
+| Electrode | Connected to D5 |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8116,10 +13008,15 @@ $$t_{charge} = -R \times C \times \ln\!\left(1 - \frac{V_{IH}}{V_{CC}}\right) \a
 4. **Do NOT touch the electrode during startup** — the baseline calibration runs for ~1 second.
 5. After calibration, observe the baseline count printed.
 6. Touch the electrode — `[CapTouch] *** TOUCH DETECTED ***` and LED D13 lights up.
-7. Release — `[CapTouch] ` and LED goes off.
+7. Release — `[CapTouch] --- Released ---` and LED goes off.
 8. The `Delta` column shows how much charge time increased due to your body capacitance.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Always shows TOUCHED | Baseline too low / resistor wrong | Use exactly 1 MΩ; run calibration without touching |
 | Never shows TOUCHED | Threshold too high or electrode too small | Lower `TOUCH_THRESHOLD` to 50; make electrode larger |
 | Erratic readings | Electrical noise / fluorescent lights | Add 47 pF cap D5 to GND; shield electrode wire |
@@ -8158,14 +13055,34 @@ bool isTouched = (delta > TOUCH_THRESHOLD);
 
 Welcome to Day 65! Today we build a **servo motion recorder** that saves a sequence of servo positions to the Arduino's internal EEPROM and replays them on demand — even after powering off and back on. Move the servo manually with a potentiometer, hold the Record button, release, then press Play at any time (days later if you like) and the servo exactly reproduces your motion. This is the fundamental concept behind **teach-and-play** industrial robots.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **Non-volatile storage:** EEPROM retains data when power is removed — unlike RAM which is wiped every reset.
+* **Motion automation:** "Teaching" a robot arm by hand, then having it repeat that motion precisely, is one of the oldest and most practical robotics paradigms.
+* **Cost zero:** The ATmega328P has 1024 bytes of built-in EEPROM — no external memory chip needed for small motion sequences.
+
+---
 
 ## 🔬 Physics & Technology Deep Dive
 
 ### 1. ATmega328P EEPROM Facts
 
 | Parameter | Value |
-| : |
+| :--- | :--- |
 | **Capacity** | 1024 bytes |
 | **Write endurance** | 100,000 cycles per cell (rated) |
 | **Data retention** | 20+ years at 25°C |
@@ -8176,17 +13093,58 @@ Welcome to Day 65! Today we build a **servo motion recorder** that saves a seque
 ### 2. EEPROM Memory Map
 
 | Address | Content | Notes |
-| : | :
+| :--- | :--- | :--- |
+| **0** | Frame count (uint8) | Number of recorded positions |
+| **1–253** | Servo angles (uint8, 0–180°) | One byte per frame |
+| **254** | Magic sentinel = `0xA5` | Confirms valid recording exists |
+| **255–1023** | Unused | Available for future expansion |
+
+### 3. Sampling Rate & Duration Math
+With `RECORD_INTERVAL_MS = 50` ms (20 Hz):
+$$\text{Max Recording Duration} = 253 \text{ frames} \times 50\,\text{ms} = 12.65\,\text{seconds}$$
+$$\text{Resolution} = 180° / 253 \approx 0.71°\text{ per byte}$$
+
+Each servo angle (0–180°) fits in one byte — a perfect match for EEPROM's byte-addressable nature.
+
+### 4. EEPROM Wear Calculation
+Each recording overwrites 254 bytes. The EEPROM is rated for 100,000 write cycles per cell:
+$$\text{Recordings before wear-out} = 100{,}000 \text{ writes per byte}$$
+$$\text{At 10 recordings/day} \rightarrow \frac{100{,}000}{10} = 10{,}000\,\text{days} \approx 27\,\text{years}$$
+
+> For higher-frequency write applications, implement a **wear-leveling page pointer** that rotates write addresses across unused EEPROM space.
+
+### 5. Magic Sentinel Pattern
+Byte 254 stores `0xA5`. On startup, we check this byte. If it equals `0xA5`, a valid recording exists. If not (e.g., fresh chip or corrupted write), we refuse to play garbage data. This is the same pattern used by bootloaders and embedded filesystems.
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Controller + EEPROM |
+| SG90 or MG90S Servo | 1 | Motion output |
+| 10 kΩ Potentiometer | 1 | Manual servo control input |
+| Push Button × 2 | 2 | Record / Playback |
+| LED × 2 | 2 | Record (D12) / Playback (D11) status |
+| 220 Ω Resistors | 2 | LED current limiting |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | Component | Arduino Pin | Description |
-| : | :
+| :--- | :--- | :--- |
+| **Pot Wiper** | **A0** | Servo position control |
+| **Servo Signal** | **D9** | PWM servo drive |
+| **RECORD Button** | **D2** | Hold to record (INPUT_PULLUP) |
+| **PLAY Button** | **D3** | Press to replay (INPUT_PULLUP) |
+| **Record LED** | **D12** | Lights during recording |
+| **Play LED** | **D11** | Lights during playback |
+
+Buttons: one leg to the pin, other leg to GND. `INPUT_PULLUP` handles the pull-up resistor internally.
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8202,7 +13160,12 @@ Welcome to Day 65! Today we build a **servo motion recorder** that saves a seque
    - The servo replicates your exact motion at the exact same speed.
    - Even after powering off and back on, pressing PLAY replays the motion!
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | `No valid recording found` on first run | EEPROM_MAGIC not written yet | Record a motion first |
 | Playback speed is wrong | `RECORD_INTERVAL_MS` mismatch | Ensure the same constant value for both record and play |
 | Servo jitters during recording | Power supply too weak | Use external 5V 1A+ for servo |
@@ -8242,7 +13205,24 @@ if (EEPROM.read(EEPROM_MAGIC_ADDR) == EEPROM_MAGIC) {
 
 Welcome to Day 66! Today we drive an 8×8 LED matrix (64 individual LEDs) using the **MAX7219 LED driver IC** controlled exclusively through **direct SPI register writes** — no library. We initialize the chip's internal multiplexer, set brightness and scan limits via its register map, maintain an 8-byte framebuffer in RAM, and render three animations: **scrolling text**, **bouncing ball physics**, and a **Knight Rider scanning effect**.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **Why MAX7219?** Driving 64 LEDs from an Arduino directly would require 8 shift registers or 64 GPIO pins. The MAX7219 handles all row/column multiplexing internally, freeing the MCU to simply write one byte per row over SPI.
+* **Why SPI?** Serial communication is efficient: just 3 wires (MOSI, CLK, CS) control the entire display. Multiple MAX7219 chips can be **daisy-chained** — each chip passes data through its DOUT pin to the next chip's DIN.
+* **Why a framebuffer?** Maintaining an 8-byte array in MCU RAM lets us compose complex graphics (text, sprites, physics) before committing them to the display in a single flush operation.
+
+---
 
 ## 🔬 Physics & Hardware Architecture
 
@@ -8260,7 +13240,7 @@ At 800 Hz, flicker is completely invisible (human eye can detect up to ~60 Hz fl
 ### 2. MAX7219 Register Map
 
 | Reg Address | Name | Value | Description |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | `0x00` | No-Op | — | Used for daisy-chaining (sends data to next chip) |
 | `0x01`–`0x08` | Row 1–8 | 8-bit | Each bit = one column LED (1=on, 0=off) |
 | `0x09` | Decode Mode | `0x00` | Raw LED mode (no BCD decode) |
@@ -8284,17 +13264,57 @@ The MAX7219 uses **pulse-width modulation** on each LED:
 $$\text{On-time ratio} = \frac{\text{Intensity} + 1}{32}$$
 
 | Intensity Value | Duty Cycle | Appearance |
-| : | :
+| :--- | :--- | :--- |
+| 0x00 | 1/32 (~3%) | Very dim |
+| 0x04 | 5/32 (~15%) | Low (our default) |
+| 0x08 | 9/32 (~28%) | Medium |
+| 0x0F | 16/32 (50%) | Full brightness |
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | : | : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | SPI master |
+| MAX7219 + 8×8 LED matrix module | 1 | LED driver + display |
+| 100 nF capacitor | 1 | Decoupling (VCC–GND, close to MAX7219) |
+| 10–100 µF electrolytic cap | 1 | Bulk decoupling |
+
+> Most "MAX7219 8×8 LED matrix modules" from breakout vendors include the resistors and capacitors pre-soldered.
+
+### Alternatives
+
+| Driver | Interface | Max LEDs | Notes |
+| :--- | :--- | :--- | :--- |
+| **MAX7219** | SPI | 64 | Our choice, chainable |
+| MAX7221 | SPI | 64 | Serial select enable, lower noise |
+| HT16K33 | I2C | 128 | Adafruit backpack, I2C |
+| TLC5940 | SPI | 16×12-bit PWM | Full 12-bit brightness per channel |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | MAX7219 Pin | Arduino Pin | Description |
-| : | :
+| :--- | :--- | :--- |
+| **DIN** | **D11 (MOSI)** | SPI Data In |
+| **CLK** | **D13 (SCK)** | SPI Clock |
+| **LOAD (CS)** | **D10** | Chip Select / Latch |
+| **VCC** | **5V** | Power |
+| **GND** | **GND** | Ground |
+
+Add a **100 nF cap** between VCC and GND as close as possible to the MAX7219 chip to suppress power supply noise.
+
+### Daisy-Chaining Multiple MAX7219s
+```
+Arduino MOSI → Chip 1 DIN     Arduino CS → Chip 1 LOAD
+               Chip 1 DOUT → Chip 2 DIN  Chip 1 LOAD → Chip 2 LOAD
+                              Chip 2 DOUT → ... etc.
+```
+To address Chip 2, send a 32-bit word: `[Chip2_Reg][Chip2_Data][NOOP][NOOP]`.
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8304,7 +13324,12 @@ $$\text{On-time ratio} = \frac{\text{Intensity} + 1}{32}$$
 4. **Bouncing ball:** A single LED pixel bounces around the matrix with realistic wall reflections.
 5. **Knight Rider scan:** Full rows of 8 LEDs scan up and down repeatedly.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Display stays dark | Shutdown register not set to 0x01 | Check `maxWrite(REG_SHUTDOWN, 0x01)` in `setup()` |
 | Partial rows lit / random patterns | SPI wiring wrong | Confirm DIN→D11, CLK→D13, LOAD→D10 |
 | Display too dim | Intensity too low | Increase `maxWrite(REG_INTENSITY, 0x0F)` |
@@ -8343,7 +13368,25 @@ if (colByte & (1 << row)) {
 
 Welcome to Day 67! Today we build a **precision RPM tachometer** using the ATmega328P's **Timer1 Input Capture Unit (ICU)** — a hardware peripheral that timestamps edges on a pin with zero software latency. A Hall Effect sensor detects magnets on a rotating shaft and the ICU records the exact timer count at each pulse, giving us period measurements accurate to **0.5 µs** — far more precise than any software interrupt approach.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+* **Software interrupts** (using `attachInterrupt`) have latency jitter of 2–10 µs depending on what code is running. At 10,000 RPM, a pulse arrives every 6 ms — 10 µs jitter is already 0.17% error.
+* **Input Capture Unit** latches the timer value the **instant** the edge occurs in hardware — before the ISR even starts. This eliminates interrupt latency entirely.
+* **Hall Effect sensors** are non-contact, wear-free, and work at high speed through plastic enclosures — used in automotive wheel speed sensors, brushless motor ESCs, washing machine speed control, and industrial tachometers.
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -8363,7 +13406,7 @@ $$\text{RPM} = \frac{60}{\text{Period}_{sec} \times N_{magnets}}$$
 With Prescaler = 8 → $f_{tick} = 2\,\text{MHz}$ → **0.5 µs per tick**:
 
 | RPM | Period (ms) | Period (ticks) | Overflow risk? |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | 10,000 | 6 ms | 12,000 | No |
 | 1,000 | 60 ms | 120,000 | No |
 | 100 | 600 ms | 1,200,000 | Yes — ~18 overflows |
@@ -8382,12 +13425,17 @@ Setting `ICNC1 = 1` enables a 4-sample majority filter on the ICP1 pin. The capt
 ### 5. Input Capture vs External Interrupt Comparison
 
 | Method | Timestamp Accuracy | CPU Load | Best For |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **Timer1 ICU (our choice)** | **Hardware — zero jitter** | **Very low (1 ISR per pulse)** | **Precision tachometry, frequency measurement** |
 | `attachInterrupt()` + `micros()` | ±2–10 µs software jitter | Low | Simple counting, debounced events |
 | Polling in `loop()` | Worst (misses pulses) | High | Only for very slow events |
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | ICU measurement |
 | Hall Effect Sensor (A3144 or SS49E) | 1 | Magnetic pulse detection |
 | Small Neodymium Magnet(s) | 1+ | Mounted on rotating shaft |
@@ -8397,13 +13445,29 @@ Setting `ICNC1 = 1` enables a 4-sample majority filter on the ICP1 pin. The capt
 ### Hall Sensor Alternatives
 
 | Sensor | Type | Output | Notes |
-| : | : |
+| :--- | :--- | :--- | :--- |
 | **A3144** | Unipolar | Digital (open-collector) | Our choice, requires pull-up |
 | SS49E | Linear | Analog | Measures field strength — not digital |
 | AH3503 | Ratiometric | Analog | For absolute position |
 | HMC5883L | 3-axis magnetometer | I2C | Different use case |
 
+---
 
+## 🔌 Pin-to-Pin Wiring
+
+```
+Hall Sensor VCC ──── 5V
+Hall Sensor GND ──── GND
+Hall Sensor OUT ─┬── D8 (ICP1 — Input Capture Pin, mandatory)
+                 │
+               10kΩ ──── 5V  (pull-up for open-collector output)
+```
+
+> ⚠️ **Pin 8 (ICP1) is MANDATORY.** The hardware Input Capture Unit is hardwired to this pin on the ATmega328P. No other pin will work without modifying the architecture.
+
+Magnet mounting: glue one small neodymium disc magnet to the side of your motor shaft, wheel, or fan blade. Position the Hall sensor 1–5 mm away with the sensor face toward the magnet.
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8415,7 +13479,12 @@ Setting `ICNC1 = 1` enables a 4-sample majority filter on the ICP1 pin. The capt
 6. Stop the motor — after 2 seconds: `[TACHO] Motor STOPPED or RPM < 1`.
 7. For multiple magnets: change `MAGNETS_PER_REV` to 2, 4, etc. to get correct RPM.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | No readings | Wrong pin | Sensor must connect to **Pin 8 (ICP1)** |
 | RPM is 2× too high | 2 magnets mounted but `MAGNETS_PER_REV = 1` | Set `MAGNETS_PER_REV = 2` |
 | Wildly fluctuating readings | No noise canceller or long unshielded wire | `ICNC1` is enabled — shorten sensor wire |
@@ -8449,7 +13518,34 @@ uint32_t periodTicks = ((uint32_t)oflows << 16) + (uint32_t)cap - (uint32_t)last
 
 Welcome to Day 68! Today we master **stepper motor microstepping** — the technique that makes 3D printers, CNC routers, and camera sliders move smoothly and silently. We configure all five microstepping modes on the **A4988 driver** (Full / Half / ¼ / ⅛ / 1/16 step) by toggling the MS1/MS2/MS3 pins, and implement a **trapezoidal velocity profile** to accelerate and decelerate without skipping steps.
 
- | : | :
+---
+
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+A NEMA 17 stepper motor has 200 full steps per revolution (1.8° per step). In **full-step mode**, the rotor physically jumps between positions — causing vibration, resonance at certain speeds, and loud operation.
+
+**Microstepping** solves this by energizing both motor coils simultaneously with varying current levels (approximating a sine wave), creating intermediate virtual steps between the physical poles:
+
+| Mode | Steps/Rev | Angular Resolution | Smoothness |
+| :--- | :--- | :--- | :--- |
+| **Full Step** | 200 | 1.800° | Vibrates, loud |
+| **Half Step** | 400 | 0.900° | Smoother |
+| **1/4 Step** | 800 | 0.450° | Good |
+| **1/8 Step** | 1600 | 0.225° | Very smooth |
+| **1/16 Step** | 3200 | 0.113° | Silky — used in 3D printers |
+
+---
 
 ## 🔬 Physics & Mathematics
 
@@ -8465,17 +13561,83 @@ The rotor aligns to the combined magnetic field vector, stopping at $N$ intermed
 ### 2. A4988 MS Pin Truth Table
 
 | MS1 | MS2 | MS3 | Mode | Steps/Rev (1.8°) |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| LOW | LOW | LOW | Full | 200 |
+| HIGH | LOW | LOW | Half | 400 |
+| LOW | HIGH | LOW | 1/4 | 800 |
+| HIGH | HIGH | LOW | 1/8 | 1600 |
+| HIGH | HIGH | HIGH | 1/16 | 3200 |
+
+### 3. Trapezoidal Velocity Profile
+Accelerating instantly to full speed risks losing steps under load inertia. The trapezoidal profile ramps speed linearly:
+
+```
+Speed (steps/s)
+  ┌──────────────────────────────────────┐
+  │      ┌──────────CRUISE──────────┐    │
+  │  ACC/                            \DEC │
+  │ /                                  \  │
+  └──────────────────────────────────────┘
+       Time →
+```
+
+The step period (µs between steps) is linearly interpolated:
+$$\text{period}(i) = \text{START\_DELAY} - \frac{i}{\text{ACCEL\_STEPS}} \times (\text{START\_DELAY} - \text{MIN\_DELAY})$$
+
+### 4. Current Sensing (A4988 VREF)
+The A4988 limits coil current via a sense resistor. The current limit is set by trimming the VREF potentiometer on the driver board:
+$$I_{max} = \frac{V_{REF}}{8 \times R_{sense}}$$
+
+For typical A4988 boards with $R_{sense} = 0.1\,\Omega$:
+$$I_{max} = \frac{V_{REF}}{0.8}$$
+
+Set $V_{REF} = 0.4\,\text{V}$ for $I_{max} = 0.5\,\text{A}$ (good for NEMA 17 at lower torque). Measure VREF between the trimmer and GND.
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | : | : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Controller |
+| A4988 Stepper Driver | 1 | Current-controlled microstepping |
+| NEMA 17 Stepper Motor | 1 | 1.8°, 200 steps/rev |
+| 12V DC Power Supply (≥ 1A) | 1 | Motor voltage (VMOT) |
+| 100 µF Electrolytic Capacitor | 1 | VMOT decoupling (prevents voltage spikes) |
+| 10 kΩ Potentiometer | 1 | Speed control |
+| Push Button | 1 | Mode cycling |
+
+> ⚠️ **CRITICAL: Connect the 100 µF capacitor between VMOT and GND BEFORE powering on.** Without it, back-EMF from the motor can spike and destroy the A4988 permanently.
+
+### Alternatives to A4988
+
+| Driver | Max Current | Microstepping | Notes |
+| :--- | :--- | :--- | :--- |
+| **A4988** | 2A | 1/16 | Our choice |
+| DRV8825 | 2.5A | 1/32 | Higher resolution |
+| TMC2208 | 1.4A RMS | 1/256 | Virtually silent (StealthChop) |
+| TB6600 | 4A | 1/32 | For larger NEMA 23/34 motors |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | A4988 Pin | Arduino / Supply | Description |
-| : | :
+| :--- | :--- | :--- |
+| **STEP** | **D3** | Step pulse |
+| **DIR** | **D4** | Direction |
+| **MS1** | **D5** | Microstep bit 0 |
+| **MS2** | **D6** | Microstep bit 1 |
+| **MS3** | **D7** | Microstep bit 2 |
+| **ENABLE** | **D8** | Active-LOW enable |
+| **RESET** | **5V** | Must be HIGH |
+| **SLEEP** | **5V** | Must be HIGH |
+| **VMOT** | **12V supply** | Motor power (with 100µF cap to GND) |
+| **VDD** | **5V** | Logic power |
+| **GND** | **GND** | Both GND pins |
+| **1A/1B/2A/2B** | Motor coils | Refer to motor datasheet |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8486,7 +13648,12 @@ The rotor aligns to the combined magnetic field vector, stopping at $N$ intermed
 5. Press **D2 button** to cycle through step modes. Observe in serial: `[Mode] 1/16 Step (3200/rev)`.
 6. **Listen:** Full step is loud and jittery; 1/16 step is nearly silent and buttery smooth.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Motor doesn't move | ENABLE pin not driven LOW | Check `digitalWrite(ENABLE_PIN, LOW)` before stepping |
 | Motor vibrates but doesn't rotate | Wrong coil wiring (1A/1B/2A/2B) | Swap either 1A↔1B or 2A↔2B |
 | Motor skips steps at high speed | MIN_DELAY_US too small or VREF too low | Increase `MIN_DELAY_US` or raise VREF |
@@ -8525,7 +13692,34 @@ if (i < accelSteps) {
 
 Welcome to Day 69! Today we dive deep into low-level digital communication protocols. Instead of using standard, high-level libraries (like the Adafruit DHT library), we will build a **custom single-wire, half-duplex bit-bang parser** from scratch for the **DHT22 (AM2302) sensor**. We will also calculate the local **Dew Point** using the Magnus Formula and the **Heat Index (Feels Like)** using the Steadman/Rothfusz regression equation.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+The DHT22 (AM2302) is a popular, low-cost digital temperature and humidity sensor. In robotics and automation, monitoring environmental conditions is key for:
+1. **HVAC Systems**: Climate control inside robotic enclosures or smart greenhouses.
+2. **Predictive Maintenance**: Detecting moisture build-up or overheating near sensitive electronics.
+3. **Sensor Fusion**: Calibrating other sensors (like sound speed for ultrasonic rangefinders, which depends on air temperature).
+
+Rather than using a library, writing the driver ourselves helps us understand:
+- Exact microsecond-level GPIO control.
+- Half-duplex communication (where a single pin switches dynamically between output and input).
+- Direct pulse-width modulation decoding.
+- Data verification via checksum validation.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -8569,25 +13763,46 @@ The 40 bits are grouped into 5 bytes:
   *(Where $a = 17.625$ and $b = 243.04\,\text{°C}$)*
 - **Heat Index (Feels Like)**: Calculated using the Steadman/Rothfusz multi-parameter regression formula, which estimates how hot the air actually feels to human skin by incorporating humidity.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | DHT22 (AM2302) Sensor | 1 | High-accuracy temperature/humidity sensor |
 | 10 kΩ Resistor | 1 | Pull-up resistor (VCC to DATA) |
 | Breadboard | 1 | Prototyping board |
 | Jumper Wires | 4 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| DHT22 Pin | Arduino Uno / Supply | Description |
+| :--- | :--- | :--- |
 | **Pin 1 (VDD)** | **5V or 3.3V** | Power Supply |
 | **Pin 2 (DATA)** | **D2** | Data I/O (Connect 10kΩ resistor from Pin 2 to VDD) |
 | **Pin 3 (NC)** | **Not Connected** | Leave open |
 | **Pin 4 (GND)** | **GND** | Ground |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the circuit as described, ensuring the 10 kΩ pull-up resistor is in place.
+2. Open the Arduino IDE, load [Day_69_DHT22_Custom_Protocol.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_69_DHT22_Custom_Protocol/Day_69_DHT22_Custom_Protocol.ino), and select the appropriate Port.
+3. Open the **Serial Monitor** at **9600 Baud**.
+4. Observe the environmental logs printed every 2.5 seconds:
+   `[DHT22] Temp: 24.5°C / 76.1°F | RH: 55.2% | HeatIdx: 25.1°C | DewPt: 14.8°C`
+5. Breathe gently onto the sensor; you should immediately see the Relative Humidity (RH) and Dew Point values increase on the next samples.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | `ERROR: Read failed (timeout...)` | Data pin not connected or floating | Ensure Pin D2 is securely connected. Check 10kΩ pull-up resistor. |
 | `ERROR: Read failed` (checksum mismatch) | Timing jitter or signal noise | Ensure wires are short. Disable interrupts if other modules cause delays. |
 | Sensor returns `0.0` or stale values | Read requested too quickly | DHT22 needs at least 2 seconds between reads. Verify the program waits 2.5s. |
@@ -8622,7 +13837,31 @@ if (data[2] & 0x80) tempC = -tempC;
 
 Welcome to Day 70! Today we build an industrial-grade **RFID Access Control Logging System** by integrating the **MFRC522 RFID reader** (SPI) and the **DS3231 Real-Time Clock** (I2C) with the Arduino's built-in non-volatile **EEPROM**. We implement a secure user database, a wear-leveling log ring buffer, a standalone "Program Mode" to manage user cards without recompiling, and a non-blocking indicator system.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/RFID.jpg" alt="RFID" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In robotics and mechatronics, secure authentication and tracking are vital:
+1. **Robot Operator Safety**: Restricting operation of heavy or dangerous robotic systems (e.g., CNC machines, robot arms, AGVs) to certified operators scanning their personal RFID badges.
+2. **AGV/AMR Navigation**: Automated Guided Vehicles (AGVs) often use RFID tags embedded in warehouse floors to identify stations, execute local commands, or log positional telemetry.
+3. **Audit Trails**: Security logs document exactly who operated a system and when.
+
+This project creates a standalone security system. Instead of hardcoding card UIDs or relying on a PC connection, the Arduino manages its own local user database and logs events directly to non-volatile EEPROM memory.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -8663,7 +13902,12 @@ ATmega328P EEPROM is rated for 100,000 write cycles per byte. To prevent prematu
   - A checksum is calculated and stored with every log to verify data integrity:
     $$\text{Checksum} = \sum (\text{struct bytes}) - \text{checksum field}$$
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Main Controller |
 | MFRC522 RFID Reader | 1 | 13.56 MHz RFID Transceiver |
 | DS3231 RTC Module | 1 | I2C Real-Time Clock |
@@ -8675,7 +13919,12 @@ ATmega328P EEPROM is rated for 100,000 write cycles per byte. To prevent prematu
 
 > ⚠️ **CRITICAL: The MFRC522 module MUST be powered by the Arduino 3.3V rail. Connecting VCC to 5V will permanently burn out the MFRC522 transceiver chip!**
 
- | : | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| MFRC522 Pin | DS3231 Pin | LED Pin | Arduino Pin | Description |
+| :--- | :--- | :--- | :--- | :--- |
 | **3.3V** | - | - | **3.3V** | Power (MFRC522 ONLY) |
 | **GND** | **GND** | Cathodes | **GND** | Ground bus |
 | **RST** | - | - | **D9** | Reset control |
@@ -8689,12 +13938,38 @@ ATmega328P EEPROM is rated for 100,000 write cycles per byte. To prevent prematu
 | - | - | **Green Anode** | **D5** | Green LED (via 220Ω resistor) |
 | - | - | **Red Anode** | **D6** | Red LED (via 220Ω resistor) |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Assemble the connections according to the wiring table.
+2. Open the Arduino IDE, upload [Day_70_RFID_Logging.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_70_RFID_Logging/Day_70_RFID_Logging.ino), and open the **Serial Monitor** at **9600 Baud**.
+3. **Register Master Card (First Boot Only)**:
+   - The serial console will alert that the Master Card is unset.
+   - Scan any RFID card or fob. This card becomes the Master Card.
+4. **Interactive Command Shell**:
+   - Send `a` via Serial: Displays the database (Master Card UID and count of user cards).
+   - Send `r` via Serial: Dumps the access log history chronologically.
+   - Send `c` via Serial: Wipes the EEPROM and returns the system to its uninitialized state.
+5. **Program Mode (Adding/Removing User Cards)**:
+   - Scan the Master Card. The Red LED starts blinking continuously, indicating Program Mode is active.
+   - Scan a new user card. The Green LED flashes 3 times. The card is registered.
+   - Scan the same user card again. Both LEDs flash together 3 times. The card is deregistered.
+   - Scan the Master Card again to exit Program Mode.
+6. **Access Control Verification**:
+   - In normal mode, scan a registered card. The Green LED stays solid for 2 seconds. The serial output confirms authorization.
+   - Scan an unregistered card. The Red LED flashes 3 times rapidly. The serial output warns of unauthorized access.
+   - Run command `r` to verify all events were logged with precise timestamps.
+7. **Testing the Simulator (No Hardware Needed)**:
+   - If no physical hardware is connected, type `s DE AD BE EF` in the Serial input line.
+   - This simulates scanning a card with UID `DE AD BE EF`. You can fully test first-run Master Card assignment, Program Mode registration, Access validation, and log output directly from your keyboard!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | `MFRC522 not responding` or fails to boot | SPI wiring loose or VCC connected to 5V | Double check MISO/MOSI/SCK/SS pins. Confirm VCC is on 3.3V. |
 | Scanned card is ignored (no console output) | SPI clock speed issue or `PICC_IsNewCardPresent()` failing | Ensure RST pin is connected to D9. Check if the card operates at 13.56 MHz. |
 | Console reports `Failed to read from DS3231` | RTC I2C wiring loose or missing | Verify SDA is on A4 and SCL is on A5. The system will fall back to Software RTC. |
@@ -8731,7 +14006,31 @@ if (indState == IND_ACCESS_DENIED) {
 
 Welcome to Day 71! Today we interface a standard **SPI SD Card Module** with our Arduino to establish local file writing capability. We will study the fundamentals of the **FAT filesystem**, examine how **logic level translation** works for 3.3V cards, and implement safe file operations (Open, Write, Flush, Close) to guarantee data integrity.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robots and telemetry systems generate vast amounts of data (sensor streams, navigation coordinates, error codes). While internal EEPROM is useful for small configurations, it is far too small (typically 1 KB on Uno) to store long-term logs.
+
+An **SD Card (Secure Digital) Module** allows the robot to:
+1. **Datalog**: Save hours of high-frequency sensor readings.
+2. **Black Box Recorder**: Log diagnostic data and state transitions to debug mechanical failures in the field.
+3. **Configuration Loading**: Read complex maps, paths, or settings from files on boot instead of hardcoding them.
+
+Writing a solid driver requires understanding how to interface with filesystems and ensure data isn't lost if power is disconnected.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -8756,13 +14055,23 @@ SD cards operate strictly at **3.3V logic levels**. If you connect the Arduino's
 └─────────────────────────┘         └───────────────────┘
 ```
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | SD Card Module | 1 | SPI Card Reader with level shifters |
 | MicroSD Card | 1 | Capacity ≤ 32 GB, formatted as FAT16 or FAT32 |
 | Breadboard & Jumper Wires | 1 | Prototyping and wiring |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| SD Card Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **GND** | **GND** | Common Ground |
 | **VCC** | **5V** | Power Supply (onboard regulator drops to 3.3V) |
 | **MISO** | **D12** | SPI MISO |
@@ -8770,18 +14079,38 @@ SD cards operate strictly at **3.3V logic levels**. If you connect the Arduino's
 | **SCK** | **D13** | SPI SCK |
 | **CS** | **D4** | Chip Select (Configurable) |
 
- | : | : |
+---
+
+## 💾 Alternatives to SD Cards
+
+| Medium | Storage Capacity | Write Cycle Limit | Interface | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **SD Card** | 512 MB – 32 GB | ~100k cycles/sector | SPI / SDIO | Removable, easy to read on PC. Heavy library overhead. |
 | **EEPROM** (Internal) | 1 KB (Uno) | 100,000 writes | Registers | Tiny capacity, but zero external wiring. |
 | **SPI Flash** (W25Q) | 4 MB – 32 MB | 100,000 writes | SPI | Fast, reliable, soldered on board. Needs filesystem software. |
 | **FRAM** (Ferroelectric) | 8 KB – 256 KB | 100 Trillion | I2C / SPI | Virtually infinite writes, very fast, expensive. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Format your MicroSD card using a PC. Ensure it is formatted as **FAT32** (for cards > 2GB) or **FAT16** (for cards ≤ 2GB). Do not use exFAT.
+2. Wire the SD card module to the Arduino Uno as shown in the table.
+3. Open the Arduino IDE, load [Day_71_SD_Card_Writing.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_71_SD_Card_Writing/Day_71_SD_Card_Writing.ino), and select the COM port.
+4. Open the **Serial Monitor** at **9600 Baud**.
+5. You should see `[SYSTEM] SD Card initialized successfully`. If initialization fails, refer to the troubleshooting guide below.
+6. Type `w` in the serial input to write a log. You will see:
+   `[SD] Writing data at t=4567 ms...`
+   `[SD] File closed successfully.`
+7. Type `r` to read the log file back. The contents will print to the Serial console.
+8. Type `d` to delete the file, or `i` to force re-initialize the card.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | `SD Card initialization failed!` | Card formatted as exFAT/NTFS | Reformat card as FAT32 using SD Card Formatter tool. |
 | `SD Card initialization failed!` | Card capacity too large (SDXC) | Ensure card is standard SD or SDHC (≤ 32 GB). |
 | `SD Card initialization failed!` | Poor/incorrect SPI wiring | Double-check connections. Ensure SPI pins match (MISO D12, MOSI D11, SCK D13, CS D4). |
@@ -8818,7 +14147,27 @@ myFile.close();
 
 Welcome to Day 72! Today we build a high-reliability **CSV (Comma-Separated Values) Sensor Datalogger**. We integrate multiple analog sensors (an LDR and a Potentiometer), map the raw readings to physical units (Voltage), write standard CSV-formatted log files, and implement a **safe shutdown/eject button** using a non-blocking debounced input state machine.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+A raw text logger is fine for basic debugging, but for engineering applications, data needs to be structured.
+- **CSV Format**: By structuring data as comma-separated columns with a header row, we create files that can be directly imported into analytical tools like **MATLAB, Python (Pandas), or Microsoft Excel** for plotting and regression.
+- **Safe Card Ejection**: If a microcontroller is in the middle of writing a block to the SD Card and power is lost or the card is removed, the FAT partition table can get corrupted, bricking the filesystem. By adding a physical toggle button, we can instruct the Arduino to flush its cache, write a footer, close file handles, and turn off indicator lights — telling the user it is **safe to eject the card**.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -8858,7 +14207,12 @@ Since the Arduino ADC measures voltage, not resistance, we construct a **voltage
 $$V_{out} = V_{in} \cdot \left(\frac{R_{fixed}}{R_{LDR} + R_{fixed}}\right)$$
 As light increases, $R_{LDR}$ decreases, pushing $V_{out}$ closer to $V_{in}$ (5V). This increases the ADC reading.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Controller |
 | SD Card Module | 1 | SPI Datalogger Interface |
 | MicroSD Card | 1 | Formatted FAT16/FAT32 |
@@ -8870,12 +14224,36 @@ As light increases, $R_{LDR}$ decreases, pushing $V_{out}$ closer to $V_{in}$ (5
 | 220 Ω Resistor | 1 | LED current limiting |
 | Breadboard & Wires | 1 | Circuit assembly |
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| SD Card Pin | Sensor / LED Pin | Arduino Pin | Description |
+| :--- | :--- | :--- | :--- |
+| **GND** | Sensor GND / LED Cathode | **GND** | Common Ground |
+| **VCC** | Potentiometer Pin 1 / LDR Divider VCC | **5V** | Power rail |
+| **MISO** | - | **D12** | SPI MISO |
+| **MOSI** | - | **D11** | SPI MOSI |
+| **SCK** | - | **D13** | SPI SCK |
+| **CS** | - | **D4** | SPI CS |
+| - | **Button Pin 1** | **D2** | Start/Stop button (Internal Pullup) |
+| - | **Button Pin 2** | **GND** | Button ground |
+| - | **LED Anode** | **D5** | Status LED (via 220Ω resistor) |
+| - | **LDR/10kΩ Junction** | **A0** | LDR Analog input |
+| - | **Potentiometer Wiper** | **A1** | Potentiometer wiper input |
+
+---
 
 ## 💾 Alternatives to CSV Data Formats
 
 | Format | Readability | File Size | Arduino Processing Cost | PC Integration |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **CSV** | Human & Machine | Small | Very Low (simple text prints) | Direct (Pandas, Excel, MATLAB) |
+| **JSON** | Human & Machine | Large | High (needs JSON parsing library) | Great (Web apps, Python) |
+| **Binary** | Machine Only | Extremely Small | Zero (direct memory writes) | Needs custom script to decode |
+| **XML** | Human & Machine | Extremely Large | Very High (unsuitable for Uno) | Great (Legacy web systems) |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8890,7 +14268,12 @@ As light increases, $R_{LDR}$ decreases, pushing $V_{out}$ closer to $V_{in}$ (5
 7. Press the button again to halt logging. The Green LED will turn off. The console prints: `[LOGGER] >>> LOGGING STOPPED (Safe to eject SD Card) <<<`.
 8. Type `r` in the serial terminal to output the entire contents of the CSV file. Verify the formatting and header row match perfectly.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Datalogger fails to boot; LED flashes rapidly | SD Card not found | Verify SPI connections. Check if the card is formatted as FAT32. |
 | Button toggle doesn't work | No ground or wrong pin | Verify button is connected between D2 and GND. |
 | Button toggles continuously when pressed once | Switch bounce | Check if debounce time is set correctly (50ms). |
@@ -8929,7 +14312,29 @@ if (isLogging) {
 
 Welcome to Day 73! Today we interface the high-performance **MPU6050 6-Axis Inertial Measurement Unit (IMU)**. Rather than relying on heavy pre-written libraries, we will communicate directly with the sensor registers over the **I2C bus** using `Wire.h`. We will study the physics of **MEMS accelerometers**, handle signed 16-bit register parsing, and convert raw data into standard physical units of Gravity ($g$).
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+An **Inertial Measurement Unit (IMU)** is the sensory organ of movement. In robotics, self-balancing systems, and drones, an IMU provides state estimation:
+1. **Tilt & Orientation**: Measuring angles relative to gravity to balance a two-wheeled robot or stabilize a quadcopter.
+2. **Impact & Vibration**: Detecting collisions, falls, or rough terrain.
+3. **Dead Reckoning**: Estimating velocity and relative displacement by double-integrating acceleration values over time.
+
+Interfacing at the register level allows us to configure full-scale sensitivity ranges directly, perform efficient block I2C reads, and minimize microcontroller memory footprint.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -8953,22 +14358,57 @@ The internal ADC yields values between `-32768` and `+32767` (signed 16-bit inte
 The scaling factor depends on the **Full Scale Range** configured in register `0x1C` (`ACCEL_CONFIG`):
 
 | Config Value | Full Scale Range | Sensitivity Scale Factor |
-| : | :
+| :--- | :--- | :--- |
+| **`0x00` (Our choice)** | **±2g** | **16384 LSB / g** |
+| `0x08` | ±4g | 8192 LSB / g |
+| `0x10` | ±8g | 4096 LSB / g |
+| `0x18` | ±16g | 2048 LSB / g |
+
+To get the physical acceleration ($a_x$), we divide the raw integer ($raw_x$) by the scale factor:
+$$a_x = \frac{raw_x}{16384.0}$$
+
+### 3. Registers & atomic I2C reads
+The accelerometer stores its measurements in 6 consecutive registers starting at `0x3B`:
+- `0x3B` / `0x3C`: `ACCEL_XOUT_H` and `ACCEL_XOUT_L`
+- `0x3D` / `0x3E`: `ACCEL_YOUT_H` and `ACCEL_YOUT_L`
+- `0x3F` / `0x40`: `ACCEL_ZOUT_H` and `ACCEL_ZOUT_L`
+
+If we read these bytes individually, the sensor might update its readings mid-process, leading to skewed vectors. To prevent this, we request **6 bytes in a single transmission** (burst read). The MPU6050 freezes its output registers during the transaction to ensure all axes are sampled at the exact same instant.
+
+---
 
 ## 🔩 Components Needed
 
 | Component | Quantity | Purpose |
-| : | :
+| :--- | :--- | :--- |
+| Arduino Uno | 1 | Master Controller |
+| MPU6050 IMU Module (GY-521) | 1 | 3-axis Accelerometer & Gyroscope |
+| Breadboard & Jumper Wires | 1 | Connections |
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 | MPU6050 Pin | Arduino Uno Pin | Description |
-| : | :
+| :--- | :--- | :--- |
+| **VCC** | **5V** (or 3.3V) | Power Supply (MPU6050 GY-521 has an onboard 3.3V LDO regulator) |
+| **GND** | **GND** | Ground |
+| **SCL** | **A5** | I2C Serial Clock |
+| **SDA** | **A4** | I2C Serial Data |
+| **AD0** | **GND** | Configures I2C address to `0x68` (floating/GND = 0x68, VCC = 0x69) |
+
+---
 
 ## 💾 Alternatives to MPU6050 Accelerometer
 
 | Sensor | Resolution | Interface | Max Range | Notes |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **MPU6050** | 16-bit | I2C | ±16g | Cheap, includes high-performance gyro. |
+| **ADXL345** | 13-bit | I2C / SPI | ±16g | Lower power, standard industrial accelerometer. |
+| **LIS3DH** | 12-bit | I2C / SPI | ±16g | Ultra-low power, has tap/double-tap interrupt. |
+| **MMA8452Q** | 12-bit | I2C | ±8g | High performance, smart low-power features. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -8984,7 +14424,12 @@ The scaling factor depends on the **Full Scale Range** configured in register `0
    - $Z$ should swing to $-1.0g$.
 7. Shake the sensor in different directions; observe the corresponding axes spike dynamically.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | `Failed to communicate with MPU6050!` | Wrong I2C wiring (SDA/SCL swapped) | SDA goes to A4, SCL goes to A5. Double check connections. |
 | `Failed to communicate with MPU6050!` | Address mismatch (AD0 Pin) | Tie AD0 pin to GND to force `0x68` address. |
 | Readings are static and do not change | MPU6050 remained in Sleep mode | Ensure `PWR_MGMT_1` (0x6B) was set to `0x00` during setup. |
@@ -9018,7 +14463,30 @@ x = (Wire.read() << 8) | Wire.read();
 
 Welcome to Day 74! Today we explore **gyroscope sensor physics** and **numerical integration**. Using the **MPU6050 IMU**, we will read angular velocities (degrees per second) over the **I2C bus** and track absolute rotational angles (Roll, Pitch, and Yaw). We will implement a startup calibration routine to calculate sensor bias offsets and study why gyroscopes suffer from **drift** over time.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+An accelerometer measures linear acceleration, but it cannot easily measure rotational speed. A **gyroscope** detects rotation rates. In robotics:
+1. **Drones**: Gyroscopes measure angular roll, pitch, and yaw velocities to adjust motor speeds at hundreds of Hertz, keeping the drone stable.
+2. **Self-Balancing Robots**: Detecting the angular velocity of falling is the primary input to PID loops to calculate restoring motor torque.
+3. **Stabilization Gimbals**: Keeping a camera level by rotating motors in the opposite direction of the sensed angular velocity.
+
+Integrating rotational speed yields position (angles), which is the foundation of navigation.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9056,30 +14524,62 @@ $$\theta_{\text{drift}} = 0.15\,\text{°/s} \times 60\,\text{s} = 9.0^\circ \tex
 
 To solve this, we calibrate the sensor during `setup()` by sampling the gyroscope 200 times at rest. We average these values to find the bias offset, which is then subtracted from all subsequent readings.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Master Controller |
 | MPU6050 IMU Module (GY-521) | 1 | 3-axis Accelerometer & Gyroscope |
 | Breadboard & Jumper Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| MPU6050 Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** | Power Supply |
 | **GND** | **GND** | Ground |
 | **SCL** | **A5** | I2C Serial Clock |
 | **SDA** | **A4** | I2C Serial Data |
 | **AD0** | **GND** | Configures I2C address to `0x68` |
 
- | : | : |
+---
+
+## 💾 Alternatives to MPU6050 Gyroscope
+
+| Sensor | Channels | Interface | Full-Scale Range | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **MPU6050** | 3 (Gyro) + 3 (Accel) | I2C | ±2000°/s | Most popular hobbyist IMU. Very cost-effective. |
 | **L3GD20** | 3 (Gyro only) | I2C / SPI | ±2000°/s | High-performance standalone gyroscope, very low noise. |
 | **ITG3200** | 3 (Gyro only) | I2C | ±2000°/s | Legacy digital gyro, 16-bit ADCs. |
 | **BMG160** | 3 (Gyro only) | I2C / SPI | ±2000°/s | Bosch high-performance gyro, excellent temperature stability. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the MPU6050 to the Arduino. Place the sensor flat and completely still on a flat desk.
+2. Load [Day_74_MPU6050_Gyro.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_74_MPU6050_Gyro/Day_74_MPU6050_Gyro.ino) in the Arduino IDE and upload.
+3. Open the **Serial Monitor** at **9600 Baud**.
+4. The system will display:
+   `[SYSTEM] MPU6050 detected. Starting calibration...`
+   `[CALIBRATION] Calibrating gyroscope. Keep sensor perfectly still!`
+5. After 2 seconds, the calibration offset parameters are shown, and angle printouts begin:
+   `RATE -> X: 0.0 d/s	Y: 0.0 d/s	Z: 0.0 d/s | ANGLE -> X: 0.00 deg	Y: 0.00 deg	Z: 0.00 deg`
+6. Pick up the sensor and rotate it exactly 90 degrees about the Z-axis (Yaw).
+   - Observe Yaw ($Z$ angle) increase dynamically during rotation, and settle close to $90.0^\circ$ when stopped.
+7. Return the sensor to its starting position. Yaw should return to $0.0^\circ$.
+8. Observe the drift: leave the sensor completely still for 30 seconds. You will see the angles slowly drift by a fraction of a degree. This is normal and shows why we need sensor fusion (which we implement on Day 75!).
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Sensor fails to calibrate / freezes on boot | Sensor was moved during calibration | Keep the module completely still on a stable surface during the first 2 seconds of boot. |
 | Calculated angles drift rapidly (e.g. 10 deg/sec) | Calibration failed or offset values corrupted | Reset the Arduino to run the calibration cycle again. |
 | Angles jump wildly in raw console | Integration time calculation overflow | Ensure `dt` divides by `1000000.0f` to convert microsecond deltas correctly to seconds. |
@@ -9112,7 +14612,32 @@ angleX += gx * dt;
 
 Welcome to Day 75! Today we master **Sensor Fusion**, one of the most critical concepts in modern robotics and aerospace engineering. Using the **MPU6050 IMU**, we will read both accelerometer and gyroscope data concurrently using an atomic **14-byte burst read**. We will then implement a **Complementary Filter** in software to compute stable, noise-free, and drift-free Pitch and Roll angles.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+If you try to control a self-balancing robot or stabilizer gimbal using only an accelerometer, it will jitter uncontrollably whenever the motor moves because the sensor cannot distinguish between gravitational acceleration and linear kinetic acceleration.
+If you use only a gyroscope, the robot will slowly tip over because the integrated angle drifts over time due to sensor bias.
+
+**Sensor Fusion** solves this by combining both sensors to get the "best of both worlds":
+- **Short-term accuracy**: Provided by the gyroscope, which responds instantly to quick movements and ignores linear vibrations.
+- **Long-term stability**: Provided by the accelerometer, which always references the true gravitational vector and does not drift.
+
+A **Complementary Filter** is a simple, computationally efficient, and robust way to achieve this on 8-bit microcontrollers.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9155,30 +14680,62 @@ The MPU6050 maps all sensor data to 14 consecutive registers starting at `0x3B`:
 
 Reading all 14 bytes in one single I2C request ensures that the acceleration and angular rate vectors are sampled at the exact same instant, preventing calculation errors.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Master Controller |
 | MPU6050 IMU Module (GY-521) | 1 | 6-DOF Sensor |
 | Breadboard & Jumper Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| MPU6050 Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** | Power Supply |
 | **GND** | **GND** | Ground |
 | **SCL** | **A5** | I2C Clock |
 | **SDA** | **A4** | I2C Data |
 | **AD0** | **GND** | Force I2C address `0x68` |
 
- | : | : |
+---
+
+## 💾 Alternatives to Complementary Filters
+
+| Fusion Method | Accuracy | Computational Cost | RAM/Flash Cost | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **Complementary Filter** | Good | Extremely Low | Minimal | Best choice for 8-bit microcontrollers (Arduino Uno). |
 | **Kalman Filter (Linear)** | Excellent | High | Moderate | Ideal for linear systems. Requires matrix operations. |
 | **Extended Kalman (EKF)** | Outstanding | Extremely High | Very High | Standard on flight controllers, too heavy for Atmega328P. |
 | **Madgwick Filter** | Outstanding | Moderate | Moderate | Uses quaternions, avoids gimbal lock. Needs high CPU speed. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the MPU6050 flat on a breadboard.
+2. Upload [Day_75_MPU6050_Pitch_Roll.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_75_MPU6050_Pitch_Roll/Day_75_MPU6050_Pitch_Roll.ino).
+3. Open the **Serial Monitor** at **9600 Baud**. Keep the board flat and still during the 2-second calibration.
+4. You will see three sets of Pitch & Roll outputs side-by-side:
+   - `ACCEL ONLY`: Jitters when you tap the table.
+   - `GYRO ONLY`: Slowly drifts away even when still.
+   - `FUSED`: Completely still, but responds instantly to rotations.
+5. Tilt the sensor:
+   - Tilt forward/backward: Pitch changes.
+   - Tilt left/right: Roll changes.
+6. **Vibration Test**: Tap the breadboard rapidly. You will see `ACCEL ONLY` values fluctuate wildly, while `FUSED` values remain steady, demonstrating successful high-frequency filtering.
+7. **Drift Test**: Leave the sensor flat on the table for 1 minute. The `GYRO ONLY` angles will drift to several degrees, while the `FUSED` angles remain at exactly $0.0^\circ$, proving the low-frequency accelerometer correction.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Console output is frozen or garbage | Baud rate mismatch | Ensure the Serial Monitor is set to **9600 Baud**. |
 | Pitch/Roll values drift indefinitely | Gyro calibration missed or board moved on boot | Press reset button on the Arduino and keep the sensor perfectly still during calibration. |
 | Fused angle lags behind actual movements | Alpha constant ($\alpha$) too high or loop rate too slow | Ensure loop runs at 100 Hz (10ms). Reduce $\alpha$ to $0.95$ to give more weight to the accelerometer. |
@@ -9207,7 +14764,28 @@ fusedRoll = ALPHA * (fusedRoll + gx * dt) + (1.0f - ALPHA) * accRoll;
 
 Welcome to Day 76! Today we build an **IMU-Based Fall Detection System** using the **MPU6050 accelerometer**. We implement a structured **Finite State Machine (FSM)** in software to track three distinct physical phases of a fall (Free-fall, Impact, and Inactivity/Tilt). We write the vector mathematics from scratch and implement a custom CLI tool to simulate falls on the command line.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Fall detection is a vital mechatronic subsystem in:
+1. **Robotic Safety**: If a mobile humanoid robot, quadraped, or AGV loses balance and falls, the system must immediately detect the event, shut off high-power actuator currents to prevent motor burn-outs, retract sensitive appendages (like camera gimbals), and raise an alarm.
+2. **Medical Wearables**: Personal emergency response systems (PERS) worn by elderly patients to automatically dispatch aid when a fall and subsequent lack of motion are detected.
+
+A single accelerometer threshold is highly prone to false alarms (e.g., jumping or walking down stairs can trigger high-g flags). This project resolves this by requiring a **strict chronological sequence** of physical states before confirming a fall.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9234,7 +14812,12 @@ A true fall is characterized by three sequential physical events:
   - Upright position: $a_z \approx 1.0g \rightarrow \theta_{tilt} \approx 0^\circ$
   - Lying flat: $a_z \approx 0.0g \rightarrow \theta_{tilt} \approx 90^\circ$
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | FSM Controller |
 | MPU6050 IMU Module | 1 | 3-axis Accelerometer sensor |
 | Active Buzzer | 1 | Audible alarm indicator |
@@ -9242,12 +14825,32 @@ A true fall is characterized by three sequential physical events:
 | 220 Ω Resistor | 2 | Current-limiting resistors |
 | Breadboard & Wires | 1 | Prototyping |
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| MPU6050 Pin | Buzzer / LED Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- | :--- |
+| **VCC** | - | **5V** | Power supply |
+| **GND** | LED Cathode / Buzzer (-) | **GND** | Common Ground |
+| **SCL** | - | **A5** | I2C Serial Clock |
+| **SDA** | - | **A4** | I2C Serial Data |
+| **AD0** | - | **GND** | Sets I2C address to `0x68` |
+| - | **Buzzer (+)** | **D8** | Buzzer control output |
+| - | **Red LED Anode** | **D6** | LED control output (via 220Ω resistor) |
+
+---
 
 ## 💾 Alternatives to IMU Fall Detection
 
 | Method | Range/Accuracy | Computational Cost | Cost | Notes |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **IMU FSM (Our choice)** | Local / High | Low (algebraic) | Very Low | Highly reliable when sequentially processed in FSM. |
+| **Barometric Pressure** | High accuracy | Very Low | Low | Measures altitude drops. Slow to react to short falls. |
+| **Wearable Button** | Manual only | Zero | Very Low | Requires the user to remain conscious to press it. |
+| **Computer Vision** | Room-scale | Extremely High | High | Camera checks for horizontal pose. Vulnerable to occlusion. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -9267,7 +14870,12 @@ A true fall is characterized by three sequential physical events:
    - Keep sending `s 0.7 0.7 0.1` for 2 seconds. The alarm will trigger!
    - Type `r` to reset the FSM.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | False alarms occur during normal movements | Free-fall time too short or impact threshold too low | Increase `TIME_FREE_FALL_MIN` (e.g. 100ms) or raise `THRES_IMPACT` (e.g. 3.2g). |
 | Alarm fails to trigger after a valid drop | Subject recovery reset the timer | Ensure the sensor is kept completely still after the drop. Any shake during inactivity check will reset the 2.0s timer. |
 | Inactivity check times out without alarm | Sensor landed upright | The tilt threshold requires orientation tilt $>45^\circ$. If the sensor lands flat standing upright ($Z \approx 1g$), it is not flagged as a fall. |
@@ -9301,7 +14909,28 @@ if (now - inactivityStartTime >= TIME_INACTIVITY_REQ) {
 
 Welcome to Day 77! Today we step into control systems engineering by designing the stabilization controller for a **Self-Balancing Robot**. We combine our MPU6050 Complementary Filter tilt estimator with a high-speed **Proportional-Integral-Derivative (PID) Controller**, implement **anti-windup clamping**, map outputs to an **L298N H-Bridge driver**, and write a real-time Serial Tuning CLI to adjust PID gains dynamically.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Two-wheeled self-balancing robots are classic examples of the **Inverted Pendulum** problem, a foundational benchmark in control theory.
+- **Inverted Pendulum**: Unlike a regular pendulum (where the center of mass hangs below the pivot and is stable), the center of mass of a self-balancing robot sits *above* the wheels and is inherently unstable. If left alone, it will fall.
+- **Active Balancing**: To keep the robot upright, the wheels must continuously accelerate in the *direction* the robot is falling. By matching the tilt velocity, the wheel pivot remains positioned directly underneath the robot's center of mass, maintaining balance.
+
+This loop must run at high frequency (100 Hz) to counteract physical gravity before mechanical inertia takes over.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9338,7 +14967,12 @@ The PID controller uses the error signal $e(t) = \theta_{\text{target}} - \theta
 ### 3. Safety Drop Lock
 If the robot tilts beyond a threshold (e.g. $\pm 40^\circ$), it has fallen past the point of recovery. Allowing the motors to continue spinning at maximum speed will burn out the H-Bridge or damage the gearboxes. We implement a **safety drop lock** that immediately cuts motor PWM to $0$ if the tilt exceeds $40^\circ$.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Control Loop Processor |
 | MPU6050 IMU | 1 | Tilt angle sensor |
 | L298N Dual H-Bridge Driver | 1 | Drives DC motors |
@@ -9346,12 +14980,35 @@ If the robot tilts beyond a threshold (e.g. $\pm 40^\circ$), it has fallen past 
 | 12V LiPo Battery | 1 | Motor power source |
 | Breadboard & Wires | 1 | Circuit assembly |
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| L298N Pin | MPU6050 Pin | Arduino Pin | Description |
+| :--- | :--- | :--- | :--- |
+| **GND** | **GND** | **GND** | Common Ground (Battery GND must also connect here!) |
+| **5V** | **VCC** | **5V** | Logic Power |
+| **ENA** | - | **D5** | Left Motor Speed (PWM) |
+| **IN1** | - | **D3** | Left Motor Dir 1 |
+| **IN2** | - | **D4** | Left Motor Dir 2 |
+| **IN3** | - | **D7** | Right Motor Dir 1 |
+| **IN4** | - | **D8** | Right Motor Dir 2 |
+| **ENB** | - | **D6** | Right Motor Speed (PWM) |
+| - | **SDA** | **A4** | I2C SDA |
+| - | **SCL** | **A5** | I2C SCL |
+
+---
 
 ## 💾 Alternatives to PID Control
 
 | Method | Response Time | Calibration Complexity | CPU Load | Notes |
-| : | : | :
+| :--- | :--- | :--- | :--- | :--- |
+| **PID (Our Choice)** | Fast | Moderate (heuristic tuning) | Very Low | Best suited for Arduino Uno. Very easy to implement. |
+| **LQR (Linear Quadratic Regulator)** | Excellent | High (needs physical system model) | Moderate | Optimal control; requires state matrices. |
+| **State-Space Control** | Outstanding | Very High (requires full math models) | Moderate | Great for multi-input multi-output (MIMO) systems. |
+| **Fuzzy Logic** | Good | High (rule base design) | Moderate | Relies on linguistic rules instead of math equations. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -9376,7 +15033,12 @@ If the robot tilts beyond a threshold (e.g. $\pm 40^\circ$), it has fallen past 
      2. Increase $K_d$ to damp out the oscillations.
      3. Add a small $K_i$ to push the robot to a stable hover.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Motors run at full speed away from direction of tilt | Reversed feedback sign | Swap motor wire polarities on BOTH motors, or flip the signs of IN1/IN2 and IN3/IN4 in code. |
 | Robot shakes violently (buzzing) | $K_p$ or $K_d$ gains set too high | Lower $K_p$ and $K_d$ to reduce controller over-reaction. |
 | Robot falls over slowly without recovering | $K_p$ gain too low | Increase $K_p$ to generate more restoring force. |
@@ -9414,7 +15076,29 @@ errorIntegral = constrain(errorIntegral, -MAX_INTEGRAL, MAX_INTEGRAL);
 
 Welcome to Day 78! Today we interface the popular **NEO-6M GPS Module** using **SoftwareSerial** and decode coordinate telemetry from scratch — **no external GPS libraries allowed!** We will write a custom **NMEA-0183 string parser**, implement an XOR checksum validator, and write coordinates in floating-point Decimal Degrees.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/GPS_Module.jpg" alt="GPS Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Global Positioning System (GPS) receivers are critical in long-range autonomous robotics:
+1. **Outdoor Navigation**: Autonomous agricultural robots, drone waypointing, and marine surface vehicles rely on GPS to cross fields, fly routes, or traverse oceans.
+2. **Time Synchronization**: GPS satellites carry atomic clocks. A receiver outputs highly precise UTC time, enabling robots to sync local clocks across networks.
+3. **Telemetry Logs**: Log coordinates to file (which we did on Day 72) to trace physical pathways on digital maps (like Google Earth).
+
+Rather than calling pre-written library methods, parsing the raw string streams ourselves is highly educational, teaching us how to parse serial text frames, calculate checksums, and convert navigational formats.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9454,7 +15138,12 @@ NMEA coordinates are formatted as `DDMM.MMMM` (Degrees and Minutes):
     $$\text{Decimal Degrees} = 11 + \frac{31.0000}{60.0} = 11.51667^\circ$$
 - **Hemispheres**: If the hemisphere indicator is **South** ($S$) or **West** ($W$), we multiply the result by $-1$.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Master Controller |
 | NEO-6M GPS Module | 1 | GPS Receiver (built-in ceramic patch antenna) |
 | 4.7 kΩ Resistor | 1 | Voltage divider (GPS RX pin protection) |
@@ -9463,23 +15152,61 @@ NMEA coordinates are formatted as `DDMM.MMMM` (Degrees and Minutes):
 
 > ⚠️ **CRITICAL: The NEO-6M logic pins operate at 3.3V. While the GPS TX can directly drive the Arduino Pin 2 (Rx), the Arduino Pin 3 (Tx) outputs 5V. You MUST use a resistor voltage divider (4.7kΩ and 10kΩ) on the GPS RX line to protect it from damage.**
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| NEO-6M Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** (or 3.3V) | Power supply |
 | **GND** | **GND** | Ground |
 | **TX** | **D2** | Software RX (direct connection) |
 | **RX** | **D3** (via divider) | Software TX (D3 -> 4.7kΩ -> GPS RX -> 10kΩ -> GND) |
 
- | : | : |
+---
+
+## 💾 Alternatives to NEO-6M GPS Module
+
+| Module | Satellites Supported | Refresh Rate | Interface | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **NEO-6M** | GPS only | 1 Hz - 5 Hz | UART | Cheap, standard ceramic antenna, widely available. |
 | **U-Blox NEO-M8N** | GPS, GLONASS, BeiDou | 10 Hz | UART / I2C | High-precision dual-constellation module. |
 | **Adafruit Ultimate GPS**| GPS, WAAS | 10 Hz | UART | MTK3339 chipset, built-in datalogger memory. |
 | **Quectel L80-M39** | GPS, QZSS | 10 Hz | UART | Small patch-on-top integrated GPS module. |
 
--- GPS DECODED TELEMETRY 
+---
+
+## 💻 How to Test & Validate
+
+1. Wire the NEO-6M GPS module to the Arduino Uno as shown in the table. **Ensure the resistor divider is in place on the RX line.**
+2. Place the GPS antenna near a window or outside. Ceramic patch antennas need a direct line-of-sight to the sky. It can take up to 2-5 minutes to establish a lock (indicated by a blinking red LED on the GPS board).
+3. Upload [Day_78_GPS_Parser.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_78_GPS_Parser/Day_78_GPS_Parser.ino).
+4. Open the **Serial Monitor** at **9600 Baud**.
+5. Once a satellite stream begins, raw decoded values will print to the console.
+6. **Simulation Test (No Hardware Needed)**:
+   - If no GPS is attached, copy this valid fix string:
+     `$GPRMC,123519.00,A,1258.9876,N,07735.1234,E,000.0,000.0,040626,,,A*6C`
+   - Paste it into the Serial Monitor input bar and press Enter.
+   - The shell will parse it, validate the checksum `6C`, convert the coordinates, and print:
+     ```text
+     [SHELL] Injecting sentence: $GPRMC,123519.00,A,1258.9876,N,07735.1234,E,000.0,000.0,040626,,,A*6C
+     ----- GPS DECODED TELEMETRY -----
+      UTC Time   : 12:35:19
+      Date       : 04-06-2026
+      Fix Status : VALID (Lock Established)
+      Latitude   : 12.983126°
+      Longitude  : 77.585390°
+      Satellites : 0
+     ---
      ```
    - Inject satellite count info: Paste `$GPGGA,123519.00,1258.9876,N,07735.1234,E,1,08,0.9,105.5,M,-30.0,M,,*41` and watch Satellites update to `8`.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Telemetry reports `VOID` indefinitely | No satellite lock | Ceramic patch antennas cannot see through concrete walls. Place the antenna outside or close to a window. |
 | Console output is empty (no serial bytes) | SoftwareSerial pins swapped | Ensure GPS TX connects to D2 (RX) and GPS RX connects to D3 (TX). |
 | Decoded latitude/longitude coordinates are zero | No active lock | Coordinate data is only parsed when the status byte in GPRMC is `'A'` (Active). Wait for the red LED on the GPS board to blink. |
@@ -9520,7 +15247,30 @@ float decimalDegrees = degrees + (minutes / 60.0f);
 
 Welcome to Day 79! Today we tackle **geographical vector navigation**. Using spherical trigonometry, we will write the **Haversine Formula** and the **True-North Bearing Solver** from scratch on the Arduino Uno. We will study the mathematics of great-circle paths, explore the floating-point limits of 8-bit AVR microcontrollers, and build a console tool to simulate geographic coordinate movements.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/GPS_Module.jpg" alt="GPS Module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+GPS coordinates (Latitude and Longitude) represent angular coordinates on a sphere. They cannot be treated as standard Cartesian $(x,y)$ values on a flat grid because:
+- The distance between lines of longitude shrinks as you move from the equator to the poles.
+- The Earth is curved.
+
+In autonomous robotics and path planning:
+1. **Waypoint Navigation**: To guide an autonomous tractor or delivery drone to a target coordinate, the robot must continuously calculate the straight-line **distance** and the target **bearing (heading)** from its current position to the destination.
+2. **Geofencing**: Drawing virtual boundaries (circular geofences) and triggering events when the distance from a home base exceeds a certain range.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9562,29 +15312,67 @@ On standard 8-bit AVR microcontrollers (like the ATmega328P on the Arduino Uno):
 - At the equator, $1^\circ$ of latitude $\approx 111.32\,\text{km}$. Therefore, a resolution of $0.000001^\circ$ (6 decimal places) corresponds to approximately $11.1\,\text{cm}$.
 - Floating-point arithmetic errors will accumulate slightly during complex trigonometric calculations, resulting in a distance resolution of $\pm 1\,\text{meter}$. For standard waypoint navigation, this is well within acceptable limits.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Navigation Processor |
 | NEO-6M GPS Module | 1 | GPS Receiver |
 | 4.7 kΩ and 10 kΩ Resistors | 1 | Voltage divider for GPS RX pin |
 | Breadboard & Jumper Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+Refer to the wiring mapping from Day 78. If no physical GPS module is connected, the simulation shell allows complete testing directly via the serial terminal.
+
+| NEO-6M Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** | Power supply |
 | **GND** | **GND** | Ground |
 | **TX** | **D2** | Software RX (direct connection) |
 | **RX** | **D3** (via divider) | Software TX (D3 -> 4.7kΩ -> GPS RX -> 10kΩ -> GND) |
 
- | : | : |
+---
+
+## 💾 Alternatives to spherical calculations
+
+| Method | Accuracy | Range Limit | CPU Cost | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **Haversine (Our Choice)** | High | Global | Moderate | Assumes spherical Earth. Ideal balance of speed and precision. |
 | **Pythagorean (Flat Earth)** | Very High | Local ($< 10\,\text{km}$) | Low | Fast. Assumes flat grid: $d = \sqrt{\Delta x^2 + \Delta y^2}$. |
 | **Vincenty's Formulae** | Extremely High | Global | Extremely High | Assumes oblate spheroid Earth. Too heavy for 8-bit MCU. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload [Day_79_GPS_Distance.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_79_GPS_Distance/Day_79_GPS_Distance.ino) to the Arduino Uno.
+2. Open the **Serial Monitor** at **9600 Baud**.
+3. **Navigational Simulation Mode**:
+   - Set the Home Base (e.g. Bangalore, India): Type `h 12.9716 77.5946`.
+   - Set the Current Location (e.g. MG Road, Bangalore): Type `c 12.9748 77.6083`.
+   - The console will instantly output:
+     ```text
+     ====== NAVIGATIONAL VECTOR CALCULATED ======
+      Origin (Home) : 12.971600, 77.594600
+      Target        : 12.974800, 77.608300
+      Distance      : 1.523 km
+      Bearing       : 76.5° (East-North-East)
+     ============================================
+     ```
+   - Test a short walk: Type `c 12.9718 77.5948`. The output displays:
+     `Distance: 31.0 meters | Bearing: 44.8° (North-East)`.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Distance output prints `0.0 meters` | Identical coordinates entered | Ensure the lat/lon values for Home and Current differ. |
 | Navigational coordinates show `NaN` | Division by zero or domain error in `asin`/`acos` | Check that lat/lon inputs are within valid ranges: Latitude $\pm 90^\circ$, Longitude $\pm 180^\circ$. |
 | Distance values differ from online map tools | Spherical vs Oblate Spheroid models | Haversine assumes a perfect sphere. Online tools use the WGS-84 oblate spheroid model (Vincenty's formula), resulting in minor deviations of up to $0.5\%$. |
@@ -9620,7 +15408,30 @@ float bearing = atan2(y, x) * RAD_TO_DEG;
 
 Welcome to Day 80! Today we construct an **Inter-Microcontroller Network** using the **I2C (Inter-Integrated Circuit) Bus**. We will write a unified codebase that can configure our Arduino as either an **I2C Master** or an **I2C Slave** using preprocessor macros. We will explore **open-drain bus physics**, implement **interrupt-driven slave callback ISRs**, and learn how to transmit multi-byte telemetry and control packets safely.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/CAN_Bus.jpg" alt="CAN Bus" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+As robots grow in complexity, a single microcontroller runs out of pins, processing speed, or hardware timers. The standard engineering solution is **distributed processing**:
+1. **Sensor Node**: A dedicated Arduino reads multiple analog sensors, filters the noise (e.g. Day 75 Complementary Filter), and acts as an I2C slave.
+2. **Actuation Node**: Another Arduino manages stepper acceleration profiles (e.g. Day 68) or PWM motor speeds.
+3. **Master Controller**: The brain of the robot requests telemetry from the sensor nodes, executes control algorithms (like PID), and transmits velocity commands to the actuation nodes.
+
+Interfacing multiple nodes requires a robust, addressable communication bus. I2C allows up to 127 devices to share just **two wires** (plus GND).
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9653,29 +15464,68 @@ Instead, the Atmega328P has dedicated **I2C hardware registers** that monitor th
 - **`onReceive()` ISR**: Triggered when the Master sends data. The Slave reads the incoming bytes.
 - **`volatile` Variables**: Variables modified inside these ISRs must be declared `volatile` so the compiler does not optimize them away, and atomic blocks must disable interrupts briefly during writes in the main loop to prevent data corruption.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 2 | One Master Node, One Slave Node |
 | Potentiometer (10kΩ) | 1 | Telemetry simulation (attached to Slave) |
 | 4.7 kΩ Resistor | 2 | External I2C bus pull-up resistors |
 | Breadboard & Wires | 1 | Bus connections |
 
- | : | :
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Master Uno Pin | Slave Uno Pin | Pull-up Resistor | Description |
+| :--- | :--- | :--- | :--- |
+| **GND** | **GND** | - | **Common Ground (Mandatory!)** |
+| **5V** | **5V** | - | Common power (if sharing USB power) |
+| **A4 (SDA)** | **A4 (SDA)** | Connect to 5V via 4.7kΩ | I2C Data Bus Line |
+| **A5 (SCL)** | **A5 (SCL)** | Connect to 5V via 4.7kΩ | I2C Clock Bus Line |
+
+---
 
 ## 💾 Communication Bus Alternatives
 
 | Bus | Wire Count | Max Speed | Master/Slave | Max Range | Notes |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **I2C** | 2 (+GND) | 400 kbps | Multi-Master/Slave | ~2 meters | Open-drain. Addressing built-in. Great for onboard ICs. |
 | **SPI** | 4 (+GND) | 10+ Mbps | Single-Master/Multi-Slave | ~3 meters | Push-pull. Extremely fast. Needs a CS wire per slave. |
 | **UART** | 2 (+GND) | 115.2 kbps| Peer-to-Peer (point-to-point) | ~15 meters| Simple, asynchronous. No addressing. |
 | **CAN Bus**| 2 (+GND) | 1 Mbps | Multi-Master (Arbitration) | ~1 km | Differential. Noise immune. Needs transceivers (MCP2515). |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the two Arduino boards together as shown in the table. **Do not forget to connect the GND pins together!**
+2. **Flash the Slave**:
+   - Open [Day_80_I2C_Network.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_80_I2C_Network/Day_80_I2C_Network.ino).
+   - Set `#define I2C_MODE 0` at line 44.
+   - Connect the Slave Arduino, select its port, and click Upload.
+3. **Flash the Master**:
+   - Change line 44 to `#define I2C_MODE 1`.
+   - Connect the Master Arduino, select its port, and click Upload.
+4. **Read Output**:
+   - Connect the **Master** to your PC and open the **Serial Monitor** at **9600 Baud**.
+   - You will see the Master send periodic requests and print the responses:
+     ```text
+     [MASTER] Requesting 2 bytes from Slave 0x08...
+     [MASTER] Received Slave Sensor: 512
+     [MASTER] Transmitting LED state: HIGH
+     ```
+   - Watch the Slave board's onboard LED (Pin 13) blink on and off every second as commanded by the Master.
+   - Rotate the potentiometer attached to the Slave's A0 pin; you will see the sensor value update dynamically on the Master's Serial Monitor!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Master reports transmission errors (Error code 2 or 4) | Shared GND missing or open I2C lines | You MUST connect the GND pins of both Arduinos together. Verify SDA (A4) and SCL (A5) connections. |
 | Transmission hangs/freezes | Missing pull-up resistors | Long wires increase bus capacitance. Add external 4.7kΩ resistors on SCL and SDA lines to 5V. |
 | Decoded data values are corrupted | Atomic access violation in Slave | When reading a multi-byte variable (16-bit integer) in the loop that is written by an ISR, you must temporarily disable interrupts (`noInterrupts()`) during the copy to prevent partial write updates. |
@@ -9714,7 +15564,27 @@ void handleMasterRequest() {
 
 Welcome to Day 81! Today we enter the world of **Real-Time Operating Systems (RTOS)**. We break away from the traditional, single-threaded Arduino execution model and configure the **FreeRTOS kernel** to run three concurrent, preemptive tasks on the 8-bit ATmega328P. We will study **context switching physics**, **stack memory allocations**, and preemptive task scheduling.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Standard Arduino programs run on a single thread inside the `loop()` function.
+- **The Blocking Problem**: If you call `delay(1000)` to blink an LED, the microcontroller sits in a busy-wait loop for 1 second. During this time, it cannot read sensors, update displays, or compute motor controls.
+- **The RTOS Solution**: A Real-Time Operating System divides your code into independent threads (**Tasks**). The RTOS scheduler allocates CPU time to each task based on its **Priority**. When a task waits (e.g. calls `vTaskDelay()`), the scheduler suspends it and hands CPU control to another ready task, maximizing processor utilization.
+
+For complex mechatronic systems (like quadcopters balancing while reading GPS and responding to radio commands), multitasking is mandatory.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9743,29 +15613,60 @@ The ATmega328P has only **$2\,\text{KB}$ of SRAM**.
 - **Word sizes**: Stack size is configured in "words" (1 word = 2 bytes on AVR).
 - If we configure a task with 128 words, it uses $256\,\text{bytes}$ of SRAM. Spawning four such tasks consumes $1024\,\text{bytes}$ (50% of the entire Uno memory). Stack sizes must be budgeted carefully to prevent **Stack Overflow** (where task stacks collide and crash the program).
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microprocessor |
 | Red LED | 1 | External task indicator |
 | 220 Ω Resistor | 1 | LED current limiting |
 | Breadboard & Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Component Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **Green LED (Onboard)**| **D13** | Driven by Task 1 |
 | **Red LED Anode** | **D12** | Driven by Task 2 (via 220Ω resistor) |
 | **LED Cathodes** | **GND** | Ground |
 
- | : | : |
+---
+
+## 💾 Multitasking Alternatives
+
+| Method | Timing Accuracy | Context Switch Cost | Coding Complexity | CPU Overheads |
+| :--- | :--- | :--- | :--- | :--- |
 | **FreeRTOS (Preemptive)**| Extremely High | High (~100-200 cycles) | Moderate | Low |
 | **Cooperative Scheduler**| Low | Low (~10-20 cycles) | Low | Very Low |
 | **State Machine (`millis`)**| Moderate | Zero | High | Zero |
 | **Timer Interrupts** | Extremely High | Low | High | Minimal |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the external Red LED to Pin 12 as shown in the table.
+2. Install the **FreeRTOS** library in your Arduino IDE:
+   - Go to *Sketch* -> *Include Library* -> *Manage Libraries...*
+   - Search for **FreeRTOS** by *Phillip Stevens* and install it.
+3. Upload [Day_81_FreeRTOS_Blink.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_81_FreeRTOS_Blink/Day_81_FreeRTOS_Blink.ino).
+4. Open the **Serial Monitor** at **9600 Baud**.
+5. Observe the behavior of the LEDs:
+   - Onboard green LED (Pin 13) blinks at 1 Hz.
+   - External red LED (Pin 12) blinks at 0.5 Hz.
+   - The two LEDs flash independently and concurrently.
+6. Check the Serial Monitor: every 3 seconds, the high-priority Diagnostics task prints the system report, preempting the blinker tasks for a fraction of a millisecond.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Code uploads but nothing happens (no LEDs blink, no Serial) | Stack Overflow or out of memory | The Arduino Uno ran out of SRAM. Reduce the stack size of your tasks (e.g. from 128 words to 100 or 80) or reduce the number of tasks. |
 | Diagnostic output prints corrupted characters | Serial buffer collision | String calculations inside tasks can exceed stack limits. Increase the stack size of `TaskDiagnostics` to 128 words, or reduce string complexity. |
 | LEDs flash at wrong frequencies | Tick rate mismatch | FreeRTOS configuration on AVR typically sets the tick rate to 15.6ms or 16ms by default if using watchdog timers, or 1ms if using Timer1. Ensure `portTICK_PERIOD_MS` is used to scale delays. |
@@ -9797,7 +15698,30 @@ vTaskDelay(500 / portTICK_PERIOD_MS);
 
 Welcome to Day 82! Today we master **Thread-Safety** and **Inter-Task Communication (ITC)** inside Real-Time Operating Systems. We implement a classic **Producer-Consumer Pattern** on the Arduino Uno using a **FreeRTOS Queue** to exchange sensor telemetry safely between two tasks of different priorities, without risking memory corruption or race conditions.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In an RTOS environment, tasks execute concurrently. If they share variables directly, serious errors can occur:
+- **Race Condition**: Suppose Task A is writing a 16-bit integer (which takes two instructions on an 8-bit CPU) and the scheduler interrupts it midway to run Task B, which reads the same variable. Task B reads a corrupted mixture of the old and new bytes.
+- **CPU Waste**: If Task B has to wait for a sensor update, having it run a loop checking a flag (`while(!flag)`) wastes valuable CPU cycles.
+
+A **Queue** resolves both issues. It is a thread-safe mailbox:
+- It encapsulates mutual exclusion, ensuring only one task writes or reads the memory buffer at a time.
+- It allows tasks to **block** (go to sleep) when empty or full, releasing CPU execution time to other ready tasks immediately.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9825,28 +15749,58 @@ FreeRTOS tasks can be in one of four states: **Running, Ready, Blocked, or Suspe
 - **Blocking on Receive**: When the Consumer task calls `xQueueReceive(sensorQueue, &val, portMAX_DELAY)` and the queue is empty, the task is moved from the `Running` state into the `Blocked` state. The scheduler stops checking it, saving CPU power.
 - **Waking on Send**: The instant the Producer task calls `xQueueSend()`, the kernel registers that data is available. It instantly moves the Consumer task back into the `Ready` state. Because the scheduler tick is high frequency, the consumer runs immediately if it has the highest ready priority.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | RTOS Processor |
 | Potentiometer (10kΩ) | 1 | Simulated sensor input |
 | Breadboard & Jumper Wires | 1 | Circuit assembly |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Potentiometer Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **Pin 1 (GND)** | **GND** | Ground rail |
 | **Pin 2 (Wiper)** | **A0** | Analog input |
 | **Pin 3 (VCC)** | **5V** | Power rail |
 
- | : | : |
+---
+
+## 💾 Task Synchronization Alternatives
+
+| Method | Thread Safe | Data Buffer | CPU Overhead | Use Case |
+| :--- | :--- | :--- | :--- | :--- |
 | **Queue (Our Choice)**| Yes | Yes (FIFO Array) | Moderate | Message passing, producer-consumer models. |
 | **Mutex / Semaphore** | Yes | No (Binary lock) | Low | Protecting shared hardware (like I2C bus or LCD). |
 | **Volatile Global** | No | No (Single value) | Zero | Unsafe for multi-byte values. Needs manual locks. |
 | **Message Buffer** | Yes | Yes (Variable size) | High | Sending strings or multi-byte structures. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire the potentiometer to the A0 pin of the Arduino Uno.
+2. Upload [Day_82_FreeRTOS_Sensor.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_82_FreeRTOS_Sensor/Day_82_FreeRTOS_Sensor.ino) to the board.
+3. Open the **Serial Monitor** at **9600 Baud**.
+4. Observe the console:
+   - Every 200ms, the producer reads the potentiometer and puts it in the queue.
+   - The consumer immediately prints:
+     `[CONSUMER] Received ADC: 512 | Calculated Voltage: 2.50 V`
+   - Simultaneously, watch the onboard LED (Pin 13) blink rapidly at 5 Hz.
+5. Rotate the potentiometer wiper. Notice how the printed voltage changes instantly and smoothly.
+6. The rapid, smooth blinking of the heartbeat LED demonstrates that even though the consumer task is blocking and waiting, other tasks continue to execute concurrently without interruption.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | `[PRODUCER ERROR] Queue is full! Data dropped.` | Consumer task is too slow or locked | Ensure `TaskSerialDisplay` does not contain blocking loops (`delay()`). If the console cannot keep up, increase the queue size during `xQueueCreate()`. |
 | Program freezes on boot | Out of SRAM (Heap exhaustion) | The kernel allocates queue buffers and task stacks from the heap. On the Uno, keep task stacks under 100 words and queue lengths under 5 slots. |
 | Diagnostic logs show corrupted numbers | Shared resource violation | If you access the analog pin or Serial port from multiple tasks simultaneously, conflict occurs. Ensure only one task writes to the serial port, or protect it with a Mutex semaphore. |
@@ -9878,7 +15832,23 @@ xQueueReceive(sensorQueue, &receivedValue, portMAX_DELAY);
 
 Welcome to Day 83! Today we study **firmware fault tolerance** and **system recovery**. We will implement the AVR hardware **Watchdog Timer (WDT)** using `avr/wdt.h`. We will analyze the **MCU Status Register (MCUSR)** to diagnose reboot triggers, establish a safe watchdog feeding cycle, and build a crash simulator to witness a full hardware CPU reset and diagnostic recovery.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In real-world mechatronics, microcontrollers are deployed in harsh environments.
+- **The Threat**: Electromagnetic interference (EMI) from high-power motors, static discharges, power brownouts, or logical bugs (such as an infinite loop waiting for a broken sensor) can cause the CPU to lock up, freeze, or jump to undefined program instructions.
+- **The Solution**: A **Watchdog Timer (WDT)** is an on-chip hardware timer. When enabled, it continuously counts down. The program must periodically reset ("feed") this timer. If the program freezes, the timer overflows, pulling the microcontroller's hardware Reset line. This reboot recovers the system automatically, preventing catastrophic failures.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -9912,24 +15882,59 @@ MCUSR Bits:
 If the watchdog is configured for a very short timeout (e.g. $15\,\text{ms}$) and the bootloader or `setup()` initialization takes longer than $15\,\text{ms}$, the watchdog will trigger a reset before the main loop is reached. This puts the microcontroller into an **infinite boot loop**.
 - **The Fix**: We call `wdt_disable()` as the very first line of `setup()` to disable the timer until the initialization sequence completes safely.
 
+---
 
+## 🔩 Components Needed
+
+No external components are required. The project runs on the Arduino's internal hardware registers and uses the built-in LED (Pin 13) for indicators.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 No external wiring is required.
 
- | : | : |
+---
+
+## 💾 System Recovery Alternatives
+
+| Method | Response Time | Hardware Complexity | Reliability | Use Case |
+| :--- | :--- | :--- | :--- | :--- |
 | **Internal WDT (Our Choice)**| Configurable ($15\,\text{ms} - 8\,\text{s}$) | Zero (on-chip) | High | Standard embedded systems. |
 | **External Watchdog IC** | Fixed/HW set | Low (needs external IC) | Extremely High | Safety-critical space/medical systems. Immune to chip locks. |
 | **Windowed Watchdog** | Milliseconds | Zero (requires WDT setup) | Very High | Triggers if fed *too early* or *too late*, capturing clock drifts. |
 | **Software Supervisor** | Seconds | Zero (cooperative code) | Low | Multi-core systems, does not recover from hard CPU lockups. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload [Day_83_Watchdog_Timer.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_83_Watchdog_Timer/Day_83_Watchdog_Timer.ino) to the Arduino Uno.
+2. Open the **Serial Monitor** at **9600 Baud**.
+3. **Observation - Normal Boot**:
+   - The onboard LED flashes rapidly 5 times to show a reboot occurred.
+   - The console prints:
+     `[DIAGNOSTICS] MCUSR register: 0x01` (or `0x02` if you pressed the reset button).
+     `[SYSTEM] Reset source: Power-On Reset (Normal Power-up).`
+     `[SYSTEM] Watchdog Timer armed with 2.0-second timeout.`
+   - The LED begins to pulse at a steady 1 Hz (heartbeat). The watchdog is fed continuously.
+4. **Observation - Simulated Crash**:
+   - Type `k` in the Serial input line and press Enter.
+   - The console reports:
+     `[FAULT INJECTION] Simulating firmware hang (infinite loop) now!`
+     `[SYSTEM] Watchdog feeding halted. CPU will reset in 2 seconds...`
+   - The LED stops blinking and stays solid HIGH.
+   - Wait exactly 2 seconds. The LED flashes rapidly 5 times as the bootloader restarts.
+   - The console prints:
+     `[DIAGNOSTICS] MCUSR register: 0x08` (indicating `WDRF` is set).
+     `[SYSTEM] CRITICAL: Processor was reset by WATCHDOG TIMER timeout!`
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Arduino gets stuck in an infinite reset loop | WDT not disabled immediately on boot | Ensure `wdt_disable()` is called at the beginning of `setup()`. Some older Arduino Uno bootloaders do not clear the WDT flag on reset, causing an infinite boot loop. Flash the Optiboot bootloader to resolve this, or increase the WDT timeout range. |
 | Watchdog resets during normal operation | Main loop taking longer than 2.0 seconds | Ensure no slow blocking operations (like `delay()` or long `while` loops waiting for sensors) exist in your code. Sprinkle `wdt_reset()` in slow functions, or increase the WDT window (e.g., `WDTO_4S`). |
 | MCUSR reads `0x00` on boot | Register cleared by bootloader | Some bootloaders read and clear `MCUSR` before jumping to the main sketch. Optiboot preserves this register, whereas older stock bootloaders might clear it. |
@@ -9964,7 +15969,26 @@ byte resetSource = MCUSR;
 
 Welcome to Day 84! Today we explore **low-power embedded systems engineering**. We will configure the **ATmega328P** to enter its deepest sleep state (**Power-down Mode**), write direct register commands to shut down the **Analog-to-Digital Converter (ADC)**, and implement a **hardware interrupt wake-up (INT0)** to wake the controller from sleep instantly.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+For battery-powered robots, remote sensor stations, and wearable electronics, power is the primary constraint.
+- **Active Draw**: A standard Arduino Uno consumes about $15 - 20\,\text{mA}$ while running. If powered by a standard $9\text{V}$ battery ($600\,\text{mAh}$ capacity), it will run for less than $30\,\text{hours}$.
+- **Sleep Draw**: By placing the microcontroller into **Deep Sleep (Power-down Mode)** during periods of inactivity, we can reduce the chip's current draw to **under $1\,\mu\text{A}$**. This extends battery life from days to years.
+
+Writing low-power firmware requires understanding how to turn off internal peripherals (like clocks, timers, and converters) and configure hardware interrupts to wake the CPU.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10004,17 +16028,38 @@ Note that while the ATmega328P chip draws $<1\,\mu\text{A}$ in deep sleep, a sta
 - **Onboard Power LED**: ~2 mA.
 - To achieve true micro-ampere operation in a custom design, use a bare ATmega328P chip on a breadboard or an Arduino board designed for low power (like the Arduino Pro Mini, with its regulator and power LED removed).
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | Tactile Pushbutton | 1 | Wake-up trigger button |
 | Breadboard & Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Button Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **Pin 1** | **D2** | INT0 Wake-up input (uses internal pull-up) |
 | **Pin 2** | **GND** | Button Ground |
 | **LED (Onboard)** | **D13** | Status Indicator |
 
- | : | : | :
+---
+
+## 💾 Power Optimization Alternatives
+
+| Sleep Mode | CPU Clock | I/O Clock | ADC Power | Current Draw (Chip Only) | Wake-up Source |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Power-down** | Halted | Halted | Off (manual) | **$< 1\,\mu\text{A}$** | INT0/INT1 Low Level, Reset |
+| **Power-save** | Halted | Halted | Off | $\sim 1.6\,\mu\text{A}$ | Timer2 (Asynchronous), INT0/1 |
+| **Idle** | Halted | Active | On | $\sim 15\,\text{mA}$ | Any interrupt, Serial, Timers |
+| **Active (Run)**| Active | Active | On | $\sim 15\,\text{mA}$ | Running normally |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10037,7 +16082,12 @@ Note that while the ATmega328P chip draws $<1\,\mu\text{A}$ in deep sleep, a sta
      `[WAKE] System woke up from deep sleep.`
    - The system is active again. It will run for another 5 seconds before returning to sleep unless the button is pressed.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | System enters sleep but wakes up instantly | Floating interrupt pin | Ensure Pin 2 is configured with `INPUT_PULLUP`. A floating pin will drift LOW and trigger false wake-ups. |
 | Current draw in sleep is still high (e.g. 15mA) | Board-level power consumption | This is due to the Arduino Uno's onboard USB chip and linear regulator. To measure true micro-ampere sleep current, measure the current on a bare ATmega328P or an Arduino Pro Mini with LEDs removed. |
 | Serial Monitor prints garbage after waking | Clock synchronization lag | After sleep, the internal clock takes a few microseconds to stabilize. The sketch disables interrupts and serial operations during transition to prevent garbage characters. |
@@ -10074,7 +16124,25 @@ attachInterrupt(digitalPinToInterrupt(WAKE_BUTTON_PIN), wakeUpISR, LOW);
 
 Welcome to Day 85! Today we master **non-volatile parameter serialization**. We will write a structured configuration system that saves multiple variables (floats, integers, and character arrays) to the Arduino's built-in **EEPROM** using `EEPROM.put()` and `EEPROM.get()`. We will study the physics of **floating gate transistors**, compile-time struct alignment, and implement a validation checksum to guarantee data integrity across reboots.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Microcontrollers wipe their SRAM memory clean every time they lose power.
+- **The Problem**: If you tune a robot's PID gains (like on Day 77) or calibrate IMU offsets (like on Day 74), these parameters will be lost on reboot. Re-uploading code or recalibrating every time is unacceptable.
+- **The Solution**: Store configuration settings in the onboard Electrically Erasable Programmable Read-Only Memory (**EEPROM**). Unlike SRAM, EEPROM holds its state without power.
+
+By packing parameters into a single struct, we can write a uniform configuration block, complete with a checksum to verify that the memory hasn't faded over years of deployment.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10117,24 +16185,62 @@ Flash and EEPROM memories can suffer from **data retention fading** over 10-20 y
 To prevent the MCU from loading corrupted values, we calculate a **checksum** of the variables before saving, and store it inside the struct.
 During `setup()`, the structure is loaded. The CPU calculates the checksum again. If the calculated checksum does not match the stored checksum, the data is flagged as corrupted, and the system falls back to safe factory default values.
 
+---
 
+## 🔩 Components Needed
+
+No external components are required. The project runs on the Arduino's internal hardware registers and utilizes the Serial Monitor.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 No external wiring is required.
 
- | : | : |
+---
+
+## 💾 Non-Volatile Memory Alternatives
+
+| Medium | Storage Capacity | Write Endurance | Interface | Notes |
+| :--- | :--- | :--- | :--- | :--- |
 | **EEPROM (Internal)**| 1 KB (Uno) | 100,000 writes | Registers | Built-in, low capacity. |
 | **External EEPROM**  | 2 KB - 256 KB | 1,000,000 writes| I2C / SPI | Soldered IC (e.g. 24LC256). Very reliable. |
 | **SPI Flash**        | 4 MB - 128 MB | 100,000 writes | SPI | High capacity. Requires page/sector erase blocks. |
 | **FRAM (Ferroelectric)**| 8 KB - 256 KB | 100 Trillion | I2C / SPI | Fastest. Infinite cycles. Retains data via magnetic domains. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Upload [Day_85_EEPROM_ReadWrite.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_85_EEPROM_ReadWrite/Day_85_EEPROM_ReadWrite.ino) to the Arduino Uno.
+2. Open the **Serial Monitor** at **9600 Baud**.
+3. **Boot Cycle Log**:
+   - On the first boot, the system registers uninitialized memory, defaults to factory variables, increments `bootCount` to 1, and saves them.
+   - Press the Reset button on the Arduino. The system reboots.
+   - The monitor prints: `[BOOT] Boot cycle #2 logged successfully`. The count persists!
+4. **Editing Calibration Configuration**:
+   - Save new settings: Type `s 2.50 -0.05 Rover-Beta` and press Enter.
+   - The CLI parses the parameters, calculates a fresh checksum, writes them to EEPROM, and prints the updated state:
+     ```text
+     [SYSTEM] Configuration saved to EEPROM.
+     --
+      System Name : Rover-Beta
+      Boot Count  : 2
+      Multiplier  : 2.5000
+      Zero Offset : -0.0500
+      Checksum    : 0x2A1
+     --
+     ```
+   - Disconnect the USB cable to cut off power completely.
+   - Reconnect the USB cable and open the Serial Monitor.
+   - You will see the system boot, report cycle #3, and correctly load the values (`Rover-Beta`, `2.5000`, `-0.0500`) from memory!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | System loads default values on every boot | Checksum mismatch or uninitialized memory | Ensure you call `saveConfiguration()` after updating parameters to write the correct checksum to EEPROM. |
 | Boot count resets to 0 | `resetToFactoryDefaults()` triggered | If you clear the EEPROM manually or power fluctuates, the checksum check fails, and the system reloads defaults. |
 | Char array (System Name) prints garbage characters | Missing null terminator | Ensure string copies leave room for the null terminator (`\0`). Our buffer is 16 bytes, limiting the string to 15 characters. |
@@ -10166,7 +16272,37 @@ if (activeConfig.checksum == calculatedCheck) { ... }
 
 Welcome to Day 86! Today we build a production-grade **Persistent Sensor Calibration Manager** for the MPU6050 6-Axis Inertial Measurement Unit (IMU). We will address a common problem in robotics: how to calibrate an IMU without forcing a long calibration cycle on every power cycle, which requires the robot to remain perfectly still. We will save calibration offsets in the internal **EEPROM**, protect them with a **checksum**, and implement a boot-trigger pin logic to force recalibration.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/EEPROM.jpg" alt="EEPROM" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Robotics and aerospace control loops (like PID controllers for balance or quadcopters) rely on clean, zero-biased measurements from an Inertial Measurement Unit (IMU). 
+When an IMU is flat and stationary, its sensor readings should theoretically read:
+- **Gyroscope X, Y, Z**: $0^\circ/\text{s}$ (no rotation)
+- **Accelerometer X, Y**: $0g$ (no lateral acceleration)
+- **Accelerometer Z**: $1g$ or $9.81\,\text{m/s}^2$ (standard gravity vector)
+
+However, due to chip manufacturing variations, soldering stresses, and mounting angles, every IMU has a **static bias (offset)**. Without calibration, your robot might think it is drifting or tilting even when sitting flat.
+
+Instead of running a 2-second calibration loop *every single time* the system boots (which would fail if the robot is moving during power-up), this manager:
+1. **Reads pre-computed offsets** from the EEPROM on boot.
+2. **Applies them instantly** to the raw readings.
+3. **Offers a physical override**: holding a button during boot triggers a fresh, 500-sample calibration cycle and writes the new offsets back to EEPROM.
+4. **Protects memory integrity**: a magic configuration byte and an arithmetic checksum ensure we never load corrupt or uninitialized data.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10189,21 +16325,42 @@ The Arduino Uno has 1 KB of internal EEPROM (Electrically Erasable Programmable 
 
 Before loading the offsets, the Arduino recalculates the checksum of the bytes in EEPROM and compares it to the stored checksum. If they match, the data is verified.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | MPU6050 IMU | 1 | 6-Axis Accelerometer & Gyroscope |
 | Pushbutton | 1 | Factory calibration trigger |
 | LED | 1 | Built-in pin 13 (Calibration state indicator) |
 | Breadboard & Jumper Wires | 1 | Prototyping and wiring |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| MPU6050 Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** | 5V Power Supply |
 | **GND** | **GND** | Ground |
 | **SDA** | **A4** | I2C Data line (needs no library) |
 | **SCL** | **A5** | I2C Clock line |
 | **Button Pin** | **D2** | Calibration switch (uses internal pull-up) |
 
- | : | : | :
+---
+
+## 💾 Alternatives to EEPROM
+
+| Medium | Storage Type | Capacity | Write Endurance | Access Speed | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Internal EEPROM** | Non-volatile | 1 KB | 100,000 writes | Moderate | Zero external wiring. Perfect for calibration parameters. |
+| **External I2C EEPROM** (e.g., AT24C256) | Non-volatile | 32 KB | 1,000,000 writes | Slow | Requires extra bus lines, excellent for larger parameter sets. |
+| **Flash Memory** (Internal PROGMEM) | Non-volatile | 32 KB | 10,000 writes | Fast | Read-only at runtime. Cannot save new calibrations without reflashing. |
+| **FRAM** (Ferroelectric RAM) | Non-volatile | 8 KB - 256 KB | $10^{14}$ writes | Extremely Fast | Highly durable, but expensive and requires external IC. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10224,7 +16381,12 @@ Before loading the offsets, the Arduino recalculates the checksum of the bytes i
    - Send `s` to print active calibration parameters in memory.
    - Send `d` to invalidate the EEPROM (simulates an uncalibrated board).
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | `[ERROR] Failed to communicate with MPU6050!` | Wrong I2C address or bad wiring | Check SDA (A4) and SCL (A5) connections. Ensure AD0 pin on MPU6050 is grounded (0x68 address). |
 | `[WARNING] No valid calibration data found` | First run or checksum mismatch | Trigger a manual calibration sequence using the Serial CLI (`c`) or boot-button pin. |
 | Accelerometer Z-axis is calibrated near $-16384$ instead of $0$ | IMU was not held flat during calibration | Lay the IMU perfectly flat on a table so the Z-axis aligns with the gravity vector. |
@@ -10259,7 +16421,34 @@ float gxCal = (gx - calData.gyroOffsetX) / GYRO_SCALE_FACTOR;
 
 Welcome to Day 87! Today we learn how to decouple our code and write a professional, reusable **Custom C++ Library** for the Arduino IDE environment. As our practical example, we will implement an **Exponential Moving Average (EMA) Filter** library, which is the industry-standard algorithm for smoothing noisy sensor readings on resource-constrained microcontrollers.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In large embedded systems, keeping all code in a single `.ino` file leads to unmanageable code (spaghetti code) that is difficult to test, debug, and reuse across projects. 
+
+### Why Write Custom Libraries?
+1. **Encapsulation & Modularity**: Grouping related variables and functions into a C++ class hides internal mechanics and presents a clean, simple API to the main sketch.
+2. **Reusability**: Once written, you can import this library into any project without copy-pasting code.
+3. **Namespace Safety**: Prevents naming collisions between global variables in different files.
+
+### What is an EMA Filter?
+Sensors (analog inputs, IMUs, ultrasonic sensors) are prone to high-frequency electrical or environmental noise. To smooth the signal, we use filters.
+An **Exponential Moving Average (EMA) Filter** is a first-order Infinite Impulse Response (IIR) filter. Unlike a Simple Moving Average (SMA) which requires storing a buffer of the last $N$ readings in SRAM, the EMA only needs to remember **one value**: the last filtered output. This makes it extremely memory-efficient for 8-bit AVR microcontrollers.
+
+---
 
 ## 🔬 Physics & Mathematics of EMA
 
@@ -10284,7 +16473,15 @@ Medium Alpha (0.3):  ─── Balanced smoothing and delay
 High Alpha (0.9):    ─ No delay, but noise passes through
 ```
 
+---
 
+## 🔩 Components Needed
+
+No external hardware is strictly required! We run this sketch using the Arduino **Serial Plotter** which simulates a noisy analog sensor reading.
+To test on real-world inputs:
+- Any analog sensor (e.g., Potentiometer, LDR, or LM35 Temperature Sensor).
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
@@ -10294,18 +16491,43 @@ For the default simulation mode:
 For real-world sensor testing (Optional):
 - Connect the signal pin of your analog sensor to **Analog Pin A0** of the Arduino.
 
- | : | : |
+---
+
+## 💾 Alternatives to EMA Filtering
+
+| Filter Type | SRAM Overhead | CPU Overhead | Use Case | Limitations |
+| :--- | :--- | :--- | :--- | :--- |
 | **EMA (Exponential)** | **O(1) - 4 bytes** | **O(1) - Very Low** | General sensor smoothing, low-memory boards. | Introduces phase lag. |
 | **SMA (Simple Moving)** | O(N) - Needs buffer | O(1) with running sum | Step response smoothing, equal weighting. | High memory usage for large window sizes ($N$). |
 | **Median Filter** | O(N) - Buffer & sorting | O(N log N) - Sorting | Removing sudden spikes (e.g. Ultrasonic spikes). | Modifies signal shapes, sorting takes CPU cycles. |
 | **Kalman Filter** | O(1) - State space | High (Matrix/Floating math) | Sensor fusion (e.g., IMU + GPS). | Mathematically complex, difficult to tune. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Open the Arduino IDE, load [Day_87_Custom_Library.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_87_Custom_Library/Day_87_Custom_Library.ino).
+2. The library files [EMAFilter.h](file:///d:/Downloads/100%20days%20of%20Arduino/Day_87_Custom_Library/EMAFilter.h) and [EMAFilter.cpp](file:///d:/Downloads/100%20days%20of%20Arduino/Day_87_Custom_Library/EMAFilter.cpp) must be in the same folder as the `.ino` file. They will open as tabs in the Arduino IDE.
+3. Select your Arduino Uno board and upload the code.
+4. **Visualizing the Filter (Serial Plotter)**:
+   - In the Arduino IDE, go to **Tools > Serial Plotter** (ensure baud rate is set to **115200**).
+   - You will see three lines:
+     - `Raw` (Blue): The noisy signal.
+     - `Filtered` (Red): The output of your EMA filter.
+     - `Clean` (Green): The underlying noiseless sine wave.
+5. **Tuning parameters (Serial Monitor)**:
+   - Close the Serial Plotter and open the **Serial Monitor** at **115200 Baud**.
+   - You will see the CLI output showing instructions.
+   - Send `+` to increase alpha (makes the filter faster, less smooth).
+   - Send `-` to decrease alpha (makes the filter slower, smoother).
+   - Send `n` to toggle white noise generation on or off.
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | `fatal error: EMAFilter.h: No such file or directory` | Library files are not in the same directory | Ensure `EMAFilter.h` and `EMAFilter.cpp` are inside the folder `Day_87_Custom_Library`. |
 | Serial Monitor prints garbage characters | Baud rate mismatch | Change the Serial Monitor/Plotter baud rate setting to **115200**. |
 | Filter output starts at 0.0 and lags heavily on startup | Filter memory initialized to zero | In the library constructor or `reset()`, we check if it is the first sample (`_isInitialized == false`) and seed the memory with the raw input value to eliminate startup lag. |
@@ -10336,7 +16558,39 @@ float filteredSignal = myFilter.filter(rawSignal);
 
 Welcome to Day 88! Today we dive into the core execution architecture of microcontrollers: **Hardware Interrupts**. We will explore how to interrupt the main loop execution instantly in response to external real-world events, configure Interrupt Service Routines (ISRs) under critical constraints, and implement a software debouncing algorithm. To test it without physical buttons, we will design an on-board **Hardware Loopback Simulator** by jumpering two digital pins!
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In standard microcontroller code, we use the `loop()` function to check the status of pins. This is called **polling**. While simple, polling has a fatal flaw: if your loop is doing heavy calculations, waiting for a sensor read, or communicating over I2C, it might take 10ms, 50ms, or even 1 second to complete a single iteration.
+If a critical event happens during that time—such as a robot hitting a wall limit switch, or a user pressing an **Emergency Stop (E-Stop)** button—the microcontroller will miss it or react too late, causing mechanical damage or injury.
+
+### What is an Interrupt?
+An **Interrupt** is a hardware mechanism that forces the CPU to pause whatever it is doing, save its current state, jump to a special function called an **Interrupt Service Routine (ISR)**, execute it, and then resume the main program. 
+
+```
+Normal Program Flow:    ───► [ Loop Code ] ───► [ Loop Code ] ───► [ Loop Code ] ───►
+                              │                                      ▲
+                              ▼ (Pin 2 goes LOW)                     │ (ISR finished)
+Interrupt Event:              └─────────────► [ RUN ISR ] ───────────┘
+```
+
+In robotics, interrupts are mandatory for:
+1. **Safety critical events** (E-Stops, collision bumpers).
+2. **High-frequency pulses** (Rotary encoder ticks, tachometers).
+3. **Precise timing events** (Timer-driven execution).
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10368,16 +16622,37 @@ Because interrupts halt the rest of the program, they must follow strict rules:
   interrupts();
   ```
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | Jumper Wire | 1 | Loopback connection from Pin 4 to Pin 2 |
 | Pushbutton (Optional) | 1 | For testing real physical bounces |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Connect From Pin | Connect To Pin | Description |
+| :--- | :--- | :--- |
 | **Digital Pin 4** | **Digital Pin 2 (INT0)** | Loopback wire to generate simulated button pulses |
 | **GND** (Optional) | **Digital Pin 2 (INT0)** | Connect via physical button if not using loopback |
 
- | : | : | :
+---
+
+## 💾 Alternatives to Software Debouncing
+
+| Debouncing Method | Type | Components | Cost | CPU Overhead | Performance |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Software Lockout (Our Code)** | Software | None | Free | Very Low | Excellent. Simple window check. |
+| **Hardware RC Filter** | Hardware | 1 Resistor, 1 Capacitor | Low | Zero | Good. Rounds off sharp bounce edges. |
+| **Schmitt Trigger IC** | Hardware | MC14490 or 74HC14 | Moderate | Zero | Perfect. Cleans up slow analog transitions into sharp digital edges. |
+| **Polling Timer Check** | Software | None | Free | Moderate | Poor. Requires constant polling in loop. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10404,7 +16679,12 @@ Because interrupts halt the rest of the program, they must follow strict rules:
    - The system triggers E-stop status and locks the main loop in a safety halt state.
    - Send `r` to clear the E-Stop state and reset statistics back to zero.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | `Raw ISR Triggers` is 0 during simulation | Missing jumper wire | Ensure a jumper wire is plugged firmly into Digital Pin 4 and Digital Pin 2. |
 | Physical button triggers twice when pressed | Debounce lockout window is too small | Increase `DEBOUNCE_DELAY_MS` in the code to `200` or `250` ms. |
 | System hangs when E-Stop is triggered | Intended behavior | This is a safety lock. Send `r` in the serial input to clear the error. |
@@ -10440,7 +16720,32 @@ if (currentTime - lastInterruptTime > DEBOUNCE_DELAY_MS) {
 
 Welcome to Day 89! Today we master the art of **Precision Datalogging** by replacing soft-timed loops with hardware-driven **Timer Interrupts** on the ATmega328P. We will configure the 16-bit **Timer1** in **Clear Timer on Compare Match (CTC)** mode to fire analog read cycles at exact frequencies (50 Hz, 100 Hz, and 200 Hz). We will analyze the physics of sampling jitter, perform timer arithmetic, and build a real-time telemetry parser.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In digital signal processing (DSP), control theory (PID loops), and sensor datalogging, we assume that data is sampled at a **perfectly constant interval** ($\Delta t$). 
+
+If you sample a sensor in your main `loop()` using a simple check like `if (millis() - lastSample >= 10)`, your sampling interval is **not constant**. It is subject to **jitter**:
+- If `Serial.print()` takes 2ms, your next sample is delayed.
+- If a sensor takes 5ms to read, your sampling frequency drops.
+- This timing variation is called **sampling jitter**. In PID loops, jitter causes instability and oscillations. In DSP (like FFT analysis), jitter distorts frequencies (frequency modulation artifacts).
+
+### What is a Timer Interrupt?
+A **Timer Interrupt** is a hardware-level alarm. When the hardware counter inside the chip reaches a certain value, the hardware pauses CPU execution instantly and triggers the timer's ISR. This guarantees that your sensor is sampled at the exact same interval (with sub-microsecond precision), completely independent of whatever the main `loop()` is doing!
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10482,12 +16787,23 @@ Let's do the math for $100\,\text{Hz}$:
 Let's do the math for $200\,\text{Hz}$ (with prescaler 8):
 $$\text{OCR1A} = \frac{16,000,000}{8 \cdot 200} - 1 = 9,999$$
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | Potentiometer (Optional) | 1 | Connect to A0 to act as a variable analog sensor |
 | Jumper Wires & Breadboard | 1 | Prototyping |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+If using a Potentiometer:
+| Potentiometer Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **Pin 1 (Left)** | **GND** | Ground reference |
 | **Pin 2 (Wiper)** | **A0** | Analog input signal |
 | **Pin 3 (Right)** | **5V** | 5V Power Supply |
@@ -10495,7 +16811,18 @@ $$\text{OCR1A} = \frac{16,000,000}{8 \cdot 200} - 1 = 9,999$$
 If no sensor is connected:
 - **No wiring required**. The code detects the floating pin and automatically outputs a simulated sine wave + noise for testing.
 
- | : | : | :
+---
+
+## 💾 Alternatives to Timer Interrupts
+
+| Method | Timing Jitter | CPU Overhead | Max Frequency | Ease of Implementation | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Hardware Timer Interrupt (CTC)** | **< 1 µs** | **Very Low** | > 100 kHz | Moderate | Best for precise data acquisition and control loops. |
+| **Millis/Micros Polling** | 100 µs – 10 ms | Moderate | ~10 kHz | Easy | Fine for simple applications, but highly susceptible to blockages. |
+| **Delay Loops** | Massive | 100% (Blocks CPU) | ~1 kHz | Very Easy | Prevents execution of any other code. Avoid in professional work. |
+| **ADC Free-Running Interrupt** | < 1 µs | Low | 9.6 kHz (10-bit) | Hard | ADC automatically triggers its own conversion complete interrupt. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10517,7 +16844,12 @@ If no sensor is connected:
    - Close the Serial Monitor and open **Tools > Serial Plotter** at **115200 Baud**.
    - You will see the clean, perfectly-sampled sine wave.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | `IntervalUs` fluctuates wildly (e.g. 5000 then 15000) | Main loop is delayed and processing multiple samples | Ensure the main loop is not blocked by slow function calls. The timer interrupt fires on time, but if the main loop is slow, it prints accumulated samples late. |
 | Output reads garbage characters | Baud rate mismatch | Change the Serial Monitor/Plotter baud rate to **115200**. |
 | Analog input value is flat | Potentiometer connected incorrectly | Verify wiring: Pin 1 to GND, Pin 2 (wiper) to A0, Pin 3 to 5V. |
@@ -10555,7 +16887,30 @@ ISR(TIMER1_COMPA_vect) {
 
 Welcome to Day 90! Today we transform our microcontroller into a native **USB Human Interface Device (HID)**, allowing it to control a computer directly as a hardware Keyboard and Mouse. We will explore how native USB hardware controllers function, write automated typing macros and shortcut commands, and build a "Mouse Jiggler" to keep the PC awake. 
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In mechatronics and human-computer interaction (HCI), we often want custom hardware to talk to a PC without writing a custom PC-side driver. For example:
+- A custom **Sim Racing Steering Wheel** or pedal set.
+- An **industrial macro control box** with physical buttons to launch scripts or control CAD software.
+- A **foot switch** to control presentation slides.
+
+By configuring the microcontroller to report itself as a **USB HID Device**, the PC automatically loads its built-in keyboard/mouse drivers. The computer cannot distinguish between your Arduino code and a standard $10 USB keyboard.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10584,19 +16939,40 @@ When a USB device is plugged in, it sends **USB Descriptors** (arrays of bytes) 
 If you write a loop that constantly presses `Enter` or sends keystrokes, you will spam the computer so fast that you won't be able to open the Arduino IDE to upload a fix. 
 **Solution**: Always insert a **5-second delay** in `setup()` before starting any HID commands. This gives you time to hit the reset button and upload new code if the device goes rogue.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Leonardo or Micro | 1 | Microcontroller with native USB (ATmega32U4) |
 | Micro-USB Jumper Cable | 1 | Connects board to PC |
 | Pushbutton | 2 | Action triggers (Text Typer and Jiggler Toggle) |
 | Jumper Wires & Breadboard | 1 | Prototyping |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Component Pin | Arduino Pin | Description |
+| :--- | :--- | :--- |
 | **Button A Pin 1** | **GND** | Ground reference |
 | **Button A Pin 2** | **D2** | Keyboard Typer (internal pull-up enabled) |
 | **Button B Pin 1** | **GND** | Ground reference |
 | **Button B Pin 2** | **D3** | Mouse Jiggler Toggle (internal pull-up enabled) |
 
- | : | : | :
+---
+
+## 💾 Alternatives to ATmega32U4 Boards
+
+| Method | Native USB | Ease of Use | Cost | Hardware Required | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **ATmega32U4** | **Yes** | **Very Easy** | Low | Leonardo / Pro Micro | Standard Arduino `Keyboard.h` library works out-of-the-box. |
+| **V-USB** | Software-emulated | Hard | Tiny | Arduino Uno + Zener Diodes | Bit-bangs USB over GPIO pins. Low speed, highly timing sensitive. |
+| **HoodLoader2** | Yes (Indirect) | Hard | Low | Arduino Uno (ATmega16U2) | Reflashes the Uno's onboard USB-to-Serial co-processor. |
+| **ESP32 (BLE HID)** | Yes (Bluetooth) | Easy | Moderate | ESP32 Board | Simulates keyboard/mouse wirelessly over Bluetooth Low Energy. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10617,7 +16993,12 @@ If you write a loop that constantly presses `Enter` or sends keystrokes, you wil
 3. Send `t`, `j`, `l`, or `a`. 
 4. The Serial Monitor will print out the simulated USB HID packets, showing you exactly what key codes or mouse movements a Leonardo would have transmitted!
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Sketch compiles with error: `Keyboard.h: No such file or directory` | Compiling for Uno/Nano without simulation wrapper | Our sketch includes a wrapper to prevent this, but make sure you select **Arduino Leonardo** or **Micro** in Tools > Board. |
 | Button triggers continuously | Missing pull-up resistor | The code uses `INPUT_PULLUP` to set the pin HIGH by default. Make sure the button is wired to connect the pin to **GND** when pressed. |
 | Roguish keystrokes locking out the PC | Infinite loop in HID transmission | Unplug the USB cable immediately. Hold down the physical **Reset Button** on the Arduino, plug the USB cable back in, click "Upload" in the IDE, and release the Reset button only when the IDE status changes to "Uploading...". |
@@ -10655,7 +17036,30 @@ Keyboard.releaseAll();
 
 Welcome to Day 91! Today we combine physical mechatronics with native USB interfaces to build a **Custom PC Volume Knob**. We will interface a **Quadrature Rotary Encoder** (with built-in push button) to command Windows/macOS/Linux system audio over USB. We will study the physics of quadrature waveforms, design a robust software decoder, and examine the **USB HID Consumer Control Page** layout.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+User interfaces (UI) benefit heavily from dedicated physical inputs. In mechatronics, tactile feedback is superior to graphical controls: turning a physical aluminum volume dial is much faster and more satisfying than clicking a mouse slider on a screen.
+
+### What is a Rotary Encoder?
+Unlike an analog potentiometer (which is limited to ~300 degrees of rotation and outputs an absolute analog voltage), a **Rotary Encoder** has **infinite rotation** in both directions. It outputs digital pulses (quadrature signals) that allow the microcontroller to measure relative angle steps and direction.
+
+To interface this knob with a computer, we use the USB **Consumer Control Page**. Unlike standard alphanumeric keys (A, B, C, Enter), volume and playback controls are located on a separate USB Usage Page. This enables the operating system to intercept them globally, regardless of which window is in focus.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10692,20 +17096,41 @@ Consumer.write(MEDIA_VOLUME_DOWN); // Decrements system volume
 Consumer.write(MEDIA_VOLUME_MUTE); // Toggles mute state
 ```
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Leonardo or Micro | 1 | Microcontroller with native USB (ATmega32U4) |
 | KY-040 Rotary Encoder Module | 1 | Quadrature rotary input with integrated push button |
 | Breadboard & Jumper Wires | 1 | Prototyping and connections |
 | Micro-USB Cable | 1 | USB connection to computer |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| KY-040 Encoder Pin | Arduino Uno/Leonardo Pin | Description |
+| :--- | :--- | :--- |
 | **GND** | **GND** | Ground reference |
 | **+** (VCC) | **5V** or **Not Connected** | Power (not strictly needed if using internal pullups) |
 | **CLK** (Signal A) | **D5** | Quadrature Channel A (with internal pullup) |
 | **DT** (Signal B) | **D6** | Quadrature Channel B (with internal pullup) |
 | **SW** (Button) | **D7** | Pushbutton contact (with internal pullup) |
 
- | : | : | :
+---
+
+## 💾 Alternatives to Rotary Encoders
+
+| Method | Absolute/Relative | Rotation Range | PC Interface | Software Complexity | Tactile Feel |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Rotary Encoder (KY-040)** | **Relative** | **Infinite** | **USB Consumer Page** | **Low (State Polling)** | **Excellent (Clicky detents)** |
+| **Analog Potentiometer** | Absolute | ~300 degrees | Serial + PC Mapper Agent | Medium | Good (Smooth damping) |
+| **Pushbuttons (Up/Down)** | Relative | N/A | USB Keyboard or Consumer | Low | Moderate |
+| **Infrared (IR) Receiver** | Relative | N/A | USB Keyboard or Consumer | High | Poor |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10726,7 +17151,12 @@ Consumer.write(MEDIA_VOLUME_MUTE); // Toggles mute state
      `[SIMULATED USB HID] Sent: Consumer Key Media Volume Up`
    - You can also send `+`, `-`, or `m` via the serial input to simulate encoder inputs!
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Turning the knob volume moves 2 steps up and then 1 down (Jitter) | Contact bounces or noisy transitions | Keep the encoder contacts clean, and ensure the polling rate in `loop()` is fast (avoid using `delay()` anywhere in the loop). |
 | Volume goes down when turning clockwise | Channel A and Channel B are swapped | Swap the wires on pins **D5** (CLK) and **D6** (DT), or swap their assignments in the sketch code. |
 | Button doesn't trigger mute | Loose wire on SW pin | Verify the SW pin goes to **D7** and the GND pin of the encoder goes to Arduino GND. |
@@ -10768,7 +17198,32 @@ Consumer.write(MEDIA_VOLUME_UP);
 
 Welcome to Day 92! Today we build a **6-Key Custom Macro Pad** using Cherry MX style mechanical switches. We will explore how professional mechanical keyboards use a **Diode Matrix** to scan hundreds of keys using a small number of pins, analyze the physics of keyboard "ghosting", and implement multi-key macros over USB HID.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+If you wire 100 keyboard switches directly to a microcontroller, you would need 100 GPIO pins. Even for a small 6-key macro pad, wiring switches directly consumes 6 pins. 
+
+To save pins, keyboards arrange keys in a **grid matrix** of Rows ($R$) and Columns ($C$). 
+- The number of keys we can read is $R \times C$.
+- The number of pins required is $R + C$.
+- For our 6-key macro pad, we arrange them in a $2 \times 3$ matrix. This requires only **5 pins** instead of 6.
+- A full 104-key standard keyboard arranged in a $12 \times 9$ matrix requires only **21 pins** instead of 104!
+
+However, when you press multiple keys simultaneously (e.g., in gaming or fast typing), the electrical currents can cross-talk, leading to **ghosting** (the PC registers keys that were never pressed) or **masking** (pressed keys are ignored). To make the matrix reliable, we place a **diode** in series with every key switch.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10803,30 +17258,77 @@ The microcontroller loops through rows:
 5. Row 0 is set back to `INPUT`.
 6. The microcontroller pulls **Row 1 LOW** and reads columns again.
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Leonardo or Micro | 1 | Native USB support (ATmega32U4) |
 | Cherry MX Keyswitches | 6 | Tactile mechanical keys |
 | 1N4148 Diodes | 6 | Anti-ghosting diodes (one per switch) |
 | Jumper Wires & Breadboard | 1 | Prototyping |
 | Micro-USB Cable | 1 | USB connection to computer |
 
+---
 
+## 🔌 Pin-to-Pin Wiring
+
+```
+Row 0 (Pin 5) ───[Cathode Diode 1 Anode]───[Switch 1]─── Col 0 (Pin 7)
+              ───[Cathode Diode 2 Anode]───[Switch 2]─── Col 1 (Pin 8)
+              ───[Cathode Diode 3 Anode]───[Switch 3]─── Col 2 (Pin 9)
+
+Row 1 (Pin 6) ───[Cathode Diode 4 Anode]───[Switch 4]─── Col 0 (Pin 7)
+              ───[Cathode Diode 5 Anode]───[Switch 5]─── Col 1 (Pin 8)
+              ───[Cathode Diode 6 Anode]───[Switch 6]─── Col 2 (Pin 9)
+```
+
+- **Row 0**: Connects to the cathodes (striped side) of Diodes 1, 2, and 3.
+- **Row 1**: Connects to the cathodes (striped side) of Diodes 4, 5, and 6.
+- **Columns**:
+  - Column 0 (Pin 7) connects to switches 1 and 4.
+  - Column 1 (Pin 8) connects to switches 2 and 5.
+  - Column 2 (Pin 9) connects to switches 3 and 6.
+
+---
 
 ## 💾 Alternatives to Keyboard Matrices
 
 | Method | Pin Count | Ghosting Risk | Simultaneous Presses | CPU Overhead | Notes |
-| : | : | : |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **Diode Matrix** | **Low (R + C)** | **None** | **N-Key Rollover** | **Low** | Standard for high-quality keyboards. |
 | **Resistor Ladder (ADC)** | Ultra-Low (1 pin) | High | Poor | High | Good for single-key inputs, fails on chords. |
 | **Direct Pin Hookup** | High (1 pin/key) | None | N-Key Rollover | Very Low | Limited to small number of keys. |
 | **I/O Shift Registers** | Low (3 pins SPI) | None | N-Key Rollover | Medium | Requires shift-in register chips like 74HC165. |
 
+---
 
+## 💻 How to Test & Validate
+
+1. Wire up the 6 mechanical switches with 1N4148 diodes on a breadboard.
+2. Open the Arduino IDE, load [Day_92_HID_Macro_Pad.ino](file:///d:/Downloads/100%20days%20of%20Arduino/Day_92_HID_Macro_Pad/Day_92_HID_Macro_Pad.ino).
+3. **If using native USB (Leonardo/Micro)**:
+   - Select **Arduino Leonardo** board and upload the sketch.
+   - Open a text editor.
+   - Press **Switch 1**. It will trigger `Ctrl+C`. Press **Switch 2** to trigger `Ctrl+V`.
+   - Verify that your text is copied and pasted instantly!
+   - You can send number keys `1` to `6` in the Serial Monitor to trigger the macros over USB.
+4. **If using Arduino Uno (Simulation Mode)**:
+   - Select **Arduino Uno** and upload the sketch.
+   - Open the **Serial Monitor** at **9600 Baud**.
+   - Send `1`, `2`, `3`, `4`, `5`, or `6` in the serial input line.
+   - The console will output:
+     `[SIMULATED PRESS] Key 1 at Matrix (0,0) -> Ctrl+C (Copy)`
+     `[SIMULATED KEYBOARD] Sending: CTRL + C (Copy)`
+   - This lets you verify the matrix routing and command mappings before soldering!
+
+---
 
 ## 🛠️ Troubleshooting Guide
 
 | Symptom | Likely Cause | Fix |
-| : | :--- |
+| :--- | :--- | :--- |
 | Pressing one key triggers multiple characters | Missing diode or reversed diode | Diodes must point towards the row pin (Cathode/stripe connected to Row). |
 | A key doesn't register at all | Bad solder joint or broken switch | Check continuity using a multimeter. Ensure row and column pins are mapped correctly in the sketch. |
 | Keys trigger twice on a single press | Switch debounce delay too short | The code has a 10ms debounce check, which is standard for Cherry MX switches. If using cheap tactile switches, increase the debounce delay in `scanKeyboardMatrix()` to `20ms`. |
@@ -10861,7 +17363,35 @@ Keyboard.releaseAll();
 
 Welcome to Day 93! Today we build the mechatronic interface logic for custom **Sim Racing Pedals** and a **Sequential Shifter**. We will learn how to handle noisy, drifting analog sensors (potentiometers, Hall sensors, and load cells) by implementing **inner and outer deadzones**, designing an **on-board auto-calibration system**, and mapping inputs to standard USB Game Controller axes.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In sim racing (driving simulators), precise pedal inputs are the difference between a clean lap and spinning out.
+- **Throttle**: Needs linear travel control to modulate acceleration.
+- **Brake**: Needs pressure-based control (usually a load cell measuring force) to avoid locking up tires.
+- **Clutch**: Needs positional control.
+
+Because mechanical assemblies wear down, springs stretch, and temperatures affect sensor resistance, the minimum and maximum analog voltages from your pedals will drift over time.
+Additionally, when you rest your foot on a pedal, you don't want it to register as a 1% brake drag. Conversely, when you press the throttle fully, you want to guarantee 100% activation without needing to crush the pedal.
+
+To solve this, we implement **Software Deadzones** and **Dynamic Calibration**:
+1. **Lower Deadzone**: Ignores initial minor sensor readings (resting foot).
+2. **Upper Deadzone**: Caps the reading to 100% early, allowing for full input even if travel is mechanically restricted.
+3. **Dynamic Calibration**: Automatically updates the minimum and maximum boundaries based on the actual physical travel limits recorded during use.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -10897,14 +17427,24 @@ Raw Voltage:   0V ─────────┬──────────�
 Output Value:  0 ──────────┼───────────────────────────────┼───────── 1023
 ```
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Leonardo or Micro | 1 | Native USB game controller emulation (ATmega32U4) |
 | Rotary Potentiometers (10k) | 3 | Simulates throttle, brake, clutch pedal sensors |
 | Pushbutton Switches | 2 | Sequential Shifter up/down switches |
 | Breadboard & Jumper Wires | 1 | Prototyping and wiring |
 | Micro-USB Cable | 1 | Connects board to PC |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Potentiometer/Switch | Arduino Pin | Description |
+| :--- | :--- | :--- |
 | **Throttle Wiper** | **A0** | Analog Throttle Input |
 | **Brake Wiper** | **A1** | Analog Brake Input (or Load Cell Amp output) |
 | **Clutch Wiper** | **A2** | Analog Clutch Input |
@@ -10913,7 +17453,18 @@ Output Value:  0 ──────────┼──────────
 | **Common GND** | **GND** | Ground rails |
 | **Common VCC** | **5V** | 5V Power rails |
 
- | : | : | :
+---
+
+## 💾 Alternatives to Custom DIY Interfaces
+
+| Method | Resolution | Axis Count | PC Recognition | Custom Deadzones | Cost |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **DIY Arduino (Our project)** | **10-bit (1024 steps)** | **Up to 6 axes** | **Direct USB Gamepad** | **Yes (Software configured)** | **Very Low** |
+| **Leo Bodnar Board** | 12-bit or 16-bit | 8 axes | Plug & Play | No (Requires PC tool) | High |
+| **Commercial USB Adapters** | 10-bit | 3 axes | Plug & Play | No | Moderate |
+| **Teensy (LC / 4.0)** | 12-bit (4096 steps) | Up to 10 axes | Direct USB Gamepad | Yes | Low |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -10938,7 +17489,12 @@ Output Value:  0 ──────────┼──────────
      - Observe how the limits have expanded and the output scaling adapts dynamically!
      - Send `u` to simulate a gear shift UP.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Throttle/Brake floats randomly when not touched | Floating input pin | Ensure potentiometers are connected properly to VCC and GND. If a pin is fully disconnected, it will pick up electromagnetic noise. |
 | Pedals do not reach 100% (1023) or 0% in-game | Uncalibrated sensor limits | Run calibration mode (`c` in CLI) and press each pedal through its complete range of motion. |
 | Inverted pedal axis (e.g. 100% output when released) | Potentiometer wired backwards | Swap the VCC and GND wires on that specific pedal's potentiometer, or modify the mapping calculation in the code: `1023 - processPedalValue()`. |
@@ -10975,7 +17531,34 @@ map(val, lowerThreshold, upperThreshold, 0, 1023);
 
 Welcome to Day 94! Today we master the art of **Robotic Serial Communication** by implementing a non-blocking **Finite State Machine (FSM) Telemetry Parser**. We will study why standard ASCII-based text parsing (like `Serial.parseInt()`) is unacceptable for high-performance control systems, design a structured binary packet framing protocol, and implement **XOR Checksum validation** to verify data integrity.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+When a PC (e.g. running ROS, Python, or MATLAB) communicates with an Arduino to control motors or read sensors:
+- Sending commands as strings (like `"SPEED=255\n"`) is highly inefficient: it uses 10 bytes of bandwidth to send what could fit in 2 bytes.
+- String parsing functions like `Serial.parseInt()` are **blocking**: they pause CPU execution while waiting for a timeout, which ruins timing critical loops (like PID controllers or step generators).
+- If serial noise drops a byte mid-transmission, strings get garbled and the parser breaks.
+
+### What is Packet Framing & FSM Parsing?
+To solve this, we transmit commands as **Binary Packets** wrapped in a physical envelope:
+- We define a **Start of Frame (SOF)** byte to signal the arrival of a packet.
+- We declare the exact **Length** of the data payload so the receiver knows when to stop reading.
+- We calculate a **Checksum** to verify that none of the bytes were corrupted in transit.
+- We define an **End of Frame (EOF)** byte to verify packet boundaries.
+
+To read this packet without stalling the processor, the Arduino processes characters **one-by-one as they arrive** using a **Finite State Machine (FSM)**. The parser transitions from state to state dynamically and executes the command instantly when the packet is validated.
+
+---
 
 ## 🔬 Physics & Hardware Theory
 
@@ -11019,13 +17602,30 @@ stateDiagram-v2
     STATE_READ_EOF --> STATE_WAIT_SOF : Received 0x03 (EOF)
 ```
 
+---
 
+## 🔩 Components Needed
+
+No external hardware is needed! Connect your Arduino Uno to your PC using a standard USB cable. The project contains a built-in loopback test generator that simulates incoming binary telemetry streams.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 - **No wiring required**. Connect the Arduino Uno to your PC's USB port.
 
- | : | : | :
+---
+
+## 💾 Alternatives to Binary FSM Parsers
+
+| Method | Bandwidth Usage | CPU Overhead | Parsing Jitter | Corruption Immunity | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **FSM Binary Parser** | **Very Low** | **Very Low** | **Zero (Non-blocking)** | **High (Checksum)** | Standard for ROS, drones, and industrial controls. |
+| **Serial.readStringUntil()** | High | Low | High (Blocking) | Low | Good for quick prototyping, unacceptable for real-time loops. |
+| **JSON Parser** | Very High | High | High | Moderate | E.g. ArduinoJson. Easy to read, but memory footprint is too large for Uno. |
+| **Protobuf / NanoPB** | Low | Medium | Low | High | Excellent serialization, requires PC-side compilation. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11051,7 +17651,12 @@ stateDiagram-v2
    - The simulator generates a packet with an intentional checksum error (`wrongCs = 0xFF`).
    - The parser logs: `CHECKSUM ERROR: Discarding packet.` (LED state does not change, proving system safety!).
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Sending `l` or `m` does nothing | Serial Monitor line endings enabled | Ensure the dropdown in the Serial Monitor is set to **No Line Ending**. Carriage returns (`\r`) or line feeds (`\n`) can interfere with command parsing if sent at the wrong time. |
 | Parser gets stuck in `STATE_READ_DATA` | Packet length mismatch | If the length byte is larger than the actual bytes sent, the FSM will wait indefinitely. Always make sure your packet generation code on the PC writes the exact number of bytes declared in the length field. |
 | Noise corruption causes frequent discarded packets | Poor electrical grounding | Ensure the PC and Arduino share a common ground. Add a shielding sheath around the serial cables when running near high-power DC motors. |
@@ -11091,7 +17696,31 @@ calculatedChecksum ^= val; // Cumulative XOR
 
 Welcome to Day 95! Today we dive into the mathematics of robotic manipulation: **Inverse Kinematics (IK)**. We will build a geometric coordinate solver from scratch for a **3-Degree-of-Freedom (3-DOF) Articulated Robotic Arm**. We will study coordinate projections, solve joint angles using the **Law of Cosines**, filter out unreachable target singularities, and write smooth servo controller outputs.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In robotics, we describe a manipulator in two ways:
+1. **Joint Space**: The angles of each motor (e.g. Base $= 45^\circ$, Shoulder $= 60^\circ$, Elbow $= 90^\circ$).
+2. **Cartesian Space**: The position of the hand (end-effector) in 3D coordinates relative to the base (e.g. $X = 12.0\,\text{cm}$, $Y = 12.0\,\text{cm}$, $Z = 10.0\,\text{cm}$).
+
+When programming a robot to draw, 3D print, or pick up an object:
+- We know where the object is in **Cartesian Space** (from a camera or coordinate map).
+- We cannot send Cartesian coordinates directly to standard servo motors; they only understand joint angles.
+- **Inverse Kinematics (IK)** is the mathematical engine that converts the target $(X, Y, Z)$ coordinates into the required joint angles $(\theta_1, \theta_2, \theta_3)$ so the arm can reach that point.
+
+---
 
 ## 🔬 Physics & Mathematics of Inverse Kinematics
 
@@ -11153,13 +17782,26 @@ Where:
   $$\cos(\phi_2) = \frac{L_1^2 + S^2 - L_2^2}{2 \cdot L_1 \cdot S}$$
   $$\phi_2 = \text{acos}(\cos(\phi_2))$$
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | 180-Degree Servo Motors | 3 | Base, Shoulder, and Elbow actuators |
 | External Power Supply (5V/3A) | 1 | Powers servo motors (Uno USB cannot supply enough current) |
 | Breadboard & Jumper Wires | 1 | Prototyping |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+> [!IMPORTANT]
+> **NEVER power multiple servos directly from the Arduino 5V pin!** Servos draw high current spikes that will reset the Arduino, or burn out its onboard 5V regulator. Always use an external 5V power supply and share the ground.
+
+| Component Pin | Connect To | Description |
+| :--- | :--- | :--- |
 | **Base Servo Signal** (Orange/White) | **Digital Pin 9** | PWM control for Base |
 | **Shoulder Servo Signal** | **Digital Pin 10** | PWM control for Shoulder |
 | **Elbow Servo Signal** | **Digital Pin 11** | PWM control for Elbow |
@@ -11167,7 +17809,18 @@ Where:
 | **Servos Ground** (Black/Brown) | **External Power GND & Arduino GND** | Common Ground |
 | **Arduino Power** | **PC USB / 9V Barrel Jack** | Logic power |
 
- | : | : | :
+---
+
+## 💾 Alternatives to Geometric IK Solvers
+
+| Method | Joint Count (DOF) | CPU Overhead | Mathematical Difficulty | Singularity Safety | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Geometric Solver (Our code)** | **3 DOF maximum** | **Very Low** | **Medium** | **High (Direct Guards)** | Best for simple arms (3-DOF). Rapid execution. |
+| **Denavit-Hartenberg (D-H)** | Any | Medium | High | Low | Standard matrix notation for systematic setups. |
+| **Numerical Iterative (Jacobian)** | 4+ DOF | High | Very High | Low | Newton-Raphson approximation. Essential for 6-axis arms. |
+| **FABRIK** (Heuristic) | Any | Low | Low | High | Forward And Backward Reaching Inverse Kinematics. Fast, but angles are less precise. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11191,7 +17844,12 @@ Where:
    - Send `t` to toggle the path simulator.
    - You will see the joint angles and target positions plotted as smooth waves, tracing a circular orbit in 3D space!
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Servos twitch, jitter, or Arduino resets | Insufficient servo power | Ensure the servos are powered by an external 5V supply (minimum 2A) and that you have connected the external ground to the Arduino GND. |
 | Arm moves to incorrect positions | Incorrect link length values or incorrect servo mounting offsets | Verify L1 and L2 match your arm's physical hinge-to-hinge lengths. If servos were mounted offset, adjust the offset degree constants in `solveInverseKinematics()`. |
 | Target is reachable but solver errors | Angle exceeds servo limit | Standard hobby servos can only rotate 180 degrees. If the target coordinates require a joint to bend past its mechanical limit, the solver returns false to prevent binding. |
@@ -11232,7 +17890,31 @@ float beta = acos(cosBeta);
 
 Welcome to Day 96! Today we build the mathematical engine for mobile robot navigation: **Wheel Odometry (Dead Reckoning)**. We will write the forward kinematics solver for a two-wheeled differential drive robot, convert raw wheel encoder ticks into physical displacement, and implement **Runge-Kutta Midpoint Integration** to track the robot's coordinates $(X, Y)$ and heading ($\theta$) in real-time.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Differential_Drive.jpg" alt="Differential Drive" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+If you want an autonomous robot to navigate a room, it must know: **"Where am I?"**
+While outdoor robots use GPS, GPS does not work indoors and has an accuracy error of several meters. 
+
+For indoor mobile robots (like vacuum cleaners or warehouse AGVs), we use **Odometry**. 
+By mounting rotary encoders on the wheels, we measure how far each wheel rotates.
+- **Why Wheel Encoders?** They are the direct link between the robot's motors and the physical floor.
+- **Why this Math?** By combining the left and right wheel speeds, we can calculate the robot's change in heading and position, allowing us to estimate its path and publish coordinates to higher-level frameworks like ROS (Robot Operating System).
+
+---
 
 ## 🔬 Physics & Mathematics of Odometry
 
@@ -11278,20 +17960,41 @@ $$Y_k = Y_{k-1} + d_C \cdot \sin\left(\theta_{k-1} + \frac{d\theta}{2}\right)$$
                            └────────────────────────► X
 ```
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | Photo-Interrupter Encoders | 2 | Counts slots in the encoder discs |
 | Slotted Encoder Discs (20 Slots) | 2 | Mounted on the motor shafts |
 | Differential Robot Chassis | 1 | Acrylic base, motors, and wheels |
 | Breadboard & Jumper Wires | 1 | Wiring |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Encoder Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **Left Encoder Signal** | **D2 (INT0)** | Left ticks interrupt |
 | **Right Encoder Signal** | **D3 (INT1)** | Right ticks interrupt |
 | **Encoders VCC** | **5V** | 5V Power Supply |
 | **Encoders GND** | **GND** | Ground |
 
- | : | : | :
+---
+
+## 💾 Alternatives to Odometry Position Tracking
+
+| Method | Drift Rate | Indoor Capability | CPU Overhead | Cost | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Wheel Encoders (Odometry)** | **Low to Medium** | **Yes** | **Very Low** | **Very Low** | Standard baseline. Fails on slippery surfaces (wheel slip). |
+| **IMU Dead Reckoning** | Extremely High | Yes | Moderate | Low | Accelerometer double integration drifts in seconds. |
+| **Optical Flow Sensor** | Low | Yes | High | Moderate | Uses a downward-pointing mouse camera sensor to track absolute ground movement. |
+| **LiDAR SLAM** | Zero (Corrected) | Yes | Very High | High | Requires a ROS SBC (Raspberry Pi/Jetson) to match lasers to map walls. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11309,7 +18012,12 @@ $$Y_k = Y_{k-1} + d_C \cdot \sin\left(\theta_{k-1} + \frac{d\theta}{2}\right)$$
 6. **Resetting Coordinates**:
    - Send `o` to reset the tracking frame to origin `(0, 0, 0)`.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Coordinates drift and show large errors in physical runs | Wheel slip or incorrect constants | If wheels slip on carpet, odometry will report movement that did not happen. Measure the wheel diameter precisely with calipers and update `WHEEL_DIAMETER` and `WHEEL_TRACK`. |
 | Ticks are not counting on physical robot | Missing pullup or wrong interrupt pins | Ensure encoder signal outputs are wired strictly to **Pin 2** (left) and **Pin 3** (right). Ensure you use `INPUT_PULLUP` if the encoders use open-collector outputs. |
 | Robot moves forward, but $X$ decreases in code | Swapped encoder wiring | Swap the encoder interrupts in the code or swap the physical pins. |
@@ -11350,7 +18058,51 @@ robotY += dC * sin(midTheta);
 
 Welcome to Day 97! Today we explore advanced **Motion Control** by designing and implementing a smooth **S-Curve (Raised Cosine) Acceleration Profile Generator** for stepper motors. We will study the physics of motor stalling, analyze the mathematical definition of **jerk**, precompute step intervals, and build a non-blocking step engine testable via the Serial Plotter.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In high-precision mechatronic systems (like 3D printers, CNC routers, and robot joints), speed is important, but **smoothness** is critical. 
+
+### The Problem with Linear Ramps (Trapezoidal)
+Most standard stepper libraries (like the basic `AccelStepper`) use a linear velocity ramp. While simple, linear ramping has a major flaw: at the boundary points (where acceleration starts or stops), there is an instantaneous jump in acceleration. 
+The mathematical derivative of acceleration is **jerk**:
+$$\text{Jerk} = \frac{da}{dt}$$
+
+An instantaneous change in acceleration represents **infinite jerk**.
+In the physical world, infinite jerk causes:
+1. High mechanical vibration and resonance.
+2. Audible noise and clunking.
+3. **Motor Stall**: Stepper motor torque decreases rapidly with speed. If you jerk the motor during high speeds, it will slip poles, lose synchronization, and lock up (stall).
+
+### The S-Curve Solution
+An **S-Curve acceleration profile** smooths out the acceleration curve by gradually ramping it up at the start and ramping it down at the end. This bounds the jerk to a finite, safe value, producing an "S-shape" velocity curve. This allows the motor to reach much higher peak speeds without stalling!
+
+```
+Linear (Trapezoidal) Velocity:          S-Curve (Smooth) Velocity:
+      Velocity                                Velocity
+         ▲                                       ▲
+  vMax ──┼───────/──────────\─            vMax ──┼───────.──────────.─
+         │      /            \                   │     .              .
+         │     /              \                  │    .                .
+  vStart ┼────/                \─         vStart ┼───.                  .─
+         └────────────────────────► Time         └────────────────────────► Time
+        (Sharp corners = Infinite Jerk)         (Rounded corners = Finite Jerk)
+```
+
+---
 
 ## 🔬 Physics & Mathematics of S-Curves
 
@@ -11371,7 +18123,12 @@ $$t_{\text{delay}}(i) = \frac{1,000,000}{v(i)}\,\mu\text{s}$$
 
 By calculating this array in `setup()`, the execution loop only needs to read a single integer from memory per step, keeping execution extremely fast and jitter-free!
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | Stepper Driver (A4988 / DRV8825) | 1 | Controls motor phases based on STEP/DIR pins |
 | Bipolar Stepper Motor (e.g., NEMA 17)| 1 | High-precision position actuator |
@@ -11379,7 +18136,12 @@ By calculating this array in `setup()`, the execution loop only needs to read a 
 | Decoupling Capacitor (100 µF) | 1 | Protects driver from voltage spikes |
 | Breadboard & Jumper Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+| Stepper Driver Pin | Connect To | Description |
+| :--- | :--- | :--- |
 | **STEP** | **Digital Pin 9** | Pulsing pin (Step trigger) |
 | **DIR** | **Digital Pin 8** | Direction pin (HIGH = CW, LOW = CCW) |
 | **GND** (Logic) | **Arduino GND** | Common Ground |
@@ -11388,7 +18150,18 @@ By calculating this array in `setup()`, the execution loop only needs to read a 
 | **GND** (Power) | **Power Supply GND** | Motor power ground |
 | **1A, 1B, 2A, 2B** | **Stepper Motor Coils** | Phase outputs |
 
- | : | : | :
+---
+
+## 💾 Alternatives to Custom S-Curve Profiling
+
+| Method | Speed Curve | Jerk Level | CPU Overhead | Max Speed | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **S-Curve LUT (Our project)** | **S-Shape** | **Low (Finite)** | **Low** | **High** | Precomputed in RAM. Best balance of speed and smoothness. |
+| **Linear (Trapezoidal)** | Linear | Infinite | Very Low | Moderate | Standard implementation, high vibration. |
+| **Trigonometric Real-time** | S-Shape | Low | Very High | Low | Calculates `cos()` on every step. CPU struggles above 500 steps/sec. |
+| **External Motion IC** | Custom | Zero | Zero | Extremely High | Dedicated chips (e.g. TMC5160) handle ramps in hardware. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11408,7 +18181,12 @@ By calculating this array in `setup()`, the execution loop only needs to read a 
    - Send `d` to decrease peak speed by 100 steps/sec.
    - Send `g 1000` to perform a longer move. The flat top segment represents the peak velocity phase.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Motor makes a high-pitched whine but does not rotate | Motor is stalling or current limit is too low | Increase the current limit potentiometer on the A4988 driver. If speed is too high, decrease `vMax` using `d` in the CLI. |
 | Motor stutters at the very beginning of the motion | Starting velocity is too high | Decrease `vStart` in the code to `50.0f` or `100.0f` to allow the motor to begin turning from a lower torque threshold. |
 | Motor rotates in the wrong direction | Coil phases wired backwards | Power down the system, and swap the wires of one coil (e.g. swap A1 and A2) or toggle `DIR_PIN` logic in the sketch. |
@@ -11450,7 +18228,36 @@ if (currentMicros - lastStepMicros >= currentIntervalUs) {
 
 Welcome to Day 98! Today we tackle a legendary algorithm in guidance, navigation, and control: the **Kalman Filter**. We will construct a 1D Kalman filter to perform optimal sensor fusion between an accelerometer and a gyroscope, track and estimate the gyroscope's static drift bias in real-time, and run a 100 Hz simulation comparing the filter's performance with a complementary filter.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Kalman_Filter.jpg" alt="Kalman Filter" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/MPU6050.jpg" alt="MPU6050" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+Measuring pitch and roll angles of a moving robot is a fundamental challenge:
+1. **Accelerometer**: Calculates tilt by measuring the gravity vector relative to the Earth.
+   - *Pros*: No long-term drift.
+   - *Cons*: Extremely noisy. When the robot accelerates or hits a bump, the lateral force is added to gravity, warping the calculated angle.
+2. **Gyroscope**: Measures angular velocity ($\dot{\theta}$). Integrating this velocity gives the angle.
+   - *Pros*: Very clean, highly responsive, immune to lateral shocks.
+   - *Cons*: Drifts over time. Because we integrate values on every step, even a tiny constant sensor bias (e.g. $+0.05^\circ/\text{s}$) accumulates into degrees of error, eventually drifting to infinity.
+
+### What is a Kalman Filter?
+The **Kalman Filter** is an optimal mathematical estimator. It models the physics of the system and the statistical properties of sensor noise (modeled as Gaussian white noise).
+Rather than using static weights (like a complementary filter), the Kalman filter **calculates weights dynamically** (the Kalman Gain) based on how confident it is in the prediction (gyroscope integration) versus the measurement (accelerometer). 
+Crucially, it includes **Bias Estimation**: by observing how the integrated angle diverges from the accelerometer angle over time, it calculates the gyroscope's offset and subtracts it from future readings!
+
+---
 
 ## 🔬 Physics & Mathematics of the Kalman Filter
 
@@ -11489,12 +18296,23 @@ When a new accelerometer angle measurement ($z$) arrives:
    $$P_{10} = P_{10} - K_1 \cdot P_{00}$$
    $$P_{11} = P_{11} - K_1 \cdot P_{01}$$
 
- | : |
+---
+
+## 🔩 Components Needed
+
+| Component | Quantity | Purpose |
+| :--- | :--- | :--- |
 | Arduino Uno | 1 | Microcontroller |
 | MPU6050 6-Axis IMU | 1 | Optional. To test on real physical tilts. |
 | Breadboard & Jumper Wires | 1 | Connections |
 
- | : |
+---
+
+## 🔌 Pin-to-Pin Wiring
+
+If testing on a physical MPU6050 IMU:
+| MPU6050 Pin | Arduino Uno Pin | Description |
+| :--- | :--- | :--- |
 | **VCC** | **5V** | Power supply |
 | **GND** | **GND** | Common ground |
 | **SDA** | **A4** | I2C Data line |
@@ -11502,7 +18320,18 @@ When a new accelerometer angle measurement ($z$) arrives:
 
 *If no MPU6050 is available, the code runs in Simulation Mode, generating simulated IMU signals over the Serial line.*
 
- | : | : | :
+---
+
+## 💾 Alternatives to 1D Kalman Filters
+
+| Filter Type | CPU Overhead | Memory Overhead | Tracking Accuracy | Shock Rejection | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1D Kalman Filter** | **Medium** | **O(1) - Low** | **Excellent** | **Very High** | Estimates gyro bias dynamically. Optimal for single-axis balancing. |
+| **Complementary Filter** | Low | Low | Good | Low | Simple weighted average. Prone to passing sudden shock spikes. |
+| **Low-Pass Filter** | Very Low | Low | Poor | High | Introduces severe phase lag, making it useless for fast balancing loops. |
+| **Madgwick Filter** | High | Medium | Excellent (3D) | High | Quaternion-based 3D orientation estimator. Heavy math overhead. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11528,7 +18357,12 @@ When a new accelerometer angle measurement ($z$) arrives:
    - Send `z`. This toggles the gyroscope constant drift bias from $+2^\circ/\text{sec}$ to $+0^\circ/\text{sec}$.
    - Observe `EstBias` dynamically decay back down to $0.0$, demonstrating that the filter constantly tracks and eliminates sensor bias!
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Telemetry output displays garbage characters | Baud rate mismatch | Ensure the Serial Monitor / Serial Plotter baud rate is set strictly to **115200**. |
 | Kalman filter output lags behind the real movement | Process noise $Q_{\text{angle}}$ is too small | Increase $Q_{\text{angle}}$ (using `3` in the CLI) or decrease $R_{\text{measure}}$ (using `2` in the CLI) to tell the filter to trust measurements more. |
 | Kalman filter output is too noisy | Measurement noise $R_{\text{measure}}$ is too small | Increase $R_{\text{measure}}$ (using `1` in the CLI) to tell the filter to ignore accelerometer fluctuations. |
@@ -11572,7 +18406,43 @@ gyroBias += K[1] * y;
 
 Welcome to Day 99! Today we dive into the core steering logic of self-driving cars: the **Pure Pursuit Path Tracking Algorithm**. We will explore the geometry of look-ahead targets, derive the math of circular arc steering curvature, implement global-to-local coordinate frame transformations, and build a 20 Hz closed-loop path tracker.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Differential_Drive.jpg" alt="Differential Drive" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+If you command a robot to simply "Go to coordinate (X, Y)", it will turn towards the point, drive straight, and stop. However, in real-world navigation, robots must follow complex, curved paths (trajectories) to avoid obstacles, stay inside lanes, or sweep a room efficiently.
+
+### What is Pure Pursuit?
+**Pure Pursuit** is a geometric tracking method. The robot is modeled as a vehicle chasing a point on the path that is a fixed distance—the **Look-Ahead Distance ($L_d$)**—ahead of it. 
+As the robot moves, it constantly calculates the steering angle (or differential wheel speeds) required to drive along a circular arc that passes exactly through this look-ahead point. 
+
+```
+                                            Look-Ahead Point (gx, gy)
+                                                o
+                                               / \
+                                              /   \  L_d
+                                     Arc     /     \
+                                    . . . . o . . . .
+                                  .         │         .
+                                 .          │ ly       .
+                                .           │           .
+                               .            o ────────── .
+                                            Robot (0,0) (Heading along X)
+```
+
+Pure Pursuit is highly robust: if the robot is bumped off course, it naturally calculates a new arc that steers it smoothly back onto the path, preventing sudden movements or crashes.
+
+---
 
 ## 🔬 Physics & Mathematics of Pure Pursuit
 
@@ -11606,13 +18476,35 @@ For a differential drive robot with track width $W$, we map the curvature $\gamm
 $$v_L = v_{\text{target}} \cdot \left(1 - \gamma \cdot \frac{W}{2}\right)$$
 $$v_R = v_{\text{target}} \cdot \left(1 + \gamma \cdot \frac{W}{2}\right)$$
 
+---
 
+## 🔩 Components Needed
+
+No external hardware components are required! The sketch runs a complete 2D kinematics simulation, updating coordinates at 20 Hz, which is fully plotted on the Arduino Serial Plotter.
+
+To run on physical hardware:
+- A differential drive robot chassis.
+- Two DC motors + wheel encoders + motor driver (L298N).
+- Arduino Uno.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 - **No wiring required** for default simulation mode. Connect the Arduino Uno to your PC via USB.
 
- | : | : | :
+---
+
+## 💾 Alternatives to Pure Pursuit Path Tracking
+
+| Method | Computational Cost | Trajectory Smoothness | Tuning Difficulty | Cross-Track Error | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Pure Pursuit** | **Low** | **Very High** | **Very Easy (Tuning Ld)** | Low | Industry baseline. Robust on rough terrain. |
+| **Stanley Controller** | Low | High | Easy | Very Low | Standard for front-wheel steer vehicles (highway autopilot). |
+| **Model Predictive (MPC)** | Extremely High | Optimal | Hard | Zero | Solves optimization matrix at every step. Requires SBC. |
+| **PID Cross-Track Loop** | Very Low | Low | Medium | High | Tends to cut corners violently and oscillate. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11630,7 +18522,12 @@ $$v_R = v_{\text{target}} \cdot \left(1 + \gamma \cdot \frac{W}{2}\right)$$
    - Reset again (`r`), and send `l` multiple times to increase $L_d$ to $20\,\text{cm}$ (large look-ahead).
    - Send `s`. Notice how the steering curvature is very small and smooth, but the robot cuts the curves much wider.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Telemetry output displays garbage characters | Baud rate mismatch | Ensure the Serial Monitor / Serial Plotter baud rate is set to **115200**. |
 | The robot steers away from the path | Incorrect lateral coordinate sign | Check the global-to-local transformation math. If $y_l$ calculation has the wrong sign, the robot will steer in the opposite direction of the path. |
 | The robot cuts corners too heavily | Look-ahead distance $L_d$ is too large | Decrease $L_d$ (using `d` in the CLI) to make the robot track the segments more closely. |
@@ -11674,7 +18571,29 @@ float vR = vTarget * (1.0f + (gamma * WHEEL_TRACK / 2.0f));
 
 Welcome to Day 100! Today we build the **Grand Capstone Project** of our 100-day Arduino Masterclass: a **Micro-ROS Serial Bridge Node**. We will explore how modern autonomous robots bridge low-level microcontrollers with high-level robotic brains running ROS (Robot Operating System) over UART. We will design a custom subscriber for Twist velocity commands (`/cmd_vel`) and a publisher for coordinate odometry data (`/odom`), wrapped in a robust, checksum-verified binary frame.
 
+---
 
+
+## 📸 Component Visuals
+
+<p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
+</p>
+
+## 🎯 The "Why" and "What"
+
+In professional robotics (such as self-driving cars, industrial manipulators, or autonomous drones), we do not run path planning, computer vision, or mapping directly on an Arduino. 8-bit microcontrollers lack the processing power and RAM for these tasks. 
+
+Instead, high-level code runs on a powerful Single Board Computer (SBC) like a Raspberry Pi, NVIDIA Jetson, or PC running **ROS (Robot Operating System)**. 
+
+However, high-level computers cannot generate precise real-time motor pulses, read raw quadrature encoder ticks, or handle microsecond interrupts. 
+- The **ROS PC** acts as the **Brain** (computes *what* the robot should do).
+- The **Arduino** acts as the **Spinal Cord** (coordinates motor outputs and counts raw wheel ticks).
+
+To connect them, we establish a **Serial Bridge Node** that translates structured ROS topic commands into motor actions and reports sensor odometry states back to the PC.
+
+---
 
 ## 🔬 Physics & Mathematics of the Serial Bridge
 
@@ -11712,13 +18631,30 @@ AVR microcontrollers have limited serial bandwidth, and float variables are 4 by
 - In hex representation, $250$ is `0x00FA` (2 bytes), which we send over the wire as `0x00` and `0xFA`.
 - The receiver divides by $1000$ to restore the float. This saves $50\%$ of the serial data bandwidth!
 
+---
 
+## 🔩 Components Needed
+
+No external components required! The sketch contains an integrated ROS PC master simulator. Connect your Arduino Uno to the PC using a USB cable to execute communication tests.
+
+---
 
 ## 🔌 Pin-to-Pin Wiring
 
 - **No wiring required** for default simulation mode. Connect the Arduino Uno to your PC via USB.
 
- | : | : | :
+---
+
+## 💾 Alternatives to Custom Serial Bridges
+
+| Method | Bandwidth Efficiency | MCU RAM Overhead | Configuration Difficulty | Real-Time Safety | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Custom Binary Bridge (Our project)** | **Extremely High** | **Very Low (< 100 bytes)** | **Low** | **High (Non-blocking FSM)** | Self-contained, fits on 2KB RAM Uno easily. |
+| **rosserial_arduino** | Medium | High (~1.2KB RAM) | Medium | Moderate | Older XML-RPC based bridge. Prone to synchronization dropouts. |
+| **micro-ROS** | Low | Extremely High | High | Very High | Uses native Agent/Client DDS middleware. Requires 32-bit MCU (ESP32/Teensy). |
+| **ASCII Command Line** | Poor | Low | Very Easy | Low | High latency, difficult to parse without blocking. |
+
+---
 
 ## 💻 How to Test & Validate
 
@@ -11740,7 +18676,12 @@ AVR microcontrollers have limited serial bandwidth, and float variables are 4 by
    - Send `s` to pause the `/odom` publisher loop. Send `s` again to resume.
    - Send `r` to reset the coordinate tracking system back to `(0, 0, 0)`.
 
- | : |
+---
+
+## 🛠️ Troubleshooting Guide
+
+| Symptom | Likely Cause | Fix |
+| :--- | :--- | :--- |
 | Telemetry output displays garbage characters | Baud rate mismatch | Ensure the Serial Monitor baud rate is set to **115200**. |
 | `[BRIDGE ERROR] Checksum mismatch` | Serial bit flips or noise | If running close to high-power DC motors, shield the USB cables. Check the FSM checksum generation on the host PC side. |
 | Memory usage is too high on compile | Excessive string literals | All debugging string prints in this project are wrapped in the `F()` macro (e.g. `F("...")`) which stores them in flash memory, saving RAM for the FSM buffers. |
