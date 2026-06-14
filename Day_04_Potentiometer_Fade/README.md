@@ -167,6 +167,9 @@ Follow these steps to upload, run, and verify the analog-to-PWM translation:
   - Turn completely counterclockwise: It must read `Raw ADC: 0 | Voltage: 0.00 V | PWM Duty: 0 (0.0%)`.
   - Turn completely clockwise: It must read `Raw ADC: 1023 | Voltage: 5.00 V | PWM Duty: 255 (100.0%)`.
 
+### ⚠️ Safety Note
+- Ensure you do not swap the 5V and GND wires on the potentiometer with the middle wiper pin, as this can create a direct short circuit when turned to the extremes.
+
 ### 🔍 Troubleshooting Tips
 * **The LED turns OFF suddenly or turns on in step-like jumps:**
   - Check if the LED is wired to Pin 9. Fading only works on **PWM pins** (marked with a tilde `~` like `~9`). If wired to a standard digital pin (e.g. Pin 8), `analogWrite()` behaves like `digitalWrite()`, turning the LED off below 128 and on above 128.

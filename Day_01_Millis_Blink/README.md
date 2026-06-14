@@ -47,6 +47,17 @@ In our code, we constantly check this stopwatch: _"Has one second passed since I
 
 This allows the Arduino's `loop()` to run thousands of times a second without ever stopping! Upload the code below to see it in action.
 
+## ⚠️ Safety Note
+- Always ensure your Arduino is unplugged from your computer when wiring components on the breadboard.
+- Never connect an LED directly to 5V without a current-limiting resistor, or it will burn out instantly.
+
+## 🔍 Troubleshooting Tips
+* **The LED doesn't blink:**
+  - Make sure the LED is inserted in the correct orientation (long leg to Pin 13, short leg to resistor/GND).
+  - Verify your resistor is correctly connecting the LED cathode to the Ground rail.
+* **The board is not recognized:**
+  - Ensure you have the correct COM port selected in `Tools > Port`.
+
 ## 🧠 Code Explanation
 
 Let's break down the actual code used in this project line-by-line:

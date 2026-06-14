@@ -169,6 +169,9 @@ Once you have wired the circuit and uploaded the code from `Day_03_Pushbutton_To
   ```
 - **Crucial check:** There should be exactly **one** log message per physical button press. If you press the button once and see multiple lines printed rapidly, your debounce delay in code (`debounceDelay = 50`) is too low or your hardware connection is loose.
 
+### ⚠️ Safety Note
+- Avoid shorting 5V directly to GND when wiring the button. Always verify your diagonal button connections before powering the board.
+
 ### 🔍 Troubleshooting Tips
 * **LED is always ON or flickers rapidly:**
   - Double check your `pinMode` setting. It must be set to `INPUT_PULLUP`. If set to `INPUT`, the pin is floating and will read noise.

@@ -108,6 +108,10 @@ Follow these steps to upload, run, and verify the SOS Morse Code generator:
   - Three quick beeps (S).
   - A long pause (7 units = 1400ms) before the cycle starts again.
 
+### ⚠️ Safety Note
+- Active buzzers can be loud. Do not hold them directly next to your ear while testing.
+- Ensure the buzzer's polarity is correct; wiring it backward can damage the component.
+
 ### 🔍 Troubleshooting Tips
 * **The buzzer clicking instead of beeping:**
   - Ensure you are using an **Active** buzzer. A passive buzzer will make clicking sounds when turned on and off. If using a passive buzzer, you must use the `tone(8, 2000)` command instead of `digitalWrite(8, HIGH)`.

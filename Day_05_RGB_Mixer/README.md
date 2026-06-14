@@ -156,6 +156,9 @@ Follow these steps to upload, run, and verify the color mixer:
   - At Angle 120°, Green should be near maximum (255), Red and Blue low.
   - At Angle 240°, Blue should be near maximum (255), Red and Green low.
 
+### ⚠️ Safety Note
+- **CRITICAL:** You MUST use current-limiting resistors on the Red, Green, and Blue anodes. Connecting them directly to 5V will burn out the LED and can damage your Arduino pins!
+
 ### 🔍 Troubleshooting Tips
 * **The colors are jumping abruptly instead of shifting smoothly:**
   - Make sure the resistors are connected to PWM-capable pins (9, 10, and 11). If you connect to non-PWM pins (like 7, 8, 12), the pins will default to binary high/low, causing the LED to flicker through 8 basic colors instead of blending.
