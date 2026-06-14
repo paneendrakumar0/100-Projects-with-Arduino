@@ -98,7 +98,7 @@ export default function SearchModal({ searchIndex }) {
       <button className="search-trigger" onClick={openSearch}>
         <Search size={18} />
         <span>Search documentation...</span>
-        <kbd className="shortcut">Ctrl K</kbd>
+        <kbd className="shortcut">⌘K / Ctrl+K</kbd>
       </button>
 
       <AnimatePresence>
