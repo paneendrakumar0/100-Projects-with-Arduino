@@ -18,6 +18,19 @@ const KONAMI_CODE = [
 export default function KonamiCode() {
   const [inputSequence, setInputSequence] = useState([]);
 
+  const triggerEasterEgg = () => {
+    // Add the easter egg class to the body
+    document.body.classList.add('konami-activated');
+    
+    // Play a retro sound if possible, or just log
+    console.log('🎮 KONAMI CODE ACTIVATED 🎮');
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+      document.body.classList.remove('konami-activated');
+    }, 5000);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       const key = e.key;
@@ -43,19 +56,6 @@ export default function KonamiCode() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-
-  const triggerEasterEgg = () => {
-    // Add the easter egg class to the body
-    document.body.classList.add('konami-activated');
-    
-    // Play a retro sound if possible, or just log
-    console.log('🎮 KONAMI CODE ACTIVATED 🎮');
-    
-    // Remove after 5 seconds
-    setTimeout(() => {
-      document.body.classList.remove('konami-activated');
-    }, 5000);
-  };
 
   return (
     <style jsx global>{`

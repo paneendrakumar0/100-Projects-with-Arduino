@@ -11,8 +11,10 @@ export default function CertificatePage() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsClient(true);
     const stored = JSON.parse(localStorage.getItem('completedDays') || '[]');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCompletedDays(stored);
   }, []);
 

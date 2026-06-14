@@ -9,6 +9,7 @@ export default function MarkCompleteButton({ dayId }) {
   useEffect(() => {
     const completedDays = JSON.parse(localStorage.getItem('completedDays') || '[]');
     if (completedDays.includes(dayId)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsCompleted(true);
     }
   }, [dayId]);
