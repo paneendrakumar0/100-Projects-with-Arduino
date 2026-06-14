@@ -26,8 +26,8 @@
 
 // --- PIN DEFINITIONS ---
 #if defined(ESP32)
-const int LED_PIN = 2;     // Onboard LED pin on ESP32
-const int BUZZER_PIN = 12; // Pin driving the buzzer
+const int LED_PIN = 2;      // Onboard LED pin on ESP32
+const int BUZZER_PIN = 12;  // Pin driving the buzzer
 #else
 const int LED_PIN = 13;    // Onboard LED pin
 const int BUZZER_PIN = 8;  // Pin driving the active piezo buzzer

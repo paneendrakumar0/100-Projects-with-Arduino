@@ -12,11 +12,11 @@
 
 // We define our LED pin here.
 #if defined(ESP32)
-const int ledPin = 2; // Common built-in LED on ESP32
+const int ledPin = 2;  // Common built-in LED on ESP32
 #elif defined(LED_BUILTIN)
-const int ledPin = LED_BUILTIN; // Standard for most Arduino boards
+const int ledPin = LED_BUILTIN;  // Standard for most Arduino boards
 #else
-const int ledPin = 13; // Fallback
+const int ledPin = 13;  // Fallback
 #endif
 
 // --- TIMING VARIABLES ---
