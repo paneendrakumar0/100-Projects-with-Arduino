@@ -23,7 +23,7 @@ export default function NotFound() {
       </h2>
       
       <p className="text-lg text-zinc-400 max-w-lg mb-10 leading-relaxed">
-        We searched the entire I2C bus, but couldn't find the page you're looking for. It might have been unplugged or moved to a different address.
+        We searched the entire I2C bus, but couldn&apos;t find the page you&apos;re looking for. It might have been unplugged or moved to a different address.
       </p>
       
       <div className="flex gap-4">
