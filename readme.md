@@ -1,55 +1,67 @@
-# 100 Days of Arduino
+<div align="center">
+  <h1>🚀 100 Days of Arduino Masterclass</h1>
+  <p><strong>From basic circuits to embedded C++ architecture and robotics.</strong></p>
 
-[![Arduino CI Compilation](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/arduino-build.yml/badge.svg)](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/arduino-build.yml)
-[![Next.js Documentation Deploy](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/nextjs.yml/badge.svg)](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/nextjs.yml)
+  [![Arduino CI Compilation](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/arduino-build.yml/badge.svg)](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/arduino-build.yml)
+  [![Next.js Documentation Deploy](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/nextjs.yml/badge.svg)](https://github.com/paneendrakumar0/100-Projects-with-Arduino/actions/workflows/nextjs.yml)
+  [![Interactive CLI](https://img.shields.io/badge/CLI-npx%20100--days--arduino-blue?style=flat-square&logo=npm)](https://github.com/paneendrakumar0/100-Projects-with-Arduino)
 
-> ⭐ **If you find these projects helpful, please consider leaving a star! It helps the repository grow.**
+  > ⭐ **If you find these projects helpful, please consider leaving a star! It helps the repository grow.**
 
-![Arduino Uno](Learn_Arduino/images/Arduino_Uno.jpg)
+  <img src="Learn_Arduino/images/Arduino_Uno.jpg" width="600" alt="Arduino Uno" />
+</div>
+
+<br/>
 
 An end-to-end Arduino curriculum that grows from first circuits to autonomous robotics, control systems, embedded architecture, and ROS-style integration.
 
 This repository is designed as a practical masterclass: every day has a focused project, working Arduino code, wiring guidance, and a concept trail that explains why the build works. The path starts with safe beginner fundamentals, then moves deliberately into non-blocking programming, sensors, motors, displays, wireless communication, control loops, signal processing, low-power design, and robotics.
 
-## Table of Contents
+## 📖 Table of Contents
 
-- [Start Here](#start-here)
-- [What Makes This Guide Different](#what-makes-this-guide-different)
-- [Repository Structure](#repository-structure)
-- [Hardware You Will Use](#hardware-you-will-use)
-- [The Journey Log](#the-journey-log)
-- [Contributing](#contributing)
-- [Safety Note](#safety-note)
+- [Start Here](#-start-here)
+- [What Makes This Guide Different](#-what-makes-this-guide-different)
+- [Interactive Tools & CLI](#%EF%B8%8F-interactive-tools--cli)
+- [Hardware You Will Use](#%EF%B8%8F-hardware-you-will-use)
+- [The Journey Log](#-the-journey-log)
+- [Contributing](#-contributing)
+- [Safety Note](#%EF%B8%8F-safety-note)
 
-## Start Here
+## 🚀 Start Here
 
-- New to Arduino, electronics, or C++? Start with the [Learn Arduino guide](./Learn_Arduino/README.md).
-- Want the deeper engineering model behind the projects? Read the [Arduino Core Theory Masterclass](./ARDUINO_CORE_THEORY.md).
-- Building a parts kit? Use the [Hardware Kit Guide](./HARDWARE_KIT.md).
-- Ready to build? Begin with [Day 1: The Non-Blocking Blink](./Day_01_Millis_Blink).
+- **New to electronics or C++?** Start with the [Learn Arduino guide](./Learn_Arduino/README.md).
+- **Want the deeper engineering model?** Read the [Arduino Core Theory Masterclass](./ARDUINO_CORE_THEORY.md).
+- **Building a parts kit?** Use the [Hardware Kit Guide](./HARDWARE_KIT.md).
+- **Ready to build?** Begin with [Day 1: The Non-Blocking Blink](./Day_01_Millis_Blink).
 
-## What Makes This Guide Different
+## ✨ What Makes This Guide Different
 
 - **A real learning path:** the projects are ordered to compound skills instead of feeling like disconnected examples.
 - **Non-blocking mindset from day one:** the curriculum moves beyond `delay()` early and teaches `millis()`, state machines, timers, and interrupts.
 - **Hardware plus software:** each day connects circuit behavior, embedded C/C++, and debugging habits.
 - **Beginner to advanced coverage:** the path moves from LEDs and buttons to PID control, sensor fusion, odometry, pure pursuit, and ROS serial bridging.
-- **Cloneable structure:** each project is isolated in its own folder with source code and documentation.
+- **Wokwi Integration:** Test projects live in your browser using our beautiful Next.js docs website with embedded Wokwi simulators!
 
-## Repository Structure
+## 🛠️ Interactive Tools & CLI
 
-```text
-.
-|-- Learn_Arduino/                 # prerequisite zero-to-hero guide
-|-- ARDUINO_CORE_THEORY.md          # deeper embedded systems companion
-|-- Day_01_Millis_Blink/            # one folder per project
-|   |-- Day_01_Millis_Blink.ino
-|   `-- README.md
-|-- ...
-|-- Day_100_ROS_Serial_Bridge/
-|-- docs-website/                   # interactive Next.js documentation site
-`-- scripts/                        # helper scripts for maintainers
+We've built custom tooling to make your journey through the 100 days as seamless as possible:
+
+### 1. The Interactive CLI
+Manage your learning journey with our global NPM tool! Just run `npm install` and `npm link` in this directory, and use:
+```bash
+npx 100-days-arduino
 ```
+This CLI allows you to:
+- 🏗️ **Scaffold new projects** perfectly formatted for the curriculum.
+- 📚 **Generate the E-Book** aggregating all 100 days into one giant Markdown file.
+- 🛠️ **Compile all Arduino files** to verify code integrity across the repository.
+
+### 2. Next.js Documentation Website
+Explore the curriculum in our **[Premium Next.js Web App](./docs-website)** featuring:
+- A powerful Cmd+K Command Palette
+- Live interactive Wokwi Arduino simulation embeds
+- A Gamified Progress Dashboard with unlockable achievements
+- Smooth Framer Motion UI animations
 
 ## Hardware You Will Use
 
