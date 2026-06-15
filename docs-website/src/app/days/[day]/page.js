@@ -6,6 +6,7 @@ import MarkCompleteButton from '@/components/MarkCompleteButton';
 import ViewSourceButton from '@/components/ViewSourceButton';
 import TwitterShareButton from '@/components/TwitterShareButton';
 import EditPageButton from '@/components/EditPageButton';
+import DayCarousel from '@/components/DayCarousel';
 
 export async function generateStaticParams() {
   const days = get100DaysLogs();
@@ -70,6 +71,7 @@ export default async function DayPage({ params }) {
           </div>
         </div>
         <Pagination prev={prev} next={next} />
+        <DayCarousel days={days.slice(currentIndex + 1, currentIndex + 6)} />
       </article>
       <TableOfContents />
     </div>

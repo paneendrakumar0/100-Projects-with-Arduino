@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { ArrowRight, BookOpen, CircuitBoard, Cpu, Gauge, Radio, Wrench } from 'lucide-react';
+import ProgressDashboard from '@/components/ProgressDashboard';
+import ArduinoSimulator from '@/components/ArduinoSimulator';
 
 const learningTracks = [
   {
@@ -161,6 +163,18 @@ export default function Home() {
         <Link href="/days/Day_01_Millis_Blink" className="btn btn-secondary">
           Start Day 1
         </Link>
+      </motion.section>
+
+      <motion.section variants={item}>
+        <ProgressDashboard />
+      </motion.section>
+
+      <motion.section variants={item}>
+        <div className="section-header">
+          <h2>Interactive Hardware Simulator</h2>
+          <p>See components come to life as you learn. Hover or click to interact.</p>
+        </div>
+        <ArduinoSimulator activePins={['13', 'GND', '5V', 'A0']} />
       </motion.section>
 
       <style jsx>{`

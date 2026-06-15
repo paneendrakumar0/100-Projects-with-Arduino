@@ -126,20 +126,26 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
           top: 0;
           bottom: 0;
           left: 0;
-          background: rgba(7, 10, 14, 0.92);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
+          background: var(--glass-bg);
+          backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(40px);
           border-right: 1px solid var(--glass-border);
+          box-shadow: inset -1px 0 0 0 var(--glass-border-highlight), 10px 0 30px -10px rgba(0,0,0,0.5);
           overflow-y: auto;
-          padding: 2.5rem;
+          padding: 2.5rem 2rem;
           z-index: 50;
           display: flex;
           flex-direction: column;
+          transition: background 0.3s var(--spring-smooth);
+        }
+
+        .sidebar:hover {
+          background: var(--glass-bg-hover);
         }
 
         .logo {
           font-family: 'Outfit', sans-serif;
-          font-size: 1.7rem;
+          font-size: 1.8rem;
           font-weight: 900;
           color: #fff;
           text-decoration: none;
@@ -175,39 +181,42 @@ export default function SidebarClient({ chapters, days, searchIndex }) {
 
         .nav-link {
           display: block;
-          padding: 0.6rem 1rem;
+          padding: 0.65rem 1rem;
           color: var(--text-secondary);
           border-radius: 8px;
-          transition: all 0.3s ease;
+          transition: all 0.3s var(--spring-bouncy);
           font-size: 0.95rem;
           font-weight: 500;
           position: relative;
           overflow: hidden;
+          margin-bottom: 0.25rem;
+          border: 1px solid transparent;
         }
 
         .nav-link:hover {
-          color: #fff;
-          background: rgba(255, 255, 255, 0.03);
+          color: var(--text-primary);
+          background: rgba(255, 255, 255, 0.04);
           transform: translateX(4px);
+          border-color: rgba(255, 255, 255, 0.05);
         }
 
         .nav-link.active {
-          color: #fff;
-          background: linear-gradient(90deg, rgba(0, 212, 255, 0.14) 0%, rgba(121, 242, 192, 0.05) 100%);
+          color: var(--text-primary);
+          background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, transparent 100%);
           border-left: 3px solid var(--accent-primary);
           border-radius: 0 8px 8px 0;
-          text-shadow: 0 0 10px rgba(0, 212, 255, 0.45);
+          border-color: transparent transparent transparent var(--accent-primary);
         }
 
         .nav-link.active::before {
           content: '';
           position: absolute;
-          left: 0;
+          left: -3px;
           top: 0;
           bottom: 0;
-          width: 1px;
+          width: 3px;
           background: var(--accent-primary);
-          box-shadow: 0 0 10px 2px var(--accent-primary);
+          box-shadow: 0 0 15px 2px var(--accent-primary);
         }
 
         .mobile-toggle {

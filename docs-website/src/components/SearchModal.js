@@ -161,6 +161,20 @@ export default function SearchModal({ searchIndex }) {
                   No results found for &quot;{query}&quot;
                 </div>
               )}
+
+              {query.length === 0 && (
+                <div className="search-quick-actions">
+                  <div className="quick-label">Quick Actions</div>
+                  <div className="quick-grid">
+                    <button onClick={() => { setIsOpen(false); router.push('/days/Day_01_Millis_Blink'); }}>
+                      <Calendar size={16} /> Start Day 1
+                    </button>
+                    <button onClick={() => { setIsOpen(false); router.push('/learn/Chapter_01_What_Is_Arduino'); }}>
+                      <FileText size={16} /> Beginner Guide
+                    </button>
+                  </div>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -206,34 +220,34 @@ export default function SearchModal({ searchIndex }) {
 
         .search-backdrop {
           position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(8px);
+          inset: 0;
+          background: rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
           z-index: 9999;
           display: flex;
           align-items: flex-start;
           justify-content: center;
-          padding-top: 10vh;
+          padding-top: 15vh;
         }
 
         .search-modal {
-          background: #111;
+          background: var(--glass-bg);
+          backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(40px);
           width: 100%;
-          max-width: 600px;
+          max-width: 640px;
           border-radius: 16px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 229, 255, 0.1);
+          border: 1px solid var(--glass-border-highlight);
+          box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 240, 255, 0.1);
           overflow: hidden;
         }
 
         .search-header {
           display: flex;
           align-items: center;
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding: 1.25rem 1.5rem;
+          border-bottom: 1px solid var(--glass-border);
         }
 
         .search-icon {
@@ -270,7 +284,7 @@ export default function SearchModal({ searchIndex }) {
         .search-results {
           max-height: 60vh;
           overflow-y: auto;
-          padding: 0.5rem;
+          padding: 0.75rem;
         }
 
         .search-item {
@@ -278,14 +292,16 @@ export default function SearchModal({ searchIndex }) {
           align-items: center;
           gap: 1rem;
           padding: 1rem;
-          border-radius: 8px;
+          border-radius: 12px;
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.2s var(--spring-smooth);
+          border: 1px solid transparent;
         }
 
         .search-item.selected {
-          background: rgba(0, 229, 255, 0.1);
-          border-left: 3px solid var(--accent-primary);
+          background: rgba(0, 240, 255, 0.08);
+          border-color: rgba(0, 240, 255, 0.15);
+          transform: translateX(4px);
         }
 
         .item-icon {
@@ -331,7 +347,46 @@ export default function SearchModal({ searchIndex }) {
         .search-empty {
           padding: 3rem 1rem;
           text-align: center;
-          color: #666;
+          color: var(--text-muted);
+        }
+
+        .search-quick-actions {
+          padding: 1rem 1.5rem 1.5rem;
+        }
+
+        .quick-label {
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--text-muted);
+          margin-bottom: 1rem;
+          font-weight: 700;
+        }
+
+        .quick-grid {
+          display: flex;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .quick-grid button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid var(--glass-border);
+          padding: 0.75rem 1rem;
+          border-radius: 8px;
+          color: var(--text-primary);
+          cursor: pointer;
+          font-family: inherit;
+          transition: all 0.2s;
+        }
+
+        .quick-grid button:hover {
+          background: rgba(255,255,255,0.08);
+          border-color: var(--glass-border-highlight);
+          transform: translateY(-2px);
         }
       `}</style>
     </>
