@@ -162,7 +162,7 @@ void executeMotionStep() {
       speedHz = vMax;
     } else {
       // Ramping velocity
-      uint16_t* profileTable =
+      uint16_t *profileTable =
           (currentProfile == PROFILE_SCURVE) ? sCurveIntervals : linearIntervals;
 
       long totalSteps = stepsCompleted + stepsRemaining;

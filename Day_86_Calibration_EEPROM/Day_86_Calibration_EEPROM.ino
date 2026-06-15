@@ -77,8 +77,7 @@ void setup() {
 
   if (!initMPU6050()) {
     Serial.println(F("[ERROR] Failed to communicate with MPU6050!"));
-    while (1)
-      ;
+    while (1);
   }
 
   // Check if user is pressing the button during boot to force calibration
@@ -143,9 +142,9 @@ void loop() {
 /**
  * Calculates the checksum of the calibration structure (excluding checksum field).
  */
-uint16_t calculateCalChecksum(const CalibrationData& data) {
+uint16_t calculateCalChecksum(const CalibrationData &data) {
   uint16_t sum = 0;
-  const byte* bytePtr = (const byte*)&data;
+  const byte *bytePtr = (const byte *)&data;
   int size = sizeof(CalibrationData) - sizeof(data.checksum);
 
   for (int i = 0; i < size; i++) {
@@ -249,8 +248,8 @@ bool initMPU6050() {
   return (Wire.endTransmission() == 0);
 }
 
-bool readIMU(int16_t& ax, int16_t& ay, int16_t& az, int16_t& temp, int16_t& gx, int16_t& gy,
-             int16_t& gz) {
+bool readIMU(int16_t &ax, int16_t &ay, int16_t &az, int16_t &temp, int16_t &gx, int16_t &gy,
+             int16_t &gz) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_ACCEL_XOUT_H);
   if (Wire.endTransmission() != 0) return false;
@@ -300,7 +299,7 @@ void readAndPrintCalibratedData() {
 // =============================================================
 //  TELEMETRY & HELP UTILITIES
 // =============================================================
-void printOffsets(const CalibrationData& data) {
+void printOffsets(const CalibrationData &data) {
   Serial.println(F("----------------- CALIBRATION OFFSETS -----------------"));
   Serial.print(F(" Status: "));
   Serial.println(data.magicByte == 0xC4 ? F("ACTIVE (Offsets Applied)")

@@ -65,7 +65,7 @@ const int MODE_BTN = 2;
 
 // --- MICROSTEPPING MODE TABLE ---
 struct MicrostepMode {
-  const char* name;
+  const char *name;
   int stepsPerRev;  // For 1.8° NEMA 17 motor
   uint8_t ms1, ms2, ms3;
 };

@@ -80,8 +80,7 @@ void setup() {
     Serial.println(F("[SYSTEM] Starting Scheduler. Tasks activated."));
   } else {
     Serial.println(F("[ERROR] Failed to create FreeRTOS Queue!"));
-    while (1)
-      ;  // Freeze
+    while (1);  // Freeze
   }
 }
 

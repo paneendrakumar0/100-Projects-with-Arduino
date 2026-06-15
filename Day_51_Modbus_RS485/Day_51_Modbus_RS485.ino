@@ -233,7 +233,7 @@ void sendExceptionResponse(uint8_t functionCode, uint8_t exceptionCode) {
 
 // --- PHYSICAL TRANSCEIVER CONTROL ---
 
-void transmitFrame(uint8_t* buffer, int length) {
+void transmitFrame(uint8_t *buffer, int length) {
   // Step 1: Set MAX485 pin to HIGH (Transmit Mode)
   digitalWrite(RS485_FLOW_PIN, HIGH);
   delayMicroseconds(50);  // Settle electrical state
@@ -251,7 +251,7 @@ void transmitFrame(uint8_t* buffer, int length) {
 
 // --- CRC-16 GENERATOR ALGORITHM ---
 
-uint16_t calculateCRC16(uint8_t* buffer, int length) {
+uint16_t calculateCRC16(uint8_t *buffer, int length) {
   uint16_t crc = 0xFFFF;  // Initialize Modbus CRC register
   for (int i = 0; i < length; i++) {
     crc ^= buffer[i];

@@ -76,7 +76,7 @@ const uint8_t FONT_5x8[][5] = {
 uint8_t framebuffer[8] = {0};
 
 // --- SCROLLING MESSAGE ---
-const char* MESSAGE = "HI ARDUINO";
+const char *MESSAGE = "HI ARDUINO";
 const int MSG_LEN = 10;  // Length of MESSAGE
 
 void setup() {
@@ -122,11 +122,11 @@ void loop() {
 // =============================================================
 //  ANIMATION: SCROLL TEXT
 // =============================================================
-void scrollText(const char* msg, int len, int delayMs) {
+void scrollText(const char *msg, int len, int delayMs) {
   // Build wide buffer: concatenate all character columns with 1 blank col between
   // Each char = 5 cols + 1 blank = 6 cols total
   int totalCols = len * 6 + 8;  // Extra 8 cols padding at start and end
-  uint8_t* buf = (uint8_t*)calloc(totalCols, 1);
+  uint8_t *buf = (uint8_t *)calloc(totalCols, 1);
   if (!buf) return;
 
   int pos = 8;  // Start after 8 blank columns

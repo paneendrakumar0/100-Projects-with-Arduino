@@ -63,7 +63,7 @@ struct TelemetryPacket {
   uint32_t packetID;    // 4 bytes: Monotonic packet sequence counter
   int sensorValue;      // 2 bytes: ADC reading (e.g. from A0)
   float uptimeSeconds;  // 4 bytes: Arduino uptime in seconds
-};                      // Total size = 10 bytes
+};  // Total size = 10 bytes
 
 // --- TIMING VARIABLES ---
 unsigned long lastTxTime = 0;
@@ -103,8 +103,7 @@ void setup() {
   // Initialize the radio chip
   if (!radio.begin()) {
     Serial.println("[ERROR] nRF24L01+ hardware initialization failed! Check wiring.");
-    for (;;)
-      ;  // Halt setup
+    for (;;);  // Halt setup
   }
 
   // Set the Power Amplifier level.

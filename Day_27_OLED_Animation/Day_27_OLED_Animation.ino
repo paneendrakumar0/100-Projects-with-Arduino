@@ -84,8 +84,7 @@ void setup() {
   // Initialize SSD1306 OLED screen
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println("[ERROR] SSD1306 allocation failed. Check connections.");
-    for (;;)
-      ;  // Halt execution
+    for (;;);  // Halt execution
   }
 
   display.clearDisplay();

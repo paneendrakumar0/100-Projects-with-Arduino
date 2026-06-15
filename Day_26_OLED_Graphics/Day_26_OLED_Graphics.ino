@@ -65,8 +65,7 @@ void setup() {
   // Initialize the OLED screen. SSD1306_SWITCHCAPVCC generates 7.5V-9V internally for OLED drive.
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(("[ERROR] SSD1306 allocation failed. Check wiring!"));
-    for (;;)
-      ;  // Loop forever if display initialization fails
+    for (;;);  // Loop forever if display initialization fails
   }
 
   // Clear the library's default startup splash screen buffer

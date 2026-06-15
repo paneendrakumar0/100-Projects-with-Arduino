@@ -147,7 +147,7 @@ void loop() {
  * Calculates joint angles (degrees) for target coordinate (x,y,z).
  * Returns true if the position is reachable (valid solution exists).
  */
-bool solveInverseKinematics(float x, float y, float z, float& t1, float& t2, float& t3) {
+bool solveInverseKinematics(float x, float y, float z, float &t1, float &t2, float &t3) {
   // 1. Solve Base Rotation Angle (Theta 1)
   // Base rotates on the XY plane.
   float theta1_rad = atan2(y, x);

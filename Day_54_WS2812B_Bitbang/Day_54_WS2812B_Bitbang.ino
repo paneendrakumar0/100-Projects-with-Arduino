@@ -87,7 +87,7 @@ void loop() {
 
 void show() {
   // Pin 8 corresponds to PORTB, Bit 0 on the ATmega328P
-  volatile uint8_t* port = &PORTB;
+  volatile uint8_t *port = &PORTB;
   uint8_t pinMask = 0x01;
 
   uint8_t portValHigh = *port | pinMask;
@@ -193,7 +193,7 @@ void clearStrip() {
 
 // --- COLOR MATH: HUE-TO-RGB CONVERTER ---
 
-void hueToRGB(uint8_t hue, uint8_t* r, uint8_t* g, uint8_t* b) {
+void hueToRGB(uint8_t hue, uint8_t *r, uint8_t *g, uint8_t *b) {
   if (hue < 85) {
     *r = 255 - hue * 3;
     *g = hue * 3;

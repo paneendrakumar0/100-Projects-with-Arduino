@@ -191,7 +191,7 @@ void loop() {
 /**
  * Applies lower/upper deadzones and scales value to standard 10-bit range (0-1023).
  */
-int processPedalValue(int raw, const PedalCalibration& cal) {
+int processPedalValue(int raw, const PedalCalibration &cal) {
   // Constrain raw input to safety calibration limits
   int val = constrain(raw, cal.minRaw, cal.maxRaw);
 

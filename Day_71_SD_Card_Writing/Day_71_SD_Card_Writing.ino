@@ -38,7 +38,7 @@
 const int CS_PIN = 4;  // Chip Select pin for SD card module
 
 // --- FILE PATH CONFIGURATION ---
-const char* LOG_FILENAME = "datalog.txt";
+const char *LOG_FILENAME = "datalog.txt";
 
 void setup() {
   Serial.begin(9600);

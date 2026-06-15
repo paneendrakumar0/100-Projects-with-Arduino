@@ -40,7 +40,7 @@ struct LogEntry {
       logID;  // 4 bytes: Monotonically increasing identifier (used to find chronological order)
   uint16_t sensorValue;  // 2 bytes: Raw ADC data (e.g. from A0)
   uint16_t checksum;     // 2 bytes: Checks data integrity (logID + sensorValue)
-};                       // Total size = 8 bytes per entry
+};  // Total size = 8 bytes per entry
 
 // --- EEPROM SIZE & SLOT CONFIGURATION ---
 const int EEPROM_SIZE = 1024;                    // 1024 bytes available on ATmega328P

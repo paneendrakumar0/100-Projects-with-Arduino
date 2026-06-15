@@ -51,7 +51,7 @@
 typedef void (*TaskFn)();  // Function pointer type for task functions
 
 struct Task {
-  const char* name;         // Descriptive name for logging
+  const char *name;         // Descriptive name for logging
   TaskFn taskFn;            // Pointer to the task function
   uint16_t periodMs;        // Execution period (ms)
   unsigned long lastRunMs;  // millis() at last execution

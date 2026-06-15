@@ -143,7 +143,7 @@ void processIRCommand(uint16_t command) {
 /**
  * Toggles a digital pin's state and prints a debug message.
  */
-void toggleOutput(int pin, const char* name) {
+void toggleOutput(int pin, const char *name) {
   int currentState = digitalRead(pin);
   int nextState = !currentState;
   digitalWrite(pin, nextState);

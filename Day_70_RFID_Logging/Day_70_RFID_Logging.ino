@@ -94,7 +94,7 @@ struct LogEntry {
   byte year;          // 1 byte: Timestamp Year (offset from 2000)
   byte status;        // 1 byte: 0 = Denied, 1 = Granted, 2 = Registered, 3 = Deregistered
   uint16_t checksum;  // 2 bytes: Integrity validation checksum
-};                    // Struct Size = 20 bytes
+};  // Struct Size = 20 bytes
 
 const int LOG_ENTRY_SIZE = sizeof(LogEntry);  // 20 bytes
 const int NUM_LOG_SLOTS =
@@ -194,7 +194,7 @@ void loop() {
 // =============================================================
 //  CORE CARD SCAN PROCESSING
 // =============================================================
-void processCardScan(byte* uid, byte len) {
+void processCardScan(byte *uid, byte len) {
   byte magic = EEPROM.read(EEPROM_MAGIC_ADDR);
 
   // --- REGISTRATION PHASE (NO MASTER CARD SET) ---
@@ -280,7 +280,7 @@ void processCardScan(byte* uid, byte len) {
 // =============================================================
 //  EEPROM USER DATABASE OPERATIONS
 // =============================================================
-bool checkDatabase(const byte* uid, byte len) {
+bool checkDatabase(const byte *uid, byte len) {
   byte count = EEPROM.read(EEPROM_USER_COUNT_ADDR);
   for (int i = 0; i < count; i++) {
     int addr = EEPROM_USER_DB_START + (i * USER_SLOT_SIZE);
@@ -299,7 +299,7 @@ bool checkDatabase(const byte* uid, byte len) {
   return false;
 }
 
-bool addCardToDatabase(const byte* uid, byte len) {
+bool addCardToDatabase(const byte *uid, byte len) {
   byte count = EEPROM.read(EEPROM_USER_COUNT_ADDR);
   if (count >= MAX_USER_CARDS) return false;
   if (checkDatabase(uid, len)) return true;  // Already exists
@@ -313,7 +313,7 @@ bool addCardToDatabase(const byte* uid, byte len) {
   return true;
 }
 
-bool removeCardFromDatabase(const byte* uid, byte len) {
+bool removeCardFromDatabase(const byte *uid, byte len) {
   byte count = EEPROM.read(EEPROM_USER_COUNT_ADDR);
   for (int i = 0; i < count; i++) {
     int addr = EEPROM_USER_DB_START + (i * USER_SLOT_SIZE);
@@ -345,7 +345,7 @@ bool removeCardFromDatabase(const byte* uid, byte len) {
   return false;
 }
 
-bool isMasterCard(const byte* uid, byte len) {
+bool isMasterCard(const byte *uid, byte len) {
   byte mLen = EEPROM.read(EEPROM_MASTER_LEN_ADDR);
   if (mLen != len) return false;
   for (int i = 0; i < len; i++) {
@@ -357,7 +357,7 @@ bool isMasterCard(const byte* uid, byte len) {
 // =============================================================
 //  EEPROM WEAR-LEVELING ACCESS LOGGER
 // =============================================================
-uint16_t calculateLogChecksum(const LogEntry& entry) {
+uint16_t calculateLogChecksum(const LogEntry &entry) {
   uint16_t sum = 0;
   sum += (entry.logID & 0xFF) + ((entry.logID >> 8) & 0xFF) + ((entry.logID >> 16) & 0xFF) +
          ((entry.logID >> 24) & 0xFF);
@@ -406,7 +406,7 @@ void scanLogBuffer() {
   }
 }
 
-void logAccess(const byte* uid, byte len, byte status) {
+void logAccess(const byte *uid, byte len, byte status) {
   int targetSlot = (activeSlotIndex + 1) % NUM_LOG_SLOTS;
   int targetAddress = EEPROM_LOG_START + (targetSlot * LOG_ENTRY_SIZE);
 
@@ -541,7 +541,7 @@ byte bcdToDec(byte val) {
   return ((val >> 4) * 10) + (val & 0x0F);
 }
 
-bool readRTCDateTime(RTCDateTime* dt) {
+bool readRTCDateTime(RTCDateTime *dt) {
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
   Wire.write(0x00);  // Point to register 0 (seconds)
   if (Wire.endTransmission() != 0) {
@@ -562,7 +562,7 @@ bool readRTCDateTime(RTCDateTime* dt) {
   return false;
 }
 
-void getSystemTime(RTCDateTime& dt) {
+void getSystemTime(RTCDateTime &dt) {
   // Try reading physical RTC first
   if (readRTCDateTime(&dt)) {
     return;

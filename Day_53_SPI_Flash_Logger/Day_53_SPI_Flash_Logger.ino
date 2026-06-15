@@ -90,8 +90,7 @@ void setup() {
   if (mfgID != 0xEF || capacity != 0x17) {
     Serial.println(F("[ERROR] JEDEC ID mismatch! Check SPI wiring/levels. Halt."));
     digitalWrite(LED_INDICATOR_PIN, HIGH);
-    for (;;)
-      ;
+    for (;;);
   }
   Serial.println(F("[FLASH] W25Q64 confirmed active. Proceeding with logging demo..."));
 
@@ -109,11 +108,11 @@ void setup() {
 
   uint32_t writeAddr = 0x000000;
   Serial.println(F("[FLASH] Logging Record 1..."));
-  writeBytes(writeAddr, (uint8_t*)&record1, sizeof(record1));
+  writeBytes(writeAddr, (uint8_t *)&record1, sizeof(record1));
 
   writeAddr += sizeof(record1);  // Shift address to write next block
   Serial.println(F("[FLASH] Logging Record 2..."));
-  writeBytes(writeAddr, (uint8_t*)&record2, sizeof(record2));
+  writeBytes(writeAddr, (uint8_t *)&record2, sizeof(record2));
 
   // Step 4: Read logged records back from SPI memory
   Serial.println(F("\n[FLASH] Reading raw logged telemetry logs..."));
@@ -122,10 +121,10 @@ void setup() {
   TelemetryRecord readRecord2;
 
   uint32_t readAddr = 0x000000;
-  readBytes(readAddr, (uint8_t*)&readRecord1, sizeof(readRecord1));
+  readBytes(readAddr, (uint8_t *)&readRecord1, sizeof(readRecord1));
 
   readAddr += sizeof(readRecord1);
-  readBytes(readAddr, (uint8_t*)&readRecord2, sizeof(readRecord2));
+  readBytes(readAddr, (uint8_t *)&readRecord2, sizeof(readRecord2));
 
   // Step 5: Dump results to serial
   printRecord(1, readRecord1);
@@ -142,7 +141,7 @@ void loop() {
 
 // --- LOW-LEVEL SPI W25QXX DRIVER COMMANDS ---
 
-void readJEDECID(uint8_t* manufacturer, uint8_t* memType, uint8_t* capacity) {
+void readJEDECID(uint8_t *manufacturer, uint8_t *memType, uint8_t *capacity) {
   digitalWrite(FLASH_CS_PIN, LOW);
   SPI.transfer(CMD_JEDEC_ID);
   *manufacturer = SPI.transfer(0x00);
@@ -187,7 +186,7 @@ void eraseSector(uint32_t address) {
   waitForReady();  // Wait for sector erase operation to finish (takes 40-100ms)
 }
 
-void writeBytes(uint32_t address, uint8_t* buffer, int length) {
+void writeBytes(uint32_t address, uint8_t *buffer, int length) {
   waitForReady();
   writeEnable();
 
@@ -207,7 +206,7 @@ void writeBytes(uint32_t address, uint8_t* buffer, int length) {
   waitForReady();  // Wait for page program to finish (takes ~0.5ms - 3ms)
 }
 
-void readBytes(uint32_t address, uint8_t* buffer, int length) {
+void readBytes(uint32_t address, uint8_t *buffer, int length) {
   waitForReady();
 
   digitalWrite(FLASH_CS_PIN, LOW);
@@ -226,7 +225,7 @@ void readBytes(uint32_t address, uint8_t* buffer, int length) {
 
 // --- HELPER FORMATTED PRINTERS ---
 
-void printRecord(int index, const TelemetryRecord& rec) {
+void printRecord(int index, const TelemetryRecord &rec) {
   Serial.println(F("---------------------------------------------"));
   Serial.print(F("  Record #"));
   Serial.println(index);

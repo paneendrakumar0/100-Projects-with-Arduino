@@ -39,7 +39,7 @@ const int LDR_PIN = A0;    // LDR analog input
 const int POT_PIN = A1;    // Potentiometer analog input
 
 // --- DATALOG CONFIGURATION ---
-const char* CSV_FILENAME = "datalog.csv";
+const char *CSV_FILENAME = "datalog.csv";
 const unsigned long SAMPLE_INTERVAL_MS = 1000;  // Log data every 1 second
 
 // --- STATE VARIABLES ---

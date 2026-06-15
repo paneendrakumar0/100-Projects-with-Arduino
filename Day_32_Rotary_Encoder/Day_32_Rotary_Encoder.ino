@@ -54,7 +54,7 @@ volatile unsigned long lastISRTime = 0;  // Timestamp for ISR debouncing (micros
 
 // --- MENU STATE MACHINE ---
 const int MENU_SIZE = 4;
-const char* menuItems[MENU_SIZE] = {"System Status Monitor", "Temperature Diagnostic",
+const char *menuItems[MENU_SIZE] = {"System Status Monitor", "Temperature Diagnostic",
                                     "Wipe Non-Volatile Memory", "Hardware System Information"};
 int currentSelection = 0;
 

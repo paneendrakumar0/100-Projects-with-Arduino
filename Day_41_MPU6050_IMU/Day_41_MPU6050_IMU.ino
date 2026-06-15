@@ -72,8 +72,7 @@ void setup() {
   Wire.write(0x00);  // Set power management register to 0
   if (Wire.endTransmission() != 0) {
     Serial.println("[ERROR] Failed to communicate with MPU6050 over I2C! Check wiring.");
-    for (;;)
-      ;
+    for (;;);
   }
 
   Serial.println("[IMU] Woken up from sleep mode.");
@@ -141,7 +140,7 @@ void loop() {
 /**
  * Reads 6 bytes starting from register 0x3B (Accel X Out H) to capture all 3 axes.
  */
-bool readRawAccel(int16_t* ax, int16_t* ay, int16_t* az) {
+bool readRawAccel(int16_t *ax, int16_t *ay, int16_t *az) {
   Wire.beginTransmission(MPU_ADDRESS);
   Wire.write(REG_ACCEL_XOUT_H);                        // Point to starting register
   if (Wire.endTransmission(false) != 0) return false;  // End transmission with a restart command
@@ -160,7 +159,7 @@ bool readRawAccel(int16_t* ax, int16_t* ay, int16_t* az) {
 /**
  * Reads 6 bytes starting from register 0x43 (Gyro X Out H) to capture all 3 axes.
  */
-bool readRawGyro(int16_t* gx, int16_t* gy, int16_t* gz) {
+bool readRawGyro(int16_t *gx, int16_t *gy, int16_t *gz) {
   Wire.beginTransmission(MPU_ADDRESS);
   Wire.write(REG_GYRO_XOUT_H);
   if (Wire.endTransmission(false) != 0) return false;
@@ -178,7 +177,7 @@ bool readRawGyro(int16_t* gx, int16_t* gy, int16_t* gz) {
 /**
  * Reads 2 bytes starting from register 0x41 (Temp Out H).
  */
-bool readRawTemp(int16_t* temp) {
+bool readRawTemp(int16_t *temp) {
   Wire.beginTransmission(MPU_ADDRESS);
   Wire.write(REG_TEMP_OUT_H);
   if (Wire.endTransmission(false) != 0) return false;

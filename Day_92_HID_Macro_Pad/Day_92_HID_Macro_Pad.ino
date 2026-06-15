@@ -59,7 +59,7 @@ bool keyStates[NUM_ROWS][NUM_COLS] = {{false, false, false}, {false, false, fals
 
 // Macro profiles assigned to each matrix key
 struct MacroKey {
-  const char* label;
+  const char *label;
   void (*triggerAction)();
 };
 

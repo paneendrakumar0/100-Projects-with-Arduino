@@ -108,8 +108,7 @@ void setup() {
   if ((status & 0xE0) != MODE_CONFIG) {
     Serial.println(F("[ERROR] MCP2515 failed to enter Config mode! Check wiring."));
     digitalWrite(LED_INDICATOR_PIN, HIGH);  // Fail light
-    for (;;)
-      ;
+    for (;;);
   }
 
   // --- CONFIGURE CAN BAUD RATE (125 kbps with 16 MHz Oscillator) ---
@@ -134,8 +133,7 @@ void setup() {
   status = mcpReadRegister(REG_CANSTAT);
   if ((status & 0xE0) != MODE_NORMAL) {
     Serial.println(F("[ERROR] MCP2515 failed to enter Normal operating mode."));
-    for (;;)
-      ;
+    for (;;);
   }
 
   Serial.println(F("[CAN] Node initialized at 125 kbps. Operational."));
@@ -209,7 +207,7 @@ void mcpBitModify(uint8_t reg, uint8_t mask, uint8_t val) {
 
 // --- CAN PACKET TRANSMISSION PIPELINE ---
 
-void transmitCANFrame(uint16_t id, uint8_t length, uint8_t* data) {
+void transmitCANFrame(uint16_t id, uint8_t length, uint8_t *data) {
   // Wait until TXB0 becomes free (TXREQ bit in TXB0CTRL is low)
   while (mcpReadRegister(REG_TXB0CTRL) & 0x08) {
     // Spin lock wait

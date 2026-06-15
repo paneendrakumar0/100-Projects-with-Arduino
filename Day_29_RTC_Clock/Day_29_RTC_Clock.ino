@@ -143,7 +143,7 @@ void setRTCDateTime(RTCDateTime dt) {
 /**
  * Reads the first 7 registers from the DS3231 and decodes BCD to Decimal.
  */
-bool readRTCDateTime(RTCDateTime* dt) {
+bool readRTCDateTime(RTCDateTime *dt) {
   Wire.beginTransmission(DS3231_I2C_ADDRESS);
   Wire.write(0x00);  // Point to seconds register
   if (Wire.endTransmission() != 0) {

@@ -163,7 +163,7 @@ void setCursor(uint8_t col, uint8_t row) {
   lcdWriteCommand(0x80 | address);
 }
 
-void printString(const char* str) {
+void printString(const char *str) {
   while (*str) {
     lcdWriteData(*str++);
   }

@@ -78,7 +78,7 @@ void loop() {
 
 // --- COOLEY-TUKEY RADIX-2 FFT ENGINE ---
 
-void executeFFT(float* real, float* imag, uint16_t samples) {
+void executeFFT(float *real, float *imag, uint16_t samples) {
   // --- 1. Bit-Reversal Permutation ---
   // Re-orders the input array indices to prepare for DIT butterflies
   uint16_t j = 0;

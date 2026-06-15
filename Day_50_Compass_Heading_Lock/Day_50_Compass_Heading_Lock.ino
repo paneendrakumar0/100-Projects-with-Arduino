@@ -191,13 +191,12 @@ void initMagnetometer() {
   if (Wire.endTransmission() != 0) {
     Serial.println(F("[ERROR] QMC5883L communication failed! Halt."));
     digitalWrite(LED_INDICATOR_PIN, HIGH);
-    for (;;)
-      ;
+    for (;;);
   }
   Serial.println(F("[COMPASS] QMC5883L configured successfully."));
 }
 
-bool readRawData(int16_t* x, int16_t* y, int16_t* z) {
+bool readRawData(int16_t *x, int16_t *y, int16_t *z) {
   // Start register pointer burst read
   Wire.beginTransmission(QMC_ADDRESS);
   Wire.write(REG_DATA_X_LSB);

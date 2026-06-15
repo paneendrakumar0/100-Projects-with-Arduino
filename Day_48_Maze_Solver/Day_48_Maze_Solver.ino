@@ -240,8 +240,7 @@ void loop() {
       printPath("Optimized Path");
 
       // Infinite halt loop
-      for (;;)
-        ;
+      for (;;);
     }
 
     default:
@@ -260,7 +259,7 @@ void logDecision(char turn) {
   }
 }
 
-void printPath(const char* label) {
+void printPath(const char *label) {
   Serial.print("[PATH] ");
   Serial.print(label);
   Serial.print(": ");

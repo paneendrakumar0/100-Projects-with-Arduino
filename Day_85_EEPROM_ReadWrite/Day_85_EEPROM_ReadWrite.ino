@@ -39,7 +39,7 @@ struct SystemConfig {
   float sensorOffset;      // 4 bytes: Simulated sensor zero-point offset
   char systemName[16];     // 16 bytes: Device identification tag
   uint16_t checksum;       // 2 bytes: Validation checksum
-};                         // Total size = 30 bytes
+};  // Total size = 30 bytes
 
 // --- GLOBAL VARIABLES ---
 const int EEPROM_START_ADDR = 0;
@@ -114,9 +114,9 @@ void loop() {
 /**
  * Calculates a basic checksum of all bytes in the struct (excluding the checksum field itself).
  */
-uint16_t calculateChecksum(const SystemConfig& cfg) {
+uint16_t calculateChecksum(const SystemConfig &cfg) {
   uint16_t sum = 0;
-  const byte* bytePtr = (const byte*)&cfg;
+  const byte *bytePtr = (const byte *)&cfg;
   int size = sizeof(SystemConfig) - sizeof(cfg.checksum);
 
   for (int i = 0; i < size; i++) {
@@ -217,7 +217,7 @@ void parseAndSaveConfig() {
 // =============================================================
 //  FORMATTING PRINT UTILITIES
 // =============================================================
-void printConfig(const SystemConfig& cfg) {
+void printConfig(const SystemConfig &cfg) {
   Serial.println(F("--------------------------------------"));
   Serial.print(F(" System Name : "));
   Serial.println(cfg.systemName);

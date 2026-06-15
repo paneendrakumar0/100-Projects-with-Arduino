@@ -266,7 +266,7 @@ bool initMPU6050() {
   return true;
 }
 
-bool readAccelRaw(int16_t& x, int16_t& y, int16_t& z) {
+bool readAccelRaw(int16_t &x, int16_t &y, int16_t &z) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_ACCEL_XOUT_H);
   if (Wire.endTransmission() != 0) return false;

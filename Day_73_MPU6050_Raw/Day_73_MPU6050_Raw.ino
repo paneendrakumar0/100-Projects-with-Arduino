@@ -72,8 +72,7 @@ void setup() {
   } else {
     Serial.println(F("[ERROR] Failed to communicate with MPU6050!"));
     Serial.println(F("[SYSTEM] Freezing execution. Verify wiring."));
-    while (1)
-      ;
+    while (1);
   }
 }
 
@@ -161,7 +160,7 @@ bool initMPU6050() {
  * Reads 6 bytes from the accelerometer registers starting at 0x3B.
  * Combines high and low bytes to assemble raw X, Y, and Z measurements.
  */
-bool readAccelRaw(int16_t& x, int16_t& y, int16_t& z) {
+bool readAccelRaw(int16_t &x, int16_t &y, int16_t &z) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_ACCEL_XOUT_H);  // Point to start register (0x3B)
   if (Wire.endTransmission() != 0) return false;

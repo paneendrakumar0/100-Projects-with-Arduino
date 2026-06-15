@@ -80,8 +80,7 @@ void setup() {
 
   if (!initMPU6050()) {
     Serial.println(F("[ERROR] Failed to communicate with MPU6050!"));
-    while (1)
-      ;
+    while (1);
   }
   Serial.println(F("[SYSTEM] MPU6050 initialized. Calibrating gyro..."));
 
@@ -225,8 +224,8 @@ void calibrateGyro() {
  * Performs a 14-byte block burst read starting at 0x3B.
  * Extracts Accelerometer (6 bytes), Temperature (2 bytes), and Gyroscope (6 bytes).
  */
-bool readIMUData(int16_t& ax, int16_t& ay, int16_t& az, int16_t& temp, int16_t& gx, int16_t& gy,
-                 int16_t& gz) {
+bool readIMUData(int16_t &ax, int16_t &ay, int16_t &az, int16_t &temp, int16_t &gx, int16_t &gy,
+                 int16_t &gz) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_ACCEL_XOUT_H);  // Point to start of burst register block (0x3B)
   if (Wire.endTransmission() != 0) return false;

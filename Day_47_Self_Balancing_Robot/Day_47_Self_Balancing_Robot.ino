@@ -105,8 +105,7 @@ void setup() {
   if (Wire.endTransmission() != 0) {
     Serial.println("[ERROR] MPU6050 initialization failed! Halting system.");
     digitalWrite(LED_INDICATOR_PIN, HIGH);
-    for (;;)
-      ;
+    for (;;);
   }
 
   // Calibrate Gyroscope bias while stationary
@@ -212,7 +211,7 @@ void loop() {
 
 // --- I2C REGISTERS PIPELINE ---
 
-bool readRawAccel(int16_t* ax, int16_t* ay, int16_t* az) {
+bool readRawAccel(int16_t *ax, int16_t *ay, int16_t *az) {
   Wire.beginTransmission(MPU_ADDRESS);
   Wire.write(REG_ACCEL_XOUT_H);
   if (Wire.endTransmission(false) != 0) return false;
@@ -227,7 +226,7 @@ bool readRawAccel(int16_t* ax, int16_t* ay, int16_t* az) {
   return false;
 }
 
-bool readRawGyro(int16_t* gx, int16_t* gy, int16_t* gz) {
+bool readRawGyro(int16_t *gx, int16_t *gy, int16_t *gz) {
   Wire.beginTransmission(MPU_ADDRESS);
   Wire.write(REG_GYRO_XOUT_H);
   if (Wire.endTransmission(false) != 0) return false;

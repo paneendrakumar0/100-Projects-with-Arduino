@@ -89,7 +89,7 @@ void loop() {
 // =============================================================
 //  CORE DHT22 SINGLE-WIRE PROTOCOL READER
 // =============================================================
-bool readDHT22(float& humidity, float& tempC, float& heatIndex) {
+bool readDHT22(float &humidity, float &tempC, float &heatIndex) {
   uint8_t data[5] = {0, 0, 0, 0, 0};
 
   // --- STEP 1: HOST START SIGNAL ---

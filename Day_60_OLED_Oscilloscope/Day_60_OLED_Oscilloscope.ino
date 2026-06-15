@@ -83,10 +83,8 @@ void loop() {
   // --- Trigger: wait for rising edge crossing ---
   if (TRIGGER_ENABLE) {
     unsigned long triggerTimeout = millis() + 50;  // 50ms timeout
-    while (analogRead(SIGNAL_PIN) > TRIGGER_LEVEL && millis() < triggerTimeout)
-      ;
-    while (analogRead(SIGNAL_PIN) < TRIGGER_LEVEL && millis() < triggerTimeout)
-      ;
+    while (analogRead(SIGNAL_PIN) > TRIGGER_LEVEL && millis() < triggerTimeout);
+    while (analogRead(SIGNAL_PIN) < TRIGGER_LEVEL && millis() < triggerTimeout);
   }
 
   // --- Sample 128 ADC values ---

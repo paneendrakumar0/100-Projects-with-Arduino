@@ -68,8 +68,7 @@ void setup() {
   // Initialize MPU6050
   if (!initMPU6050()) {
     Serial.println(F("[ERROR] Failed to communicate with MPU6050!"));
-    while (1)
-      ;
+    while (1);
   }
   Serial.println(F("[SYSTEM] MPU6050 detected. Starting calibration..."));
 
@@ -197,7 +196,7 @@ void calibrateGyro() {
  * Reads 6 bytes from the gyroscope registers starting at 0x43.
  * Combines high and low bytes to assemble raw X, Y, and Z measurements.
  */
-bool readGyroRaw(int16_t& x, int16_t& y, int16_t& z) {
+bool readGyroRaw(int16_t &x, int16_t &y, int16_t &z) {
   Wire.beginTransmission(MPU6050_ADDR);
   Wire.write(REG_GYRO_XOUT_H);  // Point to start register (0x43)
   if (Wire.endTransmission() != 0) return false;

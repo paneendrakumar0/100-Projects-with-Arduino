@@ -252,7 +252,7 @@ void writeMotorSpeed(int speed) {
 /**
  * Prints the active driver configurations to the console at throttled intervals.
  */
-void printTelemetry(const char* action, int percent) {
+void printTelemetry(const char *action, int percent) {
   static unsigned long lastTele = 0;
   if (millis() - lastTele >= 500) {  // Limit telemetry updates to 2 Hz to prevent Serial congestion
     lastTele = millis();

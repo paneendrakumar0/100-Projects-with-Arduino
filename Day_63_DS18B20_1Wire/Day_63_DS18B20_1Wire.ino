@@ -140,7 +140,7 @@ uint8_t ow_read_byte() {
 // =============================================================
 //  CRC-8 (DALLAS/MAXIM, POLYNOMIAL 0x31)
 // =============================================================
-uint8_t crc8(uint8_t* buf, uint8_t len) {
+uint8_t crc8(uint8_t *buf, uint8_t len) {
   uint8_t crc = 0;
   for (uint8_t i = 0; i < len; i++) {
     uint8_t byte = buf[i];

@@ -166,7 +166,7 @@ void processCompleteSentence() {
 // --- COMMA-SEPARATED FIELD EXTRACTOR ---
 
 // Helper function to extract a specific field (0-indexed) into output buffer
-bool getCommaField(const char* sentence, int fieldIndex, char* output, int maxLen) {
+bool getCommaField(const char *sentence, int fieldIndex, char *output, int maxLen) {
   int commaCount = 0;
   int startIdx = -1;
   int endIdx = -1;
@@ -271,7 +271,7 @@ void parseGPGGA() {
 
 // --- NMEA DDMM.MMMM TO DECIMAL DEGREES CONVERTER ---
 
-float convertNMEAToDecimal(const char* rawCoord, char direction) {
+float convertNMEAToDecimal(const char *rawCoord, char direction) {
   if (strlen(rawCoord) == 0) return 0.0;
 
   float rawVal = atof(rawCoord);
