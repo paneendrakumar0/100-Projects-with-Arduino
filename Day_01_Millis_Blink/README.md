@@ -1,3 +1,7 @@
+---
+wokwi_id: "327503795101663826"
+---
+
 # Day 1: The Non-Blocking Blink (Ditch the delay!)
 
 Welcome to Day 1 of your Arduino journey.

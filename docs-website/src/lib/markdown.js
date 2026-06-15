@@ -49,11 +49,15 @@ export function get100DaysLogs() {
     const readmePath = path.join(REPO_ROOT, dirName, 'README.md');
     let mdContent = '';
     let title = dirName.replace(/_/g, ' ');
+    let wokwiId = null;
     
     if (fs.existsSync(readmePath)) {
       const content = fs.readFileSync(readmePath, 'utf8');
       const parsed = matter(content);
       mdContent = parsed.content;
+      if (parsed.data && parsed.data.wokwi_id) {
+        wokwiId = parsed.data.wokwi_id;
+      }
       const match = mdContent.match(/^#\s+(.*)/m);
       if (match) title = match[1];
     }
@@ -66,7 +70,8 @@ export function get100DaysLogs() {
       slug: dirName,
       title,
       content: mdContent,
-      dayNumber
+      dayNumber,
+      wokwi_id: wokwiId
     };
   });
   

@@ -7,6 +7,7 @@ import ViewSourceButton from '@/components/ViewSourceButton';
 import TwitterShareButton from '@/components/TwitterShareButton';
 import EditPageButton from '@/components/EditPageButton';
 import DayCarousel from '@/components/DayCarousel';
+import WokwiEmbed from '@/components/WokwiEmbed';
 
 export async function generateStaticParams() {
   const days = get100DaysLogs();
@@ -59,6 +60,13 @@ export default async function DayPage({ params }) {
         <div className="flex justify-between items-start">
           <ViewSourceButton dayId={day.slug} />
         </div>
+        
+        {day.wokwi_id && (
+          <div className="mb-8 mt-4">
+            <WokwiEmbed projectId={day.wokwi_id} />
+          </div>
+        )}
+
         <MarkdownRenderer content={day.content} />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-zinc-800">
           <MarkCompleteButton dayId={day.slug} />
