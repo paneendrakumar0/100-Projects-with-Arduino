@@ -1,0 +1,15 @@
+{
+  "name": "100-days-arduino-cli",
+  "version": "1.0.0",
+  "description": "Interactive CLI for managing the 100 Days of Arduino repository",
+  "bin": {
+    "100-days-arduino": "scripts/cli.js"
+  },
+  "scripts": {
+    "start": "node scripts/cli.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.0"
+  }
+}
