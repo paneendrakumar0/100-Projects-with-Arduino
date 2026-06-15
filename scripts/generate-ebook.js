@@ -10,7 +10,10 @@ function getLearnChapters() {
   return fs.readdirSync(dir)
     .filter(f => f.endsWith('.md') && f !== 'README.md')
     .sort((a, b) => a.localeCompare(b))
-    .map(f => path.join(dir, f));
+    .map(f => ({
+      file: path.join(dir, f),
+      dirName: 'Learn_Arduino'
+    }));
 }
 
 function getDayLogs() {
@@ -24,7 +27,44 @@ function getDayLogs() {
     const aNum = aMatch ? parseInt(aMatch[1], 10) : 0;
     const bNum = bMatch ? parseInt(bMatch[1], 10) : 0;
     return aNum - bNum;
-  }).map(d => path.join(REPO_ROOT, d, 'README.md'));
+  }).map(d => ({
+    file: path.join(REPO_ROOT, d, 'README.md'),
+    dirName: d,
+    fullDir: path.join(REPO_ROOT, d)
+  }));
+}
+
+function processMarkdown(content, dirName) {
+  // Remove frontmatter
+  let cleanContent = content.replace(/---[\s\S]*?---/g, '').trim();
+  
+  // Fix relative image paths (e.g., ![alt](image.png) -> ![alt](Day_XX/image.png))
+  // Ignore external urls starting with http:// or https://
+  cleanContent = cleanContent.replace(/!\[([^\]]*)\]\((?!http)([^)]+)\)/g, (match, alt, imgPath) => {
+    // If the path is already absolute or relative to root, leave it alone
+    if (imgPath.startsWith('/') || imgPath.startsWith(dirName)) return match;
+    return `![${alt}](${dirName}/${imgPath})`;
+  });
+
+  return cleanContent;
+}
+
+function getSourceCodeBlocks(fullDir) {
+  if (!fs.existsSync(fullDir)) return '';
+  const files = fs.readdirSync(fullDir)
+    .filter(f => f.endsWith('.ino') || f.endsWith('.cpp') || f.endsWith('.h'));
+  
+  if (files.length === 0) return '';
+  
+  let codeBlocks = `\n\n### Source Code\n\n`;
+  files.forEach(file => {
+    const code = fs.readFileSync(path.join(fullDir, file), 'utf8');
+    const ext = path.extname(file).substring(1);
+    const lang = ext === 'ino' ? 'cpp' : ext; // highlight.js uses cpp for ino
+    codeBlocks += `**\`${file}\`**\n\n\`\`\`${lang}\n${code}\n\`\`\`\n\n`;
+  });
+  
+  return codeBlocks;
 }
 
 async function main() {
@@ -39,20 +79,20 @@ async function main() {
   let toc = `## Table of Contents\n\n`;
   
   toc += `### Part 1: Arduino Theory & Foundations\n`;
-  chapters.forEach(file => {
-    const content = fs.readFileSync(file, 'utf8');
+  chapters.forEach(chapter => {
+    const content = fs.readFileSync(chapter.file, 'utf8');
     const match = content.match(/^#\s+(.*)/m);
-    const title = match ? match[1].trim() : path.basename(file, '.md');
+    const title = match ? match[1].trim() : path.basename(chapter.file, '.md');
     const anchor = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     toc += `- [${title}](#${anchor})\n`;
   });
 
   toc += `\n### Part 2: The 100 Days Projects\n`;
-  days.forEach(file => {
-    if (fs.existsSync(file)) {
-      const content = fs.readFileSync(file, 'utf8');
+  days.forEach(day => {
+    if (fs.existsSync(day.file)) {
+      const content = fs.readFileSync(day.file, 'utf8');
       const match = content.match(/^#\s+(.*)/m);
-      const title = match ? match[1].trim() : path.basename(path.dirname(file));
+      const title = match ? match[1].trim() : day.dirName;
       const anchor = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       toc += `- [${title}](#${anchor})\n`;
     }
@@ -61,23 +101,28 @@ async function main() {
   bookContent += toc + `\n---\n\n`;
 
   console.log(`Found ${chapters.length} theory chapters.`);
+  bookContent += `<div style="page-break-after: always;"></div>\n\n`;
   bookContent += `# Part 1: Arduino Theory & Foundations\n\n`;
   
-  chapters.forEach(file => {
-    const content = fs.readFileSync(file, 'utf8');
-    // Remove frontmatter if present
-    const cleanContent = content.replace(/---[\\s\\S]*?---/g, '').trim();
-    bookContent += cleanContent + '\n\n---\n\n';
+  chapters.forEach(chapter => {
+    const content = fs.readFileSync(chapter.file, 'utf8');
+    const cleanContent = processMarkdown(content, chapter.dirName);
+    bookContent += cleanContent + '\n\n<div style="page-break-after: always;"></div>\n\n---\n\n';
   });
   
   console.log(`Found ${days.length} project logs.`);
   bookContent += `# Part 2: The 100 Days Projects\n\n`;
   
-  days.forEach(file => {
-    if (fs.existsSync(file)) {
-      const content = fs.readFileSync(file, 'utf8');
-      const cleanContent = content.replace(/---[\\s\\S]*?---/g, '').trim();
-      bookContent += cleanContent + '\n\n---\n\n';
+  days.forEach(day => {
+    if (fs.existsSync(day.file)) {
+      const content = fs.readFileSync(day.file, 'utf8');
+      let cleanContent = processMarkdown(content, day.dirName);
+      
+      // Auto-inject source code
+      const codeBlocks = getSourceCodeBlocks(day.fullDir);
+      cleanContent += codeBlocks;
+
+      bookContent += cleanContent + '\n\n<div style="page-break-after: always;"></div>\n\n---\n\n';
     }
   });
   
