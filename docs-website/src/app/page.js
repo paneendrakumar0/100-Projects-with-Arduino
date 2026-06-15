@@ -31,6 +31,12 @@ const learningTracks = [
     icon: Gauge,
     detail: 'Odometry, sensor fusion, PID tuning, path tracking, and the final integration arc.',
   },
+  {
+    title: 'Hardware Glossary',
+    href: '/hardware',
+    icon: Wrench,
+    detail: 'Interactive visual index of every hardware component used in the curriculum.',
+  },
 ];
 
 const pillars = [

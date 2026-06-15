@@ -82,3 +82,52 @@ export function getDayLog(slug) {
   const days = get100DaysLogs();
   return days.find(d => d.slug === slug);
 }
+
+export function getHardwareGlossary() {
+  const days = get100DaysLogs();
+  const componentMap = new Map();
+
+  days.forEach(day => {
+    const hwMatch = day.content.match(/## Hardware Required\s*([\s\S]*?)(?=## |$)/);
+    if (hwMatch && hwMatch[1]) {
+      const bullets = hwMatch[1].match(/^[-*]\s+(.*)$/gm);
+      if (bullets) {
+        bullets.forEach(bullet => {
+          let item = bullet.replace(/^[-*]\s+/, '').trim();
+          
+          // Clean up quantities like "1x ", "2x "
+          item = item.replace(/^\d+x\s+/i, '');
+          
+          // Optionally strip links if people used markdown links for hardware
+          item = item.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+          
+          if (item.length > 0) {
+            // Capitalize first letter for consistency
+            item = item.charAt(0).toUpperCase() + item.slice(1);
+            
+            if (!componentMap.has(item)) {
+              componentMap.set(item, []);
+            }
+            
+            // Check to avoid duplicates (if a day lists the same part twice)
+            const existing = componentMap.get(item);
+            if (!existing.find(d => d.slug === day.slug)) {
+              existing.push({
+                slug: day.slug,
+                title: day.title,
+                dayNumber: day.dayNumber
+              });
+            }
+          }
+        });
+      }
+    }
+  });
+
+  return Array.from(componentMap.entries())
+    .map(([name, usedIn]) => ({
+      name,
+      usedIn
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
