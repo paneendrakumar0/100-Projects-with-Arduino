@@ -27,7 +27,7 @@ jobs:
         run: zip -r 100_Days_of_Arduino_Source.zip . -x "*.git*" "docs-website/node_modules/*" "docs-website/.next/*"
 
       - name: GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             100_Days_of_Arduino_Book.md
