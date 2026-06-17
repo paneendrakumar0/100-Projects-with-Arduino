@@ -34,7 +34,7 @@ jobs:
       - name: Build with Next.js
         run: npm run build || (echo "::error::Next build failed" && exit 1)
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./docs-website/out
 
