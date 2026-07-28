@@ -12,14 +12,15 @@ You will master closed-loop control systems, study Pulse Position Modulation (PP
 <p align="center">
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 11 servo sweep circuit](../assets/images/circuits/Day_11_Servo_Sweep.svg)
+
+The diagram follows the sketch’s `SERVO_PIN = 9` mapping. Larger servos require a separate regulated supply with its ground joined to Arduino GND.
 
 ## 🎯 Today's Learning Goals
 1. Understand the difference between open-loop and closed-loop control systems.
@@ -129,6 +130,16 @@ Look at your servo cable. It consists of three colored wires. Most hobby servos 
 | **Signal (PPM)** | **Orange** | Yellow | Arduino **Pin 9** | PPM pulse command line |
 | **VCC (+5V)** | **Red** | Red | Arduino **5V** (or external 5V) | Motor power supply |
 | **GND (0V)** | **Brown** | Black | Arduino **GND** (shared GND) | Ground reference |
+
+### ASCII wiring diagram
+
+```text
+Arduino D9  ───────────────── Servo SIGNAL (orange/yellow)
+Arduino 5 V ───────────────── Servo VCC    (red)
+Arduino GND ───────────────── Servo GND    (brown/black)
+```
+
+For an external servo supply, connect supply positive to servo VCC and join supply negative, servo GND, and Arduino GND.
 
 ---
 

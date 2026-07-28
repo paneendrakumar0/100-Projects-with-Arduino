@@ -14,9 +14,16 @@ You will master photodiode semiconductor depletion layer physics, study how opti
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Flame_Sensor.jpg" alt="Infrared flame sensor module" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Buzzer.jpg" alt="Passive piezo buzzer" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 20 flame sensor alarm circuit](../assets/images/circuits/Day_20_Flame_Sensor.svg)
+
+The circuit follows A0 for intensity, D2 for the module threshold output, D11 for the LED, and D12 for the buzzer.
 
 ## 🎯 Today's Learning Goals
 1. Understand how photodiodes measure specific infrared wavelengths of fire.
@@ -105,6 +112,20 @@ To build this project, you will need:
 | **LED Anode** | **220Ω Resistor** ➡️ **Pin 11** | Red | Siren indicator light |
 | **Buzzer (+)** | **100Ω Resistor** ➡️ **Pin 12** | Orange | Siren sounder |
 | **All GNDs** | **GND** | Black | Shared ground return |
+
+### ASCII wiring diagram
+
+```text
+Arduino 5 V ───────────────── Flame module VCC
+Arduino A0  ◄──────────────── Flame module AO
+Arduino D2  ◄──────────────── Flame module DO
+Arduino GND ───────────────── Flame module GND
+
+Arduino D11 ──[220 Ω]──►| Red LED ─── GND
+Arduino D12 ──[100 Ω]── (+) Buzzer (−) ─ GND
+```
+
+Treat this as an educational detector only; it is not a certified life-safety fire alarm.
 
 ---
 

@@ -14,9 +14,14 @@ You will master galvanic isolation, study electromagnetic induction physics, lea
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 16 relay control circuit](../assets/images/circuits/Day_16_Relay_Control.svg)
+
+The control side uses D7. The contact side is a separate low-voltage test circuit; do not place mains wiring on a breadboard.
 
 ## 🎯 Today's Learning Goals
 1. Understand galvanic isolation and why it is critical for microcontroller safety.
@@ -134,6 +139,22 @@ Wire a small test load (like a 9V battery and motor) through the relay contacts.
 | **NO** | Connect to **DC Motor Wire 1** | Contact closed only when energized |
 | **NC** | *Leave Empty* (Not used for this test) | Contact closed when de-energized |
 | **Return Wire**| Connect **DC Motor Wire 2** to **9V Battery Negative (-)** | Complete the loop |
+
+### ASCII wiring diagram
+
+```text
+Control side
+Uno 5 V ───────── Relay VCC
+Uno D7  ───────── Relay IN
+Uno GND ───────── Relay GND
+
+Isolated low-voltage load side
+Battery + ─────── Relay COM
+Relay NO ──────── DC load ─────── Battery −
+Relay NC ──────── not connected
+```
+
+Use only a low-voltage DC load while learning. Mains-voltage work requires appropriately rated enclosures, protection, and qualified supervision.
 
 ---
 

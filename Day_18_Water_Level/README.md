@@ -13,10 +13,14 @@ You will master the physical chemistry of electrochemical corrosion, study volta
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Water_Level_Sensor.jpg" alt="Resistive water-level sensor board" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 18 water-level sensor circuit](../assets/images/circuits/Day_18_Water_Level.svg)
+
+The sketch gates sensor power from D7 and reads the signal on A0 to reduce continuous electrolysis.
 
 ## 🎯 Today's Learning Goals
 1. Understand how water level modules translate depth into analog resistance changes.
@@ -121,6 +125,16 @@ To build this project, you will need:
 | **VCC** / (+) | **Pin 7** | Red | Gated digital power line (not 5V!) |
 | **GND** / (-) | **GND** | Black | Ground reference |
 | **Signal** / S | **A0** | Yellow | Analog voltage signal |
+
+### ASCII wiring diagram
+
+```text
+Arduino D7  ───────────── Sensor + / VCC  (gated power)
+Arduino A0  ◄──────────── Sensor S / signal
+Arduino GND ───────────── Sensor − / GND
+```
+
+If the sensor module draws more current than a GPIO pin can safely supply, use D7 to control a transistor that switches the 5 V rail.
 
 ---
 

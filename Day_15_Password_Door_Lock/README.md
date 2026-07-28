@@ -12,13 +12,18 @@ Most importantly, you will master **Finite State Machine (FSM)** architecture—
 <p align="center">
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Buzzer.jpg" alt="Passive piezo buzzer" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 15 password door lock circuit](../assets/images/circuits/Day_15_Password_Door_Lock.svg)
+
+This overview follows the keypad, servo, LED, and buzzer pins defined in the sketch. The detailed table below lists every keypad conductor.
 
 ## 🎯 Today's Learning Goals
 1. Understand Finite State Machine (FSM) architecture and state transitions.
@@ -121,6 +126,22 @@ To build this project, you will need:
 | **Green LED** | Anode (+) | **220Ω Resistor** ➡️ **Pin 12** | Green | Unlocked indicator |
 | **Buzzer** | Positive (+) | **100Ω Resistor** ➡️ **Pin A0** | Blue | Key clicks & sound alarms |
 | **All GNDs** | Cathodes (-) / GND | **GND** | Black | Shared system ground |
+
+### ASCII wiring diagram
+
+```text
+Keypad R1 R2 R3 R4 C1 C2 C3 C4
+       │  │  │  │  │  │  │  │
+Uno   D9 D8 D7 D6 D5 D4 D3 D2
+
+Uno D10 ───────────────────── Servo signal
+Uno 5 V / GND ─────────────── Servo VCC / GND
+Uno D11 ──[220 Ω]──►| Red LED ─── GND
+Uno D12 ──[220 Ω]──►| Green LED ─ GND
+Uno A0  ──[100 Ω]── (+) Buzzer (−) ─ GND
+```
+
+Use a separate regulated supply for the servo if its current causes resets, and connect the supply grounds together.
 
 ---
 

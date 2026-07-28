@@ -13,9 +13,14 @@ You will master soil electrical resistivity physics, study the design of capacit
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Soil_Moisture.jpg" alt="Soil Moisture" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 19 soil-moisture probe circuit](../assets/images/circuits/Day_19_Soil_Moisture.svg)
+
+The interface-board VCC is gated from D7 and its analog output connects to A0.
 
 ## 🎯 Today's Learning Goals
 1. Understand how soil moisture probes measure volumetric water content.
@@ -115,6 +120,19 @@ First, connect the two pins of the fork probe to the two pins on the driver modu
 | **GND** / (-) | **GND** | Black | Ground reference |
 | **AO** (Analog Out) | **A0** | Yellow | Analog signal output |
 | **DO** (Digital Out) | *Leave Empty* | - | Not used (onboard comparator threshold) |
+
+### ASCII wiring diagram
+
+```text
+Fork probe ─────────── two-pin probe input on interface board
+
+Arduino D7  ────────── Interface VCC  (gated power)
+Arduino A0  ◄───────── Interface AO
+Arduino GND ────────── Interface GND
+Interface DO ───────── not connected
+```
+
+If the module exceeds the safe GPIO current, switch its 5 V supply with a transistor controlled by D7.
 
 ---
 

@@ -12,16 +12,16 @@ We will create a control interface where rotating a potentiometer dial directly 
 <p align="center">
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/DC_Motor.jpg" alt="DC Motor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Stepper_Motor.jpg" alt="Stepper Motor" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 12 potentiometer-controlled servo circuit](../assets/images/circuits/Day_12_Pot_Servo.svg)
+
+The diagram follows `POT_PIN = A0` and `SERVO_PIN = 9`. An optional 100 µF capacitor can be placed across the servo supply near the servo connector.
 
 ## 🎯 Today's Learning Goals
 1. Interface a potentiometer and servo motor on a single breadboard.
@@ -132,6 +132,21 @@ Ensure the potentiometer and the servo do not share breadboard rows except for t
 | **Servo** | GND (-) (Brown/Black) | **GND** | Black | Ground connection |
 
 *Optional Capacitor:* Connect the longer leg (+) of a $100\text{µF}$ capacitor to the breadboard 5V rail, and the shorter marked leg (-) to the GND rail.
+
+### ASCII wiring diagram
+
+```text
+Arduino 5 V ──────┬──── pot outer 1
+                  ├──── servo VCC
+                  └─ (+) 100 µF (optional)
+
+Arduino A0  ◄────────── pot center wiper
+Arduino D9  ──────────► servo SIGNAL
+
+Arduino GND ───────┬──── pot outer 2
+                   ├──── servo GND
+                   └─ (−) 100 µF (optional)
+```
 
 ---
 

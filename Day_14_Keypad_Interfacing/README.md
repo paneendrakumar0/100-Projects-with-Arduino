@@ -11,11 +11,14 @@ You will master row-column multiplexing mathematics, understand the internal lay
 
 <p align="center">
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 14 matrix keypad circuit](../assets/images/circuits/Day_14_Keypad_Interfacing.svg)
+
+The circuit image shows the exact row and column mapping used by the sketch. Verify the ribbon order printed by the keypad manufacturer before connection.
 
 ## 🎯 Today's Learning Goals
 1. Understand the pin-saving math of row-column matrix multiplexing.
@@ -127,6 +130,22 @@ Plug the 8-pin female header of the keypad cable into your breadboard or directl
 | **Pin 6** | Column 2 | **Pin 4** | Purple | Second column control line |
 | **Pin 7** | Column 3 | **Pin 3** | White | Third column control line |
 | **Pin 8** (Far Right) | Column 4 | **Pin 2** | Grey | Right column control line |
+
+### ASCII wiring diagram
+
+```text
+4×4 keypad ribbon              Arduino Uno
+R1 (pin 1) ─────────────────── D9
+R2 (pin 2) ─────────────────── D8
+R3 (pin 3) ─────────────────── D7
+R4 (pin 4) ─────────────────── D6
+C1 (pin 5) ─────────────────── D5
+C2 (pin 6) ─────────────────── D4
+C3 (pin 7) ─────────────────── D3
+C4 (pin 8) ─────────────────── D2
+```
+
+No VCC or GND wire is needed for the passive switch matrix.
 
 ---
 

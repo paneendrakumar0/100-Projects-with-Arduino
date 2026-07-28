@@ -14,9 +14,15 @@ You will master the capacitive physics of condenser microphones, study the opera
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Sound_Sensor.jpg" alt="Digital sound sensor module" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 17 sound sensor clap switch circuit](../assets/images/circuits/Day_17_Sound_Clap_Switch.svg)
+
+The sketch reads the sound module’s digital output on D3 and toggles the D13 LED.
 
 ## 🎯 Today's Learning Goals
 1. Understand how electret microphones convert sound pressure waves into voltage.
@@ -139,6 +145,18 @@ Ensure your sound module's digital output pin (labeled **OUT, DO, or D0**) is us
 | **OUT** / DO / D0 | **Pin 3** | Yellow | Digital output (active low trigger) |
 | **LED Anode** | **220Ω Resistor** ➡️ **Pin 13** | Blue | Clap switch light output |
 | **LED Cathode**| **GND** | Black | Ground reference |
+
+### ASCII wiring diagram
+
+```text
+Arduino 5 V ───────────────── Sound module VCC
+Arduino D3  ◄──────────────── Sound module DO / OUT
+Arduino GND ───────────────── Sound module GND
+
+Arduino D13 ───[220 Ω]───►| LED ─── Arduino GND
+```
+
+Use the module’s digital output, not its analog output, for this sketch.
 
 ---
 

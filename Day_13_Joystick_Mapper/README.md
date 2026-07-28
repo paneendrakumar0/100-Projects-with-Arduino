@@ -14,10 +14,13 @@ You will master sensor calibration math, learn how to handle center spring toler
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
 </p>
+
+## 🖼️ Verified Circuit Diagram
+
+![Day 13 joystick mapper circuit](../assets/images/circuits/Day_13_Joystick_Mapper.svg)
+
+The joystick axes connect to A0/A1 and its push switch connects to D2 using the Arduino’s internal pull-up.
 
 ## 🎯 Today's Learning Goals
 1. Understand the electrical layout of dual-axis potentiometric joysticks.
@@ -128,6 +131,16 @@ To build this project, you will need:
 | **VRx** / X-Out | **A0** | Yellow | X-axis analog output |
 | **VRy** / Y-Out | **A1** | Green | Y-axis analog output |
 | **SW** / Key | **Pin 2** | Blue | Select button switch (active low) |
+
+### ASCII wiring diagram
+
+```text
+Arduino 5 V ───────────────── Joystick VCC
+Arduino A0  ◄──────────────── Joystick VRx
+Arduino A1  ◄──────────────── Joystick VRy
+Arduino D2  ◄──────────────── Joystick SW  (`INPUT_PULLUP`)
+Arduino GND ───────────────── Joystick GND
+```
 
 ---
 
