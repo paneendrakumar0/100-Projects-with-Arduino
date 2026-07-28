@@ -16,12 +16,6 @@ You will master closed-loop control systems, study Pulse Position Modulation (PP
   <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 11 servo sweep circuit](../assets/images/circuits/Day_11_Servo_Sweep.svg)
-
-The diagram follows the sketch’s `SERVO_PIN = 9` mapping. Larger servos require a separate regulated supply with its ground joined to Arduino GND.
-
 ## 🎯 Today's Learning Goals
 1. Understand the difference between open-loop and closed-loop control systems.
 2. Master Pulse Position Modulation (PPM) timing constraints (50 Hz, 1-2ms pulse width).

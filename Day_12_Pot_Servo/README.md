@@ -17,12 +17,6 @@ We will create a control interface where rotating a potentiometer dial directly 
   <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 12 potentiometer-controlled servo circuit](../assets/images/circuits/Day_12_Pot_Servo.svg)
-
-The diagram follows `POT_PIN = A0` and `SERVO_PIN = 9`. An optional 100 µF capacitor can be placed across the servo supply near the servo connector.
-
 ## 🎯 Today's Learning Goals
 1. Interface a potentiometer and servo motor on a single breadboard.
 2. Understand the concept of ADC jitter and electrical noise propagation.

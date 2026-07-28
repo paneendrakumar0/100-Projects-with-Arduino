@@ -14,12 +14,6 @@ You will master row-column multiplexing mathematics, understand the internal lay
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 14 matrix keypad circuit](../assets/images/circuits/Day_14_Keypad_Interfacing.svg)
-
-The circuit image shows the exact row and column mapping used by the sketch. Verify the ribbon order printed by the keypad manufacturer before connection.
-
 ## 🎯 Today's Learning Goals
 1. Understand the pin-saving math of row-column matrix multiplexing.
 2. Master the mechanical and electrical composition of membrane switches.

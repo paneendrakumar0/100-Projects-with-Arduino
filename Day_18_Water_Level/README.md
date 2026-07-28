@@ -16,12 +16,6 @@ You will master the physical chemistry of electrochemical corrosion, study volta
   <img src="../assets/images/components/Water_Level_Sensor.jpg" alt="Resistive water-level sensor board" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 18 water-level sensor circuit](../assets/images/circuits/Day_18_Water_Level.svg)
-
-The sketch gates sensor power from D7 and reads the signal on A0 to reduce continuous electrolysis.
-
 ## 🎯 Today's Learning Goals
 1. Understand how water level modules translate depth into analog resistance changes.
 2. Master the chemistry of galvanic electrolysis corrosion in conductive liquids.

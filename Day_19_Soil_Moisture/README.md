@@ -16,12 +16,6 @@ You will master soil electrical resistivity physics, study the design of capacit
   <img src="../assets/images/components/Soil_Moisture.jpg" alt="Soil Moisture" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 19 soil-moisture probe circuit](../assets/images/circuits/Day_19_Soil_Moisture.svg)
-
-The interface-board VCC is gated from D7 and its analog output connects to A0.
-
 ## 🎯 Today's Learning Goals
 1. Understand how soil moisture probes measure volumetric water content.
 2. Study the physics of soil resistivity and moisture conduction.

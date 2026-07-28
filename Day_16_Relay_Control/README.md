@@ -17,12 +17,6 @@ You will master galvanic isolation, study electromagnetic induction physics, lea
   <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 16 relay control circuit](../assets/images/circuits/Day_16_Relay_Control.svg)
-
-The control side uses D7. The contact side is a separate low-voltage test circuit; do not place mains wiring on a breadboard.
-
 ## 🎯 Today's Learning Goals
 1. Understand galvanic isolation and why it is critical for microcontroller safety.
 2. Master the physics of electromagnetism and inductances ($V = L \frac{di}{dt}$).

@@ -16,12 +16,6 @@ You will master sensor calibration math, learn how to handle center spring toler
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 13 joystick mapper circuit](../assets/images/circuits/Day_13_Joystick_Mapper.svg)
-
-The joystick axes connect to A0/A1 and its push switch connects to D2 using the Arduino’s internal pull-up.
-
 ## 🎯 Today's Learning Goals
 1. Understand the electrical layout of dual-axis potentiometric joysticks.
 2. Master the physics of mechanical spring tolerances and center drift.

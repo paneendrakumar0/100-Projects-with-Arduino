@@ -19,12 +19,6 @@ Most importantly, you will master **Finite State Machine (FSM)** architecture—
   <img src="../assets/images/components/Buzzer.jpg" alt="Passive piezo buzzer" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 15 password door lock circuit](../assets/images/circuits/Day_15_Password_Door_Lock.svg)
-
-This overview follows the keypad, servo, LED, and buzzer pins defined in the sketch. The detailed table below lists every keypad conductor.
-
 ## 🎯 Today's Learning Goals
 1. Understand Finite State Machine (FSM) architecture and state transitions.
 2. Master string buffer manipulation (`strcmp`, `memset`, null terminators `\0`).

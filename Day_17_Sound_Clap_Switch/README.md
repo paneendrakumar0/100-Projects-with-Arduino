@@ -18,12 +18,6 @@ You will master the capacitive physics of condenser microphones, study the opera
   <img src="../assets/images/components/Sound_Sensor.jpg" alt="Digital sound sensor module" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 17 sound sensor clap switch circuit](../assets/images/circuits/Day_17_Sound_Clap_Switch.svg)
-
-The sketch reads the sound module’s digital output on D3 and toggles the D13 LED.
-
 ## 🎯 Today's Learning Goals
 1. Understand how electret microphones convert sound pressure waves into voltage.
 2. Study the threshold comparator logic of the LM393 operational amplifier.

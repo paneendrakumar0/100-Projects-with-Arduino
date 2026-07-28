@@ -19,12 +19,6 @@ You will master photodiode semiconductor depletion layer physics, study how opti
   <img src="../assets/images/components/Buzzer.jpg" alt="Passive piezo buzzer" width="200" style="margin:10px;" />
 </p>
 
-## 🖼️ Verified Circuit Diagram
-
-![Day 20 flame sensor alarm circuit](../assets/images/circuits/Day_20_Flame_Sensor.svg)
-
-The circuit follows A0 for intensity, D2 for the module threshold output, D11 for the LED, and D12 for the buzzer.
-
 ## 🎯 Today's Learning Goals
 1. Understand how photodiodes measure specific infrared wavelengths of fire.
 2. Master the physics of reverse-bias leakage currents in light-sensitive semiconductors.
