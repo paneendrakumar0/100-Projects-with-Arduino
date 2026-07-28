@@ -13,10 +13,7 @@ Interfacing a button seems simple, but in physical computing, mechanical buttons
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Pushbutton.jpg" alt="Four-leg tactile pushbutton" width="200" style="margin:10px;" />
 </p>
 
 ## 🎯 Today's Learning Goals
@@ -139,6 +136,21 @@ Since we are utilizing the internal pull-up resistor of the ATmega328P chip, our
 
 > [!NOTE]
 > Tactile pushbuttons typically have 4 legs. Inside, the legs are connected in pairs. Leg 1 is connected to Leg 2 (on the same side), and Leg 3 is connected to Leg 4. Pressing the button connects Leg 1/2 to Leg 3/4. Connecting your wires diagonally ensures you are connecting across the switch contact, preventing a short-circuit configuration.
+
+### ASCII wiring diagram
+
+```text
+                         ATmega328P internal pull-up
+Arduino 5 V ───────────────[20–50 kΩ]──────────┐
+                                               │
+Arduino D2 (`INPUT_PULLUP`) ────────────────────┼───o  o─── Arduino GND
+                                                   button
+
+Released: D2 reads HIGH
+Pressed:  D2 is connected to GND and reads LOW
+```
+
+On a four-leg tactile switch, use one leg from each internally connected side. Confirm the pairs with a continuity meter if the package layout is unclear.
 
 ---
 

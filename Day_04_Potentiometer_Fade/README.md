@@ -12,13 +12,10 @@ You will learn how to interface a rotary potentiometer to read variable analog v
 <p align="center">
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Joystick.jpg" alt="Joystick" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Rotary_Encoder.jpg" alt="Rotary Encoder" width="200" style="margin:10px;" />
 </p>
 
 ## 🎯 Today's Learning Goals
@@ -142,6 +139,21 @@ Ensure your potentiometer's three pins are placed in separate, vertical rows of 
 | **Potentiometer** | Pin 3 (Right Terminal) | **GND** | Black | Ground connection |
 | **LED** | Anode (+) / Long Leg | **Pin 9** | Blue | PWM channel (through resistor) |
 | **Resistor** | Inline with LED cathode | **GND** | Black | Return path to ground |
+
+### ASCII wiring diagram
+
+```text
+                         10 kΩ potentiometer
+Arduino 5 V ─────────────/\/\/\/\/\/\/──────────── Arduino GND
+                                ▲
+                                │ wiper
+Arduino A0 ─────────────────────┘
+
+Arduino D9 (PWM) ───[220 Ω]───►| LED ─── Arduino GND
+                                A  K
+```
+
+If turning the potentiometer reverses the desired direction, swap only its two outer terminals; keep the center wiper connected to A0.
 
 ---
 

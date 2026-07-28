@@ -13,9 +13,8 @@ Instead of hardcoding single colors, you will learn how to write a mathematicall
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/RGB_LED.jpg" alt="Four-pin common-cathode RGB LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/WS2812B.jpg" alt="WS2812B" width="200" style="margin:10px;" />
 </p>
 
 ## 🎯 Today's Learning Goals
@@ -128,6 +127,18 @@ Look at your RGB LED. Typically, the pins are ordered as: **Red, Common Cathode 
 | **Pin 2** (Longest pin) | Common Cathode | Arduino **GND** | Black | Common Ground |
 | **Pin 3** (Short inner) | Green Anode | **220Ω Resistor** ➡️ Arduino **Pin 10** | Green | PWM control for Green |
 | **Pin 4** (Short outer) | Blue Anode | **220Ω Resistor** ➡️ Arduino **Pin 11** | Blue | PWM control for Blue |
+
+### ASCII wiring diagram
+
+```text
+Arduino D9  (PWM) ───[220 Ω]─── R anode ──┐
+Arduino D10 (PWM) ───[220 Ω]─── G anode ──┤  4-pin RGB LED
+Arduino D11 (PWM) ───[220 Ω]─── B anode ──┤  (common cathode)
+                                           │
+Arduino GND ───────────────── common K ─────┘
+```
+
+This sketch requires a **common-cathode** RGB LED. Pin order varies by manufacturer, so identify the common cathode and color pins from the LED datasheet before powering the circuit.
 
 ---
 

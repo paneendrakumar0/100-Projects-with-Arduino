@@ -15,9 +15,8 @@ You will learn the physics of thermal radiation, how pyroelectric crystals sense
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/PIR_Motion_Sensor.jpg" alt="PIR Motion Sensor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Robotic_Arm.jpg" alt="Robotic Arm" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Buzzer.jpg" alt="Active piezo buzzer" width="200" style="margin:10px;" />
 </p>
 
 ## 🎯 Today's Learning Goals
@@ -137,6 +136,21 @@ Remove the white dome cover of the PIR module temporarily to check the label und
 | **Buzzer (-)** | **GND** | Black | System ground |
 | **LED Anode** | **220Ω Resistor** ➡️ **Pin 13** | Blue | Alarm light output pin |
 | **LED Cathode** | **GND** | Black | System ground |
+
+### ASCII wiring diagram
+
+```text
+Arduino Uno                         PIR module
+5 V  ─────────────────────────────► VCC
+D2   ◄───────────────────────────── OUT
+GND  ─────────────────────────────► GND
+
+D13 ───[220 Ω]───►| LED ──────────┐
+D8  ───────────── (+) BUZZER (-) ─┤
+GND  ──────────────────────────────┘
+```
+
+All grounds must be common. Use the module pin labels rather than relying on a left-to-right pin order. A buzzer that exceeds the Arduino pin-current limit requires a transistor driver.
 
 ---
 

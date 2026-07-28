@@ -15,6 +15,7 @@ We will build an SOS Morse Code generator (••• ——— •••) using 
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Buzzer.jpg" alt="Active and passive piezo buzzers" width="200" style="margin:10px;" />
 </p>
 
 ## 🧠 Hardware Theory: How Do These Components Work?
@@ -76,6 +77,16 @@ To build this project, you will need:
 | **Buzzer** | negative (-) / Short leg | **GND** | Black | System ground |
 | **LED** | Anode (+) / Long leg | **Pin 13** | Yellow | Onboard/External LED control |
 | **LED** | Cathode (-) / Short leg | **220Ω Resistor** to **GND** | Black | Current limiting circuit to ground |
+
+### ASCII wiring diagram
+
+```text
+Arduino D13 ─────────────►| LED ──[220 Ω]──┐
+Arduino D8  ────────────── (+) BUZZER (-) ─┤
+Arduino GND ────────────────────────────────┘
+```
+
+All grounds are common. Use a small buzzer whose rated current is within the Arduino pin limit; drive higher-current buzzers through a transistor.
 
 ---
 

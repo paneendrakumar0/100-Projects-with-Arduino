@@ -14,6 +14,7 @@ You will master the converse piezoelectric effect, learn how pitch and rhythm ar
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Buzzer.jpg" alt="Active and passive piezo buzzers" width="200" style="margin:10px;" />
 </p>
 
 ## 🎯 Today's Learning Goals
@@ -123,6 +124,17 @@ Look at your buzzer. The positive pin (+) is typically marked on the top sticker
 | :--- | :--- | :--- | :--- |
 | **Positive (+)** (Long leg) | **100Ω Resistor** ➡️ Arduino **Pin 8** | Red / Orange | Signal line (digital/tone output) |
 | **Negative (-)** (Short leg) | Arduino **GND** | Black | Ground reference |
+
+### ASCII wiring diagram
+
+```text
+Arduino D8 ───[100 Ω]─── (+) PIEZO BUZZER (-) ─── Arduino GND
+                                │
+                                ├─ passive: `tone()` controls pitch
+                                └─ active:   HIGH/LOW controls rhythm
+```
+
+The sketch defaults to a passive piezo buzzer. Confirm the buzzer type and rated current; use a transistor driver instead of D8 for a magnetic or higher-current sounder.
 
 ---
 

@@ -15,8 +15,6 @@ To prepare you for professional engineering, we will also implement **hysteresis
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Photoresistor.jpg" alt="Photoresistor" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Potentiometer.jpg" alt="Potentiometer" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
 </p>
 
@@ -150,6 +148,20 @@ To build this project, you will need:
 | **10kΩ Resistor** | Terminal B | **GND** | Black | Ground reference path |
 | **LED** | Anode (+) | **220Ω Resistor** ➡️ **Pin 9** | Blue | PWM/Digital control line |
 | **LED** | Cathode (-) | **GND** | Black | LED ground return |
+
+### ASCII wiring diagram
+
+```text
+                       light-dependent divider
+Arduino 5 V ─── LDR ────────●────────[10 kΩ]──── Arduino GND
+                             │
+Arduino A0 ──────────────────┘
+
+Arduino D9 ───[220 Ω]──────►| LED ────────────── Arduino GND
+                             A  K
+```
+
+With this divider orientation the A0 reading normally increases as the LDR resistance falls in brighter light. Calibrate the two software thresholds for the actual LDR and room lighting.
 
 ---
 

@@ -14,7 +14,9 @@ Today, you will learn the professional way to time events: the **Non-Blocking Bl
 ## 📸 Component Visuals
 
 <p align="center">
+  <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
+  <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
   <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
 </p>
@@ -39,6 +41,27 @@ If you want to build the circuit yourself on a breadboard:
 2. Connect a **220Ω or 330Ω resistor** from the GND rail to a row on the breadboard.
 3. Insert the **LED**. The short leg (cathode) goes to the resistor.
 4. Connect the long leg (anode) of the LED to **Pin 13** on the Arduino.
+
+### ASCII wiring diagram
+
+```text
+Option 1 — onboard LED
+
+Arduino Uno
+┌──────────────────────┐
+│ D13 / LED_BUILTIN ───┼──► onboard "L" LED
+│ USB ─────────────────┼──► computer / 5 V power
+└──────────────────────┘
+
+Option 2 — external LED
+
+Arduino D13 ───►| LED ───[220–330 Ω]─── Arduino GND
+                A  K
+                │  └─ short leg / cathode
+                └──── long leg / anode
+```
+
+Use either the onboard LED or the external LED. The sketch selects `LED_BUILTIN` when the board defines it.
 
 ## 🧠 How the Code Works
 

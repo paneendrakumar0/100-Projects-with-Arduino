@@ -14,8 +14,6 @@ You will learn the physics behind relative humidity and thermal resistances, stu
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/DHT11.jpg" alt="DHT11" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Relay_Module.jpg" alt="Relay Module" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Resistor.jpg" alt="Resistor" width="200" style="margin:10px;" />
 </p>
 
@@ -131,6 +129,26 @@ To build this project, you will need:
 | **VCC** / (+) | **5V** | Red | Power supply (+5V) |
 | **DATA** / OUT / S | **Pin 2** | Green / Yellow | Serial data line |
 | **GND** / (-) | **GND** | Black | Ground reference |
+
+### ASCII wiring diagram
+
+```text
+Three-pin DHT11 breakout
+
+Arduino 5 V  ───────────────────── VCC
+Arduino D2   ◄──────────────────── DATA
+Arduino GND  ───────────────────── GND
+
+Raw four-pin DHT11 (front grille facing you)
+
+Arduino 5 V  ───────┬───────────── pin 1 VCC
+                    └──[10 kΩ]──┐
+Arduino D2   ◄──────────────────┴─ pin 2 DATA
+                                  pin 3 NC (leave open)
+Arduino GND  ───────────────────── pin 4 GND
+```
+
+Do not add a second pull-up unless your breakout documentation says one is required; most three-pin modules already include it.
 
 ---
 

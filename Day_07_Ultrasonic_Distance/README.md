@@ -13,8 +13,6 @@ You will master the physics of sound propagation, learn how to derive distance f
   <img src="../assets/images/components/Arduino_Uno.jpg" alt="Arduino Uno" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Breadboard.jpg" alt="Breadboard" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Jumper_Wires.jpg" alt="Jumper Wires" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/LED.jpg" alt="LED" width="200" style="margin:10px;" />
-  <img src="../assets/images/components/Servo_Motor.jpg" alt="Servo Motor" width="200" style="margin:10px;" />
   <img src="../assets/images/components/Ultrasonic_Sensor.jpg" alt="Ultrasonic Sensor" width="200" style="margin:10px;" />
 </p>
 
@@ -127,6 +125,20 @@ To build this project, you will need:
 | **Trig** | **Pin 3** | Green / Yellow | Trigger input pulse line |
 | **Echo** | **Pin 4** | Blue | Echo output pulse line |
 | **GND** | **GND** | Black | Ground reference |
+
+### ASCII wiring diagram
+
+```text
+Arduino Uno                         HC-SR04
+┌───────────┐                    ┌───────────┐
+│ 5 V       ├───────────────────►│ VCC       │
+│ D3 output ├───────────────────►│ TRIG      │
+│ D4 input  │◄───────────────────┤ ECHO      │
+│ GND       ├───────────────────►│ GND       │
+└───────────┘                    └───────────┘
+```
+
+This direct Echo connection is for a 5 V Arduino Uno. For a 3.3 V-only controller such as an ESP32, reduce the 5 V Echo signal with a voltage divider or level shifter.
 
 ---
 
